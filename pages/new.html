@@ -1,0 +1,152 @@
+<form action="../forms/Registrationform.php" class="container" id="registrationForm">
+  <h2>Registration Form</h2>
+
+  <a href="DashBoard.php">Dash</a>
+
+  <a href="AGLADMIN.php">Admin Dash</a>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar">
+      <div class="progress-step active">
+          <div class="progress-step-circle">1</div>
+          <p>General Information</p>
+      </div>
+
+      <div class="progress-step active">
+          <div class="progress-step-circle">2</div>
+          <p>Personal Details</p>
+      </div>
+      <div class="progress-step">
+          <div class="progress-step-circle">3</div>
+          <p>Education</p>
+      </div>
+      <div class="progress-step">
+          <div class="progress-step-circle">4</div>
+          <p>Profession</p>
+      </div>
+      <div class="progress-step">
+          <div class="progress-step-circle">4</div>
+          <p>Payment</p>
+      </div>
+  </div>
+
+  <!-- Form Steps -->
+  <div class="form-step active">
+      <div class="form-stepINdiv">
+          <div class="stepINdivdiv">
+              <h3>Personal Details</h3>
+              <label for="name">Full Name:</label>
+              <input type="text" id="name" name="name" required><br><br>
+
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required><br><br>
+
+              <label for="phone">Phone Number:</label>
+              <input type="tel" id="phone" name="phone" required><br><br>
+          </div>
+
+          <div class="stepINdivdiv">
+              <label for="dob">Date of Birth:</label>
+              <input type="date" id="dob" name="dob" required><br><br>
+
+              <label for="address">Address:</label>
+              <textarea id="Homeaddress" name="Homeaddress" rows="4"></textarea><br><br>
+
+              <label for="passport">Passport Image:</label>
+              <input type="file" id="passport" name="passport" accept="image/*" required><br><br>
+          </div>
+      </div>
+  </div>
+
+  <div class="form-step">
+      <div class="form-stepINdiv">
+          <div class="stepINdivdiv">
+              <h3>Education</h3>
+              <label for="highestDegree">Highest Degree:</label>
+              <input type="text" id="highestDegree" name="highestDegree" required><br><br>
+
+              <label for="institution">Institution Name:</label>
+              <input type="text" id="institution" name="institution" required><br><br>
+
+              <label for="startDate">Start Date:</label>
+              <input type="date" id="startDate" name="startDate" required><br><br>
+          </div>
+
+          <div class="stepINdivdiv">
+              <label for="graduationYear">Year of Graduation:</label>
+              <input type="number" id="graduationYear" name="graduationYear" required><br><br>
+
+              <label for="completionLetter">Completion Letter:</label>
+              <input type="file" id="completionLetter" name="completionLetter"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required><br><br>
+          </div>
+      </div>
+  </div>
+
+  <div class="form-step">
+      <div class="form-stepINdiv">
+          <div class="stepINdivdiv">
+              <h3>Profession</h3>
+              <label for="profession">Profession:</label>
+              <input type="text" id="profession" name="profession" required><br><br>
+
+              <label for="experience">Years of Experience:</label>
+              <input type="number" id="experience" name="experience" required><br><br>
+
+              <label for="currentCompany">Current Company:</label>
+              <input type="text" id="currentCompany" name="currentCompany"><br><br>
+          </div>
+
+          <div class="stepINdivdiv">
+              <label for="position">Position:</label>
+              <input type="text" id="position" name="position"><br><br>
+
+              <label for="workAddress">Work Address:</label>
+              <textarea id="workAddress" name="workAddress" rows="4"></textarea><br><br>
+          </div>
+      </div>
+  </div>
+
+  <div class="form-step">
+      <div class="form-stepINdiv">
+          <div class="stepINdivdiv">
+              <label>Make payment of Ksh 300.00 as membership fee</label><br>
+              <label>Choose Payment Method:</label><br>
+              <button type="button" class="payment-button" id="mpesa"
+                  onclick="selectPaymentMethod('mpesa')">Mpesa</button>
+              <button type="button" class="payment-button" id="paypal"
+                  onclick="selectPaymentMethod('paypal')">PayPal</button>
+              <button type="button" class="payment-button" id="card"
+                  onclick="selectPaymentMethod('card')">Card</button>
+              <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" required>
+              <br><br>
+          </div>
+
+          <div class="stepINdivdiv">
+              <label for="paymentCode">Payment Code</label>
+              <input placeholder="Record the payment code from payment Message" type="text" id="paymentCode"
+                  name="paymentCode"><br><br>
+
+              <label for="password">Enter password</label><br>
+              <div class="password-container">
+                  <input type="password" id="password" name="password" required oninput="validatePasswords()">
+                  <span class="toggle-icon" onclick="togglePassword('password')">👁️</span>
+              </div><br><br>
+
+              <label for="confirm-password">Confirm password</label><br>
+              <div class="password-container">
+                  <input type="password" id="confirm-password" name="confirm-password" required
+                      oninput="validatePasswords()">
+                  <span class="toggle-icon" onclick="togglePassword('confirm-password')">👁️</span>
+              </div><br><br>
+
+              <div class="error-message" id="error-message">Passwords do not match</div>
+          </div>
+      </div>
+  </div>
+
+  <div class="form-navigation">
+      <button type="button" class="previous" disabled>Previous</button>
+      <button type="button" class="next">Next</button>
+  </div>
+</form>
