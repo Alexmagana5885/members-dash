@@ -15,7 +15,7 @@
 <body>
 
 
-    <form action="../forms/personalmembership.php" class="container" id="registrationForm">
+    <form method="post" action="../forms/personalmembership.php" class="container" id="registrationForm">
         <h2>Registration Form</h2>
 
         <a href="DashBoard.php">Dash</a>
@@ -23,7 +23,7 @@
         <a href="AGLADMIN.php">Admin Dash</a>
 
         <!-- Progress Bar -->
-        <div class="progress-bar">
+        <div class="progress-bar"> 
             <div class="progress-step active">
                 <div class="progress-step-circle">1</div>
                 <p>Personal Details</p>
