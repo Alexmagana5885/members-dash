@@ -7,50 +7,15 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../assets/CSS/Dashboard.css">
     <link rel="stylesheet" href="../assets/CSS/popups.css">
-
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
+    <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
 
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
 
-<style>
-    /* Style for the dropdown container */
-    .dropdown {
-        position: relative;
-    }
 
-    /* Style for the dropdown link */
-    .dropdown-toggle {
-        cursor: pointer;
-    }
-
-    /* Hide the dropdown menu initially */
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #303538;
-        padding: 10px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        border-radius: 7px;
-    }
-
-    /* Display the dropdown menu on hover */
-    .dropdown:hover .dropdown-menu {
-        display: block;
-    }
-
-    /* Style for dropdown links */
-    .dropdown-menu li a {
-        color: #fff;
-        text-decoration: none;
-        display: block;
-        padding: 5px 0;
-    }
-</style>
 
 <body>
     <header>
@@ -58,8 +23,9 @@
             <img src="../assets/img/logo.png" alt="AGL">
         </div>
         <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
+        <!-- <button id="toggleMessages">View Messages</button> -->
 
-        <div class="notification">
+        <div id="toggleMessages" class="notification">
             <img src="../assets/img/bell.png" alt="Notification">
         </div>
 
@@ -174,6 +140,60 @@
             </div>
 
 
+            <!-- messages -->
+
+
+            <div class="message-popup" id="messagePopup">
+                <div class="message-popup-header">
+                    <h4>Messages</h4>
+                    <button id="closePopup">&times;</button>
+                </div>
+                <div class="message-container">
+                    <div class="message" onclick="showFullMessage('Hello,  how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content.  ')">
+                        <p class="message-content">Hello, how are you?</p>
+                        <span class="message-time">10:30 AM</span>
+                    </div>
+                    <div class="message" onclick="showFullMessage('I\'m fine, thank you! Here is more about what I wanted to say...')">
+                        <p class="message-content">I'm fine, thank you!</p>
+                        <span class="message-time">10:32 AM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full message pop-up -->
+            <div class="full-message-popup" id="fullMessagePopup">
+                <div class="full-message-content">
+                    <button id="closeFullMessage">&times;</button>
+                    <p id="fullMessageText"></p>
+                </div>
+            </div>
+
+
+            <script>
+                document.getElementById('toggleMessages').addEventListener('click', function() {
+                    document.getElementById('messagePopup').style.display = 'flex';
+                });
+
+                document.getElementById('closePopup').addEventListener('click', function() {
+                    document.getElementById('messagePopup').style.display = 'none';
+                });
+
+                function showFullMessage(message) {
+                    document.getElementById('fullMessageText').textContent = message;
+                    document.getElementById('fullMessagePopup').style.display = 'flex';
+                }
+
+                document.getElementById('closeFullMessage').addEventListener('click', function() {
+                    document.getElementById('fullMessagePopup').style.display = 'none';
+                });
+            </script>
+
+
+
+
+
+            <!-- ............................ -->
+
             <!-- planned ivents -->
 
 
@@ -283,10 +303,15 @@
                         </div>
 
                         <div class="past-event-form-group">
+                            <label for="pastEventLocation">Event Details</label>
+                            <textarea style="height: 200px; padding: 10px; " name="eventDetails" id="pastEventDetailsEditor"></textarea>
+                        </div>
+
+                        <!-- <div class="past-event-form-group">
                             <label for="pastEventDetails">Event Details:</label>
                             <div id="pastEventDetailsEditor" style="height: 200px"></div>
                             <input type="hidden" id="pastEventDetailsHidden" name="eventDetails" />
-                        </div>
+                        </div> -->
 
                         <div class="past-event-form-group">
                             <label for="pastEventLocation">Location:</label>
@@ -380,7 +405,7 @@
             <!-- JavaScript Files -->
 
 
-            <!-- <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script> -->
+            <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
             <script src="../assets/JS/quill.min.js"></script>
             <script src="../assets/JS/popups.js"></script>
@@ -392,7 +417,7 @@
                 });
 
                 // Handle form submission
-                document.getElementById('pastEventForm').onsubmit = function () {
+                document.getElementById('pastEventForm').onsubmit = function() {
                     // Set hidden input value to the Quill editor content
                     document.getElementById('pastEventDetailsHidden').value = quill.root.innerHTML;
                 };
@@ -529,9 +554,6 @@
 
 
 
-
-
-
         </section>
 
     </div>
@@ -566,11 +588,11 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const toggleButton = document.getElementById('toggleMenu');
             const sidebar = document.getElementById('sidebar');
 
-            toggleButton.addEventListener('click', function () {
+            toggleButton.addEventListener('click', function() {
 
                 if (sidebar.style.display === 'block') {
                     sidebar.style.display = 'none';
@@ -585,7 +607,6 @@
                 }
             });
         });
-
     </script>
 
 
