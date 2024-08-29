@@ -149,7 +149,9 @@
     input[type="date"],
     input[type="number"],
     input[type="file"],
-    input[type="month"] input[type="password"] {
+    input[type="month"],
+    input[type="password"],
+    select {
         width: calc(100% - 22px);
         padding: 8px;
         margin-bottom: 15px;
@@ -204,7 +206,8 @@
         input[type="number"],
         input[type="file"],
         input[type="month"],
-        input[type="password"] {
+        input[type="password"],
+        select {
             padding: 8px;
         }
 
@@ -284,152 +287,163 @@
 
 <body>
 
-<form action="../forms/Registrationform.php" class="container" id="registrationForm">
-    <h2>Registration Form</h2>
 
-    <a href="DashBoard.php">Dash</a>
+    <form action="../forms/personalmembership.php" class="container" id="registrationForm">
+        <h2>Registration Form</h2>
 
-    <a href="AGLADMIN.php">Admin Dash</a>
+        <a href="DashBoard.php">Dash</a>
 
-    <!-- Progress Bar -->
-    <div class="progress-bar">
-        <div class="progress-step active">
-            <div class="progress-step-circle">1</div>
-            <p>Personal Details</p>
-        </div>
-        <div class="progress-step">
-            <div class="progress-step-circle">2</div>
-            <p>Education</p>
-        </div>
-        <div class="progress-step">
-            <div class="progress-step-circle">3</div>
-            <p>Profession</p>
-        </div>
-        <div class="progress-step">
-            <div class="progress-step-circle">4</div>
-            <p>Payment</p>
-        </div>
-    </div>
+        <a href="AGLADMIN.php">Admin Dash</a>
 
-    <!-- Form Steps -->
-    <div class="form-step active">
-        <div class="form-stepINdiv">
-            <div class="stepINdivdiv">
-                <h3>Personal Details</h3>
-                <label for="name">Full Name:</label>
-                <input type="text" id="name" name="name" required><br><br>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required><br><br>
-
-                <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" name="phone" required><br><br>
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-step active">
+                <div class="progress-step-circle">1</div>
+                <p>Personal Details</p>
             </div>
-
-            <div class="stepINdivdiv">
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" required><br><br>
-
-                <label for="address">Address:</label>
-                <textarea id="Homeaddress" name="Homeaddress" rows="4"></textarea><br><br>
-
-                <label for="passport">Passport Image:</label>
-                <input type="file" id="passport" name="passport" accept="image/*" required><br><br>
+            <div class="progress-step">
+                <div class="progress-step-circle">2</div>
+                <p>Education</p>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-circle">3</div>
+                <p>Profession</p>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-circle">4</div>
+                <p>Payment</p>
             </div>
         </div>
-    </div>
 
-    <div class="form-step">
-        <div class="form-stepINdiv">
-            <div class="stepINdivdiv">
-                <h3>Education</h3>
-                <label for="highestDegree">Highest Degree:</label>
-                <input type="text" id="highestDegree" name="highestDegree" required><br><br>
+        <!-- Form Steps -->
+        <div class="form-step active">
+            <div class="form-stepINdiv">
+                <div class="stepINdivdiv">
+                    <h3>Personal Details</h3>
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required><br><br>
 
-                <label for="institution">Institution Name:</label>
-                <input type="text" id="institution" name="institution" required><br><br>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required><br><br>
 
-                <label for="startDate">Start Date:</label>
-                <input type="date" id="startDate" name="startDate" required><br><br>
-            </div>
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required><br><br>
+                </div>
 
-            <div class="stepINdivdiv">
-                <label for="graduationYear">Year of Graduation:</label>
-                <input type="number" id="graduationYear" name="graduationYear" required><br><br>
+                <div class="stepINdivdiv">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required><br><br>
 
-                <label for="completionLetter">Completion Letter:</label>
-                <input type="file" id="completionLetter" name="completionLetter"
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required><br><br>
-            </div>
-        </div>
-    </div>
+                    <label for="address">Address:</label>
+                    <textarea id="Homeaddress" name="Homeaddress" rows="4"></textarea><br><br>
 
-    <div class="form-step">
-        <div class="form-stepINdiv">
-            <div class="stepINdivdiv">
-                <h3>Profession</h3>
-                <label for="profession">Profession:</label>
-                <input type="text" id="profession" name="profession" required><br><br>
-
-                <label for="experience">Years of Experience:</label>
-                <input type="number" id="experience" name="experience" required><br><br>
-
-                <label for="currentCompany">Current Company:</label>
-                <input type="text" id="currentCompany" name="currentCompany"><br><br>
-            </div>
-
-            <div class="stepINdivdiv">
-                <label for="position">Position:</label>
-                <input type="text" id="position" name="position"><br><br>
-
-                <label for="workAddress">Work Address:</label>
-                <textarea id="workAddress" name="workAddress" rows="4"></textarea><br><br>
+                    <label for="passport">Passport Image:</label>
+                    <input type="file" id="passport" name="passport" accept="image/*" required><br><br>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="form-step">
-        <div class="form-stepINdiv">
-            <div class="stepINdivdiv">
-                <label>Make payment of Ksh 300.00 as membership fee</label><br>
-                <label>Choose Payment Method:</label><br>
-                <button type="button" class="payment-button" id="mpesa"
-                    onclick="selectPaymentMethod('mpesa')">Mpesa</button>
-                <button type="button" class="payment-button" id="paypal"
-                    onclick="selectPaymentMethod('paypal')">PayPal</button>
-                <button type="button" class="payment-button" id="card"
-                    onclick="selectPaymentMethod('card')">Card</button>
-                <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" required>
-                <br><br>
-            </div>
+        <div class="form-step">
+            <div class="form-stepINdiv">
+                <div class="stepINdivdiv">
+                    <h3>Education</h3>
+                    <label for="highestDegree">Highest Degree:</label>
+                    <input type="text" id="highestDegree" name="highestDegree" required><br><br>
 
-            <div class="stepINdivdiv">
-                <label for="paymentCode">Payment Code</label>
-                <input placeholder="Record the payment code from payment Message" type="text" id="paymentCode"
-                    name="paymentCode"><br><br>
+                    <label for="institution">Institution Name:</label>
+                    <input type="text" id="institution" name="institution" required><br><br>
 
-                <label for="password">Enter password</label><br>
-                <div class="password-container">
-                    <input type="password" id="password" name="password" required oninput="validatePasswords()">
-                    <span class="toggle-icon" onclick="togglePassword('password')">👁️</span>
-                </div><br><br>
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" name="startDate" required><br><br>
+                </div>
 
-                <label for="confirm-password">Confirm password</label><br>
-                <div class="password-container">
-                    <input type="password" id="confirm-password" name="confirm-password" required oninput="validatePasswords()">
-                    <span class="toggle-icon" onclick="togglePassword('confirm-password')">👁️</span>
-                </div><br><br>
+                <div class="stepINdivdiv">
+                    <label for="graduationYear">Year of Graduation:</label>
+                    <input type="number" id="graduationYear" name="graduationYear" required><br><br>
 
-                <div class="error-message" id="error-message">Passwords do not match</div>
+                    <label for="completionLetter">Completion Letter:</label>
+                    <input type="file" id="completionLetter" name="completionLetter"
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required><br><br>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="form-navigation">
-        <button type="button" class="previous" disabled>Previous</button>
-        <button type="button" class="next">Next</button>
-    </div>
-</form>
+        <div class="form-step">
+            <div class="form-stepINdiv">
+                <div class="stepINdivdiv">
+                    <h3>Profession</h3>
+                    <label for="profession">Profession:</label>
+                    <input type="text" id="profession" name="profession" required><br><br>
+
+                    <label for="experience">Years of Experience:</label>
+                    <input type="number" id="experience" name="experience" required><br><br>
+
+                    <label for="currentCompany">Current Company:</label>
+                    <input type="text" id="currentCompany" name="currentCompany"><br><br>
+                </div>
+
+                <div class="stepINdivdiv">
+                    <label for="position">Position:</label>
+                    <input type="text" id="position" name="position"><br><br>
+
+                    <label for="workAddress">Work Address:</label>
+                    <textarea id="workAddress" name="workAddress" rows="4"></textarea><br><br>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-step">
+            <div class="form-stepINdiv">
+                <div class="stepINdivdiv">
+                    <label>Make payment of Ksh 2000.00 as membership fee</label><br>
+                    <label>Choose Payment Method:</label><br>
+                    <button type="button" class="payment-button" id="mpesa"
+                        onclick="selectPaymentMethod('mpesa')">Mpesa</button>
+                    <button type="button" class="payment-button" id="paypal"
+                        onclick="selectPaymentMethod('paypal')">PayPal</button>
+                    <button type="button" class="payment-button" id="card"
+                        onclick="selectPaymentMethod('card')">Card</button>
+                    <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" required>
+                    <br><br><br>
+
+                    <label for="options">Choose method used to make the payment:</label>
+                    <select id="options" name="options">
+                        <option value="Mpesa">Mpesa</option>
+                        <option value="PayPal">PayPal</option>
+                        <option value="Card">Card</option>
+                        <option value="cash">cash</option>
+                    </select>
+
+                </div>
+
+                <div class="stepINdivdiv">
+                    <label for="paymentCode">Payment Code/ Receiver</label>
+                    <input placeholder="Record the payment code from payment Message" type="text" id="paymentCode"
+                        name="paymentCode"><br><br>
+
+                    <label for="password">Enter password</label><br>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" required oninput="validatePasswords()">
+                        <span class="toggle-icon" onclick="togglePassword('password')">👁️</span>
+                    </div><br><br>
+
+                    <label for="confirm-password">Confirm password</label><br>
+                    <div class="password-container">
+                        <input type="password" id="confirm-password" name="confirm-password" required
+                            oninput="validatePasswords()">
+                        <span class="toggle-icon" onclick="togglePassword('confirm-password')">👁️</span>
+                    </div><br><br>
+
+                    <div class="error-message" id="error-message">Passwords do not match</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-navigation">
+            <button type="button" class="previous" disabled>Previous</button>
+            <button type="button" class="next">Next</button>
+        </div>
+    </form>
 
     <style>
         /* General Popup Container Styling */
@@ -474,7 +488,7 @@
             cursor: pointer;
         }
 
-      
+
         .popup-logo {
             display: block;
             margin: 0 auto 15px;
@@ -521,12 +535,12 @@
 
         .pay-btn {
             background-color: #28a745;
-           
+
         }
 
         .cancel-btn {
             background-color: #dc3545;
-           
+
         }
 
         .pay-btn:hover {
@@ -544,8 +558,6 @@
                 margin: 10% auto;
             }
         }
-
-
     </style>
 
 
@@ -570,49 +582,49 @@
     <!-- PayPal Payment Popup -->
 
     <div id="paypalPopup" class="popup-container">
-    <div class="popup-content">
-        <span class="close">×</span>
-        <img src="../assets/img/paypal.png" alt="PayPal" class="popup-logo">
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-            <!-- PayPal required fields -->
-            <input type="hidden" name="business" value="maganaalex634@gmail.com">
-            <input type="hidden" name="cmd" value="_xclick">
-            <input type="hidden" name="currency_code" value="USD">
-            <input type="hidden" name="return" value="https://www.yoursite.com/thank_you.html">
-            <input type="hidden" name="cancel_return" value="https://www.yoursite.com/cancel.html">
+        <div class="popup-content">
+            <span class="close">×</span>
+            <img src="../assets/img/paypal.png" alt="PayPal" class="popup-logo">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                <!-- PayPal required fields -->
+                <input type="hidden" name="business" value="maganaalex634@gmail.com">
+                <input type="hidden" name="cmd" value="_xclick">
+                <input type="hidden" name="currency_code" value="USD">
+                <input type="hidden" name="return" value="https://www.yoursite.com/thank_you.html">
+                <input type="hidden" name="cancel_return" value="https://www.yoursite.com/cancel.html">
 
-            <!-- Membership form fields -->
-            <label for="member_name">Member Name</label>
-            <input type="text" id="member_name" name="item_name" placeholder="Enter your name" required>
+                <!-- Membership form fields -->
+                <label for="member_name">Member Name</label>
+                <input type="text" id="member_name" name="item_name" placeholder="Enter your name" required>
 
-            <label for="member_email">Email</label>
-            <input type="email" id="member_email" name="email" placeholder="Enter your email" required>
+                <label for="member_email">Email</label>
+                <input type="email" id="member_email" name="email" placeholder="Enter your email" required>
 
-            <label for="amount">Amount</label>
-            <input type="text" id="amount" name="amount" value="20.00" readonly>
+                <label for="amount">Amount</label>
+                <input type="text" id="amount" name="amount" value="20.00" readonly>
 
-            <!-- Payment button -->
-            <div class="payButtons">
-                <button id="paypalpayButton" type="submit" class="pay-btn">Pay Now</button>
-            </div>
-        </form>
+                <!-- Payment button -->
+                <div class="payButtons">
+                    <button id="paypalpayButton" type="submit" class="pay-btn">Pay Now</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 
     <div id="cardPopup" class="popup-container">
-    <div class="popup-content">
-        <span class="close">×</span>
-        <img src="../assets/img/card.png" alt="Card Payment" class="popup-logo">
-        <form id="payment-form">
-            <div id="card-element"><!-- Stripe Element will be inserted here --></div>
-            <div id="card-errors" role="alert"></div>
-            <div class="payButtons">
-                <button id="card-button" class="pay-btn" type="button">Pay Now</button>
-            </div>
-        </form>
+        <div class="popup-content">
+            <span class="close">×</span>
+            <img src="../assets/img/card.png" alt="Card Payment" class="popup-logo">
+            <form id="payment-form">
+                <div id="card-element"><!-- Stripe Element will be inserted here --></div>
+                <div id="card-errors" role="alert"></div>
+                <div class="payButtons">
+                    <button id="card-button" class="pay-btn" type="button">Pay Now</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 
 
@@ -645,8 +657,9 @@
                 updateFormStep();
             } else {
                 // Submit form here
-                alert("Form submitted successfully!");
+                
                 document.getElementById("registrationForm").submit();
+                alert("Registration submitted successfully. Wait for the reply");
             }
         });
 
@@ -729,7 +742,7 @@
 
     </script>
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="../assets/JS/aglpaycard.js" ></script>
+    <script src="../assets/JS/aglpaycard.js"></script>
 
 
 </body>

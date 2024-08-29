@@ -206,7 +206,7 @@
             <div id="myModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <form action="save_event.php" method="post" enctype="multipart/form-data">
+                    <form action="../forms/PlannedEvent.php" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="eventName">Event Name:</label>
                             <input type="text" id="eventName" name="eventName" required />
@@ -235,10 +235,10 @@
             </div>
 
             <!-- Past Events Modal -->
-            <div id="pastEventModal" class="past-event-modal">
+            <!-- <div id="pastEventModal" class="past-event-modal">
                 <div class="past-event-modal-content">
                     <span class="close-past-event">&times;</span>
-                    <form id="pastEventForm" action="save_past_event.php" method="post" enctype="multipart/form-data">
+                    <form id="pastEventForm" action="../forms/pastEvent.php" method="post" enctype="multipart/form-data">
                         <div class="past-event-form-group">
                             <label for="pastEventName">Event Name:</label>
                             <input type="text" id="pastEventName" name="eventName" required />
@@ -246,7 +246,7 @@
                         <div class="past-event-form-group">
                             <label for="pastEventDetails">Event Details:</label>
                             <div id="pastEventDetails" name="eventDetails" style="height: 200px">
-                                <!-- Quill Editor -->
+                                
                             </div>
                         </div>
                         <div class="past-event-form-group">
@@ -270,7 +270,48 @@
                         </div>
                     </form>
                 </div>
+            </div> -->
+
+            <div id="pastEventModal" class="past-event-modal">
+                <div class="past-event-modal-content">
+                    <span class="close-past-event">&times;</span>
+                    <form id="pastEventForm" action="../forms/pastEvent.php" method="post"
+                        enctype="multipart/form-data">
+                        <div class="past-event-form-group">
+                            <label for="pastEventName">Event Name:</label>
+                            <input type="text" id="pastEventName" name="eventName" required />
+                        </div>
+
+                        <div class="past-event-form-group">
+                            <label for="pastEventDetails">Event Details:</label>
+                            <div id="pastEventDetailsEditor" style="height: 200px"></div>
+                            <input type="hidden" id="pastEventDetailsHidden" name="eventDetails" />
+                        </div>
+
+                        <div class="past-event-form-group">
+                            <label for="pastEventLocation">Location:</label>
+                            <input type="text" id="pastEventLocation" name="eventLocation" required />
+                        </div>
+                        <div class="past-event-form-group">
+                            <label for="pastEventDate">Date:</label>
+                            <input type="date" id="pastEventDate" name="eventDate" required />
+                        </div>
+                        <div class="past-event-form-group">
+                            <label for="pastEventImages">Event Images:</label>
+                            <input type="file" id="pastEventImages" name="eventImages[]" multiple />
+                        </div>
+                        <div class="past-event-form-group">
+                            <label for="pastEventDocuments">Event Documents:</label>
+                            <input type="file" id="pastEventDocuments" name="eventDocuments[]" multiple />
+                        </div>
+                        <div class="past-event-form-group">
+                            <button type="submit">Save Past Event</button>
+                        </div>
+                    </form>
+                </div>
             </div>
+
+
 
             <!-- Message Popup -->
             <div class="message-popup" id="messagePopup">
@@ -322,7 +363,7 @@
                         </div>
                         <div class="blog-post-form-group">
                             <label for="blogContent">Content:</label>
-                            <div style="height: 200px;"  id="blogContentEditor"></div>
+                            <div style="height: 200px;" id="blogContentEditor"></div>
                             <input type="hidden" name="blogContent" id="blogContent" required />
                         </div>
                         <div class="blog-post-form-group">
@@ -337,10 +378,25 @@
             </div>
 
             <!-- JavaScript Files -->
-            <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-            <script src="scripts.js"></script>
-            <script src="../assets/JS/popups.js" ></script>
 
+
+            <!-- <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script> -->
+
+            <script src="../assets/JS/quill.min.js"></script>
+            <script src="../assets/JS/popups.js"></script>
+
+            <script>
+                // Initialize Quill editor
+                var quill = new Quill('#pastEventDetailsEditor', {
+                    theme: 'snow'
+                });
+
+                // Handle form submission
+                document.getElementById('pastEventForm').onsubmit = function () {
+                    // Set hidden input value to the Quill editor content
+                    document.getElementById('pastEventDetailsHidden').value = quill.root.innerHTML;
+                };
+            </script>
 
 
             <!-- members information -->
