@@ -33,29 +33,23 @@
 
     <div class="main-content">
 
-        <nav style="color: black" id="sidebar" class="sidebar">
+        <nav id="sidebar" class="sidebar">
             <ul>
                 <li>
-                    <a href="#hero" class="active">Home<br /></a>
+                    <a href="https://www.agl.or.ke/" class="active">Home<br /></a>
                 </li>
-
-                <!-- Admin dropdown menu -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">Admin</a>
-                    <ul class="dropdown-menu">
-                        <li><a id="openPostEventModal">Post Up coming Event</a></li>
-                        <li><a id="openPastEventModal">Post past Event</a></li>
-                        <li><a id="openMessagePopup">Send Message</a></li>
-                        <li><a href="admin/settings.html">Admit New Members</a></li>
-                        <li><a id="openBlogPostModal">Post a Blog</a></li>
-                        <li><a href="new.html">new</a></li>
-                    </ul>
-                </li>
+                <li><a id="openPostEventModal">Post Up coming Event</a></li>
+                <li><a id="openPastEventModal">Post past Event</a></li>
+                <li><a id="openMessagePopup">Send Message</a></li>
+                <li><a href="admin/settings.html">Admit New Members</a></li>
+                <li><a id="openBlogPostModal">Post a Blog</a></li>
                 <li><a href="#about">About</a></li>
+                <li><a id="MembersTable-link" href="#team">Members</a></li>
                 <li><a href="#team">Officials</a></li>
                 <li><a href="pages/newfile.html">Donations</a></li>
                 <li><a href="Payment/index.php">Payments</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="new.html">new</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -67,44 +61,45 @@
             <div class="cards">
 
 
-            <?php
-require_once('../forms/DBconnection.php');
-session_start();
+                <?php
+                require_once('../forms/DBconnection.php');
+                session_start();
 
-// Ensure that the session contains the email
-if (!isset($_SESSION['user_email'])) {
-    die("User not logged in");
-}
+                // Ensure that the session contains the email
+                if (!isset($_SESSION['user_email'])) {
+                    die("User not logged in");
+                }
 
-$userEmail = $_SESSION['user_email'];
+                $userEmail = $_SESSION['user_email'];
 
-// Fetch user details based on the session email
-$sql = "SELECT * FROM personalmembership WHERE email = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $userEmail);
-$stmt->execute();
-$result = $stmt->get_result();
+                // Fetch user details based on the session email
+                $sql = "SELECT * FROM personalmembership WHERE email = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("s", $userEmail);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-// Fetch data
-if ($row = $result->fetch_assoc()) {
-    $name = $row['name'];
-    $registrationDate = $row['registration_date'];
-    $passportImage = $row['passport_image'];
-} else {
-    echo "No user found";
-}
+                // Fetch data
+                if ($row = $result->fetch_assoc()) {
+                    $name = $row['name'];
+                    $registrationDate = $row['registration_date'];
+                    $passportImage = $row['passport_image'];
+                } else {
+                    echo "No user found";
+                }
 
-$stmt->close();
-?>
+                $stmt->close();
+                ?>
 
                 <?php
 
                 ?>
-<div class="card">
-    <img class="cardMemberprofile" src="<?php echo htmlspecialchars($passportImage); ?>" alt="User Image">
-    <h5><?php echo htmlspecialchars($name); ?></h5>
-    <p>Registration Date: <?php echo htmlspecialchars($registrationDate); ?></p>
-</div>
+                <div class="card">
+                    <img class="cardMemberprofile" src="<?php echo htmlspecialchars($passportImage); ?>"
+                        alt="User Image">
+                    <h5><?php echo htmlspecialchars($name); ?></h5>
+                    <p>Registration Date: <?php echo htmlspecialchars($registrationDate); ?></p>
+                </div>
 
 
 
@@ -220,9 +215,117 @@ $stmt->close();
 
 
             <!-- ............................ -->
+            <!-- the style transferd -->
+            <style>
+                .popup-table {
+                    background-color: #fff;
+                    border: 1px solid #fff;
+                    border-radius: 8px;
+                    max-height: 80vh;
+                    display: none;
+                    overflow: auto;
+                }
+
+                .popup-content-table {
+                    background-color: #fefefe;
+                    padding: 5px;
+                    border: 1px solid #fff;
+                    border-radius: 5px;
+                    width: 100%;
+
+
+                }
+
+                .close-btn-table {
+                    color: #aaa;
+                    float: right;
+                    font-size: 28px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+
+                .close-btn-table:hover,
+                .close-btn-table:focus {
+                    color: black;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+            </style>
+
+            <?php
+
+            // Query to select data from the personalmembership table
+            $sql = 'SELECT * FROM personalmembership';
+            $result = $conn->query($sql);
+
+            if (!$result) {
+                die("Query failed: " . $conn->error);
+            }
+            ?>
+
+
+            <!-- Popup container for the table members -->
+            <div id="MemberDISTablePopup-table" class="popup-table">
+                <div class="popup-content-table">
+                    <span class="close-btn-table">&times;</span>
+                    <div style="margin-top: 20px;" class="MinPrtSecSpace-table">
+                        <h3>Members Information</h3><br>
+                        <div class="card_table-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Phone Number</th>
+                                        <th>Email</th>
+                                        <th>User Position</th>
+                                        <th>Current Work Place</th>
+                                        <th>Full Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($row = $result->fetch_assoc()): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['id']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['name']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['phone']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['email']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['position']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['current_company']); ?></td>
+                                            <td><a href="member_details.php?email=<?php echo urlencode($row['email']); ?>">Show
+                                                    More</a></td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // Get the popup element
+                var popup = document.getElementById("MemberDISTablePopup-table");
+                var openPopupLink = document.getElementById("MembersTable-link");
+                var closeBtn = document.getElementsByClassName("close-btn-table")[0];
+
+                openPopupLink.onclick = function (event) {
+                    event.preventDefault();
+                    popup.style.display = "flex";
+                }
+
+                closeBtn.onclick = function () {
+                    popup.style.display = "none";
+                }
+                window.onclick = function (event) {
+                    if (event.target == popup) {
+                        popup.style.display = "none";
+                    }
+                }
+            </script>
+
 
             <!-- planned ivents -->
-
 
             <?php
 
@@ -431,87 +534,6 @@ $stmt->close();
             </script>
 
 
-            <!-- members information -->
-
-
-            <?php
-
-            // Query to select data from the personalmembership table
-            $sql = 'SELECT * FROM personalmembership';
-            $result = $conn->query($sql);
-
-            // Check if query execution was successful
-            if (!$result) {
-                die("Query failed: " . $conn->error);
-            }
-            ?>
-
-            <!DOCTYPE html>
-            <html lang="en">
-
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Members Information</title>
-                <style>
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-
-                    th,
-                    td {
-                        border: 1px solid #ddd;
-                        padding: 8px;
-                    }
-
-                    th {
-                        background-color: #f2f2f2;
-                    }
-
-                    .card_table {
-                        margin: 20px 0;
-                    }
-                </style>
-            </head>
-
-            <body>
-                <div style="margin-top: 20px;" class="MinPrtSecSpace">
-                    <h3>Members Information</h3><br>
-                    <div class="card_table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Phone Number</th>
-                                    <th>Email</th>
-                                    <th>User Position</th>
-                                    <th>Current Work Place</th>
-                                    <th>Full Details</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php while ($row = $result->fetch_assoc()): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($row['id']); ?></td>
-                                        <td><?php echo htmlspecialchars($row['name']); ?></td>
-                                        <td><?php echo htmlspecialchars($row['phone']); ?></td>
-                                        <td><?php echo htmlspecialchars($row['email']); ?></td>
-                                        <td><?php echo htmlspecialchars($row['position']); ?></td>
-                                        <td><?php echo htmlspecialchars($row['current_company']); ?></td>
-                                        <td><a href="member_details.php?email=<?php echo urlencode($row['email']); ?>">Show
-                                                More</a></td>
-
-                                    </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </body>
-
-            </html>
 
             <?php
             // Close the database connection
@@ -558,7 +580,7 @@ $stmt->close();
             }
 
             // Close connection
-// $conn->close();
+            $conn->close();
             ?>
 
 
