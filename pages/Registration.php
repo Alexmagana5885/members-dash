@@ -15,7 +15,8 @@
 <body>
 
 
-    <form method="post" action="../forms/personalmembership.php" class="container" id="registrationForm">
+    <form method="post" action="../forms/personalmembership.php" enctype="multipart/form-data" class="container"
+        id="registrationForm">
         <h2>Registration Form</h2>
 
         <a href="DashBoard.php">Dash</a>
@@ -23,7 +24,7 @@
         <a href="AGLADMIN.php">Admin Dash</a>
 
         <!-- Progress Bar -->
-        <div class="progress-bar"> 
+        <div class="progress-bar">
             <div class="progress-step active">
                 <div class="progress-step-circle">1</div>
                 <p>Personal Details</p>
@@ -43,7 +44,7 @@
         </div>
 
         <!-- Form Steps -->
-        <div class="form-step active">
+        <div id="personal-details" class="form-step active">
             <div class="form-stepINdiv">
                 <div class="stepINdivdiv">
                     <h3>Personal Details</h3>
@@ -70,7 +71,7 @@
             </div>
         </div>
 
-        <div class="form-step">
+        <div id="education" class="form-step">
             <div class="form-stepINdiv">
                 <div class="stepINdivdiv">
                     <h3>Education</h3>
@@ -95,7 +96,7 @@
             </div>
         </div>
 
-        <div class="form-step">
+        <div id="profession" class="form-step">
             <div class="form-stepINdiv">
                 <div class="stepINdivdiv">
                     <h3>Profession</h3>
@@ -119,7 +120,7 @@
             </div>
         </div>
 
-        <div class="form-step">
+        <div id="payment" class="form-step">
             <div class="form-stepINdiv">
                 <div class="stepINdivdiv">
                     <label>Make payment of Ksh 2000.00 as membership fee</label><br>
@@ -166,7 +167,33 @@
             </div>
         </div>
 
+        <div class="error-message" id="error-messageScript">
+            <?php
+            session_start();
+            if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])) {
+                echo '<p id="errorMessage">' . $_SESSION['error_message'] . '</p>';
+                unset($_SESSION['error_message']); // Clear the error message after displaying it
+            }
+            ?>
+        </div>
+
+        <script>
+            // Check if there's an error message to show
+            window.addEventListener('DOMContentLoaded', (event) => {
+                const errorMessage = document.getElementById('errorMessage');
+                if (errorMessage) {
+                    // Hide the error message after 10 seconds
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 10000); // 10000 milliseconds = 10 seconds
+                }
+            });
+        </script>
+
+
+
         <div class="form-navigation">
+
             <button type="button" class="previous" disabled>Previous</button>
             <button type="button" class="next">Next</button>
         </div>
@@ -269,7 +296,7 @@
                 if (form.checkValidity()) {
                     // Form is valid, submit it
                     form.submit();
-                    alert("Registration submitted successfully. Wait for the reply");
+                    // alert("Registration submitted successfully. Wait for the reply");
                 } else {
                     // Form is not valid, display errors
                     form.reportValidity();

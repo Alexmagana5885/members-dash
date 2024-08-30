@@ -67,12 +67,47 @@
             <div class="cards">
 
 
-                <div class="card">
-                    <img class="cardMemberprofile" src="../assets/img/DemoImage/my-profile-img.jpeg" alt="User Image">
-                    <h5>[User Name]</h5>
-                    <p>Membership Type: [Membership Type]</p>
-                    <p>Registration Date: [Registration Date]</p>
-                </div>
+            <?php
+require_once('../forms/DBconnection.php');
+session_start();
+
+// Ensure that the session contains the email
+if (!isset($_SESSION['user_email'])) {
+    die("User not logged in");
+}
+
+$userEmail = $_SESSION['user_email'];
+
+// Fetch user details based on the session email
+$sql = "SELECT * FROM personalmembership WHERE email = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $userEmail);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Fetch data
+if ($row = $result->fetch_assoc()) {
+    $name = $row['name'];
+    $registrationDate = $row['registration_date'];
+    $passportImage = $row['passport_image'];
+} else {
+    echo "No user found";
+}
+
+$stmt->close();
+?>
+
+                <?php
+
+                ?>
+<div class="card">
+    <img class="cardMemberprofile" src="<?php echo htmlspecialchars($passportImage); ?>" alt="User Image">
+    <h5><?php echo htmlspecialchars($name); ?></h5>
+    <p>Registration Date: <?php echo htmlspecialchars($registrationDate); ?></p>
+</div>
+
+
+
 
                 <div class="card">
                     <h5>Member Payments</h5>
@@ -93,49 +128,39 @@
                     <p>Next Activity: <span id="next-activity">[Next Activity]</span></p>
                 </div>
 
+
+                <?php
+
+
+                //  upcoming events
+                $sql = "SELECT event_name, event_image_path, event_location, event_date FROM plannedevent ORDER BY event_date ASC";
+                $result = $conn->query($sql);
+
+                ?>
+
                 <div class="card">
-                    <h4>Up coming Events</h4>
+                    <h4>Upcoming Events</h4>
                     <hr>
 
-                    <div>
-                        <h5>Event Heading</h5>
-                        <p>theme of the Event</p>
-                        <p>Location</p>
-                        <p>date</p>
-                    </div>
-                    <hr>
-
-                    <div>
-                        <h5>Event Heading</h5>
-                        <p>theme of the Event</p>
-                        <p>Location</p>
-                        <p>date</p>
-                    </div>
-                    <hr>
-
-                    <div>
-                        <h5>Event Heading</h5>
-                        <p>theme of the Event</p>
-                        <p>Location</p>
-                        <p>date</p>
-                    </div>
-                    <hr>
-                    <div>
-                        <h5>Event Heading</h5>
-                        <p>theme of the Event</p>
-                        <p>Location</p>
-                        <p>date</p>
-                    </div>
-                    <hr>
-                    <div>
-                        <h5>Event Heading</h5>
-                        <p>theme of the Event</p>
-                        <p>Location</p>
-                        <p>date</p>
-                    </div>
-                    <hr>
-
+                    <?php
+                    if ($result->num_rows > 0) {
+                        // Output data of each row
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div>';
+                            echo '<h5>' . htmlspecialchars($row['event_name']) . '</h5>';
+                            echo '<p>' . htmlspecialchars($row['event_location']) . '</p>';
+                            echo '<p>' . htmlspecialchars($row['event_date']) . '</p>';
+                            echo '</div>';
+                            echo '<hr>';
+                        }
+                    } else {
+                        echo '<p>No upcoming events.</p>';
+                    }
+                    // $conn->close();
+                    ?>
                 </div>
+
+
 
             </div>
 
@@ -149,11 +174,13 @@
                     <button id="closePopup">&times;</button>
                 </div>
                 <div class="message-container">
-                    <div class="message" onclick="showFullMessage('Hello,  how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content.  ')">
+                    <div class="message"
+                        onclick="showFullMessage('Hello,  how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content.  ')">
                         <p class="message-content">Hello, how are you?</p>
                         <span class="message-time">10:30 AM</span>
                     </div>
-                    <div class="message" onclick="showFullMessage('I\'m fine, thank you! Here is more about what I wanted to say...')">
+                    <div class="message"
+                        onclick="showFullMessage('I\'m fine, thank you! Here is more about what I wanted to say...')">
                         <p class="message-content">I'm fine, thank you!</p>
                         <span class="message-time">10:32 AM</span>
                     </div>
@@ -170,11 +197,11 @@
 
 
             <script>
-                document.getElementById('toggleMessages').addEventListener('click', function() {
+                document.getElementById('toggleMessages').addEventListener('click', function () {
                     document.getElementById('messagePopup').style.display = 'flex';
                 });
 
-                document.getElementById('closePopup').addEventListener('click', function() {
+                document.getElementById('closePopup').addEventListener('click', function () {
                     document.getElementById('messagePopup').style.display = 'none';
                 });
 
@@ -183,7 +210,7 @@
                     document.getElementById('fullMessagePopup').style.display = 'flex';
                 }
 
-                document.getElementById('closeFullMessage').addEventListener('click', function() {
+                document.getElementById('closeFullMessage').addEventListener('click', function () {
                     document.getElementById('fullMessagePopup').style.display = 'none';
                 });
             </script>
@@ -197,27 +224,42 @@
             <!-- planned ivents -->
 
 
+            <?php
+
+            // Fetch data from the database
+            $sql = "SELECT id, event_name, event_image_path, event_description, event_location, event_date FROM plannedevent";
+            $result = $conn->query($sql);
+
+            // Start outputting HTML
+            ?>
             <div class="MinPrtSecSpace">
-                <h3>planned Events</h3>
+                <h3 style="padding:20px ">Planned Events</h3>
                 <div class="table-card">
-
-                    <div class="eventDiv">
-                        <h3>Event</h3>
-                        <img src="../assets/img/DemoImage/LoginImage.jpg" alt="Event">
-                        <p>Breaf introduction: Connect to the Database: First, establish a connection to your database
-                            using PHP. You can use mysqli or PDO. Below is an example using mysqli</p>
-                        <div class="eventDivindiv">
-                            <p>location</p>
-                            <button class="plannedEventsBTN" id="plannedEventsBTN">Edit</button>
-                            <p>Date</p>
-
-                        </div>
-
-                    </div>
+                    <?php
+                    if ($result->num_rows > 0) {
+                        // Output data for each row
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="eventDiv">';
+                            echo '<h3>' . htmlspecialchars($row['event_name']) . '</h3>';
+                            echo '<img src="' . htmlspecialchars($row['event_image_path']) . '" alt="Event">';
+                            echo '<p>' . htmlspecialchars($row['event_description']) . '</p>';
+                            echo '<div class="eventDivindiv">';
+                            echo '<p>' . htmlspecialchars($row['event_location']) . '</p>';
+                            echo '<button class="plannedEventsBTN" id="plannedEventsBTN">Edit</button>';
+                            echo '<p>' . htmlspecialchars($row['event_date']) . '</p>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                    } else {
+                        echo '<p>No events found.</p>';
+                    }
+                    ?>
                 </div>
-
-
             </div>
+
+            <?php
+            ?>
+
 
             <!-- popups -->
 
@@ -255,42 +297,6 @@
             </div>
 
             <!-- Past Events Modal -->
-            <!-- <div id="pastEventModal" class="past-event-modal">
-                <div class="past-event-modal-content">
-                    <span class="close-past-event">&times;</span>
-                    <form id="pastEventForm" action="../forms/pastEvent.php" method="post" enctype="multipart/form-data">
-                        <div class="past-event-form-group">
-                            <label for="pastEventName">Event Name:</label>
-                            <input type="text" id="pastEventName" name="eventName" required />
-                        </div>
-                        <div class="past-event-form-group">
-                            <label for="pastEventDetails">Event Details:</label>
-                            <div id="pastEventDetails" name="eventDetails" style="height: 200px">
-                                
-                            </div>
-                        </div>
-                        <div class="past-event-form-group">
-                            <label for="pastEventLocation">Location:</label>
-                            <input type="text" id="pastEventLocation" name="eventLocation" required />
-                        </div>
-                        <div class="past-event-form-group">
-                            <label for="pastEventDate">Date:</label>
-                            <input type="date" id="pastEventDate" name="eventDate" required />
-                        </div>
-                        <div class="past-event-form-group">
-                            <label for="pastEventImages">Event Images:</label>
-                            <input type="file" id="pastEventImages" name="eventImages[]" multiple />
-                        </div>
-                        <div class="past-event-form-group">
-                            <label for="pastEventDocuments">Event Documents:</label>
-                            <input type="file" id="pastEventDocuments" name="eventDocuments[]" multiple />
-                        </div>
-                        <div class="past-event-form-group">
-                            <button type="submit">Save Past Event</button>
-                        </div>
-                    </form>
-                </div>
-            </div> -->
 
             <div id="pastEventModal" class="past-event-modal">
                 <div class="past-event-modal-content">
@@ -304,7 +310,8 @@
 
                         <div class="past-event-form-group">
                             <label for="pastEventLocation">Event Details</label>
-                            <textarea style="height: 200px; padding: 10px; " name="eventDetails" id="pastEventDetailsEditor"></textarea>
+                            <textarea style="height: 200px; padding: 10px; " name="eventDetails"
+                                id="pastEventDetailsEditor"></textarea>
                         </div>
 
                         <!-- <div class="past-event-form-group">
@@ -417,7 +424,7 @@
                 });
 
                 // Handle form submission
-                document.getElementById('pastEventForm').onsubmit = function() {
+                document.getElementById('pastEventForm').onsubmit = function () {
                     // Set hidden input value to the Quill editor content
                     document.getElementById('pastEventDetailsHidden').value = quill.root.innerHTML;
                 };
@@ -426,132 +433,133 @@
 
             <!-- members information -->
 
-            <div style="margin-top: 20px;" class="MinPrtSecSpace">
-                <h3>Members information</h3><br>
-                <div class="card_table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Phone Number</th>
-                                <th>Email</th>
-                                <th>User Position</th>
-                                <th>Current Work Place</th>
-                                <th>Full Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>+123456789</td>
-                                <td>john.doe@example.com</td>
-                                <td>Manager</td>
-                                <td>Company A</td>
-                                <td><a href="#">Show More</a></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jane Smith</td>
-                                <td>+987654321</td>
-                                <td>jane.smith@example.com</td>
-                                <td>Developer</td>
-                                <td>Company B</td>
-                                <td><a href="#">Show More</a></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jane Smith</td>
-                                <td>+987654321</td>
-                                <td>jane.smith@example.com</td>
-                                <td>Developer</td>
-                                <td>Company B</td>
-                                <td><a href="#">Show More</a></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jane Smith</td>
-                                <td>+987654321</td>
-                                <td>jane.smith@example.com</td>
-                                <td>Developer</td>
-                                <td>Company B</td>
-                                <td><a href="#">Show More</a></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jane Smith</td>
-                                <td>+987654321</td>
-                                <td>jane.smith@example.com</td>
-                                <td>Developer</td>
-                                <td>Company B</td>
-                                <td><a href="#">Show More</a></td>
-                            </tr>
 
-                        </tbody>
-                    </table>
+            <?php
+
+            // Query to select data from the personalmembership table
+            $sql = 'SELECT * FROM personalmembership';
+            $result = $conn->query($sql);
+
+            // Check if query execution was successful
+            if (!$result) {
+                die("Query failed: " . $conn->error);
+            }
+            ?>
+
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Members Information</title>
+                <style>
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+
+                    th,
+                    td {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                    }
+
+                    th {
+                        background-color: #f2f2f2;
+                    }
+
+                    .card_table {
+                        margin: 20px 0;
+                    }
+                </style>
+            </head>
+
+            <body>
+                <div style="margin-top: 20px;" class="MinPrtSecSpace">
+                    <h3>Members Information</h3><br>
+                    <div class="card_table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Email</th>
+                                    <th>User Position</th>
+                                    <th>Current Work Place</th>
+                                    <th>Full Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = $result->fetch_assoc()): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($row['id']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['name']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['phone']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['email']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['position']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['current_company']); ?></td>
+                                        <td><a href="member_details.php?email=<?php echo urlencode($row['email']); ?>">Show
+                                                More</a></td>
+
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+            </body>
+
+            </html>
+
+            <?php
+            // Close the database connection
+            // $conn->close();
+            ?>
+            <h4 style="margin: 20px;">past Events</h4>
+
+
+            <?php
+            // Step 2: Fetch Data from the Database
+            $sql = "SELECT * FROM pastevents";
+            $result = $conn->query($sql);
+
+            // Step 3: Display Data in HTML
+            if ($result->num_rows > 0) {
+                echo '<div class="MinPrtSecSpace">
+        <div class="table-card">';
+                while ($row = $result->fetch_assoc()) {
+                    // Decode JSON if needed
+                    $imagePathsJson = $row["event_image_paths"];
+                    $imagePathsArray = json_decode($imagePathsJson, true);
+
+                    // Ensure the decoding was successful and the array is not empty
+                    if (is_array($imagePathsArray) && !empty($imagePathsArray)) {
+                        $imagePath = htmlspecialchars($imagePathsArray[0]); // Get the first image path
+                    } else {
+                        $imagePath = ''; // Default to empty if no valid path found
+                    }
+
+                    echo '<div class="eventDiv">
+            <h3>' . htmlspecialchars($row["event_name"]) . '</h3>
+            <img src="' . $imagePath . '" alt="Event">
+            <p>' . htmlspecialchars($row["event_details"]) . '</p>
+            <div class="eventDivindiv">
+                <p>' . htmlspecialchars($row["event_location"]) . '</p>
+                <p>' . htmlspecialchars($row["event_date"]) . '</p>
             </div>
+        </div>';
+                }
+                echo '  </div>
+    </div>';
+            } else {
+                echo "0 results";
+            }
 
-            <div class="MinPrtSecSpace">
-                <div class="table-card">
-
-                    <div class="eventDiv">
-                        <h3>Event</h3>
-                        <img src="../assets/img/DemoImage/LoginImage.jpg" alt="Event">
-                        <p>Breaf introduction: Connect to the Database: First, establish a connection to your
-                            database
-                            using PHP. You can use mysqli or PDO. Below is an example using mysqli</p>
-                        <div class="eventDivindiv">
-                            <p>location</p>
-                            <p>Date</p>
-                        </div>
-
-                    </div>
-
-                    <div class="eventDiv">
-                        <h3>Event</h3>
-                        <img src="../assets/img/DemoImage/1-scaled.jpg" alt="Event">
-                        <p>Breaf introduction: Connect to the Database: First, establish a connection to your
-                            database
-                            using PHP. You can use mysqli or PDO. Below is an example using mysqli</p>
-                        <div class="eventDivindiv">
-                            <p>location</p>
-                            <p>Date</p>
-                        </div>
-
-                    </div>
-                    <div class="eventDiv">
-                        <h3>Event</h3>
-                        <img src="../assets/img/DemoImage/about.jpg" alt="Event">
-                        <p>Breaf introduction: Connect to the Database: First, establish a connection to your
-                            database
-                            using PHP. You can use mysqli or PDO. Below is an example using mysqli</p>
-                        <div class="eventDivindiv">
-                            <p>location</p>
-                            <p>Date</p>
-                        </div>
-
-                    </div>
-                    <div class="eventDiv">
-                        <h3>Event</h3>
-                        <img src="../assets/img/DemoImage/cta-bg.jpg" alt="Event">
-                        <p>Breaf introduction: Connect to the Database: First, establish a connection to your
-                            database
-                            using PHP. You can use mysqli or PDO. Below is an example using mysqli</p>
-                        <div class="eventDivindiv">
-                            <p>location</p>
-                            <p>Date</p>
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
+            // Close connection
+// $conn->close();
+            ?>
 
 
         </section>
@@ -588,11 +596,11 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const toggleButton = document.getElementById('toggleMenu');
             const sidebar = document.getElementById('sidebar');
 
-            toggleButton.addEventListener('click', function() {
+            toggleButton.addEventListener('click', function () {
 
                 if (sidebar.style.display === 'block') {
                     sidebar.style.display = 'none';
