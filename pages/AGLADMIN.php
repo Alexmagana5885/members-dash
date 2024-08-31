@@ -31,6 +31,8 @@
 
     </header>
 
+
+
     <div class="main-content">
 
         <nav id="sidebar" class="sidebar">
@@ -49,7 +51,7 @@
                 <li><a href="pages/newfile.html">Donations</a></li>
                 <li><a href="Payment/index.php">Payments</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><a href="new.html">new</a></li>
+                <li><a href="new.php">new</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -104,14 +106,122 @@
 
 
 
+                <!-- Styles to hide the memeber payment popup by default -->
+
+                <!-- this styking is alredy alreday transferd -->
+                <style>
+                    .memberpayments-popup-container {
+                        display: none;
+                        position: fixed;
+                        z-index: 1000;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100vh;
+                        background-color: rgba(0, 0, 0, 0.5);
+                    }
+
+                    .memberpayments-popup-content {
+                        background-color: #fff;
+                        margin: 8% auto;
+                        padding: 20px;
+                        border: 1px solid #888;
+                        width: 80%;
+                        max-width: 500px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                        position: relative;
+                    }
+
+                    .memberpayments-close {
+                        cursor: pointer;
+                        float: right;
+                        font-size: 20px;
+                    }
+
+                    .memberpayments-popup-content label {
+                        display: block;
+                        margin-bottom: 5px;
+                        font-weight: bold;
+                        color: #333;
+                    }
+
+                    .memberpayments-popup-content input[type="number"],
+                    .memberpayments-popup-content input[type="text"] {
+                        width: calc(100% - 20px);
+                        padding: 10px;
+                        margin-bottom: 15px;
+                        border: 1px solid #ccc;
+                        border-radius: 5px;
+                        font-size: 16px;
+                    }
+
+                    .memberpayments-popup-content p {
+                        color: #555;
+                        margin-bottom: 20px;
+                    }
+
+                    .memberpayments-pay-buttons {
+                        text-align: center;
+
+                    }
+
+                    .memberpayments-pay-btn {
+                        background-color: #4CAF50;
+                        color: white;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 5px;
+                        font-size: 16px;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                    }
+
+                    .memberpayments-pay-btn:hover {
+                        background-color: #45a049;
+                    }
+                </style>
+
                 <div class="card">
                     <h5>Member Payments</h5>
                     <hr>
-                    <p id="makememberpaymentscurrentlastPay">Last payment: <span>12/08/2024</span></p>
-                    <p id="makememberpaymentscurrentnextP">Next payment: <span>09/05/2024</span></p>
-                    <p id="makememberpaymentscurrent">Current balance: <span>5000sh</span></p>
-                    <button id="makememberpaymentsbtn">Make Payments</button>
+                    <p id="memberpayments-current-lastPay">Last payment: <span>12/08/2024</span></p>
+                    <p id="memberpayments-current-nextP">Next payment: <span>09/05/2024</span></p>
+                    <p id="memberpayments-current-balance">Current balance: <span>5000sh</span></p>
+                    <button id="memberpayments-btn">Make Payments</button>
                 </div>
+
+                <!-- Member dash payment popup -->
+                <div id="memberpayments-popup" class="memberpayments-popup-container">
+                    <form class="memberpayments-popup-content">
+                        <span class="memberpayments-close" onclick="togglePaymentForm()">×</span>
+                        <img src="../assets/img/mpesa.png" alt="M-Pesa" class="memberpayments-popup-logo">
+                        <label for="memberpayments-phone-number">Number</label>
+                        <input type="number" id="memberpayments-phone-number" name="phone-number"
+                            placeholder="Enter your phone number">
+                        <label for="memberpayments-amount">Amount</label>
+                        <input type="text" id="memberpayments-amount" name="amount" value="300.00" readonly>
+                        <p>Confirm that you are making a payment of 300 Ksh as membership fees to the Association of
+                            Government Librarians.</p>
+                        <div class="memberpayments-pay-buttons">
+                            <button class="memberpayments-pay-btn" id="memberpayments-make-payment-btn"
+                                type="submit">Make Payment</button>
+                            <!-- <button class="memberpayments-cancel-btn">Cancel</button> -->
+                        </div>
+                    </form>
+                </div>
+
+                <!-- JavaScript to handle showing and hiding the popup -->
+                <script>
+                    document.getElementById("memberpayments-btn").addEventListener("click", function () {
+                        document.getElementById("memberpayments-popup").style.display = "flex";
+                    });
+
+                    function togglePaymentForm() {
+                        document.getElementById("memberpayments-popup").style.display = "none";
+                    }
+                </script>
+
 
 
 
@@ -134,7 +244,7 @@
                 ?>
 
                 <div class="card">
-                    <h4>Upcoming Events</h4>
+                    <h4>Registered Events</h4>
                     <hr>
 
                     <?php

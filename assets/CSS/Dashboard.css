@@ -57,7 +57,7 @@ header .menu-button {
 
 .sidebar ul li {
   margin-bottom: 10px;
-}
+} 
 
 .sidebar ul li a {
   color: #fff;
@@ -384,4 +384,76 @@ a:hover {
   color: #007bff;
   background-color: #f4f4f4;
   border: 1px;
+}
+
+
+.memberpayments-popup-container {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.memberpayments-popup-content {
+    background-color: #fff;
+    margin: 8% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.memberpayments-close {
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+}
+
+.memberpayments-popup-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.memberpayments-popup-content input[type="number"],
+.memberpayments-popup-content input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.memberpayments-popup-content p {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.memberpayments-pay-buttons {
+    text-align: center;
+
+}
+
+.memberpayments-pay-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.memberpayments-pay-btn:hover {
+    background-color: #45a049;
 }
