@@ -14,7 +14,26 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
+<style>
+    .sidebar {
+        overflow: auto;
+        scrollbar-width: thin;
+        height: 100vh;
+    }
 
+    .dashboard {
+        height: 100vh;
+        overflow: auto;
+        scrollbar-width: thin;
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            position:fixed;
+        }
+
+    }
+</style>
 
 
 <body>
@@ -698,32 +717,8 @@
 
     </div>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section contacts">
-                <h4>Contacts</h4>
-                <p>Email: contact@yourcompany.com</p>
-                <p>Phone: +1234567890</p>
-            </div>
-            <div class="footer-section quick-links">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section map">
-                <h4>Our Location</h4>
-                <!-- Replace with your map embed code -->
-
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15955.934720808227!2d36.821946!3d-1.292066!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10d64f24b567%3A0x8c1ecdb58d69d0a5!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus"
-                    width="390" height="150" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-        </div>
-        <p>&copy; 2024 Your Company</p>
+    <footer style="font-size: 11px; font-style: italic; text-align: center; background-color: #b4ccdb; color: black; ">
+        <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">AGL.or.ke</a> . All rights reserved.</p>
     </footer>
 
 

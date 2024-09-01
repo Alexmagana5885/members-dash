@@ -13,7 +13,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #6EC1E4;
+  background-color: #6ec1e4;
   color: #fff;
 }
 
@@ -23,7 +23,6 @@ header .logo img {
   max-height: 50px;
   margin: 0 20px;
   display: block;
-  /* Ensures no extra space under the image */
 }
 
 header .notification img {
@@ -32,7 +31,7 @@ header .notification img {
 }
 
 header .menu-button {
-  display: none; 
+  display: none;
   font-size: 24px;
   cursor: pointer;
 }
@@ -49,6 +48,8 @@ header .menu-button {
   color: #fff;
   transition: transform 0.3s ease;
   height: 100%;
+  overflow: auto;
+  scrollbar-width: thin;
 }
 
 .sidebar ul {
@@ -57,7 +58,7 @@ header .menu-button {
 
 .sidebar ul li {
   margin-bottom: 10px;
-} 
+}
 
 .sidebar ul li a {
   color: #fff;
@@ -108,7 +109,7 @@ header .menu-button {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   padding: 10px;
   max-height: 700px;
@@ -180,7 +181,7 @@ footer {
   .footer-section .map iframe {
     width: 100%;
   }
-}
+} 
 
 @media (max-width: 968px) {
   .main-content {
@@ -386,74 +387,72 @@ a:hover {
   border: 1px;
 }
 
-
 .memberpayments-popup-container {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .memberpayments-popup-content {
-    background-color: #fff;
-    margin: 8% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
+  background-color: #fff;
+  margin: 8% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .memberpayments-close {
-    cursor: pointer;
-    float: right;
-    font-size: 20px;
+  cursor: pointer;
+  float: right;
+  font-size: 20px;
 }
 
 .memberpayments-popup-content label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
 }
 
 .memberpayments-popup-content input[type="number"],
 .memberpayments-popup-content input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .memberpayments-popup-content p {
-    color: #555;
-    margin-bottom: 20px;
+  color: #555;
+  margin-bottom: 20px;
 }
 
 .memberpayments-pay-buttons {
-    text-align: center;
-
+  text-align: center;
 }
 
 .memberpayments-pay-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .memberpayments-pay-btn:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }

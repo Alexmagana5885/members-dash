@@ -2,11 +2,15 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Page with Header and Footer</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link href="assets/img/favicon.png" rel="icon" />
+    <link href="assets/img/favicon.png" rel="favicon.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../assets/CSS/registration.cs">
 </head>
+
 <style>
     /* Basic Reset */
     * {
@@ -30,7 +34,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 1rem;
-        background-color: #6EC1E4;
+        background-color: #6ec1e4;
         color: #fff;
         position: relative;
     }
@@ -78,12 +82,14 @@
 
     /* Footer Styling */
     .site-footer {
-        background-color: #333;
-        color: #fff;
+        background-color: #f2f2f2;
+        color: #333;
         text-align: center;
         padding: 1rem;
         bottom: 0;
         width: 100%;
+        font-size: 11px;
+        font-style: italic;
     }
 
     /* Responsive Styles */
@@ -94,9 +100,10 @@
             position: absolute;
             top: 100%;
             right: 0;
-            background-color: #6ED1E5;
+            background-color: #6ed1e5;
             width: 200px;
             padding: 1rem;
+            z-index: 1000;
         }
 
         .site-header .logo IMg {
@@ -118,212 +125,369 @@
             gap: 0.5rem;
         }
     }
-</style>
 
-<style>
     .container {
-        display: flex;
-        width: 70%;
-        background-color: #fff;
+        background: #fff;
+        padding: 20px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        flex-wrap: wrap;
-        margin: 0 auto;
-        bottom: 10px;
-    }
-
-
-    .image-side {
-        flex: 1;
+        /* width: 70%; */
+        height: 90%;
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
-        background-color: #f0f0f0;
-        padding: 20px;
-        box-sizing: border-box;
+        overflow-y: auto;
     }
 
-    .logo {
-        max-width: 80%;
-        height: auto;
+    /* Large screens (desktops) */
+    @media (min-width: 1024px) {
+        .container {
+            width: 80%;
+            height: 90%;
+        }
+    }
+
+    /* Small screens (tablets and phones) */
+    @media (max-width: 1024px) {
+        .container {
+            width: 100%;
+            height: auto;
+            padding: 10px;
+            margin-top: 40px;
+        }
+    }
+
+    h2 {
+        text-align: center;
         margin-bottom: 20px;
     }
 
-    .main-image {
-        max-width: 100%;
-        height: auto;
-        object-fit: cover;
-        border-radius: 5px;
+    .progress-bar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
     }
 
-    .login-side {
-        flex: 1;
-        padding: 40px;
-        box-sizing: border-box;
-    }
-
-    .login-side h2 {
-        margin-bottom: 20px;
-        font-size: 24px;
-        color: #333;
-    }
-
-    .input-group {
-        margin-bottom: 20px;
-    }
-
-    .input-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-        color: #555;
-    }
-
-    .password-container {
+    .progress-step {
+        width: 25%;
+        text-align: center;
         position: relative;
     }
 
-    .password-container input,
-    .emailInput {
-        width: 100%;
-        padding: 10px;
-        padding-right: 40px;
-        border: 0;
+    .progress-step::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #e0e0e0;
+        z-index: -1;
+    }
+
+    .progress-step.active::before {
+        background: #3498db;
+    }
+
+    .progress-step-circle {
+        width: 20px;
+        height: 20px;
+        background: #e0e0e0;
+        border-radius: 50%;
+        display: inline-block;
+        line-height: 20px;
+        text-align: center;
+        color: #fff;
+    }
+
+    .progress-step.active .progress-step-circle {
+        background: #3498db;
+    }
+
+    .form-step {
+        display: none;
+    }
+
+    .form-step.active {
+        display: block;
+    }
+
+    .form-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+    }
+
+    .form-navigation button {
+        padding: 10px 20px;
+        background: #3498db;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        flex-grow: 1;
+        margin: 5px;
         border-radius: 5px;
-        font-size: 16px;
+    }
+
+    .form-navigation button:disabled {
+        background: #e0e0e0;
+        cursor: not-allowed;
+    }
+
+    .form-navigation button.previous {
+        background: #555;
+    }
+
+    /* General styles for labels */
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* General styles for input fields */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"],
+    input[type="file"],
+    input[type="month"],
+    input[type="password"],
+    select {
+        width: calc(100% - 22px);
+        padding: 8px;
+        margin-bottom: 5px;
+        border: 0;
+        border-radius: 4px;
         box-sizing: border-box;
         box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
     }
 
-    .toggle-password {
-        position: absolute;
-        top: 50%;
-        right: 10px;
-        transform: translateY(-50%);
-        cursor: pointer;
-        font-size: 18px;
-        user-select: none;
+    textarea {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 0;
+        border-radius: 4px;
+        box-sizing: border-box;
+        resize: vertical;
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
     }
 
-    button {
+    input[type="file"] {
+        padding: 0;
+        border: none;
+    }
+
+    .form-stepINdiv {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .stepINdivdiv {
+        width: 50%;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+        label {
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        input[type="file"],
+        input[type="month"],
+        input[type="password"],
+        select {
+            padding: 8px;
+        }
+
+        textarea {
+            padding: 8px;
+        }
+
+        .form-stepINdiv {
+            flex-direction: column;
+        }
+
+        .stepINdivdiv {
+            width: 100%;
+        }
+    }
+
+    .password-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .password-container input {
         width: 100%;
         padding: 10px;
-        background-color: #007BFF;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        padding-right: 40px;
+        box-sizing: border-box;
+        border: 0;
+        border-radius: 4px;
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
     }
 
-    button:hover {
+    .password-container .toggle-icon {
+        position: absolute;
+        right: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 13px;
+        display: none;
+    }
+
+    .stepINdivdiv {
+        margin: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .payment-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 60%;
+    }
+
+    .payment-button:hover {
         background-color: #0056b3;
     }
 
-    .register-link {
-        text-align: center;
-        margin-top: 10px;
-        color: #555;
+    /* General Popup Container Styling */
+    .popup-container {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
     }
 
-    .register-link a {
-        color: #007BFF;
+    .popup-content {
+        background-color: #fff;
+        margin: 8% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+
+    /* Close Button Styling */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
         text-decoration: none;
         cursor: pointer;
     }
 
-    .register-link a:hover {
-        text-decoration: underline;
+    .popup-logo {
+        display: block;
+        margin: 0 auto 15px;
+        max-width: 150px;
     }
 
-    @media (max-width: 768px) {
-        .container {
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .image-side {
-            order: 1;
-            padding: 20px 0;
-        }
-
-        .login-side {
-            order: 2;
-            padding: 20px;
-        }
-
-        .logo {
-            max-width: 50%;
-        }
-    }
-
-    .form-stepINdiv {
-        display: none;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        flex-wrap: wrap;
-        margin: 0 auto;
-        width: 70%;
-        bottom: 20px;
-        border-radius: 5px;
-    }
-
-    .stepINdivdiv {
-        flex: 2;
-        max-width: 60%;
-    }
-
-    .membership-options {
-        flex: 1;
+    form {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        align-items: flex-start;
     }
 
-    @media (max-width: 768px) {
-        .form-stepINdiv {
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
-            width: 100%;
-        }
+    label {
+        margin: 10px 0 5px;
+    }
 
-        .stepINdivdiv {
-            max-width: 100%;
-            flex: none;
-            text-align: center;
-            overflow: auto;
-            scrollbar-width: thin;
-        }
+    input[type="text"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
 
-        .membership-options {
-            width: 100%;
-            flex: none;
-            align-items: center;
-        }
+    input[type="text"]:focus {
+        border-color: #007bff;
+        outline: none;
+    }
 
-        .membership-options button {
+    .payButtons {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+    }
+
+    .payButtons button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .pay-btn {
+        background-color: #28a745;
+    }
+
+    .cancel-btn {
+        background-color: #dc3545;
+    }
+
+    .pay-btn:hover {
+        background-color: #218838;
+    }
+
+    .cancel-btn:hover {
+        background-color: #c82333;
+    }
+
+    @media (max-width: 600px) {
+        .popup-content {
             width: 90%;
-            max-width: 300px;
+            margin: 10% auto;
         }
     }
 </style>
 
 <body>
-
     <!-- Header -->
     <header class="site-header">
         <div class="logo">
-            <img src="../assets/img/logo.png" alt="">
+            <img src="../assets/img/logo.png" alt="" />
         </div>
         <button class="menu-toggle" id="menu-toggle">
-            &#9776; <!-- Unicode for the three-bar menu icon -->
+            &#9776;
+            <!-- Unicode for the three-bar menu icon -->
         </button>
         <nav class="navigation" id="navigation">
             <ul>
@@ -336,110 +500,486 @@
     </header>
 
     <!-- Main Content -->
-    <main>
+    <main style=" width: 100%; ">
 
         <body>
-            <div class="container">
-                <div class="image-side">
-                    <img class="logo" src="../assets/img/logo.png" alt="Logo">
-                    <img class="main-image" src="../assets/img/DemoImage/LoginImage.jpg" alt="AGL">
+
+
+            <form style="margin: 0 auto ;" method="post" action="../forms/personalmembership.php"
+                enctype="multipart/form-data" class="container" id="registrationForm">
+                <h2>Registration Form</h2>
+
+                <a href="DashBoard.php">Dash</a>
+
+                <a href="AGLADMIN.php">Admin Dash</a>
+
+                <!-- Progress Bar -->
+                <div class="progress-bar">
+                    <div class="progress-step active">
+                        <div class="progress-step-circle">1</div>
+                        <p>Personal Details</p>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-step-circle">2</div>
+                        <p>Education</p>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-step-circle">3</div>
+                        <p>Profession</p>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-step-circle">4</div>
+                        <p>Payment</p>
+                    </div>
                 </div>
-                <div class="login-side">
-                    <h2>Login</h2>
-                    <form action="forms/start.php" method="post">
-                        <div class="input-group">
-                            <label for="email">Email</label>
-                            <input class="emailInput" type="email" id="email" name="email" required>
+
+                <!-- Form Steps -->
+                <div id="personal-details" class="form-step active">
+                    <div class="form-stepINdiv">
+                        <div class="stepINdivdiv">
+                            <h3>Personal Details</h3>
+                            <label for="name">Full Name:</label>
+                            <input type="text" id="name" name="name" required><br><br>
+
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required><br><br>
+
+                            <label for="phone">Phone Number:</label>
+                            <input type="tel" id="phone" name="phone" required><br><br>
                         </div>
-                        <div class="input-group">
-                            <label for="password">Password</label>
+
+                        <div class="stepINdivdiv">
+                            <label for="dob">Date of Birth:</label>
+                            <input type="date" id="dob" name="dob" required><br><br>
+
+                            <label for="address">Address:</label>
+                            <textarea id="Homeaddress" name="Homeaddress" rows="4"></textarea><br><br>
+
+                            <label for="passport">Passport Image:</label>
+                            <input style="height: 35px ; padding: 10px" type="file" id="passport" name="passport"
+                                accept="image/*" required><br><br>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="education" class="form-step">
+                    <div class="form-stepINdiv">
+                        <div class="stepINdivdiv">
+                            <h3>Education</h3>
+                            <label for="highestDegree">Highest Degree:</label>
+                            <input type="text" id="highestDegree" name="highestDegree" required><br><br>
+
+                            <label for="institution">Institution Name:</label>
+                            <input type="text" id="institution" name="institution" required><br><br>
+
+                            <label for="startDate">Start Date:</label>
+                            <input type="date" id="startDate" name="startDate" required><br><br>
+                        </div>
+
+                        <div class="stepINdivdiv">
+                            <label for="graduationYear">Year of Graduation:</label>
+                            <input type="number" id="graduationYear" name="graduationYear" required><br><br>
+
+                            <label for="completionLetter">Completion Letter:</label>
+                            <input type="file" id="completionLetter" name="completionLetter"
+                                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required><br><br>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="profession" class="form-step">
+                    <div class="form-stepINdiv">
+                        <div class="stepINdivdiv">
+                            <h3>Profession</h3>
+                            <label for="profession">Profession:</label>
+                            <input type="text" id="profession" name="profession" required><br><br>
+
+                            <label for="experience">Years of Experience:</label>
+                            <input type="number" id="experience" name="experience" required><br><br>
+
+                            <label for="currentCompany">Current Company:</label>
+                            <input type="text" id="currentCompany" name="currentCompany"><br><br>
+                        </div>
+
+                        <div class="stepINdivdiv">
+                            <label for="position">Position:</label>
+                            <input type="text" id="position" name="position"><br><br>
+
+                            <label for="workAddress">Work Address:</label>
+                            <textarea id="workAddress" name="workAddress" rows="4"></textarea><br><br>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="payment" class="form-step">
+                    <div class="form-stepINdiv">
+                        <div class="stepINdivdiv">
+                            <label>Make payment of Ksh 2000.00 as membership fee</label><br>
+                            <label>Choose Payment Method:</label><br>
+                            <button type="button" class="payment-button" id="mpesa"
+                                onclick="selectPaymentMethod('mpesa')">Mpesa</button>
+                            <button type="button" class="payment-button" id="paypal"
+                                onclick="selectPaymentMethod('paypal')">PayPal</button>
+                            <button type="button" class="payment-button" id="card"
+                                onclick="selectPaymentMethod('card')">Card</button>
+                            <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" required>
+                            <br><br><br>
+
+                            <label for="options">Choose method used to make the payment:</label>
+                            <select id="options" name="options">
+                                <option value="Mpesa">Mpesa</option>
+                                <option value="PayPal">PayPal</option>
+                                <option value="Card">Card</option>
+                                <option value="cash">cash</option>
+                            </select>
+
+                        </div>
+
+                        <div class="stepINdivdiv">
+                            <label for="paymentCode">Payment Code/ Receiver</label>
+                            <input placeholder="Record the payment code from payment Message" type="text"
+                                id="paymentCode" name="paymentCode"><br><br>
+
+                            <label for="password">Enter password</label><br>
                             <div class="password-container">
-                                <input type="password" id="password" name="password" required>
-                                <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
-                            </div>
+                                <input type="password" id="password" name="password" required
+                                    oninput="validatePasswords()">
+                                <span class="toggle-icon" onclick="togglePassword('password')">👁️</span>
+                            </div><br><br>
+
+                            <label for="confirm-password">Confirm password</label><br>
+                            <div class="password-container">
+                                <input type="password" id="confirm-password" name="confirm-password" required
+                                    oninput="validatePasswords()">
+                                <span class="toggle-icon" onclick="togglePassword('confirm-password')">👁️</span>
+                            </div><br><br>
+
+                            <div class="error-message" id="error-message">Passwords do not match</div>
                         </div>
-                        <button type="submit">Login</button>
-                        <p class="register-link">Not registered? <a href="javascript:void(0)"
-                                onclick="showRegistration()">Register as a Member</a></p>
+                    </div>
+                </div>
+
+                <div class="error-message" id="error-messageScript">
+                    <?php
+                    session_start();
+                    if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])) {
+                        echo '<p id="errorMessage">' . $_SESSION['error_message'] . '</p>';
+                        unset($_SESSION['error_message']); // Clear the error message after displaying it
+                    }
+                    ?>
+                </div>
+
+                <script>
+                    // Check if there's an error message to show
+                    window.addEventListener('DOMContentLoaded', (event) => {
+                        const errorMessage = document.getElementById('errorMessage');
+                        if (errorMessage) {
+                            // Hide the error message after 10 seconds
+                            setTimeout(() => {
+                                errorMessage.style.display = 'none';
+                            }, 10000); // 10000 milliseconds = 10 seconds
+                        }
+                    });
+                </script>
+
+
+
+                <div class="form-navigation">
+
+                    <button type="button" class="previous" disabled>Previous</button>
+                    <button type="button" class="next">Next</button>
+                </div>
+            </form>
+
+
+
+            <!-- M-Pesa Payment Form -->
+            <div id="mpesaForm" class="popup-container ">
+                <form class="popup-content">
+                    <span class="close">×</span>
+                    <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
+                    <label for="phone-number">Number</label>
+                    <input type="number" id="phone-number-mpesa" name="phone-number"
+                        placeholder="Enter your phone number">
+                    <label for="amount">Amount</label>
+                    <input type="text" id="amount" name="amount" value="300.00" readonly>
+                    <p>Confirm that you are making a payment of 300 Ksh as membership fees to the Association of
+                        Government
+                        Librarians.</p>
+                    <div class="payButtons">
+                        <button class="pay-btn" id="MakePaymentBTN" type="submit">Make Payment</button>
+                        <!-- <button class="cancel-btn">Cancel</button> -->
+                    </div>
+                </form>
+            </div>
+
+            <!-- PayPal Payment Popup -->
+
+            <div id="paypalPopup" class="popup-container">
+                <div class="popup-content">
+                    <span class="close">×</span>
+                    <img src="../assets/img/paypal.png" alt="PayPal" class="popup-logo">
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                        <!-- PayPal required fields -->
+                        <input type="hidden" name="business" value="maganaalex634@gmail.com">
+                        <input type="hidden" name="cmd" value="_xclick">
+                        <input type="hidden" name="currency_code" value="USD">
+                        <input type="hidden" name="return" value="https://www.yoursite.com/thank_you.html">
+                        <input type="hidden" name="cancel_return" value="https://www.yoursite.com/cancel.html">
+
+                        <!-- Membership form fields -->
+                        <label for="member_name">Member Name</label>
+                        <input type="text" id="member_name" name="item_name" placeholder="Enter your name" required>
+
+                        <label for="member_email">Email</label>
+                        <input type="email" id="member_email" name="email" placeholder="Enter your email" required>
+
+                        <label for="amount">Amount</label>
+                        <input type="text" id="amount" name="amount" value="20.00" readonly>
+
+                        <!-- Payment button -->
+                        <div class="payButtons">
+                            <button id="paypalpayButton" type="submit" class="pay-btn">Pay Now</button>
+                        </div>
                     </form>
                 </div>
             </div>
 
-            <!-- Registration Information Section (Initially Hidden) -->
-            <div class="form-step form-stepINdiv">
-                <!-- General Information Step -->
-                <div class="stepINdivdiv">
-                    <h3>Guidelines for Membership Registration</h3>
-                    <p>To be a member of AGL, you need to meet the following criteria:</p>
-                    <ul>
-                        <li>Have completed a Diploma, Degree, or Masters in Library and Information Science from a
-                            recognized
-                            institution.</li>
-                        <li>Fill in the prescribed form below.</li>
-                        <li>Pay a registration fee of Kshs. 2,000 and an annual fee of Kshs. 3,600.</li>
-                        <li>There are two types of membership:</li>
-                        <ul>
-                            <li><strong>Individual Membership:</strong> Pay Kshs. 2,000 once.</li>
-                            <li><strong>Institutional Membership:</strong> An institution pays a fee of Kshs. 15,000
-                                annually.
-                            </li>
-                        </ul>
-                    </ul>
-                    <p>Choose the membership type and follow the instructions to complete your registration.</p>
-                </div>
 
-                <div class="membership-options">
-                    <button type="button" class="continue-individual"
-                        onclick="redirectTo('pages/Registration.php')">Individual Membership</button>
-                    <button type="button" class="continue-institutional"
-                        onclick="redirectTo('institutional-registration.html')">Institutional Membership</button>
-
+            <div id="cardPopup" class="popup-container">
+                <div class="popup-content">
+                    <span class="close">×</span>
+                    <img src="../assets/img/card.png" alt="Card Payment" class="popup-logo">
+                    <form id="payment-form">
+                        <div id="card-element"><!-- Stripe Element will be inserted here --></div>
+                        <div id="card-errors" role="alert"></div>
+                        <div class="payButtons">
+                            <button id="card-button" class="pay-btn" type="button">Pay Now</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
             <script>
-                function togglePasswordVisibility() {
-                    const passwordInput = document.getElementById('password');
-                    const toggleButton = document.querySelector('.toggle-password');
+                const steps = document.querySelectorAll(".form-step");
+                const nextBtn = document.querySelector(".next");
+                const prevBtn = document.querySelector(".previous");
+                const progressSteps = document.querySelectorAll(".progress-step");
 
-                    if (passwordInput.type === 'password') {
-                        passwordInput.type = 'text';
-                        toggleButton.textContent = '🙈'; // Hide icon
+                let currentStep = 0;
+
+                function updateFormStep() {
+                    steps.forEach((step, index) => {
+                        step.classList.toggle("active", index === currentStep);
+                    });
+                    progressSteps.forEach((step, index) => {
+                        step.classList.toggle("active", index <= currentStep);
+                    });
+
+                    prevBtn.disabled = currentStep === 0;
+                    nextBtn.textContent = currentStep === steps.length - 1 ? "Submit" : "Next";
+                }
+
+                nextBtn.addEventListener("click", () => {
+                    if (currentStep < steps.length - 1) {
+                        currentStep++;
+                        updateFormStep();
                     } else {
-                        passwordInput.type = 'password';
-                        toggleButton.textContent = '👁️'; // Show icon
+                        // Check if all required fields are filled out
+                        const form = document.getElementById("registrationForm");
+                        if (form.checkValidity()) {
+                            // Form is valid, submit it
+                            form.submit();
+                            // alert("Registration submitted successfully. Wait for the reply");
+                        } else {
+                            // Form is not valid, display errors
+                            form.reportValidity();
+                        }
+                    }
+                });
+
+                prevBtn.addEventListener("click", () => {
+                    if (currentStep > 0) {
+                        currentStep--;
+                        updateFormStep();
+                    }
+                });
+
+                updateFormStep();
+
+                // JavaScript for handling the payment popups
+                const mpesaForm = document.getElementById('mpesaForm');
+                const paypalPopup = document.getElementById('paypalPopup');
+                const cardPopup = document.getElementById('cardPopup');
+
+                const mpesaBtn = document.getElementById('mpesa');
+                const paypalBtn = document.getElementById('paypal');
+                const cardBtn = document.getElementById('card');
+
+                const closeBtns = document.querySelectorAll('.close');
+
+                function openPopup(popup) {
+                    popup.style.display = 'block';
+                }
+
+                function closeAllPopups() {
+                    mpesaForm.style.display = 'none';
+                    paypalPopup.style.display = 'none';
+                    cardPopup.style.display = 'none';
+                }
+
+                mpesaBtn.addEventListener('click', () => openPopup(mpesaForm));
+                paypalBtn.addEventListener('click', () => openPopup(paypalPopup));
+                cardBtn.addEventListener('click', () => openPopup(cardPopup));
+
+                closeBtns.forEach(button => {
+                    button.addEventListener('click', closeAllPopups);
+                });
+
+                window.addEventListener('click', (event) => {
+                    if (event.target.classList.contains('popup-container')) {
+                        closeAllPopups();
+                    }
+                });
+
+                function togglePassword(id) {
+                    const passwordField = document.getElementById(id);
+                    passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+                }
+
+                function validatePasswords() {
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirm-password').value;
+                    const errorMessage = document.getElementById('error-message');
+
+                    if (password !== confirmPassword) {
+                        errorMessage.style.display = 'block';
+                    } else {
+                        errorMessage.style.display = 'none';
                     }
                 }
-
-                function showRegistration() {
-                    const registrationSection = document.querySelector('.form-stepINdiv');
-                    registrationSection.style.display = 'flex';
-                    registrationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-
-                function redirectTo(url) {
-                    window.location.href = url;
-                }
-
             </script>
+
+
+
+            <!-- <script>
+
+        const steps = document.querySelectorAll(".form-step");
+        const nextBtn = document.querySelector(".next");
+        const prevBtn = document.querySelector(".previous");
+        const progressSteps = document.querySelectorAll(".progress-step");
+
+        let currentStep = 0;
+
+        function updateFormStep() {
+            steps.forEach((step, index) => {
+                step.classList.toggle("active", index === currentStep);
+            });
+            progressSteps.forEach((step, index) => {
+                step.classList.toggle("active", index <= currentStep);
+            });
+
+            prevBtn.disabled = currentStep === 0;
+            nextBtn.textContent = currentStep === steps.length - 1 ? "Submit" : "Next";
+        }
+
+        nextBtn.addEventListener("click", () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                updateFormStep();
+            } else {
+                
+                document.getElementById("registrationForm").submit();
+                alert("Registration submitted successfully. Wait for the reply");
+            }
+        });
+
+        prevBtn.addEventListener("click", () => {
+            if (currentStep > 0) {
+                currentStep--;
+                updateFormStep();
+            }
+        });
+
+        updateFormStep();
+
+        const mpesaForm = document.getElementById('mpesaForm');
+        const paypalPopup = document.getElementById('paypalPopup');
+        const cardPopup = document.getElementById('cardPopup');
+
+        const mpesaBtn = document.getElementById('mpesa');
+        const paypalBtn = document.getElementById('paypal');
+        const cardBtn = document.getElementById('card');
+
+        const closeBtns = document.querySelectorAll('.close');
+
+        function openPopup(popup) {
+            popup.style.display = 'block';
+        }
+
+        function closeAllPopups() {
+            mpesaForm.style.display = 'none';
+            paypalPopup.style.display = 'none';
+            cardPopup.style.display = 'none';
+        }
+ons
+        mpesaBtn.addEventListener('click', () => openPopup(mpesaForm));
+        paypalBtn.addEventListener('click', () => openPopup(paypalPopup));
+        cardBtn.addEventListener('click', () => openPopup(cardPopup));
+
+        closeBtns.forEach(button => {
+            button.addEventListener('click', closeAllPopups);
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('popup-container')) {
+                closeAllPopups();
+            }
+        });
+
+
+        function togglePassword(id) {
+            const passwordField = document.getElementById(id);
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+            toggleIcon.textContent = '🙈';
+        }
+
+        function validatePasswords() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            if (password !== confirmPassword) {
+                errorMessage.style.display = 'block'; 
+            } else {
+                errorMessage.style.display = 'none';
+            }
+        }
+
+    </script> -->
+            <script src="https://js.stripe.com/v3/"></script>
+            <script src="../assets/JS/aglpaycard.js"></script>
+
+
         </body>
+
     </main>
 
     <!-- Footer -->
     <footer class="site-footer">
-        <p>&copy; 2024 Your Company. All rights reserved.</p>
+        <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">AGL.or.ke</a> . All rights reserved.</p>
     </footer>
 
     <!-- JavaScript for Menu Toggle -->
     <script>
-        const menuToggle = document.getElementById('menu-toggle');
-        const navigation = document.getElementById('navigation');
+        const menuToggle = document.getElementById("menu-toggle");
+        const navigation = document.getElementById("navigation");
 
-        menuToggle.addEventListener('click', () => {
-            navigation.classList.toggle('active');
+        menuToggle.addEventListener("click", () => {
+            navigation.classList.toggle("active");
         });
     </script>
-
 </body>
 
 </html>
