@@ -128,4 +128,4 @@ public function verifyCallback($callbackData)
 
     // Check if the result indicates a valid callback
     return isset($result['Valid']) && $result['Valid'] === true;
-}
+}}

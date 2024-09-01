@@ -1,15 +1,15 @@
 <?php
-
+ 
 // Include the Daraja API Library
 require_once('path/to/Daraja.php');
 
 // Initialize Daraja with your credentials
 $daraja = new Daraja([
-    'consumerKey' => 'your-consumer-key',
-    'consumerSecret' => 'your-consumer-secret',
-    'shortcode' => 'your-shortcode',
+    'consumerKey' => 'R6MsFA5Xx6r6j6m1sIxfnDDJHclnYGMBKRTY3oxT0sbPylfz',
+    'consumerSecret' => '46FMjLVzxA6mcxaqqtmV6fd8HgHzRXQPGdqAfhqO5RzIRvFshuIUZuMxaI4be0QM',
+    'shortcode' => '8209382',
     'lipaNaMpesaOnlinePasskey' => 'your-passkey',
-    'lipaNaMpesaOnlineShortcode' => 'your-lipa-na-mpesa-shortcode',
+    'lipaNaMpesaOnlineShortcode' => '8209382',
 ]);
 
 // Construct the payment request

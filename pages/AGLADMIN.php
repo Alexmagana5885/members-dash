@@ -207,6 +207,7 @@
                     <p id="memberpayments-current-lastPay">Last payment: <span>12/08/2024</span></p>
                     <p id="memberpayments-current-nextP">Next payment: <span>09/05/2024</span></p>
                     <p id="memberpayments-current-balance">Current balance: <span>5000sh</span></p>
+                    <a href="../forms/Payment/Mpesa-Daraja-Api-main/index.php">Pay</a>
                     <button id="memberpayments-btn">Make Payments</button>
                 </div>
 

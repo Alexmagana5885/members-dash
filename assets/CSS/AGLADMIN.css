@@ -8,30 +8,7 @@
   cursor: pointer;
 }
 
-/* Hide the dropdown menu initially */
-/* .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #303538;
-  padding: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  border-radius: 7px;
-} */
 
-/* Display the dropdown menu on hover */
-/* .dropdown:hover .dropdown-menu {
-  display: block;
-} */
-
-/* Style for dropdown links */
-/* .dropdown-menu li a {
-  color: #fff;
-  text-decoration: none;
-  display: block;
-  padding: 5px 0;
-} */
 
 .message-popup {
   position: fixed;

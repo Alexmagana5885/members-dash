@@ -509,9 +509,7 @@
         enctype="multipart/form-data" class="container" id="registrationForm">
         <h2>Registration Form</h2>
 
-        <a href="DashBoard.php">Dash</a>
 
-        <a href="AGLADMIN.php">Admin Dash</a>
 
         <!-- Progress Bar -->
         <div class="progress-bar">
@@ -699,7 +697,7 @@
           <label for="phone-number">Number</label>
           <input type="number" id="phone-number-mpesa" name="phone-number" placeholder="Enter your phone number">
           <label for="amount">Amount</label>
-          <input type="text" id="amount" name="amount" value="300.00" readonly>
+          <input type="text" id="amount" name="amount" value="2000.00" readonly>
           <p>Confirm that you are making a payment of 300 Ksh as membership fees to the Association of
             Government
             Librarians.</p>
@@ -857,7 +855,7 @@
         }
       </script>
 
-    <script src="https://js.stripe.com/v3/"></script>
+      <script src="https://js.stripe.com/v3/"></script>
       <script src="../assets/JS/aglpaycard.js"></script>
 
 
