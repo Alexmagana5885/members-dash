@@ -143,7 +143,6 @@ $userPhone = $_SESSION['user_phone'];
         <section class="dashboard">
             <div class="cards">
 
-
                 <?php
                 require_once('../forms/DBconnection.php');
                 session_start();
@@ -167,6 +166,7 @@ $userPhone = $_SESSION['user_phone'];
                     $name = $row['name'];
                     $registrationDate = $row['registration_date'];
                     $passportImage = $row['passport_image'];
+                    $userEmail = $row['email'];
                 } else {
                     echo "No user found";
                 }
@@ -174,17 +174,13 @@ $userPhone = $_SESSION['user_phone'];
                 $stmt->close();
                 ?>
 
-                <?php
-
-                ?>
                 <div class="card">
                     <img class="cardMemberprofile" src="<?php echo htmlspecialchars($passportImage); ?>"
                         alt="User Image">
-                    <h5><?php echo htmlspecialchars($name); ?></h5>
+                    <h5><?php echo htmlspecialchars($name); ?></h5><hr><br>
+                    <h4><?php echo htmlspecialchars($userEmail); ?></h4>
                     <p>Registration Date: <?php echo htmlspecialchars($registrationDate); ?></p>
                 </div>
-                <!-- Styles to hide the memeber payment popup by default -->
-
 
                 <div class="card">
                     <h5>Member Payments</h5>
@@ -211,7 +207,6 @@ $userPhone = $_SESSION['user_phone'];
                         <div class="memberpayments-pay-buttons">
                             <button class="memberpayments-pay-btn" id="memberpayments-make-payment-btn"
                                 type="submit">Make Payment</button>
-                            <!-- <button class="memberpayments-cancel-btn">Cancel</button> -->
                         </div>
                     </form>
                 </div>
@@ -227,18 +222,81 @@ $userPhone = $_SESSION['user_phone'];
                     }
                 </script>
 
+                <?php
+
+                $sessionEmail = $_SESSION['user_email'];
+
+                // Fetch education information from the database
+                $query = "SELECT highest_degree, institution, start_date, graduation_year 
+          FROM personalmembership 
+          WHERE email = ?";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("s", $sessionEmail);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $educationInfo = $result->fetch_assoc();
+                } else {
+                    $educationInfo = [
+                        'highest_degree' => 'N/A',
+                        'institution' => 'N/A',
+                        'start_date' => 'N/A',
+                        'graduation_year' => 'N/A'
+                    ];
+                }
+                ?>
+
                 <div class="card">
-                    <h5>Member Activities</h5>
+                    <h5>Education Information</h5>
                     <hr>
-                    <p>Registration date: <span id="registration-date">[Registration Date]</span></p>
-                    <p>Last Activity attended: <span id="last-activity">[Last Activity]</span></p>
-                    <p>Next Activity: <span id="next-activity">[Next Activity]</span></p>
+                    <p>Highest Degree: <span
+                            id="highest-degree"><?php echo htmlspecialchars($educationInfo['highest_degree']); ?></span>
+                    </p>
+                    <p>Institution: <span
+                            id="institution"><?php echo htmlspecialchars($educationInfo['institution']); ?></span></p>
+                    <p>Start Date: <span
+                            id="start-date"><?php echo htmlspecialchars($educationInfo['start_date']); ?></span></p>
+                    <p>Graduation Year: <span
+                            id="graduation-year"><?php echo htmlspecialchars($educationInfo['graduation_year']); ?></span>
+                    </p>
                 </div>
 
+
                 <?php
-                // SQL query to fetch registered events data from the event_registrations table
-                $sql = "SELECT event_name, event_location, event_date FROM event_registrations ORDER BY event_date ASC";
-                $result = $conn->query($sql);
+
+
+                // Ensure that the session contains the email
+                if (!isset($_SESSION['user_email'])) {
+                    die("User not logged in");
+                }
+
+                $userEmail = $_SESSION['user_email'];
+
+                // Prepare the SQL query
+                $sql = "SELECT event_name, event_location, event_date FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
+                $stmt = $conn->prepare($sql);
+
+                // Check if prepare() failed
+                if ($stmt === false) {
+                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                }
+
+                // Bind parameters
+                $stmt->bind_param("s", $userEmail);
+
+                // Execute the statement
+                if (!$stmt->execute()) {
+                    die('Execute failed: ' . htmlspecialchars($stmt->error));
+                }
+
+                // Get the result
+                $result = $stmt->get_result();
+
+                // Check if result fetching was successful
+                if ($result === false) {
+                    die('Get result failed: ' . htmlspecialchars($stmt->error));
+                }
                 ?>
 
                 <div class="card">
@@ -259,11 +317,14 @@ $userPhone = $_SESSION['user_phone'];
                     } else {
                         echo '<p>No upcoming registered events.</p>';
                     }
-                    // $conn->close();
+
+                    $stmt->close();
                     ?>
                 </div>
 
+
             </div>
+
 
             <!-- messages -->
 
@@ -396,8 +457,13 @@ $userPhone = $_SESSION['user_phone'];
             <!-- planned ivents -->
 
             <?php
-            // SQL query to fetch events from the database
-            $sql = "SELECT id, event_name, event_image_path, event_description, event_location, event_date FROM plannedevent";
+
+
+            // Check if the email is set in the session
+            $userEmail = isset($_SESSION['user_email']) ? htmlspecialchars($_SESSION['user_email']) : '';
+
+            $sql = "SELECT id, event_name, event_image_path, event_description, event_location, event_date FROM plannedevent ORDER BY event_date DESC";
+
             $result = $conn->query($sql);
             ?>
 
@@ -436,7 +502,7 @@ $userPhone = $_SESSION['user_phone'];
                             echo '<input type="hidden" name="event_date" value="' . $eventDate . '">';
 
                             echo '<label for="memberEmail">Member Email:</label>';
-                            echo '<input type="email" id="memberEmail" name="memberEmail" required>';
+                            echo '<input type="email" id="memberEmail" name="memberEmail" value="' . $userEmail . '" readonly>';
 
                             echo '<label for="memberName">Name:</label>';
                             echo '<input type="text" id="memberName" name="memberName" required>';
@@ -456,6 +522,7 @@ $userPhone = $_SESSION['user_phone'];
                     ?>
                 </div>
             </div>
+
 
             <script>
                 document.addEventListener('DOMContentLoaded', function () {

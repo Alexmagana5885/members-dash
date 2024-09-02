@@ -22,7 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute the statement
     if ($stmt->execute()) {
-        echo "Registration successful!";
+        // Redirect back to the previous page
+        $previous_page = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php'; // Fallback to 'index.php' if 'HTTP_REFERER' is not set
+        header("Location: $previous_page?success=1"); // Adding a success query parameter for feedback if needed
+        exit();
     } else {
         echo "Error: " . $stmt->error;
     }
