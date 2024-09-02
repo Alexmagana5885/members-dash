@@ -121,9 +121,7 @@
         gap: 0.5rem;
       }
     }
-  </style>
 
-  <style>
     .container {
       display: flex;
       width: 70%;
@@ -186,7 +184,8 @@
     }
 
     .password-container input,
-    .emailInput {
+    .emailInput,
+    select {
       width: 100%;
       padding: 10px;
       padding-right: 40px;
@@ -315,6 +314,8 @@
         max-width: 300px;
       }
     }
+
+
   </style>
 
   <body>
@@ -353,6 +354,21 @@
             <h2>Login</h2>
             <form action="forms/start.php" method="post">
               <div class="input-group">
+                <label for="MembershipType">Membership Type</label>
+                <select
+                  class="optionLogin"
+                  id="MembershipType"
+                  name="MembershipType"
+                  required
+                >
+                <option value="Default">Choose</option>
+                <option value="IndividualMember">Individual Member</option>
+                  <option value="OrganizationMember">
+                    Organization Member
+                  </option>
+                </select>
+              </div>
+              <div class="input-group">
                 <label for="email">Email</label>
                 <input
                   class="emailInput"
@@ -378,6 +394,7 @@
                   >
                 </div>
               </div>
+
               <button type="submit">Login</button>
               <p class="register-link">
                 Not registered?
@@ -435,7 +452,7 @@
             <button
               type="button"
               class="continue-institutional"
-              onclick="redirectTo('institutional-registration.html')"
+              onclick="redirectTo('pages/Organizationregistration.php')"
             >
               Institutional Membership
             </button>
@@ -475,7 +492,11 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-      <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">AGL.or.ke</a> . All rights reserved.</p>
+      <p>
+        &copy; 2024
+        <a style="text-decoration: none" href="AGL.or.ke">AGL.or.ke</a> . All
+        rights reserved.
+      </p>
     </footer>
 
     <!-- JavaScript for Menu Toggle -->

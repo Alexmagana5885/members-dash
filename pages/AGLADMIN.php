@@ -14,6 +14,15 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
+<!-- <php
+session_start();
+$userEmail = $_SESSION['user_email'];
+$userName = $_SESSION['user_name'];
+$userPhone = $_SESSION['user_phone'];
+?> -->
+
+<!-- delete the  stylings already transfered -->
+
 <style>
     .sidebar {
         overflow: auto;
@@ -29,9 +38,66 @@
 
     @media (max-width: 768px) {
         .sidebar {
-            position:fixed;
+            position: fixed;
         }
 
+    }
+
+
+    .popup-form {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .form-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 300px;
+        max-width: 80%;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button[type="submit"] {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button[type="button"] {
+        padding: 10px;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 10px;
     }
 </style>
 
@@ -49,7 +115,6 @@
         </div>
 
     </header>
-
 
 
     <div class="main-content">
@@ -74,9 +139,6 @@
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
-
-
-
 
         <section class="dashboard">
             <div class="cards">
@@ -121,85 +183,8 @@
                     <h5><?php echo htmlspecialchars($name); ?></h5>
                     <p>Registration Date: <?php echo htmlspecialchars($registrationDate); ?></p>
                 </div>
-
-
-
-
                 <!-- Styles to hide the memeber payment popup by default -->
 
-                <!-- this styking is alredy alreday transferd -->
-                <style>
-                    .memberpayments-popup-container {
-                        display: none;
-                        position: fixed;
-                        z-index: 1000;
-                        left: 0;
-                        top: 0;
-                        width: 100%;
-                        height: 100vh;
-                        background-color: rgba(0, 0, 0, 0.5);
-                    }
-
-                    .memberpayments-popup-content {
-                        background-color: #fff;
-                        margin: 8% auto;
-                        padding: 20px;
-                        border: 1px solid #888;
-                        width: 80%;
-                        max-width: 500px;
-                        border-radius: 8px;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                        position: relative;
-                    }
-
-                    .memberpayments-close {
-                        cursor: pointer;
-                        float: right;
-                        font-size: 20px;
-                    }
-
-                    .memberpayments-popup-content label {
-                        display: block;
-                        margin-bottom: 5px;
-                        font-weight: bold;
-                        color: #333;
-                    }
-
-                    .memberpayments-popup-content input[type="number"],
-                    .memberpayments-popup-content input[type="text"] {
-                        width: calc(100% - 20px);
-                        padding: 10px;
-                        margin-bottom: 15px;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
-                        font-size: 16px;
-                    }
-
-                    .memberpayments-popup-content p {
-                        color: #555;
-                        margin-bottom: 20px;
-                    }
-
-                    .memberpayments-pay-buttons {
-                        text-align: center;
-
-                    }
-
-                    .memberpayments-pay-btn {
-                        background-color: #4CAF50;
-                        color: white;
-                        padding: 10px 20px;
-                        border: none;
-                        border-radius: 5px;
-                        font-size: 16px;
-                        cursor: pointer;
-                        transition: background-color 0.3s ease;
-                    }
-
-                    .memberpayments-pay-btn:hover {
-                        background-color: #45a049;
-                    }
-                </style>
 
                 <div class="card">
                     <h5>Member Payments</h5>
@@ -242,9 +227,6 @@
                     }
                 </script>
 
-
-
-
                 <div class="card">
                     <h5>Member Activities</h5>
                     <hr>
@@ -253,14 +235,10 @@
                     <p>Next Activity: <span id="next-activity">[Next Activity]</span></p>
                 </div>
 
-
                 <?php
-
-
-                //  upcoming events
-                $sql = "SELECT event_name, event_image_path, event_location, event_date FROM plannedevent ORDER BY event_date ASC";
+                // SQL query to fetch registered events data from the event_registrations table
+                $sql = "SELECT event_name, event_location, event_date FROM event_registrations ORDER BY event_date ASC";
                 $result = $conn->query($sql);
-
                 ?>
 
                 <div class="card">
@@ -279,19 +257,15 @@
                             echo '<hr>';
                         }
                     } else {
-                        echo '<p>No upcoming events.</p>';
+                        echo '<p>No upcoming registered events.</p>';
                     }
                     // $conn->close();
                     ?>
                 </div>
 
-
-
             </div>
 
-
             <!-- messages -->
-
 
             <div class="message-popup" id="messagePopup">
                 <div class="message-popup-header">
@@ -345,42 +319,6 @@
 
 
             <!-- ............................ -->
-            <!-- the style transferd -->
-            <style>
-                .popup-table {
-                    background-color: #fff;
-                    border: 1px solid #fff;
-                    border-radius: 8px;
-                    max-height: 80vh;
-                    display: none;
-                    overflow: auto;
-                }
-
-                .popup-content-table {
-                    background-color: #fefefe;
-                    padding: 5px;
-                    border: 1px solid #fff;
-                    border-radius: 5px;
-                    width: 100%;
-
-
-                }
-
-                .close-btn-table {
-                    color: #aaa;
-                    float: right;
-                    font-size: 28px;
-                    font-weight: bold;
-                    cursor: pointer;
-                }
-
-                .close-btn-table:hover,
-                .close-btn-table:focus {
-                    color: black;
-                    text-decoration: none;
-                    cursor: pointer;
-                }
-            </style>
 
             <?php
 
@@ -458,28 +396,57 @@
             <!-- planned ivents -->
 
             <?php
-
-            // Fetch data from the database
+            // SQL query to fetch events from the database
             $sql = "SELECT id, event_name, event_image_path, event_description, event_location, event_date FROM plannedevent";
             $result = $conn->query($sql);
-
-            // Start outputting HTML
             ?>
+
             <div class="MinPrtSecSpace">
-                <h3 style="padding:20px ">Planned Events</h3>
+                <h3 style="padding:20px;">Planned Events</h3>
                 <div class="table-card">
                     <?php
                     if ($result->num_rows > 0) {
-                        // Output data for each row
                         while ($row = $result->fetch_assoc()) {
+                            $eventId = htmlspecialchars($row['id']);
+                            $eventName = htmlspecialchars($row['event_name']);
+                            $eventImagePath = htmlspecialchars($row['event_image_path']);
+                            $eventDescription = htmlspecialchars($row['event_description']);
+                            $eventLocation = htmlspecialchars($row['event_location']);
+                            $eventDate = htmlspecialchars($row['event_date']);
+
                             echo '<div class="eventDiv">';
-                            echo '<h3>' . htmlspecialchars($row['event_name']) . '</h3>';
-                            echo '<img src="' . htmlspecialchars($row['event_image_path']) . '" alt="Event">';
-                            echo '<p>' . htmlspecialchars($row['event_description']) . '</p>';
+                            echo '<h3>' . $eventName . '</h3>';
+                            echo '<img src="' . $eventImagePath . '" alt="Event">';
+                            echo '<p>' . $eventDescription . '</p>';
                             echo '<div class="eventDivindiv">';
-                            echo '<p>' . htmlspecialchars($row['event_location']) . '</p>';
-                            echo '<button class="plannedEventsBTN" id="plannedEventsBTN">Edit</button>';
-                            echo '<p>' . htmlspecialchars($row['event_date']) . '</p>';
+                            echo '<p>' . $eventLocation . '</p>';
+                            echo '<p>' . $eventDate . '</p>';
+                            echo '</div>';
+                            echo '<button class="plannedEventsBTN" id="registerBtnEventRegistration_' . $eventId . '">Register for the event</button>';
+                            echo '</div>';
+
+                            // Event registration popup form
+                            echo '<div id="popupFormEventRegistration_' . $eventId . '" class="popup-form" style="display:none;">';
+                            echo '<div class="form-container">';
+                            echo '<h4>Event Name: ' . $eventName . '</h4>';
+                            echo '<form action="../forms/register_event.php" method="post">'; // Form action points to the PHP script
+                            echo '<input type="hidden" name="event_id" value="' . $eventId . '">';
+                            echo '<input type="hidden" name="event_name" value="' . $eventName . '">';
+                            echo '<input type="hidden" name="event_location" value="' . $eventLocation . '">';
+                            echo '<input type="hidden" name="event_date" value="' . $eventDate . '">';
+
+                            echo '<label for="memberEmail">Member Email:</label>';
+                            echo '<input type="email" id="memberEmail" name="memberEmail" required>';
+
+                            echo '<label for="memberName">Name:</label>';
+                            echo '<input type="text" id="memberName" name="memberName" required>';
+
+                            echo '<label for="contact">Contact:</label>';
+                            echo '<input type="text" id="contact" name="contact" required>';
+
+                            echo '<button type="submit">Submit</button>';
+                            echo '<button type="button" class="closeBtn" id="closeBtn_' . $eventId . '">Close</button>';
+                            echo '</form>';
                             echo '</div>';
                             echo '</div>';
                         }
@@ -490,8 +457,46 @@
                 </div>
             </div>
 
-            <?php
-            ?>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    <?php
+                    if ($result->num_rows > 0) {
+                        $result->data_seek(0); // Reset the result pointer to the beginning
+                        while ($row = $result->fetch_assoc()) {
+                            $eventId = htmlspecialchars($row['id']);
+                            ?>
+
+                            // JavaScript to handle opening and closing of popup forms
+                            var registerBtnEventRegistration_<?php echo $eventId; ?> = document.getElementById('registerBtnEventRegistration_<?php echo $eventId; ?>');
+                            var popupFormEventRegistration_<?php echo $eventId; ?> = document.getElementById('popupFormEventRegistration_<?php echo $eventId; ?>');
+                            var closeBtn_<?php echo $eventId; ?> = document.getElementById('closeBtn_<?php echo $eventId; ?>');
+
+                            registerBtnEventRegistration_<?php echo $eventId; ?>.addEventListener('click', function () {
+                                popupFormEventRegistration_<?php echo $eventId; ?>.style.display = 'flex';
+                            });
+
+                            closeBtn_<?php echo $eventId; ?>.addEventListener('click', function () {
+                                popupFormEventRegistration_<?php echo $eventId; ?>.style.display = 'none';
+                            });
+
+                            window.addEventListener('click', function (event) {
+                                if (event.target == popupFormEventRegistration_<?php echo $eventId; ?>) {
+                                    popupFormEventRegistration_<?php echo $eventId; ?>.style.display = 'none';
+                                }
+                            });
+
+                            <?php
+                        }
+                    }
+                    ?>
+                });
+            </script>
+
+            <!-- ........................................ -->
+
+
+            <div>
+            </div>
 
 
             <!-- popups -->

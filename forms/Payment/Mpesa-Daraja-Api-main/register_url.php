@@ -2,7 +2,7 @@
 //INCLUDE ACCESS TOKEN FILE 
 include 'accessToken.php';
 $registerurl = 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl';
-$BusinessShortCode = '';
+$BusinessShortCode = '8209382';
 $confirmationUrl = 'https://www.agl.or.ke/Daraja/callback.php';
 $validationUrl = 'https://1c95-105-161-14-223.ngrok-free.app/Daraja-Api/validation_url.php';
 
