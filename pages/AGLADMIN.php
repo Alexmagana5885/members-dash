@@ -14,15 +14,6 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
-<!-- <php
-session_start();
-$userEmail = $_SESSION['user_email'];
-$userName = $_SESSION['user_name'];
-$userPhone = $_SESSION['user_phone'];
-?> -->
-
-<!-- delete the  stylings already transfered -->
-
 <style>
     .sidebar {
         overflow: auto;
@@ -110,8 +101,9 @@ $userPhone = $_SESSION['user_phone'];
         <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
         <!-- <button id="toggleMessages">View Messages</button> -->
 
-        <div id="toggleMessages" class="notification">
+        <div id="toggleMessagesReceivedMessages" class="notification">
             <img src="../assets/img/bell.png" alt="Notification">
+            <h5 style="color: black; cursor: pointer;">Messages</h5>
         </div>
 
     </header>
@@ -126,15 +118,14 @@ $userPhone = $_SESSION['user_phone'];
                 </li>
                 <li><a id="openPostEventModal">Post Up coming Event</a></li>
                 <li><a id="openPastEventModal">Post past Event</a></li>
-                <li><a id="openMessagePopup">Send Message</a></li>
+                <li><a id="openMessagePopupSend">Send Message</a></li>
                 <li><a href="admin/settings.html">Admit New Members</a></li>
                 <li><a id="openBlogPostModal">Post a Blog</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="#https://www.agl.or.ke/">About</a></li>
                 <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                <li><a href="#team">Officials</a></li>
-                <li><a href="pages/newfile.html">Donations</a></li>
+                <!-- <li><a href="pages/newfile.html">Donations</a></li> -->
                 <li><a href="Payment/index.php">Payments</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#https://www.agl.or.ke/Contact">Contact</a></li>
                 <li><a href="new.php">new</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -189,7 +180,6 @@ $userPhone = $_SESSION['user_phone'];
                     <p id="memberpayments-current-lastPay">Last payment: <span>12/08/2024</span></p>
                     <p id="memberpayments-current-nextP">Next payment: <span>09/05/2024</span></p>
                     <p id="memberpayments-current-balance">Current balance: <span>5000sh</span></p>
-                    <a href="../forms/Payment/Mpesa-Daraja-Api-main/index.php">Pay</a>
                     <button id="memberpayments-btn">Make Payments</button>
                 </div>
 
@@ -329,19 +319,21 @@ $userPhone = $_SESSION['user_phone'];
 
             <!-- messages -->
 
-            <div class="message-popup" id="messagePopup">
+            <div class="message-popup" id="messagePopupReceivedMessages">
                 <div class="message-popup-header">
                     <h4>Messages</h4>
-                    <button id="closePopup">&times;</button>
+                    <button id="closePopupReceivedMessages">&times;</button>
                 </div>
                 <div class="message-container">
+
+
                     <div class="message"
-                        onclick="showFullMessage('Hello,  how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content. how are  you? This is the full message content.  ')">
+                        onclick="showFullMessageReceivedMessages('Hello, how are you? This is the full message content. how are you? This is the full message content. how are you? This is the full message content. how are you? This is the full message content. how are you? This is the full message content.  ')">
                         <p class="message-content">Hello, how are you?</p>
                         <span class="message-time">10:30 AM</span>
                     </div>
                     <div class="message"
-                        onclick="showFullMessage('I\'m fine, thank you! Here is more about what I wanted to say...')">
+                        onclick="showFullMessageReceivedMessages('I\'m fine, thank you! Here is more about what I wanted to say...')">
                         <p class="message-content">I'm fine, thank you!</p>
                         <span class="message-time">10:32 AM</span>
                     </div>
@@ -349,32 +341,32 @@ $userPhone = $_SESSION['user_phone'];
             </div>
 
             <!-- Full message pop-up -->
-            <div class="full-message-popup" id="fullMessagePopup">
+            <div class="full-message-popup" id="fullMessagePopupReceivedMessages">
                 <div class="full-message-content">
-                    <button id="closeFullMessage">&times;</button>
-                    <p id="fullMessageText"></p>
+                    <button id="closeFullMessageReceivedMessages">&times;</button>
+                    <p id="fullMessageTextReceivedMessages"></p>
                 </div>
             </div>
 
-
             <script>
-                document.getElementById('toggleMessages').addEventListener('click', function () {
-                    document.getElementById('messagePopup').style.display = 'flex';
+                document.getElementById('toggleMessagesReceivedMessages').addEventListener('click', function () {
+                    document.getElementById('messagePopupReceivedMessages').style.display = 'flex';
                 });
 
-                document.getElementById('closePopup').addEventListener('click', function () {
-                    document.getElementById('messagePopup').style.display = 'none';
+                document.getElementById('closePopupReceivedMessages').addEventListener('click', function () {
+                    document.getElementById('messagePopupReceivedMessages').style.display = 'none';
                 });
 
-                function showFullMessage(message) {
-                    document.getElementById('fullMessageText').textContent = message;
-                    document.getElementById('fullMessagePopup').style.display = 'flex';
+                function showFullMessageReceivedMessages(message) {
+                    document.getElementById('fullMessageTextReceivedMessages').textContent = message;
+                    document.getElementById('fullMessagePopupReceivedMessages').style.display = 'flex';
                 }
 
-                document.getElementById('closeFullMessage').addEventListener('click', function () {
-                    document.getElementById('fullMessagePopup').style.display = 'none';
+                document.getElementById('closeFullMessageReceivedMessages').addEventListener('click', function () {
+                    document.getElementById('fullMessagePopupReceivedMessages').style.display = 'none';
                 });
             </script>
+
 
 
             <!-- planned ivents -->
@@ -574,7 +566,7 @@ $userPhone = $_SESSION['user_phone'];
 
 
             <!-- Message Popup -->
-            <div class="message-popup" id="messagePopup">
+            <div class="message-popup" id="messagePopupsend">
                 <div class="message-popup-content">
                     <button class="message-close-btn" id="messageClosePopupBtn">
                         &times;
@@ -611,6 +603,8 @@ $userPhone = $_SESSION['user_phone'];
                     </form>
                 </div>
             </div>
+
+
 
             <!-- Blog Post Modal -->
             <div id="blogPostModal" class="blog-post-modal">
@@ -714,7 +708,8 @@ $userPhone = $_SESSION['user_phone'];
     </div>
 
     <footer style="font-size: 11px; font-style: italic; text-align: center; background-color: #b4ccdb; color: black; ">
-        <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">http://www.agl.or.ke/</a> . All rights reserved.</p>
+        <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">http://www.agl.or.ke/</a> . All rights
+            reserved.</p>
     </footer>
 
 

@@ -21,7 +21,7 @@ document
     .addEventListener("click", () => closeModal("pastEventModal"));
 document
     .querySelector(".message-close-btn")
-    .addEventListener("click", () => closeModal("messagePopup"));
+    .addEventListener("click", () => closeModal("messagePopupsend"));
 document
     .querySelector(".close-blog-post")
     .addEventListener("click", () => closeModal("blogPostModal"));
@@ -61,8 +61,8 @@ document
     .getElementById("openPastEventModal")
     .addEventListener("click", () => openModal("pastEventModal"));
 document
-    .getElementById("openMessagePopup")
-    .addEventListener("click", () => openModal("messagePopup"));
+    .getElementById("openMessagePopupSend")
+    .addEventListener("click", () => openModal("messagePopupsend"));
 document
     .getElementById("openBlogPostModal")
     .addEventListener("click", () => openModal("blogPostModal"));
