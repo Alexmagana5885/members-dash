@@ -690,23 +690,27 @@
 
 
       <!-- M-Pesa Payment Form -->
-      <div id="mpesaForm" class="popup-container ">
-        <form class="popup-content">
+      <div id="mpesaForm" class="popup-container">
+        <form class="popup-content" method="POST" action="../forms/Payment/Mpesa-Daraja-Api-main/stkpush.php">
           <span class="close">×</span>
           <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
-          <label for="phone-number">Number</label>
-          <input type="number" id="phone-number-mpesa" name="phone-number" placeholder="Enter your phone number">
+
+          <label for="phone-number-mpesa">Number</label>
+          <input type="number" id="phone-number-mpesa" name="phone_number" placeholder="Enter your phone number"
+            required>
+
           <label for="amount">Amount</label>
-          <input type="text" id="amount" name="amount" value="2000.00" readonly>
-          <p>Confirm that you are making a payment of 300 Ksh as membership fees to the Association of
-            Government
+          <input type="text" id="amount" name="amount" value="300" readonly>
+
+          <p>Confirm that you are making a payment of 300 Ksh as membership fees to the Association of Government
             Librarians.</p>
+
           <div class="payButtons">
             <button class="pay-btn" id="MakePaymentBTN" type="submit">Make Payment</button>
-            <!-- <button class="cancel-btn">Cancel</button> -->
           </div>
         </form>
       </div>
+
 
       <!-- PayPal Payment Popup -->
 

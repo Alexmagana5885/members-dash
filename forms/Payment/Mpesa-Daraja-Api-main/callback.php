@@ -1,5 +1,5 @@
 <?php
-include 'dbconnection.php';
+include 'Payment/Mpesa-Daraja-Api-main/DBconnection.php';
 header("Content-Type: application/json");
 $stkCallbackResponse = file_get_contents('php://input');
 $logFile = "Mpesastkresponse.json";

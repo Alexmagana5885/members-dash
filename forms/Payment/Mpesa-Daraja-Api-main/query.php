@@ -1,11 +1,13 @@
 <?php
-//INCLUDE ACCESS TOKEN FILE 
+
+//INCLUDE THE ACCESS TOKEN FILE
 include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
-$query_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query';
-$BusinessShortCode = '174379';
-$Timestamp = date('YmdHis');
+$query_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest ';
 $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+$BusinessShortCode = '174379'; //change this to agl till
+$Timestamp = date('YmdHis');
+ 
 // ENCRIPT  DATA TO GET PASSWORD
 $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 //THIS IS THE UNIQUE ID THAT WAS GENERATED WHEN STK REQUEST INITIATED SUCCESSFULLY
