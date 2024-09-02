@@ -130,7 +130,7 @@ $userPhone = $_SESSION['user_phone'];
                 <li><a href="admin/settings.html">Admit New Members</a></li>
                 <li><a id="openBlogPostModal">Post a Blog</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a id="MembersTable-link" href="#team">Members</a></li>
+                <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                 <li><a href="#team">Officials</a></li>
                 <li><a href="pages/newfile.html">Donations</a></li>
                 <li><a href="Payment/index.php">Payments</a></li>
@@ -177,7 +177,8 @@ $userPhone = $_SESSION['user_phone'];
                 <div class="card">
                     <img class="cardMemberprofile" src="<?php echo htmlspecialchars($passportImage); ?>"
                         alt="User Image">
-                    <h5><?php echo htmlspecialchars($name); ?></h5><hr><br>
+                    <h5><?php echo htmlspecialchars($name); ?></h5>
+                    <hr><br>
                     <h4><?php echo htmlspecialchars($userEmail); ?></h4>
                     <p>Registration Date: <?php echo htmlspecialchars($registrationDate); ?></p>
                 </div>
@@ -373,84 +374,6 @@ $userPhone = $_SESSION['user_phone'];
                 document.getElementById('closeFullMessage').addEventListener('click', function () {
                     document.getElementById('fullMessagePopup').style.display = 'none';
                 });
-            </script>
-
-
-
-
-
-            <!-- ............................ -->
-
-            <?php
-
-            // Query to select data from the personalmembership table
-            $sql = 'SELECT * FROM personalmembership';
-            $result = $conn->query($sql);
-
-            if (!$result) {
-                die("Query failed: " . $conn->error);
-            }
-            ?>
-
-
-            <!-- Popup container for the table members -->
-            <div id="MemberDISTablePopup-table" class="popup-table">
-                <div class="popup-content-table">
-                    <span class="close-btn-table">&times;</span>
-                    <div style="margin-top: 20px;" class="MinPrtSecSpace-table">
-                        <h3>Members Information</h3><br>
-                        <div class="card_table-table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Phone Number</th>
-                                        <th>Email</th>
-                                        <th>User Position</th>
-                                        <th>Current Work Place</th>
-                                        <th>Full Details</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($row = $result->fetch_assoc()): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($row['id']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['name']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['phone']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['email']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['position']); ?></td>
-                                            <td><?php echo htmlspecialchars($row['current_company']); ?></td>
-                                            <td><a href="member_details.php?email=<?php echo urlencode($row['email']); ?>">Show
-                                                    More</a></td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                // Get the popup element
-                var popup = document.getElementById("MemberDISTablePopup-table");
-                var openPopupLink = document.getElementById("MembersTable-link");
-                var closeBtn = document.getElementsByClassName("close-btn-table")[0];
-
-                openPopupLink.onclick = function (event) {
-                    event.preventDefault();
-                    popup.style.display = "flex";
-                }
-
-                closeBtn.onclick = function () {
-                    popup.style.display = "none";
-                }
-                window.onclick = function (event) {
-                    if (event.target == popup) {
-                        popup.style.display = "none";
-                    }
-                }
             </script>
 
 
@@ -791,7 +714,7 @@ $userPhone = $_SESSION['user_phone'];
     </div>
 
     <footer style="font-size: 11px; font-style: italic; text-align: center; background-color: #b4ccdb; color: black; ">
-        <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">AGL.or.ke</a> . All rights reserved.</p>
+        <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">http://www.agl.or.ke/</a> . All rights reserved.</p>
     </footer>
 
 

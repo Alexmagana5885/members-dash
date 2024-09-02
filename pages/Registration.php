@@ -869,7 +869,7 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">AGL.or.ke</a> . All rights reserved.</p>
+    <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">http://www.agl.or.ke/</a> . All rights reserved.</p>
   </footer>
 
   <!-- JavaScript for Menu Toggle -->

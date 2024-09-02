@@ -27,31 +27,162 @@ $member = $result->fetch_assoc();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Member Details</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    <link href="../assets/img/favicon.png" rel="icon">
+    <link href="../assets/img/favicon.png" rel="favicon.png">
+    
+    
+<style>
+    /* Base styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
 
-        th {
-            background-color: #f2f2f2;
-        }
+th {
+    background-color: #f2f2f2;
+}
 
-        .container {
-            margin: 20px;
-        }
-    </style>
+.container {
+    margin: 20px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 5px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin: 10px 0 5px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background-color: #2b98ed;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+button[type="button"] {
+    background-color: #86b0d1;
+    color: white;
+}
+
+button[type="button"]:hover {
+    background-color: #e53935;
+}
+
+/* Styles for small screens */
+@media (max-width: 768px) {
+    .popup-content {
+        width: 90%;
+        margin: 10% auto;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .button-container button {
+        width: 80%;
+        margin-bottom: 10px;
+    }
+
+    table {
+        font-size: 14px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .popup-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+
+    table {
+        font-size: 12px; 
+    }
+
+    label {
+        font-size: 14px; 
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"] {
+        font-size: 14px; 
+    }
+
+    button {
+        font-size: 14px; 
+        padding: 8px 16px;
+    }
+}
+
+</style>
+
+
 </head>
 
 <body>
     <div class="container">
-        <h1>Member Details</h1>
+        <h1>Member Details</h1> <button onclick="openPopup()">Make Official</button>
         <table>
             <tr>
                 <th>ID</th>
@@ -138,6 +269,39 @@ $member = $result->fetch_assoc();
                 <td><?php echo htmlspecialchars($member['registration_date']); ?></td>
             </tr>
         </table>
+
+
+        <script>
+            function openPopup() {
+                document.getElementById('popup').style.display = 'flex';
+            }
+
+            function closePopup() {
+                document.getElementById('popup').style.display = 'none';
+            }
+        </script>
+
+
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <h2>Make Member Official</h2>
+                <form action="../forms/make_official.php" method="post">
+                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($member['email']); ?>">
+                    <label for="position">Position:</label>
+                    <input type="text" id="position" name="position" required>
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date" required>
+                    <label for="number_of_terms">Number of Terms:</label>
+                    <input type="number" id="number_of_terms" name="number_of_terms" min="0" required>
+                    <div class="button-container">
+                        <button type="submit">Submit</button>
+                        <button type="button" onclick="closePopup()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
     </div>
 </body>
 
