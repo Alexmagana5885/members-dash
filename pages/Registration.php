@@ -644,7 +644,7 @@
             </div>
 
             <div class="stepINdivdiv">
-              <label>Make payment of Ksh 2000.00 as membership fee</label><br>
+              <label>Make payment of Ksh 2000.00 as Registration fee</label><br>
               <p>Kindly ensure you create your password before making your payment. After completing the payment,
                 you will be redirected to the login page, where you can log in using your credentials.</p>
               <label>Click to make Your payment</label><br>
@@ -727,8 +727,6 @@
           </div>
         </form>
       </div>
-
-
 
 
       <!-- PayPal Payment Popup -->
