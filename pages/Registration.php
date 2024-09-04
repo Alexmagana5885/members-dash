@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../assets/CSS/registration.cs">
 </head>
 
-<style>
+<style> 
   /* Basic Reset */
   * {
     margin: 0;
@@ -609,34 +609,19 @@
           </div>
         </div>
 
+        <style>
+          .payment-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+          }
+        </style>
+
         <div id="payment" class="form-step">
           <div class="form-stepINdiv">
-            <div class="stepINdivdiv">
-              <label>Make payment of Ksh 2000.00 as membership fee</label><br>
-              <label>Choose Payment Method:</label><br>
-              <button type="button" class="payment-button" id="mpesa"
-                onclick="selectPaymentMethod('mpesa')">Mpesa</button>
-              <button type="button" class="payment-button" id="paypal"
-                onclick="selectPaymentMethod('paypal')">PayPal</button>
-              <button type="button" class="payment-button" id="card" onclick="selectPaymentMethod('card')">Card</button>
-              <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" required>
-              <br><br><br>
-
-              <label for="options">Choose method used to make the payment:</label>
-              <select id="options" name="options">
-                <option value="Mpesa">Mpesa</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Card">Card</option>
-                <option value="cash">cash</option>
-              </select>
-
-            </div>
 
             <div class="stepINdivdiv">
-              <label for="paymentCode">Payment Code/ Receiver</label>
-              <input placeholder="Record the payment code from payment Message" type="text" id="paymentCode"
-                name="paymentCode"><br><br>
-
+              <p>Create a strong password with a minimum length of 8 characters, including a mix of
+                upper-case letters, lower-case letters, numbers, and special characters.</p>
               <label for="password">Enter password</label><br>
               <div class="password-container">
                 <input type="password" id="password" name="password" required oninput="validatePasswords()">
@@ -650,8 +635,41 @@
                 <span class="toggle-icon" onclick="togglePassword('confirm-password')">👁️</span>
               </div><br><br>
 
-              <div class="error-message" id="error-message">Passwords do not match</div>
+              <!-- <div class="error-message" id="error-message">Passwords do not match or does not Follow the password Policy given above</div>
+               -->
+              <div class="error-message" id="error-message1">Passwords do not match!</div>
+
+              <div class="error-message" id="error-message2">Password does not meet policy requirements Above!</div>
+
             </div>
+
+            <div class="stepINdivdiv">
+              <label>Make payment of Ksh 2000.00 as membership fee</label><br>
+              <p>Kindly ensure you create your password before making your payment. After completing the payment,
+                you will be redirected to the login page, where you can log in using your credentials.</p>
+              <label>Click to make Your payment</label><br>
+              <button type="button" class="payment-button" id="mpesa"
+                onclick="selectPaymentMethod('mpesa')" disabled>Mpesa</button>
+
+              <button style="display: none;" type="button" class="payment-button" id="paypal"
+                onclick="selectPaymentMethod('paypal')">PayPal</button>
+
+              <button style="display: none;" type="button" class="payment-button" id="card"
+                onclick="selectPaymentMethod('card')">Card</button>
+
+              <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" required>
+              <br><br><br>
+
+              <!-- <label for="options">Choose method used to make the payment:</label>
+              <select id="options" name="options">
+                <option value="Mpesa">Mpesa</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Card">Card</option>
+                <option value="cash">cash</option>
+              </select> -->
+
+            </div>
+
           </div>
         </div>
 
@@ -666,8 +684,7 @@
         </div>
 
         <script>
-          // Check if there's an error message to show
-          window.addEventListener('DOMContentLoaded', (event) => {
+          document.addEventListener('DOMContentLoaded', (event) => {
             const errorMessage = document.getElementById('errorMessage');
             if (errorMessage) {
               // Hide the error message after 10 seconds
@@ -677,8 +694,6 @@
             }
           });
         </script>
-
-
 
         <div class="form-navigation">
 
@@ -695,14 +710,16 @@
           <span class="close">×</span>
           <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
 
+          <p style="text-align: center; " >Enter the phone number you are using to make the payment here</p>
+
           <label for="phone-number-mpesa">Number</label>
           <input type="number" id="phone-number-mpesa" name="phone_number" placeholder="Enter your phone number"
             required>
 
           <label for="amount">Amount</label>
-          <input type="text" id="amount" name="amount" value="300" readonly>
+          <input type="text" id="amount" name="amount" value="1" readonly>
 
-          <p>Confirm that you are making a payment of 300 Ksh as membership fees to the Association of Government
+          <p style="text-align:center;" >Confirm that you are making a payment of Two Thousand Kenyan Shillings. (2,000 Ksh) as membership fees to the Association of Government
             Librarians.</p>
 
           <div class="payButtons">
@@ -710,6 +727,8 @@
           </div>
         </form>
       </div>
+
+
 
 
       <!-- PayPal Payment Popup -->
@@ -846,17 +865,60 @@
           passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
         }
 
+
         function validatePasswords() {
           const password = document.getElementById('password').value;
           const confirmPassword = document.getElementById('confirm-password').value;
-          const errorMessage = document.getElementById('error-message');
+          const passwordPolicyRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+
+          const errorMessage1 = document.getElementById('error-message1');
+          const errorMessage2 = document.getElementById('error-message2');
+
+          let showError1 = false;
+          let showError2 = false;
 
           if (password !== confirmPassword) {
-            errorMessage.style.display = 'block';
+            showError1 = true;
+          }
+
+          if (!passwordPolicyRegex.test(password)) {
+            showError2 = true;
+          }
+
+          if (showError1) {
+            errorMessage1.style.display = 'block';
           } else {
-            errorMessage.style.display = 'none';
+            errorMessage1.style.display = 'none';
+          }
+
+          if (showError2) {
+            errorMessage2.style.display = 'block';
+          } else {
+            errorMessage2.style.display = 'none';
+          }
+
+          
+          const button = document.getElementById('mpesa');
+          if (password && confirmPassword && !showError1 && !showError2) {
+            button.disabled = false;
+          } else {
+            button.disabled = true;
           }
         }
+
+        function togglePassword(id) {
+          const passwordField = document.getElementById(id);
+          if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+          } else {
+            passwordField.type = 'password';
+          }
+        }
+
+        // function selectPaymentMethod(method) {
+        //   alert(`Selected payment method: ${method}`);
+        // }
+
       </script>
 
       <script src="https://js.stripe.com/v3/"></script>
@@ -869,7 +931,8 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">http://www.agl.or.ke/</a> . All rights reserved.</p>
+    <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">http://www.agl.or.ke/</a> . All rights reserved.
+    </p>
   </footer>
 
   <!-- JavaScript for Menu Toggle -->
