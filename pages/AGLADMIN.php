@@ -14,85 +14,6 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
-<style>
-    .sidebar {
-        overflow: auto;
-        scrollbar-width: thin;
-        height: 100vh;
-    }
-
-    .dashboard {
-        height: 100vh;
-        overflow: auto;
-        scrollbar-width: thin;
-    }
-
-    @media (max-width: 768px) {
-        .sidebar {
-            position: fixed;
-        }
-
-    }
-
-
-    .popup-form {
-        display: none;
-        /* Hidden by default */
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-
-    .form-container {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        width: 300px;
-        max-width: 80%;
-    }
-
-    label {
-        display: block;
-        margin-top: 10px;
-        font-weight: bold;
-    }
-
-    input {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        margin-bottom: 15px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-
-    button[type="submit"] {
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    button[type="button"] {
-        padding: 10px;
-        background-color: #f44336;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-left: 10px;
-    }
-</style>
-
-
 <body>
     <header>
         <div class="logo">
@@ -107,7 +28,6 @@
         </div>
 
     </header>
-
 
     <div class="main-content">
 
@@ -218,9 +138,7 @@
                 $sessionEmail = $_SESSION['user_email'];
 
                 // Fetch education information from the database
-                $query = "SELECT highest_degree, institution, start_date, graduation_year 
-          FROM personalmembership 
-          WHERE email = ?";
+                $query = "SELECT highest_degree, institution, start_date, graduation_year FROM personalmembership WHERE email = ?";
                 $stmt = $conn->prepare($query);
                 $stmt->bind_param("s", $sessionEmail);
                 $stmt->execute();
@@ -255,49 +173,46 @@
 
 
                 <?php
-
-
-                // Ensure that the session contains the email
+                // session_start();
+                
                 if (!isset($_SESSION['user_email'])) {
                     die("User not logged in");
                 }
 
                 $userEmail = $_SESSION['user_email'];
 
+                // Debugging session email
+                
+
                 // Prepare the SQL query
                 $sql = "SELECT event_name, event_location, event_date FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
                 $stmt = $conn->prepare($sql);
 
-                // Check if prepare() failed
                 if ($stmt === false) {
                     die('Prepare failed: ' . htmlspecialchars($conn->error));
                 }
 
-                // Bind parameters
                 $stmt->bind_param("s", $userEmail);
 
-                // Execute the statement
                 if (!$stmt->execute()) {
                     die('Execute failed: ' . htmlspecialchars($stmt->error));
                 }
 
-                // Get the result
-                $result = $stmt->get_result();
+                $resultmessage = $stmt->get_result();
 
-                // Check if result fetching was successful
-                if ($result === false) {
+                if ($resultmessage === false) {
                     die('Get result failed: ' . htmlspecialchars($stmt->error));
                 }
-                ?>
 
+                ?>
                 <div class="card">
                     <h4>Registered Events</h4>
+
                     <hr>
 
                     <?php
-                    if ($result->num_rows > 0) {
-                        // Output data of each row
-                        while ($row = $result->fetch_assoc()) {
+                    if ($resultmessage->num_rows > 0) {
+                        while ($row = $resultmessage->fetch_assoc()) {
                             echo '<div>';
                             echo '<h5>' . htmlspecialchars($row['event_name']) . '</h5>';
                             echo '<p>' . htmlspecialchars($row['event_location']) . '</p>';
@@ -309,15 +224,62 @@
                         echo '<p>No upcoming registered events.</p>';
                     }
 
-                    $stmt->close();
+
+
+                    // $stmt->close();
+                    // $conn->close();
                     ?>
                 </div>
 
 
-            </div>
 
+            </div>
+            <!-- ................................... -->
 
             <!-- messages -->
+
+            <?php
+
+                $user_email = $_SESSION['user_email'];
+                $messages = [];
+
+                require_once('../forms/DBconnection.php');
+
+                // Check if the user is an official member
+                $officialQuery = "SELECT * FROM officialsmembers WHERE personalmembership_email = ?";
+                $stmt = $conn->prepare($officialQuery);
+                $stmt->bind_param("s", $user_email);
+                $stmt->execute();
+                $officialResult = $stmt->get_result();
+
+                // Prepare the appropriate message query
+                if ($officialResult->num_rows > 0) {
+                    // The user is an official member; fetch messages from both tables
+                    $messageQuery = "
+                    SELECT subject, message, date_sent FROM membermessages WHERE recipient_group = 'all'
+                    UNION ALL
+                    SELECT subject, message, date_sent FROM officialmessages WHERE recipient_group = 'officials' OR recipient_group = ?
+                    ORDER BY date_sent DESC";
+                } else {
+                    // The user is not an official member; fetch messages only from the membermessages table
+                    $messageQuery = "SELECT subject, message, date_sent FROM membermessages WHERE recipient_group = 'all' OR recipient_group = ? ORDER BY date_sent DESC";
+                }
+
+                // Prepare the statement for fetching messages
+                $stmt = $conn->prepare($messageQuery);
+                $stmt->bind_param("s", $user_email);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                // Store the fetched messages in an array
+                while ($row = $result->fetch_assoc()) {
+                    $messages[] = $row;
+                }
+
+                // Close the statement and connection
+                // $stmt->close();
+                // $conn->close();
+            ?>
 
             <div class="message-popup" id="messagePopupReceivedMessages">
                 <div class="message-popup-header">
@@ -325,20 +287,29 @@
                     <button id="closePopupReceivedMessages">&times;</button>
                 </div>
                 <div class="message-container">
-
-
-                    <div class="message"
-                        onclick="showFullMessageReceivedMessages('Hello, how are you? This is the full message content. how are you? This is the full message content. how are you? This is the full message content. how are you? This is the full message content. how are you? This is the full message content.  ')">
-                        <p class="message-content">Hello, how are you?</p>
-                        <span class="message-time">10:30 AM</span>
-                    </div>
-                    <div class="message"
-                        onclick="showFullMessageReceivedMessages('I\'m fine, thank you! Here is more about what I wanted to say...')">
-                        <p class="message-content">I'm fine, thank you!</p>
-                        <span class="message-time">10:32 AM</span>
-                    </div>
+                    <?php if (empty($messages)): ?>
+                        <p>No messages found.</p>
+                    <?php else: ?>
+                        <?php foreach ($messages as $message): ?>
+                            <div class="message"
+                                onclick="showFullMessageReceivedMessages('<?php echo htmlspecialchars($message['message'], ENT_QUOTES); ?>')">
+                                <p class="message-content"><?php echo htmlspecialchars($message['subject'], ENT_QUOTES); ?></p>
+                                <span class="message-time"><?php echo date("h:i A", strtotime($message['date_sent'])); ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
+
+
+            <!-- <script>
+                function showFullMessageReceivedMessages(messageContent) {
+                    alert(messageContent); 
+                }
+            </script> -->
+
+
+
 
             <!-- Full message pop-up -->
             <div class="full-message-popup" id="fullMessagePopupReceivedMessages">
@@ -347,7 +318,7 @@
                     <p id="fullMessageTextReceivedMessages"></p>
                 </div>
             </div>
-
+            <!-- Full message pop-up script -->
             <script>
                 document.getElementById('toggleMessagesReceivedMessages').addEventListener('click', function () {
                     document.getElementById('messagePopupReceivedMessages').style.display = 'flex';
@@ -366,8 +337,6 @@
                     document.getElementById('fullMessagePopupReceivedMessages').style.display = 'none';
                 });
             </script>
-
-
 
             <!-- planned ivents -->
 
@@ -438,7 +407,6 @@
                 </div>
             </div>
 
-
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     <?php
@@ -476,13 +444,11 @@
 
             <!-- ........................................ -->
 
-
             <div>
             </div>
 
 
             <!-- popups -->
-
 
             <!-- Post Planned Event Modal -->
             <div id="myModal" class="modal">
@@ -515,6 +481,30 @@
                     </form>
                 </div>
             </div>
+            <!-- Post Planned Event Modal  script-->
+            <script>
+
+                var modal = document.getElementById("myModal");
+
+                var openModalBtn = document.getElementById("openPostEventModal");
+
+                var closeBtn = document.getElementsByClassName("close")[0];
+
+                openModalBtn.onclick = function (event) {
+                    event.preventDefault();
+                    modal.style.display = "block";
+                };
+
+                closeBtn.onclick = function () {
+                    modal.style.display = "none";
+                };
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                };
+            </script>
 
             <!-- Past Events Modal -->
 
@@ -562,48 +552,162 @@
                     </form>
                 </div>
             </div>
+            <!-- Past Events Modal script-->
+            <script>
+                var modal = document.getElementById("pastEventModal");
+                var btn = document.getElementById("openPastEventModal");
+                var span = document.getElementsByClassName("close-past-event")[0];
+                btn.onclick = function () {
+                    modal.style.display = "block";
+                }
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            </script>
 
+            <!-- delete the style alredy delete -->
+            <style>
+                .message-popup-sendMessage {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.6);
+                    display: none;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                }
 
+                .message-popup-content-sendMessage {
+                    background-color: #ffffff;
+                    width: 90%;
+                    max-width: 500px;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    position: relative;
+                }
 
-            <!-- Message Popup -->
-            <div class="message-popup" id="messagePopupsend">
-                <div class="message-popup-content">
-                    <button class="message-close-btn" id="messageClosePopupBtn">
+                .message-close-btn-sendMessage {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    font-size: 24px;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                }
+
+                .message-form-group-sendMessage {
+                    margin-bottom: 15px;
+                }
+
+                .message-form-group-sendMessage input,
+                .message-form-group-sendMessage select {
+                    width: 100%;
+                    padding: 8px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    margin-top: 5px;
+                    font-size: 16px;
+                }
+
+                .quill-editor-container-sendMessage {
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    margin-top: 5px;
+                    height: 150px;
+                }
+
+                .message-submit-btn-sendMessage {
+                    width: 100%;
+                    padding: 10px;
+                    background-color: #4CAF50;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 16px;
+                }
+
+                .message-submit-btn-sendMessage:hover {
+                    background-color: #45a049;
+                }
+
+                @media screen and (max-width: 600px) {
+                    .message-popup-content-sendMessage {
+                        width: 90%;
+                        padding: 15px;
+                    }
+                }
+            </style>
+
+            <!-- send Message Popup -->
+            <div class="message-popup-sendMessage" id="messagePopupsend">
+                <div class="message-popup-content-sendMessage">
+                    <button class="message-close-btn-sendMessage" id="messageClosePopupBtn">
                         &times;
                     </button>
                     <h2>Send a Message</h2>
-                    <form id="messageForm" action="send_message.php" method="post">
-                        <div class="message-form-group">
+                    <form id="messageFormSendMessage" action="../forms/send_message.php" method="post">
+                        <div class="message-form-group-sendMessage">
                             <label for="messageSenderName">Your Name:</label>
                             <input type="text" id="messageSenderName" name="sender_name" required />
                         </div>
-                        <div class="message-form-group">
+                        <div class="message-form-group-sendMessage">
                             <label for="messageSenderEmail">Your Email:</label>
-                            <input type="email" id="messageSenderEmail" name="sender_email" required />
+                            <input type="email" id="messageSenderEmail" name="sender_email"
+                                value="maganaalex634@gmail.com" required readonly />
                         </div>
-                        <div class="message-form-group">
+
+                        <div class="message-form-group-sendMessage">
                             <label for="messageRecipient">Recipient:</label>
                             <select id="messageRecipient" name="recipient" required>
                                 <option value="all_members">All Members</option>
                                 <option value="officials_only">Officials Only</option>
                             </select>
                         </div>
-                        <div class="message-form-group">
+                        <div class="message-form-group-sendMessage">
                             <label for="messageSubject">Subject:</label>
                             <input type="text" id="messageSubject" name="subject" required />
                         </div>
-                        <div class="message-form-group">
+                        <div class="message-form-group-sendMessage">
                             <label for="messageContent">Message:</label>
-                            <div id="messageContent" class="quill-editor-container">
-                                <!-- Quill Editor -->
-                            </div>
-                            <input type="hidden" name="message" id="messageContentHidden" />
+                            <textarea style="width: 100%; min-height: 200px; padding: 5px; " name="message"
+                                id="sendmessageContent"></textarea>
                         </div>
-                        <button type="submit" class="message-submit-btn">Send Message</button>
+                        <button type="submit" class="message-submit-btn-sendMessage">Send Message</button>
                     </form>
                 </div>
             </div>
 
+            <!-- Message Popup script-->
+            <script>
+                function showMessagePopup() {
+                    document.getElementById('messagePopupsend').style.display = 'flex';
+                }
+                function hideMessagePopup() {
+                    document.getElementById('messagePopupsend').style.display = 'none';
+                }
+
+                document.getElementById('openMessagePopupSend').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    showMessagePopup();
+                });
+
+                document.getElementById('messageClosePopupBtn').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    hideMessagePopup();
+                });
+
+            </script>
 
 
             <!-- Blog Post Modal -->
@@ -630,6 +734,25 @@
                     </form>
                 </div>
             </div>
+            <!-- Blog Post Modal script -->
+            <script>
+
+                const blogPostModal = document.getElementById("blogPostModal");
+                const openBlogPostModal = document.getElementById("openBlogPostModal");
+                const closeBlogPost = document.querySelector(".close-blog-post");
+                openBlogPostModal.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    blogPostModal.style.display = "block";
+                });
+                closeBlogPost.addEventListener("click", function () {
+                    blogPostModal.style.display = "none";
+                });
+                window.addEventListener("click", function (event) {
+                    if (event.target == blogPostModal) {
+                        blogPostModal.style.display = "none";
+                    }
+                });
+            </script>
 
             <!-- JavaScript Files -->
 
@@ -638,7 +761,7 @@
 
             <script src="../assets/JS/quill.min.js"></script>
             <script src="../assets/JS/popups.js"></script>
-
+            <!-- // Initialize Quill editor -->
             <script>
                 // Initialize Quill editor
                 var quill = new Quill('#pastEventDetailsEditor', {
@@ -651,7 +774,6 @@
                     document.getElementById('pastEventDetailsHidden').value = quill.root.innerHTML;
                 };
             </script>
-
 
 
             <?php
@@ -712,7 +834,7 @@
             reserved.</p>
     </footer>
 
-
+    <!-- side bar script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const toggleButton = document.getElementById('toggleMenu');
