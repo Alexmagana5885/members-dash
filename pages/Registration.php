@@ -7,477 +7,9 @@
   <title>Member Registration</title>
   <link href="../assets/img/favicon.png" rel="icon" />
   <link href="../assets/img/favicon.png" rel="favicon.png" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="../assets/CSS/registration.cs">
+  <link rel="stylesheet" href="../assets/CSS/registration.css">
 </head>
 
-<style> 
-  /* Basic Reset */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  /* Body Styling */
-  body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  /* Header Styling */
-  .site-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: #6ec1e4;
-    color: #fff;
-    position: relative;
-  }
-
-  .site-header .logo IMg {
-    width: 25%;
-    padding: 0;
-  }
-
-  .navigation {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .navigation ul {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-  }
-
-  .navigation a {
-    color: #fff;
-    text-decoration: none;
-  }
-
-  .navigation a:hover {
-    text-decoration: underline;
-  }
-
-  /* Menu Toggle Button */
-  .menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 2rem;
-    cursor: pointer;
-  }
-
-  /* Main Content Styling */
-  main {
-    flex: 1;
-    padding: 1rem;
-  }
-
-  /* Footer Styling */
-  .site-footer {
-    background-color: #f2f2f2;
-    color: #333;
-    text-align: center;
-    padding: 1rem;
-    bottom: 0;
-    width: 100%;
-    font-size: 11px;
-    font-style: italic;
-  }
-
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .navigation {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background-color: #6ed1e5;
-      width: 200px;
-      padding: 1rem;
-      z-index: 1000;
-    }
-
-    .site-header .logo IMg {
-      width: 150px;
-      padding: 0;
-    }
-
-    .navigation.active {
-      display: flex;
-    }
-
-    .menu-toggle {
-      display: block;
-    }
-
-    .navigation ul {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-  }
-
-  .container {
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* width: 70%; */
-    height: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow-y: auto;
-  }
-
-  /* Large screens (desktops) */
-  @media (min-width: 1024px) {
-    .container {
-      width: 80%;
-      height: 90%;
-    }
-  }
-
-  /* Small screens (tablets and phones) */
-  @media (max-width: 1024px) {
-    .container {
-      width: 100%;
-      height: auto;
-      padding: 10px;
-      margin-top: 40px;
-    }
-  }
-
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .progress-bar {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-  }
-
-  .progress-step {
-    width: 25%;
-    text-align: center;
-    position: relative;
-  }
-
-  .progress-step::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: #e0e0e0;
-    z-index: -1;
-  }
-
-  .progress-step.active::before {
-    background: #3498db;
-  }
-
-  .progress-step-circle {
-    width: 20px;
-    height: 20px;
-    background: #e0e0e0;
-    border-radius: 50%;
-    display: inline-block;
-    line-height: 20px;
-    text-align: center;
-    color: #fff;
-  }
-
-  .progress-step.active .progress-step-circle {
-    background: #3498db;
-  }
-
-  .form-step {
-    display: none;
-  }
-
-  .form-step.active {
-    display: block;
-  }
-
-  .form-navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: auto;
-  }
-
-  .form-navigation button {
-    padding: 10px 20px;
-    background: #3498db;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    flex-grow: 1;
-    margin: 5px;
-    border-radius: 5px;
-  }
-
-  .form-navigation button:disabled {
-    background: #e0e0e0;
-    cursor: not-allowed;
-  }
-
-  .form-navigation button.previous {
-    background: #555;
-  }
-
-  /* General styles for labels */
-  label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
-  }
-
-  /* General styles for input fields */
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="date"],
-  input[type="number"],
-  input[type="file"],
-  input[type="month"],
-  input[type="password"],
-  select {
-    width: calc(100% - 22px);
-    padding: 8px;
-    margin-bottom: 5px;
-    border: 0;
-    border-radius: 4px;
-    box-sizing: border-box;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  textarea {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 0;
-    border-radius: 4px;
-    box-sizing: border-box;
-    resize: vertical;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  input[type="file"] {
-    padding: 0;
-    border: none;
-  }
-
-  .form-stepINdiv {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .stepINdivdiv {
-    width: 50%;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 1024px) {
-    label {
-      font-size: 14px;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="date"],
-    input[type="number"],
-    input[type="file"],
-    input[type="month"],
-    input[type="password"],
-    select {
-      padding: 8px;
-    }
-
-    textarea {
-      padding: 8px;
-    }
-
-    .form-stepINdiv {
-      flex-direction: column;
-    }
-
-    .stepINdivdiv {
-      width: 100%;
-    }
-  }
-
-  .password-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-
-  .password-container input {
-    width: 100%;
-    padding: 10px;
-    padding-right: 40px;
-    box-sizing: border-box;
-    border: 0;
-    border-radius: 4px;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  .password-container .toggle-icon {
-    position: absolute;
-    right: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #333;
-  }
-
-  .error-message {
-    color: red;
-    font-size: 13px;
-    display: none;
-  }
-
-  .stepINdivdiv {
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .payment-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    width: 60%;
-  }
-
-  .payment-button:hover {
-    background-color: #0056b3;
-  }
-
-  /* General Popup Container Styling */
-  .popup-container {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .popup-content {
-    background-color: #fff;
-    margin: 8% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-  }
-
-  /* Close Button Styling */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 35px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .popup-logo {
-    display: block;
-    margin: 0 auto 15px;
-    max-width: 150px;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-
-  label {
-    margin: 10px 0 5px;
-  }
-
-  input[type="text"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 15px;
-  }
-
-  input[type="text"]:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-
-  .payButtons {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-  }
-
-  .payButtons button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px;
-  }
-
-  .pay-btn {
-    background-color: #28a745;
-  }
-
-  .cancel-btn {
-    background-color: #dc3545;
-  }
-
-  .pay-btn:hover {
-    background-color: #218838;
-  }
-
-  .cancel-btn:hover {
-    background-color: #c82333;
-  }
-
-  @media (max-width: 600px) {
-    .popup-content {
-      width: 90%;
-      margin: 10% auto;
-    }
-  }
-</style>
 
 <body>
   <!-- Header -->
@@ -702,11 +234,49 @@
         </div>
       </form>
 
+      <script>
+    function collectAndRedirect() {
+      // Collect form data
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        dob: document.getElementById('dob').value,
+        homeAddress: document.getElementById('Homeaddress').value,
+        passport: document.getElementById('passport').files[0]?.name,
+        highestDegree: document.getElementById('highestDegree').value,
+        institution: document.getElementById('institution').value,
+        startDate: document.getElementById('startDate').value,
+        graduationYear: document.getElementById('graduationYear').value,
+        completionLetter: document.getElementById('completionLetter').files[0]?.name,
+        profession: document.getElementById('profession').value,
+        experience: document.getElementById('experience').value,
+        currentCompany: document.getElementById('currentCompany').value,
+        position: document.getElementById('position').value,
+        workAddress: document.getElementById('workAddress').value,
+        password: document.getElementById('password').value
+      };
+
+      // Convert form data to JSON
+      const jsonData = JSON.stringify(formData);
+
+      // Store JSON data in a hidden field or pass it in a URL
+      const hiddenField = document.getElementById('hiddenFormData');
+      hiddenField.value = jsonData;
+
+      // Optionally, you can redirect to a payment page if needed
+      // For example:
+      // window.location.href = 'paymentPage.html';
+
+      // Or submit the form if it's part of the same form
+      document.getElementById('mpesaFormPay').submit();
+    }
+  </script>
 
 
       <!-- M-Pesa Payment Form -->
       <div id="mpesaForm" class="popup-container">
-        <form class="popup-content" method="POST" action="../forms/Payment/Mpesa-Daraja-Api-main/stkpush.php">
+        <form id="mpesaFormPay"  class="popup-content" method="POST" action="../forms/Payment/Mpesa-Daraja-Api-main/stkpush.php">
           <span class="close">×</span>
           <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
 
@@ -723,7 +293,10 @@
             Librarians.</p>
 
           <div class="payButtons">
-            <button class="pay-btn" id="MakePaymentBTN" type="submit">Make Payment</button>
+          <input type="hidden" id="hiddenFormData" name="formData">
+
+          <button class="pay-btn" id="MakePaymentBTN" type="button" onclick="collectAndRedirect()">Make Payment and Submit</button>
+            <!-- <button class="pay-btn" id="MakePaymentBTN" type="submit">Make Payment</button> -->
           </div>
         </form>
       </div>
