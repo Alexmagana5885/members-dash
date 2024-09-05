@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($ResponseCode == "0") {
                     echo "The CheckoutRequestID for this transaction is: " . $CheckoutRequestID;
-                    header("Location: ../../../index.html"); 
+                    
                     exit;
                 } else {
                     echo "Error response from M-Pesa API. Response: " . $curl_response;

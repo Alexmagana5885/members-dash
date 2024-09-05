@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>payment</title>
+  </head>
+
+  <style>
+    .popup-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("../assets/img/DemoImage/about.jpg") no-repeat center
+        center/cover; /* Background image */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 0px;
+    }
+
+    /* Blackish layer overlay */
+    .popup-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7); /* Blackish overlay */
+      backdrop-filter: blur(1px);
+      z-index: 1;
+    }
+
+    /* Style for the popup content */
+    .popup-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      max-width: 100%;
+      position: relative;
+      text-align: left;
+      z-index: 2;
+    }
+
+    /* Style for the close button */
+    .popup-content .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* Style for the popup logo */
+    .popup-logo {
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 100px;
+    }
+
+    /* General form styling */
+    form label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    form input[type="number"],
+    form input[type="text"],
+    form input[type="email"] {
+      width: 90%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .payButtons {
+      text-align: center;
+    }
+
+    .pay-btn {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .pay-btn:hover {
+      background-color: #45a049;
+    }
+
+    /* Media query for small screens */
+    @media (max-width: 480px) {
+      .popup-content {
+        width: 85%;
+        padding: 10px;
+        margin: 0 auto;
+      }
+
+      .popup-logo {
+        max-width: 100px;
+      }
+
+      form label {
+        font-size: 14px;
+      }
+
+      form input[type="number"],
+      form input[type="text"] {
+        padding: 8px;
+        font-size: 14px;
+        width: 95%;
+      }
+
+      .pay-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+
+      .popup-content .close {
+        font-size: 18px;
+        top: 5px;
+        right: 5px;
+      }
+    }
+  </style>
+
+  <body>
+    <div id="mpesaForm" class="popup-container">
+      <form
+        class="popup-content"
+        method="POST"
+        action="../forms/Payment/Mpesa-Daraja-Api-main/stkpush.php"
+      >
+        <span class="close"></span>
+        <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo" />
+
+        <p style="text-align: center">
+          Enter the phone number you are using to make the payment here
+        </p>
+
+        <label for="Email">Registration Email</label>
+        <input
+          name="RegistrationEmail"
+          placeholder="Enter Your Registration email"
+          type="Email"
+        />
+
+        <label for="phone-number-mpesa">Number</label>
+        <input
+          type="number"
+          id="phone-number-mpesa"
+          name="phone_number"
+          placeholder="Enter your phone number"
+          required
+        />
+
+        <label for="amount">Amount</label>
+        <input type="text" id="amount" name="amount" value="1" readonly />
+
+        <p style="text-align: center">
+          Confirm that you are making a payment of Two Thousand Kenyan
+          Shillings. (2,000 Ksh) as membership fees to the Association of
+          Government Librarians.
+        </p>
+
+        <div class="payButtons">
+          <button class="pay-btn" id="MakePaymentBTN" type="submit">
+            Make Payment
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
