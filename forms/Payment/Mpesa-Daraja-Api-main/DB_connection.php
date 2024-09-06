@@ -1,6 +1,6 @@
 <?php
 // Database configuration
-$db_host = '192.168.0.106';
+$db_host = 'localhost';
 $db_username = 'root';
 $db_password = '';
 $db_name = 'agldatabase';

@@ -30,31 +30,17 @@ function normalizePhoneNumber($phone) {
 
 // Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve JSON data from the hidden field
-    $jsonData = $_POST['formData'] ?? null;
+    // Retrieve form data
+    $phone = $_POST['phone_number']; // Get phone number from form input
+    $amount = $_POST['amount'];      // Get amount from form input
 
-    // Retrieve form data directly
-    $phone = $_POST['phone_number'] ?? null;
-    $amount = $_POST['amount'] ?? null;
-
-    // Validate JSON data presence
-    if ($jsonData) {
-        $formData = json_decode($jsonData, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            echo "JSON decode error: " . json_last_error_msg();
-        }
-    } else {
-        echo "No JSON data provided.";
-    }
-
-    // Use phone and amount from form
+    // Normalize phone number
     $normalizedPhone = normalizePhoneNumber($phone);
 
     // Ensure phone and amount are valid
     if (!empty($normalizedPhone) && !empty($amount)) {
         $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-        $callbackurl = 'https://www.agl.or.ke/Daraja/callback.php'; // Callback URL
+        $callbackurl = 'https://www.agl.or.ke/Daraja/callback.php';
         $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
         $BusinessShortCode = '174379'; // Change this to your business shortcode
         $Timestamp = date('YmdHis');
@@ -106,43 +92,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $CheckoutRequestID = $data->CheckoutRequestID ?? null;
 
                 if ($ResponseCode == "0") {
-<<<<<<< HEAD
                     echo "The CheckoutRequestID for this transaction is: " . $CheckoutRequestID;
-                    
-=======
-                    // Prepare JSON data to send to callback
-                    $jsonDataToSend = json_encode([
-                        'MerchantRequestID' => $data->MerchantRequestID ?? null,
-                        'CheckoutRequestID' => $CheckoutRequestID,
-                        'ResultCode' => $ResponseCode,
-                        'Amount' => $Amount,
-                        'MpesaReceiptNumber' => $data->MpesaReceiptNumber ?? null,
-                        'PhoneNumber' => $PartyA
-                    ]);
-
-                    // Send JSON as form data to callback.php using cURL
-                    $ch = curl_init($callbackurl);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                        'jsonData' => $jsonDataToSend // Send JSON data as a form field
-                    ]);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        'Content-Type: application/x-www-form-urlencoded'
-                    ]);
-
-                    $callbackResponse = curl_exec($ch);
-
-                    if ($callbackResponse === false) {
-                        echo 'Callback curl error: ' . curl_error($ch);
-                    } else {
-                        echo 'Callback response: ' . $callbackResponse;
-                    }
-
-                    curl_close($ch);
-
-                    // Optionally redirect or handle success further
->>>>>>> 00729601ce20c36af6aa84a57c164406907002ce
+                    header("Location: ../../../index.html"); 
                     exit;
                 } else {
                     echo "Error response from M-Pesa API. Response: " . $curl_response;
