@@ -664,7 +664,7 @@
                         <div class="message-form-group-sendMessage">
                             <label for="messageSenderEmail">Your Email:</label>
                             <input type="email" id="messageSenderEmail" name="sender_email"
-                                value="maganaalex634@gmail.com" required readonly />
+                                value="info@agl.or.ke" required readonly />
                         </div>
 
                         <div class="message-form-group-sendMessage">
