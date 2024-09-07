@@ -9,7 +9,7 @@ $subject = $_POST['subject'];
 $message_content = $_POST['message'];
 
 // Default 'from' email
-$from_email = 'maganaalex634@gmail.com';
+$from_email = 'info@agl.or.ke';
 
 // Determine recipients based on user choice
 $recipients = [];
