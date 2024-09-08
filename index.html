@@ -43,12 +43,7 @@
           <form id="loginForm">
             <div class="input-group">
               <label for="MembershipType">Membership Type</label>
-              <select
-                class="optionLogin"
-                id="MembershipType"
-                name="MembershipType"
-                required
-              >
+              <select class="optionLogin" id="MembershipType" name="MembershipType" required>
                 <option value="Default">Choose</option>
                 <option value="IndividualMember">Individual Member</option>
                 <option value="OrganizationMember">Organization Member</option>
@@ -56,35 +51,22 @@
             </div>
             <div class="input-group">
               <label for="email">Email</label>
-              <input
-                class="emailInput"
-                type="email"
-                id="email"
-                name="email"
-                required
-              />
+              <input class="emailInput" type="email" id="email" name="email" required />
             </div>
             <div class="input-group">
               <label for="password">Password</label>
               <div class="password-container">
                 <input type="password" id="password" name="password" required />
-                <span
-                  class="toggle-password"
-                  onclick="togglePasswordVisibility()"
-                  >👁️</span
-                >
+                <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
               </div>
             </div>
-
             <button type="submit">Login</button>
-
             <p class="register-link">
               Not registered?
-              <a href="javascript:void(0)" onclick="showRegistration()"
-                >Register as a Member</a
-              >
+              <a href="javascript:void(0)" onclick="showRegistration()">Register as a Member</a>
             </p>
           </form>
+          
         </div>
       </div>
 
@@ -166,40 +148,39 @@
           window.location.href = url;
         }
 
-        document
-          .getElementById("loginForm")
-          .addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const formData = new FormData(this);
-
-            fetch("forms/start.php", {
-              method: "POST",
-              body: formData,
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data.status === "error") {
-                  showPopup(data.message);
-                } else if (data.status === "success") {
-                  window.location.href = data.redirect;
-                }
-              })
-              .catch((error) => {
-                console.error("Error:", error);
-                showPopup("An error occurred. Please try again.");
-              });
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+          event.preventDefault(); // Prevent default form submission
+        
+          const formData = new FormData(this);
+        
+          fetch("forms/start.php", { // Update this path to where your PHP script is located
+            method: "POST",
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "error") {
+              showPopup(data.message);
+            } else if (data.status === "success") {
+              window.location.href = data.redirect;
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            showPopup("An error occurred. Please try again.");
           });
-
+        });
+        
         function showPopup(message) {
           const popup = document.getElementById("popup");
           popup.textContent = message;
           popup.style.display = "block";
-
+        
           setTimeout(() => {
             popup.style.display = "none";
           }, 3000); // Hide popup after 3 seconds
         }
+        
       </script>
 
       <!-- HTML for the popup -->
