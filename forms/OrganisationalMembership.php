@@ -148,15 +148,65 @@ $stmt->bind_param(
     $hashedPassword
 );
 
+// if ($stmt->execute()) {
+//     echo "<script>
+//             window.location.href = '../index.html';
+//           </script>";
+// } else {
+//     $_SESSION['error_message'] = "An error occurred during registration. Please try again.";
+//     header('Location: ../pages/Registration.php');
+//     exit();
+// }
+
+
 if ($stmt->execute()) {
-    echo "<script>
-            window.location.href = '../index.html';
-          </script>";
+    // Email sending logic here
+    $to = $email; // User's email
+    $subject = "Welcome to Association of Government Librarians!";
+    $message = "
+    Dear $name,
+
+    Congratulations! Your registration with Association of Government Librarians has been successfully completed.
+
+    We are thrilled to have you as part of our community. Here are your registration details:
+
+    Name: $name
+    Email: $email
+
+    You can now log in to your account and explore the various features and resources available to you. If you have any questions or need assistance, please feel free to reach out to our support team at admin@or.ke.
+
+    You can log in from here: https://member.log.agl.or.ke/members
+
+    Thank you for joining us, and we look forward to your active participation!
+
+    AGL
+    http://agl.or.ke/
+    +254748027123
+    ";
+
+    // Set content-type header for plain text email
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/plain;charset=UTF-8" . "\r\n";
+
+    // Additional headers
+    $headers .= 'From: info@agl.or.ke' . "\r\n";
+
+    // Send email
+    if (mail($to, $subject, $message, $headers)) {
+        echo "<script>
+                window.location.href = '../index.html';
+              </script>";
+    } else {
+        $_SESSION['error_message'] = "Registration successful, but failed to send confirmation email.";
+        // header('Location: ../pages/Registration.php');
+        exit();
+    }
 } else {
     $_SESSION['error_message'] = "An error occurred during registration. Please try again.";
-    header('Location: ../pages/Registration.php');
+    // header('Location: ../pages/Registration.php');
     exit();
 }
+
 
 $stmt->close();
 $conn->close();

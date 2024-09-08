@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Member</title>
     <link rel="stylesheet" href="../assets/CSS/Dashboard.css">
     <link rel="stylesheet" href="../assets/CSS/popups.css">
     <link href="../assets/img/favicon.png" rel="icon">
@@ -36,19 +36,13 @@
                 <li>
                     <a href="https://www.agl.or.ke/" class="active">Home<br /></a>
                 </li>
-                <li><a id="openPostEventModal">Post Up coming Event</a></li>
-                <li><a id="openPastEventModal">Post past Event</a></li>
-                <li><a id="openMessagePopupSend">Send Message</a></li>
-                <li><a href="admin/settings.html">Admit New Members</a></li>
-                <li><a id="openBlogPostModal">Post a Blog</a></li>
                 <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                <li><a id="openPostEventModal">Post Up coming Event</a></li>
+                <li><a id="openMessagePopupSend">Send Message</a></li>
+                <li><a id="openBlogPostModal">Post a Blog</a></li>
                 <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                 <!-- <li><a href="pages/newfile.html">Donations</a></li> -->
                 <li><a href="Payment/index.php">Payments</a></li>
-                <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-                <li><a href="new.php">new</a></li>
-                <li><a href="MembersPortal.php">memebrportal</a></li>
-                <li><a href="AdminMember.php">memberadmin</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -240,7 +234,7 @@
 
 
             <!-- blogs -->
-<!-- delete the stylesheet -->
+            <!-- delete the stylesheet -->
             <style>
                 .blogPoint {
                     width: 100%;
@@ -316,17 +310,10 @@
                 }
             </style>
 
+            <h4 style=" padding: 20px; ">Blogs</h4>
 
             <div class="blogPoint">
-<!-- 
-                <div class="Singleblog">
-                    <div class="blogImage"><img src="../assets/img/DemoImage/stats-img.jpg" alt="Blog"></div>
-                    <div class="blogcontent">
-                        <h4>head</h4>
-                        <p>blog content</p>
-                        <h6>08/09/2024</h6>
-                    </div>
-                </div> -->
+
 
                 <?php
                 // Query to get blog posts
@@ -426,13 +413,7 @@
             </div>
 
 
-            <!-- <script>
-                function showFullMessageReceivedMessages(messageContent) {
-                    alert(messageContent); 
-                }
-            </script> -->
-
-
+            <!-- ........................................... -->
 
 
             <!-- Full message pop-up -->

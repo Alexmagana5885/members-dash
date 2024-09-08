@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Member Dashboard</title>
     <link rel="stylesheet" href="../assets/CSS/Dashboard.css">
     <link rel="stylesheet" href="../assets/CSS/popups.css">
     <link href="../assets/img/favicon.png" rel="icon">
@@ -36,19 +36,9 @@
                 <li>
                     <a href="https://www.agl.or.ke/" class="active">Home<br /></a>
                 </li>
-                <li><a id="openPostEventModal">Post Up coming Event</a></li>
-                <li><a id="openPastEventModal">Post past Event</a></li>
-                <li><a id="openMessagePopupSend">Send Message</a></li>
-                <li><a href="admin/settings.html">Admit New Members</a></li>
-                <li><a id="openBlogPostModal">Post a Blog</a></li>
-                <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-                <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                <!-- <li><a href="pages/newfile.html">Donations</a></li> -->
-                <li><a href="Payment/index.php">Payments</a></li>
+                <li><a href="https://www.agl.or.ke/about-us/ ">About</a></li>
+                <li><a href="">Messages</a></li>
                 <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-                <li><a href="new.php">new</a></li>
-                <li><a href="MembersPortal.php">memebrportal</a></li>
-                <li><a href="AdminMember.php">memberadmin</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -240,7 +230,7 @@
 
 
             <!-- blogs -->
-<!-- delete the stylesheet -->
+            <!-- delete the stylesheet -->
             <style>
                 .blogPoint {
                     width: 100%;
@@ -316,17 +306,9 @@
                 }
             </style>
 
+            <h4 style=" padding: 20px; " >Blogs</h4>
 
             <div class="blogPoint">
-<!-- 
-                <div class="Singleblog">
-                    <div class="blogImage"><img src="../assets/img/DemoImage/stats-img.jpg" alt="Blog"></div>
-                    <div class="blogcontent">
-                        <h4>head</h4>
-                        <p>blog content</p>
-                        <h6>08/09/2024</h6>
-                    </div>
-                </div> -->
 
                 <?php
                 // Query to get blog posts
@@ -350,12 +332,6 @@
                 }
                 // $conn->close();
                 ?>
-
-
-
-
-
-
             </div>
 
             <!-- .............................. -->
@@ -364,34 +340,20 @@
 
             <?php
 
-            $user_email = $_SESSION['user_email'];
+
+
             $messages = [];
 
             require_once('../forms/DBconnection.php');
 
-            // Check if the user is an official member
-            $officialQuery = "SELECT * FROM officialsmembers WHERE personalmembership_email = ?";
-            $stmt = $conn->prepare($officialQuery);
-            $stmt->bind_param("s", $user_email);
-            $stmt->execute();
-            $officialResult = $stmt->get_result();
+            // Prepare the query to fetch all messages from the membermessages table
+            $messageQuery = "
+                SELECT subject, message, date_sent 
+                FROM membermessages 
+                ORDER BY date_sent DESC";
 
-            // Prepare the appropriate message query
-            if ($officialResult->num_rows > 0) {
-                // The user is an official member; fetch messages from both tables
-                $messageQuery = "
-                    SELECT subject, message, date_sent FROM membermessages WHERE recipient_group = 'all'
-                    UNION ALL
-                    SELECT subject, message, date_sent FROM officialmessages WHERE recipient_group = 'officials' OR recipient_group = ?
-                    ORDER BY date_sent DESC";
-            } else {
-                // The user is not an official member; fetch messages only from the membermessages table
-                $messageQuery = "SELECT subject, message, date_sent FROM membermessages WHERE recipient_group = 'all' OR recipient_group = ? ORDER BY date_sent DESC";
-            }
-
-            // Prepare the statement for fetching messages
+            // Prepare and execute the statement
             $stmt = $conn->prepare($messageQuery);
-            $stmt->bind_param("s", $user_email);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -426,14 +388,6 @@
             </div>
 
 
-            <!-- <script>
-                function showFullMessageReceivedMessages(messageContent) {
-                    alert(messageContent); 
-                }
-            </script> -->
-
-
-
 
             <!-- Full message pop-up -->
             <div class="full-message-popup" id="fullMessagePopupReceivedMessages">
@@ -442,6 +396,7 @@
                     <p id="fullMessageTextReceivedMessages"></p>
                 </div>
             </div>
+
             <!-- Full message pop-up script -->
             <script>
                 document.getElementById('toggleMessagesReceivedMessages').addEventListener('click', function () {
@@ -574,234 +529,6 @@
 
             <!-- popups -->
 
-            <!-- Post Planned Event Modal -->
-            <div id="myModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <form action="../forms/PlannedEvent.php" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="eventName">Event Name:</label>
-                            <input type="text" id="eventName" name="eventName" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="eventImage">Event Image:</label>
-                            <input type="file" id="eventImage" name="eventImage" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="eventDescription">Brief Introduction:</label>
-                            <textarea id="eventDescription" name="eventDescription" rows="4" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="eventLocation">Location:</label>
-                            <input type="text" id="eventLocation" name="eventLocation" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="eventDate">Date:</label>
-                            <input type="date" id="eventDate" name="eventDate" required />
-                        </div>
-                        <div class="form-group">
-                            <button type="submit">Save Event</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- Post Planned Event Modal  script-->
-            <script>
-
-                var modal = document.getElementById("myModal");
-
-                var openModalBtn = document.getElementById("openPostEventModal");
-
-                var closeBtn = document.getElementsByClassName("close")[0];
-
-                openModalBtn.onclick = function (event) {
-                    event.preventDefault();
-                    modal.style.display = "block";
-                };
-
-                closeBtn.onclick = function () {
-                    modal.style.display = "none";
-                };
-
-                window.onclick = function (event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                };
-            </script>
-
-            <!-- Past Events Modal -->
-
-            <div id="pastEventModal" class="past-event-modal">
-                <div class="past-event-modal-content">
-                    <span class="close-past-event">&times;</span>
-                    <form id="pastEventForm" action="../forms/pastEvent.php" method="post"
-                        enctype="multipart/form-data">
-                        <div class="past-event-form-group">
-                            <label for="pastEventName">Event Name:</label>
-                            <input type="text" id="pastEventName" name="eventName" required />
-                        </div>
-
-                        <div class="past-event-form-group">
-                            <label for="pastEventLocation">Event Details</label>
-                            <textarea style="height: 200px; padding: 10px; " name="eventDetails"
-                                id="pastEventDetailsEditor"></textarea>
-                        </div>
-
-                        <!-- <div class="past-event-form-group">
-                            <label for="pastEventDetails">Event Details:</label>
-                            <div id="pastEventDetailsEditor" style="height: 200px"></div>
-                            <input type="hidden" id="pastEventDetailsHidden" name="eventDetails" />
-                        </div> -->
-
-                        <div class="past-event-form-group">
-                            <label for="pastEventLocation">Location:</label>
-                            <input type="text" id="pastEventLocation" name="eventLocation" required />
-                        </div>
-                        <div class="past-event-form-group">
-                            <label for="pastEventDate">Date:</label>
-                            <input type="date" id="pastEventDate" name="eventDate" required />
-                        </div>
-                        <div class="past-event-form-group">
-                            <label for="pastEventImages">Event Images:</label>
-                            <input type="file" id="pastEventImages" name="eventImages[]" multiple />
-                        </div>
-                        <div class="past-event-form-group">
-                            <label for="pastEventDocuments">Event Documents:</label>
-                            <input type="file" id="pastEventDocuments" name="eventDocuments[]" multiple />
-                        </div>
-                        <div class="past-event-form-group">
-                            <button type="submit">Save Past Event</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- Past Events Modal script-->
-            <script>
-                var modal = document.getElementById("pastEventModal");
-                var btn = document.getElementById("openPastEventModal");
-                var span = document.getElementsByClassName("close-past-event")[0];
-                btn.onclick = function () {
-                    modal.style.display = "block";
-                }
-                span.onclick = function () {
-                    modal.style.display = "none";
-                }
-                window.onclick = function (event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
-            </script>
-
-            <!-- delete the style alredy delete -->
-
-
-            <!-- send Message Popup -->
-            <div class="message-popup-sendMessage" id="messagePopupsend">
-                <div class="message-popup-content-sendMessage">
-                    <button class="message-close-btn-sendMessage" id="messageClosePopupBtn">
-                        &times;
-                    </button>
-                    <h2>Send a Message</h2>
-                    <form id="messageFormSendMessage" action="../forms/send_message.php" method="post">
-                        <div class="message-form-group-sendMessage">
-                            <label for="messageSenderName">Your Name:</label>
-                            <input type="text" id="messageSenderName" name="sender_name" required />
-                        </div>
-                        <div class="message-form-group-sendMessage">
-                            <label for="messageSenderEmail">Your Email:</label>
-                            <input type="email" id="messageSenderEmail" name="sender_email" value="info@agl.or.ke"
-                                required readonly />
-                        </div>
-
-                        <div class="message-form-group-sendMessage">
-                            <label for="messageRecipient">Recipient:</label>
-                            <select id="messageRecipient" name="recipient" required>
-                                <option value="all_members">All Members</option>
-                                <option value="officials_only">Officials Only</option>
-                            </select>
-                        </div>
-                        <div class="message-form-group-sendMessage">
-                            <label for="messageSubject">Subject:</label>
-                            <input type="text" id="messageSubject" name="subject" required />
-                        </div>
-                        <div class="message-form-group-sendMessage">
-                            <label for="messageContent">Message:</label>
-                            <textarea style="width: 100%; min-height: 200px; padding: 5px; " name="message"
-                                id="sendmessageContent"></textarea>
-                        </div>
-                        <button type="submit" class="message-submit-btn-sendMessage">Send Message</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Message Popup script-->
-            <script>
-                function showMessagePopup() {
-                    document.getElementById('messagePopupsend').style.display = 'flex';
-                }
-                function hideMessagePopup() {
-                    document.getElementById('messagePopupsend').style.display = 'none';
-                }
-
-                document.getElementById('openMessagePopupSend').addEventListener('click', function (event) {
-                    event.preventDefault();
-                    showMessagePopup();
-                });
-
-                document.getElementById('messageClosePopupBtn').addEventListener('click', function (event) {
-                    event.preventDefault();
-                    hideMessagePopup();
-                });
-
-            </script>
-
-
-            <!-- Blog Post Modal -->
-            <div id="blogPostModal" class="blog-post-modal">
-                <div class="blog-post-modal-content">
-                    <span class="close-blog-post">&times;</span>
-                    <form id="blogPostForm" action="../forms/save_blog_post.php" method="post"
-                        enctype="multipart/form-data">
-                        <div class="blog-post-form-group">
-                            <label for="blogTitle">Blog Title:</label>
-                            <input type="text" id="blogTitle" name="blogTitle" required />
-                        </div>
-                        <div class="blog-post-form-group">
-                            <label for="blogContent">Content:</label>
-                            <textarea style="min-height: 150px;" id="blogContent" name="blogContent" id=""></textarea>
-
-                        </div>
-                        <div class="blog-post-form-group">
-                            <label for="blogImage">Blog Image:</label>
-                            <input type="file" id="blogImage" name="blogImage" accept="image/*" />
-                        </div>
-                        <div class="blog-post-form-group">
-                            <button type="submit">Post Blog</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- Blog Post Modal script -->
-            <script>
-
-                const blogPostModal = document.getElementById("blogPostModal");
-                const openBlogPostModal = document.getElementById("openBlogPostModal");
-                const closeBlogPost = document.querySelector(".close-blog-post");
-                openBlogPostModal.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    blogPostModal.style.display = "block";
-                });
-                closeBlogPost.addEventListener("click", function () {
-                    blogPostModal.style.display = "none";
-                });
-                window.addEventListener("click", function (event) {
-                    if (event.target == blogPostModal) {
-                        blogPostModal.style.display = "none";
-                    }
-                });
-            </script>
 
             <!-- JavaScript Files -->
 

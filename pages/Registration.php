@@ -23,10 +23,9 @@
     </button>
     <nav class="navigation" id="navigation">
       <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#contact">Contact</a></li>
+          <li><a href="https://www.agl.or.ke/">Home</a></li>
+          <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+          <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -180,8 +179,8 @@
               <p>Kindly ensure you create your password before making your payment. After completing the payment,
                 you will be redirected to the login page, where you can log in using your credentials.</p>
               <label>Click to make Your payment</label><br>
-              <button type="submit"  class="payment-button" id="mpesa"
-                onclick="selectPaymentMethod('mpesa')" disabled>Mpesa</button>
+              <button type="submit" class="payment-button" id="mpesa" onclick="selectPaymentMethod('mpesa')"
+                disabled>Mpesa</button>
 
               <button style="display: none;" type="button" class="payment-button" id="paypal"
                 onclick="selectPaymentMethod('paypal')">PayPal</button>
@@ -192,13 +191,9 @@
               <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" required>
               <br><br><br>
 
-              <!-- <label for="options">Choose method used to make the payment:</label>
-              <select id="options" name="options">
-                <option value="Mpesa">Mpesa</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Card">Card</option>
-                <option value="cash">cash</option>
-              </select> -->
+              <p>Kindly ensure that all required sections of the form are completed 
+                before submitting it; otherwise, it will not be processed.</p>
+
 
             </div>
 
@@ -215,6 +210,14 @@
           ?>
         </div>
 
+        <style>
+          .submit-button:disabled {
+            background-color: #cce5ff;
+            color: #6c757d;
+            cursor: not-allowed;
+          }
+        </style>
+
         <script>
           document.addEventListener('DOMContentLoaded', (event) => {
             const errorMessage = document.getElementById('errorMessage');
@@ -227,60 +230,60 @@
           });
         </script>
 
+
         <div class="form-navigation">
 
           <button type="button" class="previous" disabled>Previous</button>
+
           <button type="button" class="next">Next</button>
+          
+
         </div>
       </form>
 
       <script>
-    function collectAndRedirect() {
-      // Collect form data
-      const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        dob: document.getElementById('dob').value,
-        homeAddress: document.getElementById('Homeaddress').value,
-        passport: document.getElementById('passport').files[0]?.name,
-        highestDegree: document.getElementById('highestDegree').value,
-        institution: document.getElementById('institution').value,
-        startDate: document.getElementById('startDate').value,
-        graduationYear: document.getElementById('graduationYear').value,
-        completionLetter: document.getElementById('completionLetter').files[0]?.name,
-        profession: document.getElementById('profession').value,
-        experience: document.getElementById('experience').value,
-        currentCompany: document.getElementById('currentCompany').value,
-        position: document.getElementById('position').value,
-        workAddress: document.getElementById('workAddress').value,
-        password: document.getElementById('password').value
-      };
+        function collectAndRedirect() {
+          // Collect form data
+          const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            dob: document.getElementById('dob').value,
+            homeAddress: document.getElementById('Homeaddress').value,
+            passport: document.getElementById('passport').files[0]?.name,
+            highestDegree: document.getElementById('highestDegree').value,
+            institution: document.getElementById('institution').value,
+            startDate: document.getElementById('startDate').value,
+            graduationYear: document.getElementById('graduationYear').value,
+            completionLetter: document.getElementById('completionLetter').files[0]?.name,
+            profession: document.getElementById('profession').value,
+            experience: document.getElementById('experience').value,
+            currentCompany: document.getElementById('currentCompany').value,
+            position: document.getElementById('position').value,
+            workAddress: document.getElementById('workAddress').value,
+            password: document.getElementById('password').value
+          };
 
-      // Convert form data to JSON
-      const jsonData = JSON.stringify(formData);
+          // Convert form data to JSON
+          const jsonData = JSON.stringify(formData);
 
-      // Store JSON data in a hidden field or pass it in a URL
-      const hiddenField = document.getElementById('hiddenFormData');
-      hiddenField.value = jsonData;
+          // Store JSON data in a hidden field or pass it in a URL
+          const hiddenField = document.getElementById('hiddenFormData');
+          hiddenField.value = jsonData;
 
-      // Optionally, you can redirect to a payment page if needed
-      // For example:
-      // window.location.href = 'paymentPage.html';
-
-      // Or submit the form if it's part of the same form
-      document.getElementById('mpesaFormPay').submit();
-    }
-  </script>
+          document.getElementById('mpesaFormPay').submit();
+        }
+      </script>
 
 
       <!-- M-Pesa Payment Form -->
       <div id="mpesaForm" class="popup-container">
-        <form id="mpesaFormPay"  class="popup-content" method="POST" action="../forms/Payment/Mpesa-Daraja-Api-main/stkpush.php">
+        <form id="mpesaFormPay" class="popup-content" method="POST"
+          action="../forms/Payment/Mpesa-Daraja-Api-main/stkpush.php">
           <span class="close">×</span>
           <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
 
-          <p style="text-align: center; " >Enter the phone number you are using to make the payment here</p>
+          <p style="text-align: center; ">Enter the phone number you are using to make the payment here</p>
 
           <label for="phone-number-mpesa">Number</label>
           <input type="number" id="phone-number-mpesa" name="phone_number" placeholder="Enter your phone number"
@@ -289,65 +292,20 @@
           <label for="amount">Amount</label>
           <input type="text" id="amount" name="amount" value="1" readonly>
 
-          <p style="text-align:center;" >Confirm that you are making a payment of Two Thousand Kenyan Shillings. (2,000 Ksh) as membership fees to the Association of Government
+          <p style="text-align:center;">Confirm that you are making a payment of Two Thousand Kenyan Shillings. (2,000
+            Ksh) as membership fees to the Association of Government
             Librarians.</p>
 
           <div class="payButtons">
-          <input type="hidden" id="hiddenFormData" name="formData">
+            <input type="hidden" id="hiddenFormData" name="formData">
 
-          <button class="pay-btn" id="MakePaymentBTN" type="button" onclick="collectAndRedirect()">Make Payment and Submit</button>
+            <button class="pay-btn" id="MakePaymentBTN" type="button" onclick="collectAndRedirect()">Make Payment and
+              Submit</button>
             <!-- <button class="pay-btn" id="MakePaymentBTN" type="submit">Make Payment</button> -->
           </div>
         </form>
       </div>
 
-
-      <!-- PayPal Payment Popup -->
-
-      <div id="paypalPopup" class="popup-container">
-        <div class="popup-content">
-          <span class="close">×</span>
-          <img src="../assets/img/paypal.png" alt="PayPal" class="popup-logo">
-          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-            <!-- PayPal required fields -->
-            <input type="hidden" name="business" value="maganaalex634@gmail.com">
-            <input type="hidden" name="cmd" value="_xclick">
-            <input type="hidden" name="currency_code" value="USD">
-            <input type="hidden" name="return" value="https://www.yoursite.com/thank_you.html">
-            <input type="hidden" name="cancel_return" value="https://www.yoursite.com/cancel.html">
-
-            <!-- Membership form fields -->
-            <label for="member_name">Member Name</label>
-            <input type="text" id="member_name" name="item_name" placeholder="Enter your name" required>
-
-            <label for="member_email">Email</label>
-            <input type="email" id="member_email" name="email" placeholder="Enter your email" required>
-
-            <label for="amount">Amount</label>
-            <input type="text" id="amount" name="amount" value="20.00" readonly>
-
-            <!-- Payment button -->
-            <div class="payButtons">
-              <button id="paypalpayButton" type="submit" class="pay-btn">Pay Now</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-
-      <div id="cardPopup" class="popup-container">
-        <div class="popup-content">
-          <span class="close">×</span>
-          <img src="../assets/img/card.png" alt="Card Payment" class="popup-logo">
-          <form id="payment-form">
-            <div id="card-element"><!-- Stripe Element will be inserted here --></div>
-            <div id="card-errors" role="alert"></div>
-            <div class="payButtons">
-              <button id="card-button" class="pay-btn" type="button">Pay Now</button>
-            </div>
-          </form>
-        </div>
-      </div>
 
       <script>
         const steps = document.querySelectorAll(".form-step");
@@ -468,7 +426,7 @@
             errorMessage2.style.display = 'none';
           }
 
-          
+
           const button = document.getElementById('mpesa');
           if (password && confirmPassword && !showError1 && !showError2) {
             button.disabled = false;
@@ -490,7 +448,34 @@
         //   alert(`Selected payment method: ${method}`);
         // }
 
+        // handle the submit button
+        function checkFormCompletion() {
+          const steps = document.querySelectorAll(".form-step");
+          let allFilled = true;
+
+          steps.forEach(step => {
+            if (step.classList.contains("active")) {
+              const inputs = step.querySelectorAll("input, textarea");
+              inputs.forEach(input => {
+                if (input.type !== 'file' && !input.value) {
+                  allFilled = false;
+                }
+              });
+            }
+          });
+
+          document.getElementById("submitBtn").disabled = !allFilled;
+        }
+
+        // Add event listeners to check form completion on input change
+        document.querySelectorAll(".form-step input, .form-step textarea").forEach(input => {
+          input.addEventListener('input', checkFormCompletion);
+        });
+
+        // Call checkFormCompletion on page load to set initial state
+        document.addEventListener('DOMContentLoaded', checkFormCompletion);
       </script>
+
 
       <script src="https://js.stripe.com/v3/"></script>
       <script src="../assets/JS/aglpaycard.js"></script>
@@ -502,7 +487,7 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">http://www.agl.or.ke/</a> . All rights reserved.
+    <p>&copy; 2024 <a style="text-decoration: none;" href="https://www.agl.or.ke/">AGL</a> . All rights reserved.
     </p>
   </footer>
 

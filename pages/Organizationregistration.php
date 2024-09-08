@@ -491,10 +491,9 @@
         </button>
         <nav class="navigation" id="navigation">
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="https://www.agl.or.ke/">Home</a></li>
+                <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -652,13 +651,8 @@
                             <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" required>
                             <br><br><br>
 
-                            <!-- <label for="options">Choose method used to make the payment:</label>
-              <select id="options" name="options">
-                <option value="Mpesa">Mpesa</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Card">Card</option>
-                <option value="cash">cash</option>
-              </select> -->
+                            <p>Kindly ensure that all required sections of the form are completed
+                                before submitting it; otherwise, it will not be processed.</p>
 
                         </div>
 
@@ -718,56 +712,6 @@
                         <button class="pay-btn" id="MakePaymentBTN" type="submit">Make Payment</button>
                     </div>
                 </form>
-            </div>
-
-
-
-
-            <!-- PayPal Payment Popup -->
-
-            <div id="paypalPopup" class="popup-container">
-                <div class="popup-content">
-                    <span class="close">×</span>
-                    <img src="../assets/img/paypal.png" alt="PayPal" class="popup-logo">
-                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-                        <!-- PayPal required fields -->
-                        <input type="hidden" name="business" value="maganaalex634@gmail.com">
-                        <input type="hidden" name="cmd" value="_xclick">
-                        <input type="hidden" name="currency_code" value="USD">
-                        <input type="hidden" name="return" value="https://www.yoursite.com/thank_you.html">
-                        <input type="hidden" name="cancel_return" value="https://www.yoursite.com/cancel.html">
-
-                        <!-- Membership form fields -->
-                        <label for="member_name">Member Name</label>
-                        <input type="text" id="member_name" name="item_name" placeholder="Enter your name" required>
-
-                        <label for="member_email">Email</label>
-                        <input type="email" id="member_email" name="email" placeholder="Enter your email" required>
-
-                        <label for="amount">Amount</label>
-                        <input type="text" id="amount" name="amount" value="20.00" readonly>
-
-                        <!-- Payment button -->
-                        <div class="payButtons">
-                            <button id="paypalpayButton" type="submit" class="pay-btn">Pay Now</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-
-            <div id="cardPopup" class="popup-container">
-                <div class="popup-content">
-                    <span class="close">×</span>
-                    <img src="../assets/img/card.png" alt="Card Payment" class="popup-logo">
-                    <form id="payment-form">
-                        <div id="card-element"><!-- Stripe Element will be inserted here --></div>
-                        <div id="card-errors" role="alert"></div>
-                        <div class="payButtons">
-                            <button id="card-button" class="pay-btn" type="button">Pay Now</button>
-                        </div>
-                    </form>
-                </div>
             </div>
 
             <script>
@@ -909,7 +853,7 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-        <p>&copy; 2024 <a style="text-decoration: none;" href="AGL.or.ke">http://www.agl.or.ke/</a> . All rights
+        <p>&copy; 2024 <a style="text-decoration: none;" href="https://www.agl.or.ke/">AGL</a> . All rights
             reserved.</p>
     </footer>
 

@@ -2,14 +2,24 @@
 session_start();
 require_once 'DBconnection.php';
 
+$response = array();
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $membershipType = trim($_POST['MembershipType']);
 
     if (!empty($email) && !empty($password) && !empty($membershipType)) {
-        if ($membershipType == 'Default') {
-            echo "Please select a valid Membership Type.";
+        if ($email === 'eugeneadmin@agl.or.ke' && $password === 'emailEugene#588599') {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['email'] = $email;
+            $response['status'] = 'success';
+            $response['redirect'] = 'pages/AGLADMIN.php';
+        } elseif ($email === 'maganaadmin@agl.or.ke' && $password === 'Maglex588599') {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['email'] = $email;
+            $response['status'] = 'success';
+            $response['redirect'] = 'pages/AGLADMIN.php';
         } else {
             // Determine the table and email column to query based on MembershipType
             $table = '';
@@ -26,41 +36,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Prepare the SQL statement
                 $sql = "SELECT $emailColumn, password FROM $table WHERE $emailColumn = ?";
                 $stmt = $conn->prepare($sql);
-
-                // Check for errors in preparing the statement
-                if (!$stmt) {
-                    die("Failed to prepare SQL statement: " . $conn->error);
-                }
-
-                // Bind parameters and execute the query
-                $stmt->bind_param("s", $email);
+                $stmt->bind_param('s', $email);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                if ($result->num_rows === 1) {
-                    $user = $result->fetch_assoc();
-                    
-                    // Verify the provided password with the hashed password in the database
-                    if (password_verify($password, $user['password'])) {
-                        $_SESSION['user_email'] = $user[$emailColumn]; 
-                        header("Location: ../pages/AGLADMIN.php"); 
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    if (password_verify($password, $row['password'])) {
+                        // Check membership type and redirection
+                        if ($membershipType == 'IndividualMember') {
+                            // Check if the user is also in the officialsmembers table
+                            $sqlCheck = "SELECT * FROM officialsmembers WHERE personalmembership_email = ?";
+                            $stmtCheck = $conn->prepare($sqlCheck);
+                            $stmtCheck->bind_param('s', $email);
+                            $stmtCheck->execute();
+                            $resultCheck = $stmtCheck->get_result();
+
+                            if ($resultCheck->num_rows > 0) {
+                                $_SESSION['loggedin'] = true;
+                                $_SESSION['email'] = $email;
+                                $response['status'] = 'success';
+                                $response['redirect'] = 'pages/AdminMember.php';
+                            } else {
+                                $_SESSION['loggedin'] = true;
+                                $_SESSION['email'] = $email;
+                                $response['status'] = 'success';
+                                $response['redirect'] = 'pages/MembersPortal.php';
+                            }
+                        } elseif ($membershipType == 'OrganizationMember') {
+                            $_SESSION['loggedin'] = true;
+                            $_SESSION['email'] = $email;
+                            $response['status'] = 'success';
+                            $response['redirect'] = 'pages/MembersPortal.php';
+                        }
                     } else {
-                        echo "Invalid email or password.";
+                        $response['status'] = 'error';
+                        $response['message'] = 'Invalid password.';
                     }
                 } else {
-                    echo "Invalid email or password.";
+                    $response['status'] = 'error';
+                    $response['message'] = 'Email not found.';
                 }
-
-                $stmt->close();
             } else {
-                echo "Invalid membership type.";
+                $response['status'] = 'error';
+                $response['message'] = 'Invalid Membership Type.';
             }
         }
-        $conn->close();
     } else {
-        echo "Please enter all required fields.";
+        $response['status'] = 'error';
+        $response['message'] = 'Please fill in all fields.';
     }
-} else {
-    echo "Invalid request method.";
 }
+
+echo json_encode($response);
 ?>
