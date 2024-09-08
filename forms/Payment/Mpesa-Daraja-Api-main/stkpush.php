@@ -106,10 +106,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $CheckoutRequestID = $data->CheckoutRequestID ?? null;
 
                 if ($ResponseCode == "0") {
-<<<<<<< HEAD
                     echo "The CheckoutRequestID for this transaction is: " . $CheckoutRequestID;
                     
-=======
                     // Prepare JSON data to send to callback
                     $jsonDataToSend = json_encode([
                         'MerchantRequestID' => $data->MerchantRequestID ?? null,
@@ -142,7 +140,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     curl_close($ch);
 
                     // Optionally redirect or handle success further
->>>>>>> 00729601ce20c36af6aa84a57c164406907002ce
                     exit;
                 } else {
                     echo "Error response from M-Pesa API. Response: " . $curl_response;
