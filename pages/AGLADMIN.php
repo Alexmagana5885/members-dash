@@ -1,6 +1,7 @@
 <?php
-phpinfo();
+session_start();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +63,7 @@ phpinfo();
 
                 <?php
                 require_once('../forms/DBconnection.php');
-                session_start();
+              
 
                 // Ensure that the session contains the email
                 if (!isset($_SESSION['user_email'])) {
@@ -103,9 +104,9 @@ phpinfo();
                 <div class="card">
                     <h5>Member Payments</h5>
                     <hr>
-                    <p id="memberpayments-current-lastPay">Last payment: <span>12/08/2024</span></p>
-                    <p id="memberpayments-current-nextP">Next payment: <span>09/05/2024</span></p>
-                    <p id="memberpayments-current-balance">Current balance: <span>5000sh</span></p>
+                    <p id="memberpayments-current-lastPay">Last payment: <span>12/08/2024</span></p><br>
+                    <p id="memberpayments-current-nextP">Next payment: <span>09/05/2024</span></p><br>
+                    <p id="memberpayments-current-balance">Current balance: <span>5000sh</span></p><br>
                     <button id="memberpayments-btn">Make Payments</button>
                 </div>
 
@@ -167,11 +168,11 @@ phpinfo();
                     <hr>
                     <p>Highest Degree: <span
                             id="highest-degree"><?php echo htmlspecialchars($educationInfo['highest_degree']); ?></span>
-                    </p>
+                    </p><br>
                     <p>Institution: <span
-                            id="institution"><?php echo htmlspecialchars($educationInfo['institution']); ?></span></p>
+                            id="institution"><?php echo htmlspecialchars($educationInfo['institution']); ?></span></p><br>
                     <p>Start Date: <span
-                            id="start-date"><?php echo htmlspecialchars($educationInfo['start_date']); ?></span></p>
+                            id="start-date"><?php echo htmlspecialchars($educationInfo['start_date']); ?></span></p><br>
                     <p>Graduation Year: <span
                             id="graduation-year"><?php echo htmlspecialchars($educationInfo['graduation_year']); ?></span>
                     </p>

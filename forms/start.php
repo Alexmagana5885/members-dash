@@ -34,10 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     if (password_verify($password, $row['password'])) {
+                        // Regenerate session ID to prevent session fixation
+                        session_regenerate_id(true);
+                        
+                        $_SESSION['loggedin'] = true;
+                        $_SESSION['email'] = $email;
+
                         // Check if the email is one of the admin emails
                         if ($email === 'eugeneadmin@agl.or.ke' || $email === 'maganaadmin@agl.or.ke') {
-                            $_SESSION['loggedin'] = true;
-                            $_SESSION['email'] = $email;
                             $response['status'] = 'success';
                             $response['redirect'] = 'pages/AGLADMIN.php';
                         } else {
@@ -52,13 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     $resultCheck = $stmtCheck->get_result();
 
                                     if ($resultCheck->num_rows > 0) {
-                                        $_SESSION['loggedin'] = true;
-                                        $_SESSION['email'] = $email;
                                         $response['status'] = 'success';
                                         $response['redirect'] = 'pages/AdminMember.php';
                                     } else {
-                                        $_SESSION['loggedin'] = true;
-                                        $_SESSION['email'] = $email;
                                         $response['status'] = 'success';
                                         $response['redirect'] = 'pages/MembersPortal.php';
                                     }
@@ -67,10 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     $response['message'] = 'Database query error.';
                                 }
                             } elseif ($membershipType == 'OrganizationMember') {
-                                $_SESSION['loggedin'] = true;
-                                $_SESSION['email'] = $email;
                                 $response['status'] = 'success';
-                                $response['redirect'] = 'pages/MembersPortal.php';
+                                $response['redirect'] = 'pages/Organizationpage.php';
                             }
                         }
                     } else {
