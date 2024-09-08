@@ -1,3 +1,4 @@
 <?php
-phpinfo();
+
+echo ini_get('session.save_path');
 ?>
