@@ -24,8 +24,6 @@ $organizationType = sanitize_input($_POST['OrganizationType']);
 $startDate = sanitize_input($_POST['startDate']);
 $whatYouDo = sanitize_input($_POST['WhatYouDo']);
 $numberOfEmployees = sanitize_input($_POST['NumberOfEmployees']);
-$paymentMethod = sanitize_input($_POST['paymentMethod']);
-$paymentCode = sanitize_input($_POST['PaymentCode']);
 $password = sanitize_input($_POST['Password']);
 $confirmPassword = sanitize_input($_POST['ConfirmPassword']);
 
@@ -118,8 +116,8 @@ $emailCheckStmt->close();
 
 // SQL query to insert data into the database
 $sql = "INSERT INTO organizationmembership 
-    (organization_name, organization_email, contact_person, contact_phone_number, date_of_registration, organization_address, location_country, location_county, location_town, organization_type, start_date, what_you_do, number_of_employees, logo_image, registration_certificate, payment_method, payment_code, password) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    (organization_name, organization_email, contact_person, contact_phone_number, date_of_registration, organization_address, location_country, location_county, location_town, organization_type, start_date, what_you_do, number_of_employees, logo_image, registration_certificate, password) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
 if (!$stmt) {
@@ -127,7 +125,7 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    "ssssssssssssssssss", 
+    "ssssssssssssssss", 
     $organizationName, 
     $organizationEmail, 
     $contactPerson, 
@@ -143,20 +141,9 @@ $stmt->bind_param(
     $numberOfEmployees, 
     $logoImagePath, 
     $registrationCertificatePath, 
-    $paymentMethod, 
-    $paymentCode, 
     $hashedPassword
 );
 
-// if ($stmt->execute()) {
-//     echo "<script>
-//             window.location.href = '../index.html';
-//           </script>";
-// } else {
-//     $_SESSION['error_message'] = "An error occurred during registration. Please try again.";
-//     header('Location: ../pages/Registration.php');
-//     exit();
-// }
 
 
 if ($stmt->execute()) {
@@ -167,16 +154,11 @@ if ($stmt->execute()) {
     Dear $name,
 
     Congratulations! Your registration with Association of Government Librarians has been successfully completed.
-
     We are thrilled to have you as part of our community. Here are your registration details:
-
     Name: $name
     Email: $email
-
     You can now log in to your account and explore the various features and resources available to you. If you have any questions or need assistance, please feel free to reach out to our support team at admin@or.ke.
-
     You can log in from here: https://member.log.agl.or.ke/members
-
     Thank you for joining us, and we look forward to your active participation!
 
     AGL

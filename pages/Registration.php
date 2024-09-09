@@ -23,9 +23,9 @@
     </button>
     <nav class="navigation" id="navigation">
       <ul>
-          <li><a href="https://www.agl.or.ke/">Home</a></li>
-          <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-          <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+        <li><a href="https://www.agl.or.ke/">Home</a></li>
+        <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+        <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -39,8 +39,6 @@
       <form style="margin: 0 auto ;" method="post" action="../forms/personalmembership.php"
         enctype="multipart/form-data" class="container" id="registrationForm">
         <h2>Registration Form</h2>
-
-
 
         <!-- Progress Bar -->
         <div class="progress-bar">
@@ -127,15 +125,15 @@
               <input type="number" id="experience" name="experience" required><br><br>
 
               <label for="currentCompany">Current Company:</label>
-              <input type="text" id="currentCompany" name="currentCompany"><br><br>
+              <input type="text" id="currentCompany" name="currentCompany" required><br><br>
             </div>
 
             <div class="stepINdivdiv">
               <label for="position">Position:</label>
-              <input type="text" id="position" name="position"><br><br>
+              <input type="text" id="position" name="position" required><br><br>
 
               <label for="workAddress">Work Address:</label>
-              <textarea id="workAddress" name="workAddress" rows="4"></textarea><br><br>
+              <textarea id="workAddress" name="workAddress" rows="4" required></textarea><br><br>
             </div>
           </div>
         </div>
@@ -175,23 +173,16 @@
             </div>
 
             <div class="stepINdivdiv">
-              <label>Make payment of Ksh 2000.00 as Registration fee</label><br>
-              <p>Kindly ensure you create your password before making your payment. After completing the payment,
-                you will be redirected to the login page, where you can log in using your credentials.</p>
-              <label>Click to make Your payment</label><br>
-            
+              <label>Read the information bellow Before Registration</label><br>
+              <p>Please ensure the information you provide is accurate and will be kept confidential.</p><br>
+              <p>You must create a strong password following our guidelines and remember it for future logins.
+                After logging in, you will have 2 weeks to pay the registration fee of Ksh 2000.00 from your account,
+                or your account will be deactivated.</p>
 
-              <button style="display: none;" type="button" class="payment-button" id="paypal"
-                onclick="selectPaymentMethod('paypal')">PayPal</button>
 
-              <button style="display: none;" type="button" class="payment-button" id="card"
-                onclick="selectPaymentMethod('card')">Card</button>
+              <p>Please make sure all required sections of the form are completed before submitting it;
+                otherwise, it will not be processed.</p>
 
-              <input type="hidden" id="selectedPaymentMethod" name="paymentMethod" required>
-              <br><br><br>
-
-              <p>Kindly ensure that all required sections of the form are completed 
-                before submitting it; otherwise, it will not be processed.</p>
 
 
             </div>
@@ -235,76 +226,10 @@
           <button type="button" class="previous" disabled>Previous</button>
 
           <button type="button" class="next">Next</button>
-          
+
 
         </div>
       </form>
-
-      <script>
-        function collectAndRedirect() {
-          // Collect form data
-          const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            dob: document.getElementById('dob').value,
-            homeAddress: document.getElementById('Homeaddress').value,
-            passport: document.getElementById('passport').files[0]?.name,
-            highestDegree: document.getElementById('highestDegree').value,
-            institution: document.getElementById('institution').value,
-            startDate: document.getElementById('startDate').value,
-            graduationYear: document.getElementById('graduationYear').value,
-            completionLetter: document.getElementById('completionLetter').files[0]?.name,
-            profession: document.getElementById('profession').value,
-            experience: document.getElementById('experience').value,
-            currentCompany: document.getElementById('currentCompany').value,
-            position: document.getElementById('position').value,
-            workAddress: document.getElementById('workAddress').value,
-            password: document.getElementById('password').value
-          };
-
-          // Convert form data to JSON
-          const jsonData = JSON.stringify(formData);
-
-          // Store JSON data in a hidden field or pass it in a URL
-          const hiddenField = document.getElementById('hiddenFormData');
-          hiddenField.value = jsonData;
-
-          document.getElementById('mpesaFormPay').submit();
-        }
-      </script>
-
-
-      <!-- M-Pesa Payment Form -->
-      <div id="mpesaForm" class="popup-container">
-        <form id="mpesaFormPay" class="popup-content" method="POST"
-          action="../forms/Payment/Mpesa-Daraja-Api-main/stkpush.php">
-          <span class="close">×</span>
-          <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
-
-          <p style="text-align: center; ">Enter the phone number you are using to make the payment here</p>
-
-          <label for="phone-number-mpesa">Number</label>
-          <input type="number" id="phone-number-mpesa" name="phone_number" placeholder="Enter your phone number"
-            required>
-
-          <label for="amount">Amount</label>
-          <input type="text" id="amount" name="amount" value="1" readonly>
-
-          <p style="text-align:center;">Confirm that you are making a payment of Two Thousand Kenyan Shillings. (2,000
-            Ksh) as membership fees to the Association of Government
-            Librarians.</p>
-
-          <div class="payButtons">
-            <input type="hidden" id="hiddenFormData" name="formData">
-
-            <button class="pay-btn" id="MakePaymentBTN" type="button" onclick="collectAndRedirect()">Make Payment and
-              Submit</button>
-            <!-- <button class="pay-btn" id="MakePaymentBTN" type="submit">Make Payment</button> -->
-          </div>
-        </form>
-      </div>
-
 
       <script>
         const steps = document.querySelectorAll(".form-step");
@@ -324,6 +249,7 @@
 
           prevBtn.disabled = currentStep === 0;
           nextBtn.textContent = currentStep === steps.length - 1 ? "Submit" : "Next";
+          updateButtonState();
         }
 
         nextBtn.addEventListener("click", () => {
@@ -331,14 +257,10 @@
             currentStep++;
             updateFormStep();
           } else {
-            // Check if all required fields are filled out
             const form = document.getElementById("registrationForm");
             if (form.checkValidity()) {
-              // Form is valid, submit it
               form.submit();
-              // alert("Registration submitted successfully. Wait for the reply");
             } else {
-              // Form is not valid, display errors
               form.reportValidity();
             }
           }
@@ -351,52 +273,22 @@
           }
         });
 
-        updateFormStep();
+        function checkFormCompletion() {
+          const currentInputs = steps[currentStep].querySelectorAll("input[required], textarea[required], select[required]");
+          let allFilled = true;
 
-        // JavaScript for handling the payment popups
-        const mpesaForm = document.getElementById('mpesaForm');
-        const paypalPopup = document.getElementById('paypalPopup');
-        const cardPopup = document.getElementById('cardPopup');
+          currentInputs.forEach(input => {
+            if (!input.value) {
+              allFilled = false;
+            }
+          });
 
-        const mpesaBtn = document.getElementById('mpesa');
-        const paypalBtn = document.getElementById('paypal');
-        const cardBtn = document.getElementById('card');
-
-        const closeBtns = document.querySelectorAll('.close');
-
-        function openPopup(popup) {
-          popup.style.display = 'block';
+          updateButtonState();
         }
 
-        function closeAllPopups() {
-          mpesaForm.style.display = 'none';
-          paypalPopup.style.display = 'none';
-          cardPopup.style.display = 'none';
-        }
-
-        mpesaBtn.addEventListener('click', () => openPopup(mpesaForm));
-        paypalBtn.addEventListener('click', () => openPopup(paypalPopup));
-        cardBtn.addEventListener('click', () => openPopup(cardPopup));
-
-        closeBtns.forEach(button => {
-          button.addEventListener('click', closeAllPopups);
-        });
-
-        window.addEventListener('click', (event) => {
-          if (event.target.classList.contains('popup-container')) {
-            closeAllPopups();
-          }
-        });
-
-        function togglePassword(id) {
-          const passwordField = document.getElementById(id);
-          passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
-        }
-
-
-        function validatePasswords() {
-          const password = document.getElementById('password').value;
-          const confirmPassword = document.getElementById('confirm-password').value;
+        function updateButtonState() {
+          const password = document.getElementById('password') ? document.getElementById('password').value : '';
+          const confirmPassword = document.getElementById('confirm-password') ? document.getElementById('confirm-password').value : '';
           const passwordPolicyRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
           const errorMessage1 = document.getElementById('error-message1');
@@ -405,34 +297,34 @@
           let showError1 = false;
           let showError2 = false;
 
-          if (password !== confirmPassword) {
+          if (password && confirmPassword && password !== confirmPassword) {
             showError1 = true;
           }
 
-          if (!passwordPolicyRegex.test(password)) {
+          if (password && !passwordPolicyRegex.test(password)) {
             showError2 = true;
           }
 
-          if (showError1) {
-            errorMessage1.style.display = 'block';
-          } else {
-            errorMessage1.style.display = 'none';
-          }
+          if (errorMessage1) errorMessage1.style.display = showError1 ? 'block' : 'none';
+          if (errorMessage2) errorMessage2.style.display = showError2 ? 'block' : 'none';
 
-          if (showError2) {
-            errorMessage2.style.display = 'block';
-          } else {
-            errorMessage2.style.display = 'none';
-          }
+          const allInputsFilled = Array.from(steps[currentStep].querySelectorAll("input[required], textarea[required], select[required]")).every(input => input.value);
 
-
-          const button = document.getElementById('mpesa');
-          if (password && confirmPassword && !showError1 && !showError2) {
-            button.disabled = false;
-          } else {
-            button.disabled = true;
-          }
+          nextBtn.disabled = !allInputsFilled || showError1 || showError2;
         }
+
+        document.querySelectorAll(".form-step input[required], .form-step textarea[required], .form-step select[required]").forEach(input => {
+          input.addEventListener('input', checkFormCompletion);
+        });
+
+        const passwordField = document.getElementById('password');
+        const confirmPasswordField = document.getElementById('confirm-password');
+
+        if (passwordField) passwordField.addEventListener('input', updateButtonState);
+        if (confirmPasswordField) confirmPasswordField.addEventListener('input', updateButtonState);
+
+        document.addEventListener('DOMContentLoaded', checkFormCompletion);
+
 
         function togglePassword(id) {
           const passwordField = document.getElementById(id);
@@ -442,38 +334,8 @@
             passwordField.type = 'password';
           }
         }
-
-        // function selectPaymentMethod(method) {
-        //   alert(`Selected payment method: ${method}`);
-        // }
-
-        // handle the submit button
-        function checkFormCompletion() {
-          const steps = document.querySelectorAll(".form-step");
-          let allFilled = true;
-
-          steps.forEach(step => {
-            if (step.classList.contains("active")) {
-              const inputs = step.querySelectorAll("input, textarea");
-              inputs.forEach(input => {
-                if (input.type !== 'file' && !input.value) {
-                  allFilled = false;
-                }
-              });
-            }
-          });
-
-          document.getElementById("submitBtn").disabled = !allFilled;
-        }
-
-        // Add event listeners to check form completion on input change
-        document.querySelectorAll(".form-step input, .form-step textarea").forEach(input => {
-          input.addEventListener('input', checkFormCompletion);
-        });
-
-        // Call checkFormCompletion on page load to set initial state
-        document.addEventListener('DOMContentLoaded', checkFormCompletion);
       </script>
+
 
 
       <script src="https://js.stripe.com/v3/"></script>
