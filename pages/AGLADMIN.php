@@ -16,6 +16,7 @@ session_start();
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
 
+
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
@@ -63,7 +64,7 @@ session_start();
 
                 <?php
                 require_once('../forms/DBconnection.php');
-              
+
 
                 // Ensure that the session contains the email
                 if (!isset($_SESSION['user_email'])) {
@@ -104,40 +105,188 @@ session_start();
                 <div class="card">
                     <h5>Member Payments</h5>
                     <hr>
-                    <p id="memberpayments-current-lastPay">Last payment: <span>12/08/2024</span></p><br>
-                    <p id="memberpayments-current-nextP">Next payment: <span>09/05/2024</span></p><br>
-                    <p id="memberpayments-current-balance">Current balance: <span>5000sh</span></p><br>
-                    <button id="memberpayments-btn">Make Payments</button>
+                    <p id="memberpayments-current-lastPay">Last payment: <span>12/08/2024</span></p>
+                    <p id="memberpayments-current-nextP">Next payment: <span>09/05/2024</span></p>
+                    <p id="memberpayments-current-balance">Current balance: <span>5000sh</span></p>
+                    <hr>
+                    <button class="MemberPaymentBtn" id="mpesa-btn" data-popup-target="mpesa-popup">Pay Membership
+                        Fee</button>
+                    <button class="MemberPaymentBtn" id="memberpayments-btn"
+                        data-popup-target="memberpayments-popup">Pay Membership Premium</button>
+
                 </div>
 
-                <!-- Member dash payment popup -->
-                <div id="memberpayments-popup" class="memberpayments-popup-container">
-                    <form class="memberpayments-popup-content">
-                        <span class="memberpayments-close" onclick="togglePaymentForm()">×</span>
-                        <img src="../assets/img/mpesa.png" alt="M-Pesa" class="memberpayments-popup-logo">
-                        <label for="memberpayments-phone-number">Number</label>
-                        <input type="number" id="memberpayments-phone-number" name="phone-number"
-                            placeholder="Enter your phone number">
-                        <label for="memberpayments-amount">Amount</label>
-                        <input type="text" id="memberpayments-amount" name="amount" value="300.00" readonly>
-                        <p>Confirm that you are making a payment of 300 Ksh as membership fees to the Association of
-                            Government Librarians.</p>
-                        <div class="memberpayments-pay-buttons">
-                            <button class="memberpayments-pay-btn" id="memberpayments-make-payment-btn"
-                                type="submit">Make Payment</button>
+                <style>
+                    .popup-container {
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .popup-content {
+                        background-color: white;
+                        padding: 20px;
+                        border-radius: 10px;
+                        width: 400px;
+                        max-width: 80%;
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                        text-align: center;
+                    }
+
+                    .popup-logo {
+                        max-width: 150px;
+                        margin: 0 auto 20px;
+                    }
+
+                    .popup-label {
+                        display: block;
+                        margin: 10px 0 5px;
+                    }
+
+                    .popup-input {
+                        width: 100%;
+                        padding: 8px;
+                        margin-bottom: 15px;
+                        border: 1px solid #ccc;
+                        border-radius: 5px;
+                    }
+
+                    .popup-btn {
+                        background-color: #28a745;
+                        color: white;
+                        padding: 10px;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        width: 100%;
+                    }
+
+                    .popup-btn:hover {
+                        background-color: #218838;
+                    }
+
+                    .popup-close {
+                        color: #000;
+                        float: right;
+                        font-size: 25px;
+                        font-weight: bold;
+                        cursor: pointer;
+                    }
+
+                    .popup-close :hover {
+                        color: red;
+
+                    }
+
+                    .popup-description,
+                    .popup-confirmation {
+                        margin-bottom: 15px;
+                    }
+
+                    .MemberPaymentBtn {
+                        width: 90%;
+                        padding: 4px;
+                        bottom: 5px;
+                        margin: 10px auto;
+                    }
+                </style>
+
+                <!-- Unified Payment Popup Structure -->
+                <div id="mpesa-popup" class="popup-container">
+                    <form id="mpesa-popup-content" class="popup-content" method="POST"
+                        action="../forms/Payment/Mpesa-Daraja-Api-main/stkpush.php">
+                        <span class="popup-close" onclick="togglePopup('mpesa-popup')">X</span>
+                        <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
+                        <p class="popup-confirmation">Confirm that you are making a payment of Two Thousand Kenyan
+                            Shillings (2,000 Ksh) as membership fees to the Association of Government Librarians.</p>
+
+                        <label for="User-email" class="popup-label">User Email</label>
+                        <input type="email" id="User-email" name="User-email" class="popup-input"
+                            value="<?php echo htmlspecialchars($userEmail); ?>" required readonly>
+
+                        <label for="mpesa-phone-number" class="popup-label">Number</label>
+                        <input type="number" id="mpesa-phone-number" name="phone_number" class="popup-input"
+                            placeholder="Enter your phone number" required>
+
+                        <label for="mpesa-amount" class="popup-label">Amount</label>
+                        <input type="text" id="mpesa-amount" name="amount" class="popup-input" value="1" readonly>
+
+                        <!-- Hidden field to store the referring page URL -->
+                        <input type="hidden" id="referringPage" name="referringPage"
+                            value="<?php echo htmlspecialchars($_SERVER['HTTP_REFERER']); ?>">
+
+                        <div class="popup-buttons">
+                            <input type="hidden" id="hiddenFormData" name="formData">
+                            <button class="popup-btn" type="submit">Make Payment</button>
                         </div>
                     </form>
                 </div>
 
-                <!-- JavaScript to handle showing and hiding the popup -->
+
+
+                <div id="memberpayments-popup" class="popup-container">
+                    <form id="memberpayments-popup-content" class="popup-content">
+                        <span class="popup-close" onclick="togglePopup('memberpayments-popup')">X</span>
+                        <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
+                        <p class="popup-description">Confirm that you are making a payment of 3,600 Ksh as annual
+                            membership fees
+                            to the Association of Government Librarians.</p>
+
+                        <label for="memberpayments-phone-number" class="popup-label">Number</label>
+                        <input type="number" id="memberpayments-phone-number" name="phone-number" class="popup-input"
+                            placeholder="Enter your phone number">
+
+                        <label for="memberpayments-amount" class="popup-label">Amount</label>
+                        <input type="text" id="memberpayments-amount" name="amount" class="popup-input" value="3600.00"
+                            readonly>
+
+                        <div class="popup-buttons">
+                            <button class="popup-btn" type="submit">Make Payment</button>
+                        </div>
+                    </form>
+                </div>
+
                 <script>
-                    document.getElementById("memberpayments-btn").addEventListener("click", function () {
-                        document.getElementById("memberpayments-popup").style.display = "flex";
+                    function togglePopup(popupId) {
+                        const popup = document.getElementById(popupId);
+                        const displayState = popup.style.display === 'flex' ? 'none' : 'flex';
+                        popup.style.display = displayState;
+                    }
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const openButtons = document.querySelectorAll('[data-popup-target]');
+                        const closeButtons = document.querySelectorAll('.popup-close');
+
+                        // Open popup on button click
+                        openButtons.forEach(button => {
+                            button.addEventListener('click', function () {
+                                const popupId = this.getAttribute('data-popup-target');
+                                togglePopup(popupId);
+                            });
+                        });
+
+                        // Close popup on close button click
+                        closeButtons.forEach(button => {
+                            button.addEventListener('click', function () {
+                                const popup = this.closest('.popup-container');
+                                popup.style.display = 'none';
+                            });
+                        });
+
+                        // Close popup if clicking outside the popup content
+                        window.addEventListener('click', function (event) {
+                            if (event.target.classList.contains('popup-container')) {
+                                event.target.style.display = 'none';
+                            }
+                        });
                     });
 
-                    function togglePaymentForm() {
-                        document.getElementById("memberpayments-popup").style.display = "none";
-                    }
                 </script>
 
                 <?php
@@ -170,7 +319,8 @@ session_start();
                             id="highest-degree"><?php echo htmlspecialchars($educationInfo['highest_degree']); ?></span>
                     </p><br>
                     <p>Institution: <span
-                            id="institution"><?php echo htmlspecialchars($educationInfo['institution']); ?></span></p><br>
+                            id="institution"><?php echo htmlspecialchars($educationInfo['institution']); ?></span></p>
+                    <br>
                     <p>Start Date: <span
                             id="start-date"><?php echo htmlspecialchars($educationInfo['start_date']); ?></span></p><br>
                     <p>Graduation Year: <span
@@ -245,7 +395,7 @@ session_start();
 
 
             <!-- blogs -->
-<!-- delete the stylesheet -->
+            <!-- delete the stylesheet -->
             <style>
                 .blogPoint {
                     width: 100%;
@@ -323,7 +473,7 @@ session_start();
 
 
             <div class="blogPoint">
-<!-- 
+                <!-- 
                 <div class="Singleblog">
                     <div class="blogImage"><img src="../assets/img/DemoImage/stats-img.jpg" alt="Blog"></div>
                     <div class="blogcontent">
@@ -609,7 +759,6 @@ session_start();
             </div>
             <!-- Post Planned Event Modal  script-->
             <script>
-
                 var modal = document.getElementById("myModal");
 
                 var openModalBtn = document.getElementById("openPostEventModal");
@@ -743,6 +892,7 @@ session_start();
                 function showMessagePopup() {
                     document.getElementById('messagePopupsend').style.display = 'flex';
                 }
+
                 function hideMessagePopup() {
                     document.getElementById('messagePopupsend').style.display = 'none';
                 }
@@ -756,7 +906,6 @@ session_start();
                     event.preventDefault();
                     hideMessagePopup();
                 });
-
             </script>
 
 
@@ -787,7 +936,6 @@ session_start();
             </div>
             <!-- Blog Post Modal script -->
             <script>
-
                 const blogPostModal = document.getElementById("blogPostModal");
                 const openBlogPostModal = document.getElementById("openBlogPostModal");
                 const closeBlogPost = document.querySelector(".close-blog-post");

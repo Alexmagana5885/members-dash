@@ -5,88 +5,64 @@ date_default_timezone_set('Africa/Nairobi');
 
 // Function to normalize phone number to '2547...' format
 function normalizePhoneNumber($phone) {
-    // Remove any spaces or non-digit characters
     $phone = preg_replace('/\s+/', '', $phone);
-    
-    // Remove the leading '+' if present
     if (strpos($phone, '+') === 0) {
         $phone = substr($phone, 1);
     }
-
-    // If the number starts with '07' or '01', replace '0' with '254'
     if (preg_match('/^0[17]/', $phone)) {
         $phone = '254' . substr($phone, 1);
     }
-
-    // If the number starts with '2547', leave it as is
     if (preg_match('/^2547/', $phone)) {
-        // Number is already in the correct format
         return $phone;
     }
-
-    // Return the normalized phone number
     return $phone;
 }
 
 // Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve JSON data from the hidden field
-    $jsonData = $_POST['formData'] ?? null;
-
-    // Retrieve form data directly
+    // Retrieve form data
+    $email = $_POST['User-email'] ?? null;
     $phone = $_POST['phone_number'] ?? null;
     $amount = $_POST['amount'] ?? null;
+    $referringPage = $_POST['referringPage'] ?? 'index.html'; // Default to 'index.html' if no referring page is provided
 
-    // Validate JSON data presence
-    if ($jsonData) {
-        $formData = json_decode($jsonData, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            echo "JSON decode error: " . json_last_error_msg();
-        }
-    } else {
-        echo "No JSON data provided.";
-    }
-
-    // Use phone and amount from form
+    // Normalize phone number
     $normalizedPhone = normalizePhoneNumber($phone);
 
     // Ensure phone and amount are valid
     if (!empty($normalizedPhone) && !empty($amount)) {
         $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-        $callbackurl = 'https://www.agl.or.ke/Daraja/callback.php'; // Callback URL
+        $callbackurl = 'https://www.agl.or.ke/Daraja/callback.php';
         $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-        $BusinessShortCode = '174379'; // Change this to your business shortcode
+        $BusinessShortCode = '174379';
         $Timestamp = date('YmdHis');
 
-        // ENCRYPT DATA TO GET PASSWORD
         $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
-        $PartyA = $normalizedPhone;  // Use normalized phone number to receive the STK push
-        $PartyB = $BusinessShortCode;  // Business shortcode (recipient)
+        $PartyA = $normalizedPhone;
+        $PartyB = $BusinessShortCode;
         $AccountReference = 'AGL';
         $TransactionDesc = 'Membership fee payment';
         $Amount = $amount;
 
         $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
 
-        // INITIATE CURL
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); // Setting custom header
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader);
 
         $curl_post_data = array(
-          'BusinessShortCode' => $BusinessShortCode,
-          'Password' => $Password,
-          'Timestamp' => $Timestamp,
-          'TransactionType' => 'CustomerPayBillOnline',
-          'Amount' => $Amount,
-          'PartyA' => $PartyA,
-          'PartyB' => $BusinessShortCode,
-          'PhoneNumber' => $PartyA,
-          'CallBackURL' => $callbackurl,
-          'AccountReference' => $AccountReference,
-          'TransactionDesc' => $TransactionDesc
-        ); 
+            'BusinessShortCode' => $BusinessShortCode,
+            'Password' => $Password,
+            'Timestamp' => $Timestamp,
+            'TransactionType' => 'CustomerPayBillOnline',
+            'Amount' => $Amount,
+            'PartyA' => $PartyA,
+            'PartyB' => $BusinessShortCode,
+            'PhoneNumber' => $PartyA,
+            'CallBackURL' => $callbackurl,
+            'AccountReference' => $AccountReference,
+            'TransactionDesc' => $TransactionDesc
+        );
 
         $data_string = json_encode($curl_post_data);
 
@@ -106,8 +82,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $CheckoutRequestID = $data->CheckoutRequestID ?? null;
 
                 if ($ResponseCode == "0") {
-                    echo "The CheckoutRequestID for this transaction is: " . $CheckoutRequestID;
-                    
                     // Prepare JSON data to send to callback
                     $jsonDataToSend = json_encode([
                         'MerchantRequestID' => $data->MerchantRequestID ?? null,
@@ -115,7 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         'ResultCode' => $ResponseCode,
                         'Amount' => $Amount,
                         'MpesaReceiptNumber' => $data->MpesaReceiptNumber ?? null,
-                        'PhoneNumber' => $PartyA
+                        'PhoneNumber' => $PartyA,
+                        'Email' => $email // Add the email to the JSON data
                     ]);
 
                     // Send JSON as form data to callback.php using cURL
@@ -139,7 +114,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     curl_close($ch);
 
-                    // Optionally redirect or handle success further
+                    // Echo the data sent for confirmation
+                    // echo "Success! The following data was sent to the callback URL:<br>";
+                    // echo "<pre>" . htmlspecialchars($jsonDataToSend) . "</pre>";
+                    header("Location: " . htmlspecialchars($referringPage));
+
                     exit;
                 } else {
                     echo "Error response from M-Pesa API. Response: " . $curl_response;

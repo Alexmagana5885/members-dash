@@ -344,16 +344,16 @@ input[type="file"] {
   flex-direction: column;
 }
 
-.payment-button {
+.payment-button .memberpayments-btn {
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 10px 20px;
+  padding: 2;
   margin: 5px;
   cursor: pointer;
   font-size: 16px;
-  width: 60%;
+  width: 90%;
 }
 
 .payment-button:hover {
