@@ -680,9 +680,6 @@
                 </div>
             </form>
 
-
-
-
             <script>
                 const steps = document.querySelectorAll(".form-step");
                 const nextBtn = document.querySelector(".next");
