@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         session_regenerate_id(true);
                         
                         $_SESSION['loggedin'] = true;
-                        $_SESSION['email'] = $email;
+                        $_SESSION['user_email'] = $email;  // Set the email in 'user_email'
 
                         // Check if the email is one of the admin emails
                         if ($email === 'eugeneadmin@agl.or.ke' || $email === 'maganaadmin@agl.or.ke') {

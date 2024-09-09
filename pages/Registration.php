@@ -179,8 +179,7 @@
               <p>Kindly ensure you create your password before making your payment. After completing the payment,
                 you will be redirected to the login page, where you can log in using your credentials.</p>
               <label>Click to make Your payment</label><br>
-              <button type="submit" class="payment-button" id="mpesa" onclick="selectPaymentMethod('mpesa')"
-                disabled>Mpesa</button>
+            
 
               <button style="display: none;" type="button" class="payment-button" id="paypal"
                 onclick="selectPaymentMethod('paypal')">PayPal</button>
