@@ -44,96 +44,70 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     </header>
 
-    <!-- <style>
-        .blogPoint {
-    width: 100%;
-    background-color: #fff;
-    min-height: 200px;
-    padding: 10px;
-    border-radius: 10px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 10px;
-    text-align: center;
-    max-height: 600px;
-    overflow-x: auto; 
-    overflow-y: hidden;
-    scrollbar-width: thin;
-    scroll-snap-type: x mandatory; 
-}
-
-.Singleblog {
-    min-width: 300px; 
-    flex: 0 0 auto; 
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    margin-bottom: 20px;
-    scroll-snap-align: start;
-} -->
-
     </style>
 
     <style>
-    .blogPoint {
-        width: 100%;
-        background-color: #fff;
-        min-height: 200px;
-        padding: 10px;
-        border-radius: 10px;
-        display: flex;
-        gap: 10px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scrollbar-width: thin;
-        max-height: 600px;
-    }
-
-    .Singleblog {
-        flex: 0 0 auto;
-        width: 300px; /* Fixed width for horizontal scrolling */
-        display: flex;
-        flex-direction: column;
-        padding: 10px;
-        background-color: #f9f9f9;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .blogImage {
-        width: 100%;
-        height: 200px;
-        margin-bottom: 10px;
-        border-radius: 20px 0 50px 0;
-        overflow: hidden;
-    }
-
-    .blogImage img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .blogcontent {
-        width: 100%;
-        text-align: left;
-    }
-
-    .blogcontent p {
-        overflow: auto;
-        scrollbar-width: thin;
-        max-height: 200px;
-        padding: 5px;
-        margin: 10px 0;
-    }
-
-    @media screen and (max-width: 600px) {
-        .Singleblog {
-            width: 90%; /* Take most of the screen width on small screens */
-            margin-bottom: 10px;
+        .blogPoint {
+            width: 100%;
+            background-color: #fff;
+            min-height: 200px;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: thin;
+            max-height: 600px;
         }
-    }
-</style>
+
+        .Singleblog {
+            flex: 0 0 auto;
+            width: 300px;
+            /* Fixed width for horizontal scrolling */
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .blogImage {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+            border-radius: 20px 0 50px 0;
+            overflow: hidden;
+        }
+
+        .blogImage img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .blogcontent {
+            width: 100%;
+            text-align: left;
+        }
+
+        .blogcontent p {
+            overflow: auto;
+            scrollbar-width: thin;
+            max-height: 200px;
+            padding: 5px;
+            margin: 10px 0;
+        }
+
+        @media screen and (max-width: 600px) {
+            .Singleblog {
+                width: 90%;
+                /* Take most of the screen width on small screens */
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 
 
 
@@ -153,7 +127,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                    <li><a href="Payment/index.php">Payments</a></li>
+                    <li><a href="adminP.php">Payments</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
                     <!-- <li><a href="new.php">new</a></li> -->
                     <!-- <li><a href="MembersPortal.php">memberportal</a></li>
@@ -311,7 +285,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     }
                 </style>
 
-                <!-- Unified Payment Popup Structure -->
+                <!--  Payment Popup Structure registration -->
                 <div id="mpesa-popup" class="popup-container">
                     <form id="mpesa-popup-content" class="popup-content" method="POST"
                         action="../forms/Payment/Mpesa-Daraja-Api-main/stkpush.php">
@@ -329,7 +303,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             placeholder="Enter your phone number" required>
 
                         <label for="mpesa-amount" class="popup-label">Amount</label>
-                        <input type="text" id="mpesa-amount" name="amount" class="popup-input" value="1" readonly>
+                        <input type="text" id="mpesa-amount" name="amount" class="popup-input" value="0.5" readonly>
 
                         <!-- Hidden field to store the referring page URL -->
                         <input type="hidden" id="referringPage" name="referringPage"
@@ -342,29 +316,30 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     </form>
                 </div>
 
-
+                <!-- Payment Popup Structure membership -->
 
                 <div id="memberpayments-popup" class="popup-container">
-                    <form id="memberpayments-popup-content" class="popup-content">
+                    <form  action="../forms/Payment/Mpesa-Daraja-Api-main/STKMembersubscription.php" method="post" id="memberpayments-popup-content" class="popup-content">
                         <span class="popup-close" onclick="togglePopup('memberpayments-popup')">X</span>
                         <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
                         <p class="popup-description">Confirm that you are making a payment of 3,600 Ksh as annual
-                            membership fees
-                            to the Association of Government Librarians.</p>
+                            membership fees to the Association of Government Librarians.</p>
 
-                        <label for="memberpayments-phone-number" class="popup-label">Number</label>
-                        <input type="number" id="memberpayments-phone-number" name="phone-number" class="popup-input"
-                            placeholder="Enter your phone number">
+                        <label for="User-email" class="popup-label">User Email</label>
+                        <input type="email" id="User-email" name="User-email" class="popup-input" value="<?php echo htmlspecialchars($userEmail); ?>" required readonly>
 
-                        <label for="memberpayments-amount" class="popup-label">Amount</label>
-                        <input type="text" id="memberpayments-amount" name="amount" class="popup-input" value="3600.00"
-                            readonly>
+                        <label for="phone_number" class="popup-label">Number</label>
+                        <input type="text" id="phone_number" name="phone_number" class="popup-input" placeholder="Enter your phone number" required>
+
+                        <label for="amount" class="popup-label">Amount</label>
+                        <input type="text" id="amount" name="amount" class="popup-input" value="3600" readonly>
 
                         <div class="popup-buttons">
                             <button class="popup-btn" type="submit">Make Payment</button>
                         </div>
                     </form>
                 </div>
+
 
                 <script>
                     function togglePopup(popupId) {

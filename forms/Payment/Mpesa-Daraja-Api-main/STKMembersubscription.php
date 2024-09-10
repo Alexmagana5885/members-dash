@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ensure phone and amount are valid
     if (!empty($normalizedPhone) && !empty($amount)) {
         $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-        $callbackurl = 'https://www.agl.or.ke/Daraja/callback.php';
+        $callbackurl = 'https://member.log.agl.or.ke/DARAJA/Premiumcallback.php';
         $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
         $BusinessShortCode = '174379';
         $Timestamp = date('YmdHis');
@@ -73,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $curl_response = curl_exec($curl);
 
         if ($curl_response === false) {
+            error_log('Curl error: ' . curl_error($curl), 3, '/var/log/mpesa_errors.log');
             echo 'Curl error: ' . curl_error($curl);
         } else {
             $data = json_decode($curl_response);
@@ -107,6 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $callbackResponse = curl_exec($ch);
 
                     if ($callbackResponse === false) {
+                        error_log('Callback curl error: ' . curl_error($ch), 3, '/var/log/mpesa_errors.log');
                         echo 'Callback curl error: ' . curl_error($ch);
                     } else {
                         echo 'Callback response: ' . $callbackResponse;
@@ -114,11 +116,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     curl_close($ch);
 
-                    // Echo the data sent for confirmation
-                    // echo "Success! The following data was sent to the callback URL:<br>";
-                    // echo "<pre>" . htmlspecialchars($jsonDataToSend) . "</pre>";
+                    // Redirect to the referring page
                     header("Location: " . htmlspecialchars($referringPage));
-
                     exit;
                 } else {
                     echo "Error response from M-Pesa API. Response: " . $curl_response;

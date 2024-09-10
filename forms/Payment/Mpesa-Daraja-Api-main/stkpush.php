@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ensure phone and amount are valid
     if (!empty($normalizedPhone) && !empty($amount)) {
         $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-        $callbackurl = 'https://www.agl.or.ke/Daraja/callback.php';
+        $callbackurl = 'https://member.log.agl.or.ke/DARAJA/callback.php';
         $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
         $BusinessShortCode = '174379';
         $Timestamp = date('YmdHis');
@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         'PhoneNumber' => $PartyA,
                         'Email' => $email // Add the email to the JSON data
                     ]);
-
+ 
                     // Send JSON as form data to callback.php using cURL
                     $ch = curl_init($callbackurl);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
