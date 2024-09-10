@@ -20,7 +20,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: none;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
+  scrollbar-width: thin;
   z-index: 1000;
 }
 
@@ -76,10 +77,12 @@
   .message-popup {
     width: 70%;
     right: 0;
-    top: 0;
-    height: 90%;
+    top: 20px;
+    height: 80%;
     max-height: 100%;
-    border-radius: 0;
+    border-radius: 8px;
+    overflow: auto;
+    scrollbar-width: thin;
   }
 }
 

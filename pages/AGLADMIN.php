@@ -75,83 +75,89 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     </style>
 
     <style>
-                .blogPoint {
-                    width: 100%;
-                    background-color: #fff;
-                    min-height: 200px;
-                    padding: 10px;
-                    border-radius: 10px;
-                    display: grid;
-                    grid-auto-flow: column;
-                    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-                    gap: 10px;
-                    text-align: center;
-                    max-height: 600px;
-                    overflow-x: auto;
-                    overflow-y: hidden;
-                    scrollbar-width: thin;
-                }
+        .blogPoint {
+            width: 100%;
+            background-color: #fff;
+            min-height: 200px;
+            padding: 10px;
+            border-radius: 10px;
+            display: grid;
+            grid-auto-flow: column;
+            grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+            gap: 10px;
+            text-align: center;
+            max-height: 600px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: thin;
+        }
 
-                .Singleblog {
-                    width: 100%;
-                    margin-right: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    padding: 10px;
-                    margin-bottom: 20px;
-                }
+        .Singleblog {
+            min-width: 300px;
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            margin-bottom: 20px;
+            scroll-snap-align: start;
+        }
 
-                .blogImage {
-                    width: 100%;
-                    height: 200px;
-                    margin-bottom: 5px;
-                    border-radius: 20px 0 50px 0;
-                    object-fit: cover;
-                   
-                }
+        .blogImage {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 5px;
+            border-radius: 20px 0 50px 0;
+            object-fit: cover;
+
+        }
 
 
-                .blogImage img {
-                    width: 100%;
-                    border-radius: 20px 0 50px 0;
-                    object-fit: cover;
-                }
+        .blogImage img {
+            width: 100%;
+            border-radius: 20px 0 50px 0;
+            object-fit: cover;
+        }
 
-                .blogcontent {
-                    width: 100%;
-                }
+        .blogcontent {
+            width: 100%;
+        }
 
-                .blogcontent p {
-                    overflow: auto;
-                    scrollbar-width: thin;
-                    max-height: 200px;
-                    padding: 5px;
-                    margin: 10px;
-                    text-align: start;
-                }
+        .blogcontent p {
+            overflow: auto;
+            scrollbar-width: thin;
+            max-height: 200px;
+            padding: 5px;
+            margin: 10px;
+            text-align: start;
+        }
 
-                @media screen and (max-width: 600px) {
-                    .blogPoint {
-                        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-                        max-height: 600px;
-                        overflow-x: auto;
-                    }
+        @media screen and (max-width: 600px) {
+            .blogPoint {
+                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+                max-height: 600px;
+                overflow-x: auto;
+            }
 
-                    .Singleblog {
-                        width: 100%;
-                        margin-bottom: 10px;
-                    }
+            .Singleblog {
+                width: 100%;
+                margin-bottom: 10px;
+                gap: 30px;
+            }
 
-                    .blogImage {
-                        width: 100%;
-                        margin-bottom: 0;
-                    }
+            .blogImage {
+                width: 90%;
+                margin-bottom: 20px;
 
-                    .blogcontent {
-                        width: 100%;
-                    }
-                }
-            </style>
+                
+            }
+
+            .blogcontent {
+                width: 100%;
+                margin-top: 10px;
+ 
+            }
+        }
+    </style>
 
     <div class="main-content">
 
@@ -165,15 +171,15 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="openPostEventModal">Post Planned Event</a></li>
                     <li><a id="openPastEventModal">Post Past Event</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
-                    <li><a href="admin/settings.html">Admit New Members</a></li>
+                    <!-- <li><a href="admin/settings.html">Admit New Members</a></li> -->
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="Payment/index.php">Payments</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-                    <li><a href="new.php">new</a></li>
-                    <li><a href="MembersPortal.php">memberportal</a></li>
-                    <li><a href="AdminMember.php">memberadmin</a></li>
+                    <!-- <li><a href="new.php">new</a></li> -->
+                    <!-- <li><a href="MembersPortal.php">memberportal</a></li>
+                    <li><a href="AdminMember.php">memberadmin</a></li> -->
                 <?php elseif ($role == 'admin'): ?>
                     <li><a id="openPostEventModal">Post Planned Event</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
@@ -657,7 +663,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </script>
 
 
-
+            <h4 style="padding: 20px;">Blogs</h4>
             <div class="blogPoint">
 
 
@@ -688,48 +694,71 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </div>
 
             <!-- .............................. -->
-
+            <!-- $user_email = $_SESSION['user_email']; -->
             <!-- messages -->
 
             <?php
 
-            $user_email = $_SESSION['user_email'];
+            $session_email = $_SESSION['user_email'];
+            // if (isset($_SESSION['user_email'])) {
+
+            //     echo "Logged in as: " . htmlspecialchars($_SESSION['user_email'], ENT_QUOTES);
+            // } else {
+            //     echo "No email found in session.";
+            // }
+
             $messages = [];
 
-            require_once('../forms/DBconnection.php');
-
-            // Check if the user is an official member
-            $officialQuery = "SELECT * FROM officialsmembers WHERE personalmembership_email = ?";
-            $stmt = $conn->prepare($officialQuery);
-            $stmt->bind_param("s", $user_email);
-            $stmt->execute();
-            $officialResult = $stmt->get_result();
-
-            // Prepare the appropriate message query
-            if ($officialResult->num_rows > 0) {
-                // The user is an official member; fetch messages from both tables
-                $messageQuery = "
-                    SELECT subject, message, date_sent FROM membermessages WHERE recipient_group = 'all'
-                    UNION ALL
-                    SELECT subject, message, date_sent FROM officialmessages WHERE recipient_group = 'officials' OR recipient_group = ?
-                    ORDER BY date_sent DESC";
-            } else {
-                // The user is not an official member; fetch messages only from the membermessages table
-                $messageQuery = "SELECT subject, message, date_sent FROM membermessages WHERE recipient_group = 'all' OR recipient_group = ? ORDER BY date_sent DESC";
-            }
-
-            // Prepare the statement for fetching messages
-            $stmt = $conn->prepare($messageQuery);
-            $stmt->bind_param("s", $user_email);
+            // Check if the email is in the `personalmembership` table
+            $checkPersonalMembershipQuery = "SELECT * FROM personalmembership WHERE email = ?";
+            $stmt = $conn->prepare($checkPersonalMembershipQuery);
+            $stmt->bind_param("s", $session_email);
             $stmt->execute();
             $result = $stmt->get_result();
+            $personalMember = $result->fetch_assoc();
 
-            // Store the fetched messages in an array
-            while ($row = $result->fetch_assoc()) {
-                $messages[] = $row;
+            if ($personalMember) {
+                // Fetch all messages from `membermessages` without filtering by recipient group
+                $memberMessagesQuery = "SELECT * FROM membermessages";
+                $result = $conn->query($memberMessagesQuery);
+                while ($row = $result->fetch_assoc()) {
+                    $messages[] = $row;
+                }
+
+                // Check if the email is also in the `officialsmembers` table
+                $checkOfficialMembershipQuery = "SELECT * FROM officialsmembers WHERE personalmembership_email = ?";
+                $stmt = $conn->prepare($checkOfficialMembershipQuery);
+                $stmt->bind_param("s", $session_email);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $officialMember = $result->fetch_assoc();
+
+                if ($officialMember) {
+                    // Fetch all messages from `officialmessages` without filtering by recipient group
+                    $officialMessagesQuery = "SELECT * FROM officialmessages";
+                    $result = $conn->query($officialMessagesQuery);
+                    while ($row = $result->fetch_assoc()) {
+                        $messages[] = $row;
+                    }
+                }
             }
-
             ?>
+
+            <style>
+                @media (max-width: 600px) {
+                    .message-popup {
+                        width: 70%;
+                        right: 0;
+                        top: 20px;
+                        height: 80%;
+                        max-height: 100%;
+                        border-radius: 8px;
+                        overflow: auto;
+                        scrollbar-width: thin;
+
+                    }
+                }
+            </style>
 
             <div class="message-popup" id="messagePopupReceivedMessages">
                 <div class="message-popup-header">
@@ -750,6 +779,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <?php endif; ?>
                 </div>
             </div>
+
+
 
 
             <!-- Full message pop-up -->
