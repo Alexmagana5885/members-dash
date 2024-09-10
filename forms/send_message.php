@@ -39,7 +39,7 @@ if ($recipient_choice === 'all_members') {
     }
 
     // Record message in memberMessages table
-    $stmt = $conn->prepare("INSERT INTO memberMessages (sender_name, sender_email, recipient_group, subject, message) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO membermessages (sender_name, sender_email, recipient_group, subject, message) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $sender_name, $sender_email, $recipient_choice, $subject, $message_content);
     $stmt->execute();
     $stmt->close();
