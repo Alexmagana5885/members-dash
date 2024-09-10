@@ -372,7 +372,7 @@ button[type="button"] {
     padding: 15px;
   }
 }
-
+/* 
 .blogPoint {
     width: 100%;
     background-color: #fff;
@@ -424,7 +424,6 @@ button[type="button"] {
 @media screen and (max-width: 600px) {
     .blogPoint {
         grid-template-columns: 1fr;
-        /* Show one item per row */
         max-height: 600px;
         overflow: auto;
         scrollbar-width: thin;
@@ -522,4 +521,4 @@ button[type="button"] {
     .blogcontent {
         width: 100%;
     }
-}
+} */
