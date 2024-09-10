@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Move the uploaded file to the target directory
         if (move_uploaded_file($_FILES['eventImage']['tmp_name'], $targetFilePath)) {
             // Prepare SQL query to insert data into the database
-            $sql = "INSERT INTO PlannedEvent (event_name, event_image_path, event_description, event_location, event_date)
+            $sql = "INSERT INTO Plannedevent (event_name, event_image_path, event_description, event_location, event_date)
                     VALUES (?, ?, ?, ?, ?)";
 
             // Prepare and bind the statement

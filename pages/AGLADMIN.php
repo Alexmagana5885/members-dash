@@ -75,89 +75,67 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     </style>
 
     <style>
-        .blogPoint {
-            width: 100%;
-            background-color: #fff;
-            min-height: 200px;
-            padding: 10px;
-            border-radius: 10px;
-            display: grid;
-            grid-auto-flow: column;
-            grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-            gap: 10px;
-            text-align: center;
-            max-height: 600px;
-            overflow-x: auto;
-            overflow-y: hidden;
-            scrollbar-width: thin;
-        }
+    .blogPoint {
+        width: 100%;
+        background-color: #fff;
+        min-height: 200px;
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
+        max-height: 600px;
+    }
 
+    .Singleblog {
+        flex: 0 0 auto;
+        width: 300px; /* Fixed width for horizontal scrolling */
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .blogImage {
+        width: 100%;
+        height: 200px;
+        margin-bottom: 10px;
+        border-radius: 20px 0 50px 0;
+        overflow: hidden;
+    }
+
+    .blogImage img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .blogcontent {
+        width: 100%;
+        text-align: left;
+    }
+
+    .blogcontent p {
+        overflow: auto;
+        scrollbar-width: thin;
+        max-height: 200px;
+        padding: 5px;
+        margin: 10px 0;
+    }
+
+    @media screen and (max-width: 600px) {
         .Singleblog {
-            min-width: 300px;
-            flex: 0 0 auto;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            margin-bottom: 20px;
-            scroll-snap-align: start;
+            width: 90%; /* Take most of the screen width on small screens */
+            margin-bottom: 10px;
         }
-
-        .blogImage {
-            width: 100%;
-            height: 200px;
-            margin-bottom: 5px;
-            border-radius: 20px 0 50px 0;
-            object-fit: cover;
-
-        }
+    }
+</style>
 
 
-        .blogImage img {
-            width: 100%;
-            border-radius: 20px 0 50px 0;
-            object-fit: cover;
-        }
-
-        .blogcontent {
-            width: 100%;
-        }
-
-        .blogcontent p {
-            overflow: auto;
-            scrollbar-width: thin;
-            max-height: 200px;
-            padding: 5px;
-            margin: 10px;
-            text-align: start;
-        }
-
-        @media screen and (max-width: 600px) {
-            .blogPoint {
-                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-                max-height: 600px;
-                overflow-x: auto;
-            }
-
-            .Singleblog {
-                width: 100%;
-                margin-bottom: 10px;
-                gap: 30px;
-            }
-
-            .blogImage {
-                width: 90%;
-                margin-bottom: 20px;
-
-                
-            }
-
-            .blogcontent {
-                width: 100%;
-                margin-top: 10px;
- 
-            }
-        }
-    </style>
 
     <div class="main-content">
 
