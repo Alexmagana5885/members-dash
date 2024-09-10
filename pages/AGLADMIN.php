@@ -52,7 +52,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <a href="https://www.agl.or.ke/" class="active">Home<br /></a>
                 </li>
 
-                <?php if ($role == 'superadmin') : ?>
+                <?php if ($role == 'superadmin'): ?>
                     <li><a id="openPostEventModal">Post Planned Event</a></li>
                     <li><a id="openPastEventModal">Post Past Event</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
@@ -65,14 +65,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="new.php">new</a></li>
                     <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li>
-                <?php elseif ($role == 'admin') : ?>
+                <?php elseif ($role == 'admin'): ?>
                     <li><a id="openPostEventModal">Post Planned Event</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="Payment/index.php">Payments</a></li>
-                <?php elseif ($role == 'member') : ?>
+                <?php elseif ($role == 'member'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
                 <?php endif; ?>
@@ -870,7 +870,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         </div>
                         <div class="past-event-form-group">
                             <label for="pastEventDocuments">Event Documents:</label>
-                            <input type="file" id="pastEventDocuments" name="eventDocuments[]" accept=".pdf" multiple required />
+                            <input type="file" id="pastEventDocuments" name="eventDocuments[]" accept=".pdf" multiple
+                                required />
 
                         </div>
                         <div class="past-event-form-group">
@@ -973,7 +974,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         </div>
                         <div class="blog-post-form-group">
                             <label for="blogContent">Content:</label>
-                            <textarea style="min-height: 150px;" id="blogContent" name="blogContent" required></textarea>
+                            <textarea style="min-height: 150px;" id="blogContent" name="blogContent"
+                                required></textarea>
 
                         </div>
                         <div class="blog-post-form-group">
@@ -1035,7 +1037,24 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             ?>
             <h4 style="margin: 20px;">past Events</h4>
 
+            <style>
+                .PastEventsmoreButton {
+                    display: block;
+                    width: 100%;
+                    text-align: center;
+                    padding: 10px;
+                    background-color: #007bff;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    box-sizing: border-box;
+                    margin-top: 10px;
+                }
 
+                .PastEventsmoreButton:hover {
+                    background-color: #0056b3;
+                }
+            </style>
             <?php
             // Step 2: Fetch Data from the Database
             $sql = "SELECT * FROM pastevents";
@@ -1057,18 +1076,20 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         $imagePath = ''; // Default to empty if no valid path found
                     }
 
+                    $eventId = htmlspecialchars($row["id"]); // Get the event ID
+
                     echo '<div class="eventDiv">
-            <h3>' . htmlspecialchars($row["event_name"]) . '</h3>
-            <img src="' . $imagePath . '" alt="Event">
-            <p>' . htmlspecialchars($row["event_details"]) . '</p>
-            <div class="eventDivindiv">
-                <p>' . htmlspecialchars($row["event_location"]) . '</p>
-                <p>' . htmlspecialchars($row["event_date"]) . '</p>
-            </div>
-        </div>';
+                    <div class="eventDivindiv">
+                    <h3>' . htmlspecialchars($row["event_location"]) . '</h3>
+                    <h3>' . htmlspecialchars($row["event_date"]) . '</h3></div>
+                    <img src="' . $imagePath . '" alt="Event">
+                    <p>' . htmlspecialchars($row["event_name"]) . '</p><br>
+                    <a href="Event.php?id=' . $eventId . '" class="PastEventsmoreButton">More</a> 
+        
+                  </div>';
                 }
                 echo '  </div>
-    </div>';
+                </div>';
             } else {
                 echo "0 results";
             }
@@ -1076,6 +1097,20 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             // Close connection
             $conn->close();
             ?>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Attach click event listeners to all buttons with class 'PastEventsmoreButton'
+                    document.querySelectorAll('.PastEventsmoreButton').forEach(button => {
+                        button.addEventListener('click', function() {
+                            // Get the event ID from the button's data-id attribute
+                            var eventId = this.getAttribute('data-id');
+                            // Redirect to event.php with the event ID as a query parameter
+                            window.location.href = 'Event.php?id=' + eventId;
+                        });
+                    });
+                });
+            </script>
 
 
         </section>
