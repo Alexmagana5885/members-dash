@@ -44,6 +44,36 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     </header>
 
+    <!-- <style>
+        .blogPoint {
+    width: 100%;
+    background-color: #fff;
+    min-height: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 10px;
+    text-align: center;
+    max-height: 600px;
+    overflow-x: auto; 
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scroll-snap-type: x mandatory; 
+}
+
+.Singleblog {
+    min-width: 300px; 
+    flex: 0 0 auto; 
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-bottom: 20px;
+    scroll-snap-align: start;
+} -->
+
+    </style>
+
     <style>
                 .blogPoint {
                     width: 100%;
@@ -53,7 +83,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     border-radius: 10px;
                     display: grid;
                     grid-auto-flow: column;
-                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
                     gap: 10px;
                     text-align: center;
                     max-height: 600px;
