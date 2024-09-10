@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+
 require_once 'DBconnection.php';
 
 $response = array();
@@ -36,13 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (password_verify($password, $row['password'])) {
                         // Regenerate session ID to prevent session fixation
                         session_regenerate_id(true);
-
+                        
                         $_SESSION['loggedin'] = true;
                         $_SESSION['user_email'] = $email;  // Set the email in 'user_email'
-                        
-                        // Determine the role
+
+                        // Check if the email is one of the admin emails
                         if ($email === 'eugeneadmin@agl.or.ke' || $email === 'maganaadmin@agl.or.ke') {
-                            $_SESSION['role'] = 'superadmin';
+                            $response['status'] = 'success';
+                            $response['redirect'] = 'pages/AGLADMIN.php';
                         } else {
                             // Check membership type and redirection for other users
                             if ($membershipType == 'IndividualMember') {
@@ -55,24 +58,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     $resultCheck = $stmtCheck->get_result();
 
                                     if ($resultCheck->num_rows > 0) {
-                                        $_SESSION['role'] = 'admin';
+                                        $response['status'] = 'success';
+                                        $response['redirect'] = 'pages/AdminMember.php';
                                     } else {
-                                        $_SESSION['role'] = 'member';
+                                        $response['status'] = 'success';
+                                        $response['redirect'] = 'pages/MembersPortal.php';
                                     }
                                 } else {
                                     $response['status'] = 'error';
                                     $response['message'] = 'Database query error.';
-                                    echo json_encode($response);
-                                    exit();
                                 }
                             } elseif ($membershipType == 'OrganizationMember') {
-                                $_SESSION['role'] = 'member';
+                                $response['status'] = 'success';
+                                $response['redirect'] = 'pages/Organizationpage.php';
                             }
                         }
-
-                        // Redirect to a common page
-                        $response['status'] = 'success';
-                        $response['redirect'] = 'pages/AGLADMIN.php'; // Redirect to a common page
                     } else {
                         $response['status'] = 'error';
                         $response['message'] = 'Invalid password.';

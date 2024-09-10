@@ -1,15 +1,20 @@
 <?php
+session_start(); // Start the session
+
 require_once('DBconnection.php');
+
+// Initialize response array
+$response = array('success' => false, 'message' => '', 'errors' => array());
 
 // Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize input data
-    $eventName = htmlspecialchars($_POST['eventName']);
-    $eventDetails = htmlspecialchars($_POST['eventDetails']); // Make sure to sanitize the Quill editor content appropriately
-    $eventLocation = htmlspecialchars($_POST['eventLocation']);
-    $eventDate = $_POST['eventDate']; 
+    $eventName = htmlspecialchars(trim($_POST['eventName']));
+    $eventDetails = htmlspecialchars(trim($_POST['eventDetails'])); // Make sure to sanitize the Quill editor content appropriately
+    $eventLocation = htmlspecialchars(trim($_POST['eventLocation']));
+    $eventDate = htmlspecialchars(trim($_POST['eventDate'])); 
 
-    // Prepare arrays to store uploaded files' paths
+    // Initialize arrays to store uploaded files' paths
     $imagePaths = [];
     $documentPaths = [];
 
@@ -18,14 +23,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $targetImageDir = "../assets/img/PastEvents/"; // Directory to save the uploaded images
 
         foreach ($_FILES['eventImages']['tmp_name'] as $key => $tmpName) {
-            $fileName = basename($_FILES['eventImages']['name'][$key]);
-            $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
-            $newFileName = time() . "_" . str_replace(' ', '_', $eventName) . "_img_" . $key . "." . $fileExtension; // Rename file with timestamp, event name, and key
-            $targetFilePath = $targetImageDir . $newFileName;
+            if ($_FILES['eventImages']['error'][$key] == UPLOAD_ERR_OK) {
+                $fileName = basename($_FILES['eventImages']['name'][$key]);
+                $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif']; // Allowed image extensions
 
-            // Move the uploaded file to the target directory
-            if (move_uploaded_file($tmpName, $targetFilePath)) {
-                $imagePaths[] = $targetFilePath;
+                if (in_array($fileExtension, $allowedExtensions)) {
+                    $newFileName = time() . "_" . str_replace(' ', '_', $eventName) . "_img_" . $key . "." . $fileExtension;
+                    $targetFilePath = $targetImageDir . $newFileName;
+
+                    if (move_uploaded_file($tmpName, $targetFilePath)) {
+                        $imagePaths[] = $targetFilePath;
+                    } else {
+                        $response['errors'][] = "Failed to move image file: " . $_FILES['eventImages']['name'][$key];
+                    }
+                } else {
+                    $response['errors'][] = "Invalid image file type: " . $_FILES['eventImages']['name'][$key];
+                }
+            } else {
+                $response['errors'][] = "Error uploading image file: " . $_FILES['eventImages']['name'][$key];
             }
         }
     }
@@ -35,14 +51,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $targetDocumentDir = "../assets/Documents/PastEventsDocs/"; // Directory to save the uploaded documents
 
         foreach ($_FILES['eventDocuments']['tmp_name'] as $key => $tmpName) {
-            $fileName = basename($_FILES['eventDocuments']['name'][$key]);
-            $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
-            $newFileName = time() . "_" . str_replace(' ', '_', $eventName) . "_doc_" . $key . "." . $fileExtension; // Rename file with timestamp, event name, and key
-            $targetFilePath = $targetDocumentDir . $newFileName;
+            if ($_FILES['eventDocuments']['error'][$key] == UPLOAD_ERR_OK) {
+                $fileName = basename($_FILES['eventDocuments']['name'][$key]);
+                $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                $allowedExtensions = ['pdf']; // Only allow PDF documents
 
-            // Move the uploaded file to the target directory
-            if (move_uploaded_file($tmpName, $targetFilePath)) {
-                $documentPaths[] = $targetFilePath;
+                if (in_array($fileExtension, $allowedExtensions)) {
+                    $newFileName = time() . "_" . str_replace(' ', '_', $eventName) . "_doc_" . $key . "." . $fileExtension;
+                    $targetFilePath = $targetDocumentDir . $newFileName;
+
+                    if (move_uploaded_file($tmpName, $targetFilePath)) {
+                        $documentPaths[] = $targetFilePath;
+                    } else {
+                        $response['errors'][] = "Failed to move document file: " . $_FILES['eventDocuments']['name'][$key];
+                    }
+                } else {
+                    $response['errors'][] = "Invalid document file type: " . $_FILES['eventDocuments']['name'][$key] . ". Only PDF files are allowed.";
+                }
+            } else {
+                $response['errors'][] = "Error uploading document file: " . $_FILES['eventDocuments']['name'][$key];
             }
         }
     }
@@ -53,18 +80,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare SQL query to insert data into the database
     $sql = "INSERT INTO PastEvents (event_name, event_details, event_location, event_date, event_image_paths, event_document_paths)
-            VALUES ('$eventName', '$eventDetails', '$eventLocation', '$eventDate', '$imagePathsJson', '$documentPathsJson')";
+            VALUES (?, ?, ?, ?, ?, ?)";
 
-    // Execute the query
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.getElementById('successModal').style.display = 'block';
-                });
-              </script>";
+    // Prepare and bind the statement
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param('ssssss', $eventName, $eventDetails, $eventLocation, $eventDate, $imagePathsJson, $documentPathsJson);
+
+        // Execute the query
+        if ($stmt->execute()) {
+            $response['success'] = true;
+            $response['message'] = 'Event added successfully.';
+        } else {
+            $response['errors'][] = "Database insertion error: " . $stmt->error;
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        $response['errors'][] = "Database query preparation error.";
     }
+
+    // Store the response in the session
+    $_SESSION['response'] = $response;
+
+    // Redirect to the previous page or a specific page
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit;
 }
 
 // Close the database connection

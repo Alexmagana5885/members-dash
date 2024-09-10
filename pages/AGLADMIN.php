@@ -1,5 +1,14 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+    header('Location: login.php'); // Redirect to login page if not logged in
+    exit();
+}
+
+// Get the user role
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
+
 ?>
 
 
@@ -42,19 +51,31 @@ session_start();
                 <li>
                     <a href="https://www.agl.or.ke/" class="active">Home<br /></a>
                 </li>
-                <li><a id="openPostEventModal">Post Up coming Event</a></li>
-                <li><a id="openPastEventModal">Post past Event</a></li>
-                <li><a id="openMessagePopupSend">Send Message</a></li>
-                <li><a href="admin/settings.html">Admit New Members</a></li>
-                <li><a id="openBlogPostModal">Post a Blog</a></li>
-                <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-                <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                <!-- <li><a href="pages/newfile.html">Donations</a></li> -->
-                <li><a href="Payment/index.php">Payments</a></li>
-                <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-                <li><a href="new.php">new</a></li>
-                <li><a href="MembersPortal.php">memebrportal</a></li>
-                <li><a href="AdminMember.php">memberadmin</a></li>
+
+                <?php if ($role == 'superadmin') : ?>
+                    <li><a id="openPostEventModal">Post Planned Event</a></li>
+                    <li><a id="openPastEventModal">Post Past Event</a></li>
+                    <li><a id="openMessagePopupSend">Send Message</a></li>
+                    <li><a href="admin/settings.html">Admit New Members</a></li>
+                    <li><a id="openBlogPostModal">Post a Blog</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                    <li><a id="MembersTable-link" href="Members.php">Members</a></li>
+                    <li><a href="Payment/index.php">Payments</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+                    <li><a href="new.php">new</a></li>
+                    <li><a href="MembersPortal.php">memberportal</a></li>
+                    <li><a href="AdminMember.php">memberadmin</a></li>
+                <?php elseif ($role == 'admin') : ?>
+                    <li><a id="openPostEventModal">Post Planned Event</a></li>
+                    <li><a id="openMessagePopupSend">Send Message</a></li>
+                    <li><a id="openBlogPostModal">Post a Blog</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                    <li><a id="MembersTable-link" href="Members.php">Members</a></li>
+                    <li><a href="Payment/index.php">Payments</a></li>
+                <?php elseif ($role == 'member') : ?>
+                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+                <?php endif; ?>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -259,13 +280,13 @@ session_start();
                         popup.style.display = displayState;
                     }
 
-                    document.addEventListener('DOMContentLoaded', function () {
+                    document.addEventListener('DOMContentLoaded', function() {
                         const openButtons = document.querySelectorAll('[data-popup-target]');
                         const closeButtons = document.querySelectorAll('.popup-close');
 
                         // Open popup on button click
                         openButtons.forEach(button => {
-                            button.addEventListener('click', function () {
+                            button.addEventListener('click', function() {
                                 const popupId = this.getAttribute('data-popup-target');
                                 togglePopup(popupId);
                             });
@@ -273,20 +294,19 @@ session_start();
 
                         // Close popup on close button click
                         closeButtons.forEach(button => {
-                            button.addEventListener('click', function () {
+                            button.addEventListener('click', function() {
                                 const popup = this.closest('.popup-container');
                                 popup.style.display = 'none';
                             });
                         });
 
                         // Close popup if clicking outside the popup content
-                        window.addEventListener('click', function (event) {
+                        window.addEventListener('click', function(event) {
                             if (event.target.classList.contains('popup-container')) {
                                 event.target.style.display = 'none';
                             }
                         });
                     });
-
                 </script>
 
                 <?php
@@ -331,7 +351,7 @@ session_start();
 
                 <?php
                 // session_start();
-                
+
                 if (!isset($_SESSION['user_email'])) {
                     die("User not logged in");
                 }
@@ -339,7 +359,7 @@ session_start();
                 $userEmail = $_SESSION['user_email'];
 
                 // Debugging session email
-                
+
 
                 // Prepare the SQL query
                 $sql = "SELECT event_name, event_location, event_date FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
@@ -397,91 +417,140 @@ session_start();
             <!-- blogs -->
             <!-- delete the stylesheet -->
             <style>
-                .blogPoint {
-                    width: 100%;
-                    background-color: #fff;
-                    min-height: 200px;
-                    padding: 5px;
-                    border-radius: 10px;
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 10px;
-                    text-align: center;
-                    max-height: 700px;
-                    overflow: auto;
-                    scrollbar-width: thin;
+                /* Popup container */
+                .popup {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    width: 300px;
+                    padding: 15px;
+                    background-color: #f8f9fa;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                    z-index: 1000;
+                    opacity: 0;
+                    visibility: hidden;
+                    transform: translateY(-20px);
+                    transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
                 }
 
-                .Singleblog {
-                    width: 100%;
-                    margin-right: 10px;
-                    display: flex;
+                /* Popup visible state */
+                .popup.show {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translatex(0);
                 }
 
-                .blogImage {
-                    width: 50%;
-                    height: 100%;
-                    margin-right: 5px;
-                    border-radius: 20px 0 50px 0;
+                /* Success and danger alert styles */
+                .alert {
+                    margin: 0;
+                    padding: 10px;
+                    border-radius: 3px;
+                    font-size: 14px;
                 }
 
-                .blogImage img {
-                    width: 100%;
-                    height: 100%;
-                    margin-right: 5px;
-                    border-radius: 20px 0 50px 0;
+                .alert-success {
+                    background-color: #d4edda;
+                    color: #155724;
                 }
 
-                .blogcontent {
-                    width: 49%;
-                }
-
-                .blogcontent p {
-                    overflow: auto;
-                    scrollbar-width: thin;
-                    max-height: 200px;
-                    padding: 5px;
-                    margin: 10px;
-                    text-align: start;
-                }
-
-                @media screen and (max-width: 600px) {
-                    .blogPoint {
-                        grid-template-columns: 1fr;
-                        /* Show one item per row */
-                        max-height: 600px;
-                        overflow: auto;
-                        scrollbar-width: thin;
-                    }
-
-                    .Singleblog {
-                        width: 100%;
-                        flex-direction: column;
-                        margin-bottom: 10px;
-                    }
-
-                    .blogImage {
-                        width: 100%;
-                        margin-right: 0;
-                    }
-
-                    .blogcontent {
-                        width: 100%;
-                    }
+                .alert-danger {
+                    background-color: #f8d7da;
+                    color: #721c24;
                 }
             </style>
 
 
+            <!-- error response-popups -->
+            <div>
+
+                <!-- blog post response -->
+                <?php
+                if (isset($_SESSION['response'])) {
+                    $response = $_SESSION['response'];
+
+                    echo '<div id="response-popup" class="popup">';
+                    if (!$response['success']) {
+                        // Display error messages
+                        if (!empty($response['errors'])) {
+                            echo '<div class="alert alert-danger">';
+                            foreach ($response['errors'] as $error) {
+                                echo "<p>$error</p>";
+                            }
+                            echo '</div>';
+                        } else {
+                            echo '<div class="alert alert-danger">' . $response['message'] . '</div>';
+                        }
+                    } else {
+                        // Display success message
+                        echo '<div class="alert alert-success">' . $response['message'] . '</div>';
+                    }
+                    echo '</div>';
+
+                    // Clear the session response
+                    unset($_SESSION['response']);
+                }
+                ?>
+
+                <!-- upcomming event response -->
+
+
+                <?php
+
+                // Check if there's a response in the session
+                if (isset($_SESSION['response'])) {
+                    $response = $_SESSION['response'];
+
+                    // Display the response popup
+                    echo '<div id="response-popup" class="popup">';
+
+                    // Check if the response indicates an error
+                    if (!$response['success']) {
+                        // Display error messages
+                        if (!empty($response['errors'])) {
+                            echo '<div class="alert alert-danger">';
+                            foreach ($response['errors'] as $error) {
+                                echo "<p>$error</p>";
+                            }
+                            echo '</div>';
+                        } else {
+                            echo '<div class="alert alert-danger">' . htmlspecialchars($response['message']) . '</div>';
+                        }
+                    } else {
+                        // Display success message
+                        echo '<div class="alert alert-success">' . htmlspecialchars($response['message']) . '</div>';
+                    }
+
+                    echo '</div>';
+
+                    // Clear the session response
+                    unset($_SESSION['response']);
+                }
+                ?>
+
+
+            </div>
+
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var popup = document.getElementById('response-popup');
+                    if (popup) {
+                        // Show the popup
+                        popup.classList.add('show');
+
+                        // Hide the popup after 30 seconds
+                        setTimeout(function() {
+                            popup.classList.remove('show');
+                        }, 10000); // 30000ms = 30 seconds
+                    }
+                });
+            </script>
+
+
+
             <div class="blogPoint">
-                <!-- 
-                <div class="Singleblog">
-                    <div class="blogImage"><img src="../assets/img/DemoImage/stats-img.jpg" alt="Blog"></div>
-                    <div class="blogcontent">
-                        <h4>head</h4>
-                        <p>blog content</p>
-                        <h6>08/09/2024</h6>
-                    </div>
-                </div> -->
+
 
                 <?php
                 // Query to get blog posts
@@ -505,7 +574,6 @@ session_start();
                 }
                 // $conn->close();
                 ?>
-
 
 
             </div>
@@ -552,9 +620,6 @@ session_start();
                 $messages[] = $row;
             }
 
-            // Close the statement and connection
-            // $stmt->close();
-            // $conn->close();
             ?>
 
             <div class="message-popup" id="messagePopupReceivedMessages">
@@ -578,15 +643,6 @@ session_start();
             </div>
 
 
-            <!-- <script>
-                function showFullMessageReceivedMessages(messageContent) {
-                    alert(messageContent); 
-                }
-            </script> -->
-
-
-
-
             <!-- Full message pop-up -->
             <div class="full-message-popup" id="fullMessagePopupReceivedMessages">
                 <div class="full-message-content">
@@ -596,11 +652,11 @@ session_start();
             </div>
             <!-- Full message pop-up script -->
             <script>
-                document.getElementById('toggleMessagesReceivedMessages').addEventListener('click', function () {
+                document.getElementById('toggleMessagesReceivedMessages').addEventListener('click', function() {
                     document.getElementById('messagePopupReceivedMessages').style.display = 'flex';
                 });
 
-                document.getElementById('closePopupReceivedMessages').addEventListener('click', function () {
+                document.getElementById('closePopupReceivedMessages').addEventListener('click', function() {
                     document.getElementById('messagePopupReceivedMessages').style.display = 'none';
                 });
 
@@ -609,7 +665,7 @@ session_start();
                     document.getElementById('fullMessagePopupReceivedMessages').style.display = 'flex';
                 }
 
-                document.getElementById('closeFullMessageReceivedMessages').addEventListener('click', function () {
+                document.getElementById('closeFullMessageReceivedMessages').addEventListener('click', function() {
                     document.getElementById('fullMessagePopupReceivedMessages').style.display = 'none';
                 });
             </script>
@@ -640,7 +696,7 @@ session_start();
                             $eventLocation = htmlspecialchars($row['event_location']);
                             $eventDate = htmlspecialchars($row['event_date']);
 
-                            echo '<div class="eventDiv">';
+                            echo '<div  class="eventDiv">';
                             echo '<h3>' . $eventName . '</h3>';
                             echo '<img src="' . $eventImagePath . '" alt="Event">';
                             echo '<p>' . $eventDescription . '</p>';
@@ -684,34 +740,34 @@ session_start();
             </div>
 
             <script>
-                document.addEventListener('DOMContentLoaded', function () {
+                document.addEventListener('DOMContentLoaded', function() {
                     <?php
                     if ($result->num_rows > 0) {
                         $result->data_seek(0); // Reset the result pointer to the beginning
                         while ($row = $result->fetch_assoc()) {
                             $eventId = htmlspecialchars($row['id']);
-                            ?>
+                    ?>
 
                             // JavaScript to handle opening and closing of popup forms
                             var registerBtnEventRegistration_<?php echo $eventId; ?> = document.getElementById('registerBtnEventRegistration_<?php echo $eventId; ?>');
                             var popupFormEventRegistration_<?php echo $eventId; ?> = document.getElementById('popupFormEventRegistration_<?php echo $eventId; ?>');
                             var closeBtn_<?php echo $eventId; ?> = document.getElementById('closeBtn_<?php echo $eventId; ?>');
 
-                            registerBtnEventRegistration_<?php echo $eventId; ?>.addEventListener('click', function () {
+                            registerBtnEventRegistration_<?php echo $eventId; ?>.addEventListener('click', function() {
                                 popupFormEventRegistration_<?php echo $eventId; ?>.style.display = 'flex';
                             });
 
-                            closeBtn_<?php echo $eventId; ?>.addEventListener('click', function () {
+                            closeBtn_<?php echo $eventId; ?>.addEventListener('click', function() {
                                 popupFormEventRegistration_<?php echo $eventId; ?>.style.display = 'none';
                             });
 
-                            window.addEventListener('click', function (event) {
+                            window.addEventListener('click', function(event) {
                                 if (event.target == popupFormEventRegistration_<?php echo $eventId; ?>) {
                                     popupFormEventRegistration_<?php echo $eventId; ?>.style.display = 'none';
                                 }
                             });
 
-                            <?php
+                    <?php
                         }
                     }
                     ?>
@@ -759,24 +815,24 @@ session_start();
             </div>
             <!-- Post Planned Event Modal  script-->
             <script>
-                var modal = document.getElementById("myModal");
+                var myModal = document.getElementById("myModal");
 
-                var openModalBtn = document.getElementById("openPostEventModal");
+                var openPostEventModal = document.getElementById("openPostEventModal");
 
                 var closeBtn = document.getElementsByClassName("close")[0];
 
-                openModalBtn.onclick = function (event) {
+                openPostEventModal.onclick = function(event) {
                     event.preventDefault();
-                    modal.style.display = "block";
+                    myModal.style.display = "block";
                 };
 
-                closeBtn.onclick = function () {
-                    modal.style.display = "none";
+                closeBtn.onclick = function() {
+                    myModal.style.display = "none";
                 };
 
-                window.onclick = function (event) {
+                window.onclick = function(event) {
                     if (event.target == modal) {
-                        modal.style.display = "none";
+                        myModal.style.display = "none";
                     }
                 };
             </script>
@@ -796,14 +852,9 @@ session_start();
                         <div class="past-event-form-group">
                             <label for="pastEventLocation">Event Details</label>
                             <textarea style="height: 200px; padding: 10px; " name="eventDetails"
-                                id="pastEventDetailsEditor"></textarea>
+                                id="pastEventDetailsEditor" required></textarea>
                         </div>
 
-                        <!-- <div class="past-event-form-group">
-                            <label for="pastEventDetails">Event Details:</label>
-                            <div id="pastEventDetailsEditor" style="height: 200px"></div>
-                            <input type="hidden" id="pastEventDetailsHidden" name="eventDetails" />
-                        </div> -->
 
                         <div class="past-event-form-group">
                             <label for="pastEventLocation">Location:</label>
@@ -815,11 +866,12 @@ session_start();
                         </div>
                         <div class="past-event-form-group">
                             <label for="pastEventImages">Event Images:</label>
-                            <input type="file" id="pastEventImages" name="eventImages[]" multiple />
+                            <input type="file" id="pastEventImages" name="eventImages[]" multiple required />
                         </div>
                         <div class="past-event-form-group">
                             <label for="pastEventDocuments">Event Documents:</label>
-                            <input type="file" id="pastEventDocuments" name="eventDocuments[]" multiple />
+                            <input type="file" id="pastEventDocuments" name="eventDocuments[]" accept=".pdf" multiple required />
+
                         </div>
                         <div class="past-event-form-group">
                             <button type="submit">Save Past Event</button>
@@ -832,20 +884,18 @@ session_start();
                 var modal = document.getElementById("pastEventModal");
                 var btn = document.getElementById("openPastEventModal");
                 var span = document.getElementsByClassName("close-past-event")[0];
-                btn.onclick = function () {
+                btn.onclick = function() {
                     modal.style.display = "block";
                 }
-                span.onclick = function () {
+                span.onclick = function() {
                     modal.style.display = "none";
                 }
-                window.onclick = function (event) {
+                window.onclick = function(event) {
                     if (event.target == modal) {
                         modal.style.display = "none";
                     }
                 }
             </script>
-
-            <!-- delete the style alredy delete -->
 
 
             <!-- send Message Popup -->
@@ -897,12 +947,12 @@ session_start();
                     document.getElementById('messagePopupsend').style.display = 'none';
                 }
 
-                document.getElementById('openMessagePopupSend').addEventListener('click', function (event) {
+                document.getElementById('openMessagePopupSend').addEventListener('click', function(event) {
                     event.preventDefault();
                     showMessagePopup();
                 });
 
-                document.getElementById('messageClosePopupBtn').addEventListener('click', function (event) {
+                document.getElementById('messageClosePopupBtn').addEventListener('click', function(event) {
                     event.preventDefault();
                     hideMessagePopup();
                 });
@@ -913,6 +963,8 @@ session_start();
             <div id="blogPostModal" class="blog-post-modal">
                 <div class="blog-post-modal-content">
                     <span class="close-blog-post">&times;</span>
+                    <div id="errorMessages" style="color:red;"></div>
+                    <div id="successMessage" style="color:green;"></div>
                     <form id="blogPostForm" action="../forms/save_blog_post.php" method="post"
                         enctype="multipart/form-data">
                         <div class="blog-post-form-group">
@@ -921,12 +973,12 @@ session_start();
                         </div>
                         <div class="blog-post-form-group">
                             <label for="blogContent">Content:</label>
-                            <textarea style="min-height: 150px;" id="blogContent" name="blogContent" id=""></textarea>
+                            <textarea style="min-height: 150px;" id="blogContent" name="blogContent" required></textarea>
 
                         </div>
                         <div class="blog-post-form-group">
                             <label for="blogImage">Blog Image:</label>
-                            <input type="file" id="blogImage" name="blogImage" accept="image/*" />
+                            <input type="file" id="blogImage" name="blogImage" accept="image/*" required />
                         </div>
                         <div class="blog-post-form-group">
                             <button type="submit">Post Blog</button>
@@ -934,19 +986,21 @@ session_start();
                     </form>
                 </div>
             </div>
+
+
             <!-- Blog Post Modal script -->
             <script>
                 const blogPostModal = document.getElementById("blogPostModal");
                 const openBlogPostModal = document.getElementById("openBlogPostModal");
                 const closeBlogPost = document.querySelector(".close-blog-post");
-                openBlogPostModal.addEventListener("click", function (event) {
+                openBlogPostModal.addEventListener("click", function(event) {
                     event.preventDefault();
                     blogPostModal.style.display = "block";
                 });
-                closeBlogPost.addEventListener("click", function () {
+                closeBlogPost.addEventListener("click", function() {
                     blogPostModal.style.display = "none";
                 });
-                window.addEventListener("click", function (event) {
+                window.addEventListener("click", function(event) {
                     if (event.target == blogPostModal) {
                         blogPostModal.style.display = "none";
                     }
@@ -968,7 +1022,7 @@ session_start();
                 });
 
                 // Handle form submission
-                document.getElementById('pastEventForm').onsubmit = function () {
+                document.getElementById('pastEventForm').onsubmit = function() {
                     // Set hidden input value to the Quill editor content
                     document.getElementById('pastEventDetailsHidden').value = quill.root.innerHTML;
                 };
@@ -990,7 +1044,7 @@ session_start();
             // Step 3: Display Data in HTML
             if ($result->num_rows > 0) {
                 echo '<div class="MinPrtSecSpace">
-        <div class="table-card">';
+                <div class="table-card">';
                 while ($row = $result->fetch_assoc()) {
                     // Decode JSON if needed
                     $imagePathsJson = $row["event_image_paths"];
@@ -1035,11 +1089,11 @@ session_start();
 
     <!-- side bar script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const toggleButton = document.getElementById('toggleMenu');
             const sidebar = document.getElementById('sidebar');
 
-            toggleButton.addEventListener('click', function () {
+            toggleButton.addEventListener('click', function() {
 
                 if (sidebar.style.display === 'block') {
                     sidebar.style.display = 'none';

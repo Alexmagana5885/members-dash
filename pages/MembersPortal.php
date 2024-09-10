@@ -245,14 +245,16 @@ session_start();
                     width: 100%;
                     background-color: #fff;
                     min-height: 200px;
-                    padding: 5px;
+                    padding: 10px;
                     border-radius: 10px;
                     display: grid;
-                    grid-template-columns: repeat(2, 1fr);
+                    grid-auto-flow: column;
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
                     gap: 10px;
                     text-align: center;
-                    max-height: 700px;
-                    overflow: auto;
+                    max-height: 600px;
+                    overflow-x: auto;
+                    overflow-y: hidden;
                     scrollbar-width: thin;
                 }
 
@@ -260,24 +262,29 @@ session_start();
                     width: 100%;
                     margin-right: 10px;
                     display: flex;
+                    flex-direction: column;
+                    padding: 10px;
+                    margin-bottom: 20px;
                 }
 
                 .blogImage {
-                    width: 50%;
-                    height: 100%;
-                    margin-right: 5px;
+                    width: 100%;
+                    height: 200px;
+                    margin-bottom: 5px;
                     border-radius: 20px 0 50px 0;
+                    object-fit: cover;
+                   
                 }
+
 
                 .blogImage img {
                     width: 100%;
-                    height: 100%;
-                    margin-right: 5px;
                     border-radius: 20px 0 50px 0;
+                    object-fit: cover;
                 }
 
                 .blogcontent {
-                    width: 49%;
+                    width: 100%;
                 }
 
                 .blogcontent p {
@@ -291,22 +298,19 @@ session_start();
 
                 @media screen and (max-width: 600px) {
                     .blogPoint {
-                        grid-template-columns: 1fr;
-                        /* Show one item per row */
+                        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
                         max-height: 600px;
-                        overflow: auto;
-                        scrollbar-width: thin;
+                        overflow-x: auto;
                     }
 
                     .Singleblog {
                         width: 100%;
-                        flex-direction: column;
                         margin-bottom: 10px;
                     }
 
                     .blogImage {
                         width: 100%;
-                        margin-right: 0;
+                        margin-bottom: 0;
                     }
 
                     .blogcontent {

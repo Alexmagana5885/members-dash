@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('DBconnection.php');
 
 // Get form data
@@ -10,6 +11,9 @@ $message_content = $_POST['message'];
 
 // Default 'from' email
 $from_email = 'info@agl.or.ke';
+
+// Initialize response array
+$response = array('success' => false, 'message' => '', 'errors' => array());
 
 // Determine recipients based on user choice
 $recipients = [];
@@ -70,14 +74,30 @@ if (!empty($recipients)) {
 
         // Send the email
         if (mail($recipient_email, $subject, nl2br($message_content), $headers)) {
-            echo "Message sent to $recipient_email successfully.<br>";
+            // You could store successful emails sent if needed
         } else {
-            echo "Failed to send message to $recipient_email.<br>";
+            // Capture email sending failure
+            $response['errors'][] = "Failed to send message to $recipient_email.";
         }
     }
+
+    // If there are no errors, mark the response as successful
+    if (empty($response['errors'])) {
+        $response['success'] = true;
+        $response['message'] = 'All emails sent successfully.';
+    } else {
+        $response['message'] = 'Some emails could not be sent.';
+    }
 } else {
-    echo "No recipients found for the selected group.";
+    $response['message'] = 'No recipients found for the selected group.';
 }
+
+// Store the response in the session
+$_SESSION['response'] = $response;
+
+// Redirect back to the referring page
+header("Location: " . $_SERVER['HTTP_REFERER']);
+exit;
 
 // Close the database connection
 $conn->close();
