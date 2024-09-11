@@ -482,7 +482,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             <!-- ................................... -->
 
 
-            <!-- blogs -->
+            <!-- ellert -->
             <!-- delete the stylesheet -->
             <style>
                 /* Popup container */
@@ -562,7 +562,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
                 <!-- upcomming event response -->
 
-
                 <?php
 
                 // Check if there's a response in the session
@@ -595,7 +594,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     unset($_SESSION['response']);
                 }
                 ?>
-
 
             </div>
 

@@ -1,3 +1,9 @@
+<?php
+session_start();
+// Your PHP code here
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +41,95 @@
 
     <body>
 
+      <style>
+        .popup {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          width: 300px;
+          padding: 15px;
+          background-color: #f8f9fa;
+          border-radius: 5px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+          z-index: 1000;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-20px);
+          transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
+        }
+
+        /* Popup visible state */
+        .popup.show {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+
+        /* Success and danger alert styles */
+        .alert {
+          margin: 0;
+          padding: 10px;
+          border-radius: 3px;
+          font-size: 14px;
+        }
+
+        .alert-success {
+          background-color: #d4edda;
+          color: #155724;
+        }
+
+        .alert-danger {
+          background-color: #f8d7da;
+          color: #721c24;
+        }
+      </style>
+
+<div id="response-popup" class="popup">
+  <?php
+  if (isset($_SESSION['response'])) {
+    $response = $_SESSION['response'];
+
+    if (!$response['success']) {
+      // Display error messages
+      if (!empty($response['errors'])) {
+        echo '<div class="alert alert-danger">';
+        foreach ($response['errors'] as $error) {
+          echo "<p>$error</p>";
+        }
+        echo '</div>';
+      } else {
+        echo '<div class="alert alert-danger">' . $response['message'] . '</div>';
+      }
+    } else {
+      // Display success message
+      echo '<div class="alert alert-success">' . $response['message'] . '</div>';
+    }
+    // Clear the session response
+    unset($_SESSION['response']);
+  } else {
+    // Default message
+    echo '<div style="color: blue;" class="alert alert-info">Welcome!! Kindly fill in your information correctly.</div>';
+  }
+  ?>
+</div>
+
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var popup = document.getElementById('response-popup');
+          if (popup) {
+            // Show the popup
+            popup.classList.add('show');
+
+            // Hide the popup after 10 seconds
+            setTimeout(function() {
+              popup.classList.remove('show');
+            }, 10000); // 10000ms = 10 seconds
+          }
+        });
+      </script>
+
+
 
       <form style="margin: 0 auto ;" method="post" action="../forms/personalmembership.php"
         enctype="multipart/form-data" class="container" id="registrationForm">
@@ -56,7 +151,7 @@
           </div>
           <div class="progress-step">
             <div class="progress-step-circle">4</div>
-            <p>Payment</p>
+            <p>Submit</p>
           </div>
         </div>
 
@@ -70,17 +165,20 @@
 
               <label for="email">Email:</label>
               <input type="email" id="email" name="email" required><br><br>
+              <span id="email-error" style="color: blue;"></span>
 
               <label for="phone">Phone Number:</label>
-              <input type="tel" id="phone" name="phone" required><br><br>
+              <input type="number" id="phone" name="phone" required><br><br>
+              <span id="phone-error" style="color: blue;"></span>
             </div>
 
             <div class="stepINdivdiv">
               <label for="dob">Date of Birth:</label>
               <input type="date" id="dob" name="dob" required><br><br>
+              <span id="dob-error" style="color: red;"></span>
 
               <label for="address">Address:</label>
-              <textarea id="Homeaddress" name="Homeaddress" rows="4"></textarea><br><br>
+              <textarea id="Homeaddress" name="Homeaddress" rows="4" required></textarea><br><br>
 
               <label for="passport">Passport Image:</label>
               <input style="height: 35px ; padding: 10px" type="file" id="passport" name="passport" accept="image/*"
@@ -101,14 +199,16 @@
 
               <label for="startDate">Start Date:</label>
               <input type="date" id="startDate" name="startDate" required><br><br>
+              <span id="startDate-error" style="color: red;"></span>
             </div>
 
             <div class="stepINdivdiv">
               <label for="graduationYear">Year of Graduation:</label>
               <input type="number" id="graduationYear" name="graduationYear" required><br><br>
+              <span id="graduationYear-error" style="color: red;"></span>
 
               <label for="completionLetter">Completion Letter:</label>
-              <input type="file" id="completionLetter" name="completionLetter" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              <input style="height: 35px ; padding: 10px" type="file" id="completionLetter" name="completionLetter" accept=".pdf"
                 required><br><br>
             </div>
           </div>
@@ -230,6 +330,102 @@
 
         </div>
       </form>
+
+      <!-- form validation script -->
+      <script>
+        document.getElementById('phone').addEventListener('input', function() {
+          const phone = this.value;
+          const phonePattern = /^(\+254|\+1|\+44|\+91)[0-9]{7,12}$/; // Adjust the country codes as needed
+          const errorElement = document.getElementById('phone-error');
+
+          // Check if the phone number matches the pattern
+          if (!phonePattern.test(phone)) {
+            errorElement.textContent = 'Ensure that you fill a valid phone number with a valid country code e.g., +254, +1, +44, +91';
+          } else {
+            errorElement.textContent = ''; // Clear any previous error
+          }
+        });
+
+        document.getElementById('graduationYear').addEventListener('input', function() {
+          const graduationYear = parseInt(this.value, 10);
+          const currentYear = new Date().getFullYear();
+          const errorElement = document.getElementById('graduationYear-error');
+
+          // Check if the year is more than 4 digits
+          if (this.value.length > 4) {
+            errorElement.textContent = 'Year of Graduation cannot have more than 4 digits.';
+            this.value = ''; // Clear the input
+          } else if (graduationYear > currentYear) {
+            // Check if the year is in the future
+            errorElement.textContent = 'Year of Graduation cannot be in the future.';
+            this.value = ''; // Clear the input
+          } else {
+            errorElement.textContent = ''; // Clear any previous error
+          }
+        });
+
+
+        document.getElementById('startDate').addEventListener('change', function() {
+          const startDate = new Date(this.value);
+          const today = new Date();
+          const errorElement = document.getElementById('startDate-error');
+
+          // Remove time component from today's date for accurate comparison
+          today.setHours(0, 0, 0, 0);
+
+          if (startDate > today) {
+            errorElement.textContent = 'The start date cannot be in the future.';
+            this.value = ''; // Clear the date input
+          } else {
+            errorElement.textContent = ''; // Clear any previous error
+          }
+        });
+
+        document.getElementById('email').addEventListener('input', function() {
+          const email = this.value;
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          // Update the domain pattern to include multiple domains
+          const domainPattern = /@(example\.com|yahoo\.com|outlook\.com|[^@\s]+\.or\.ke)$/i;
+          const errorElement = document.getElementById('email-error');
+
+          if (!emailPattern.test(email)) {
+            errorElement.textContent = 'Please enter a valid email address.';
+          } else if (!domainPattern.test(email)) {
+            errorElement.textContent = 'Make sure that your email is from a valid domain e.g., example.com, yahoo.com, outlook.com, or .or.ke.';
+          } else {
+            errorElement.textContent = ''; // Clear any previous error
+          }
+        });
+
+
+        document.getElementById('dob').addEventListener('change', function() {
+          const dob = new Date(this.value);
+          const today = new Date();
+
+          // Calculate age
+          let age = today.getFullYear() - dob.getFullYear();
+          const monthDifference = today.getMonth() - dob.getMonth();
+          const dayDifference = today.getDate() - dob.getDate();
+
+          // Adjust age if the birthday hasn't occurred yet this year
+          if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+            age--;
+          }
+
+          const errorElement = document.getElementById('dob-error');
+
+          if (dob > today) {
+            errorElement.textContent = 'Date of birth cannot be in the future.';
+            this.value = ''; // Clear the date input
+          } else if (age < 18) {
+            errorElement.textContent = 'You must be at least 18 years old.';
+            this.value = ''; // Clear the date input
+          } else {
+            errorElement.textContent = ''; // Clear any previous error
+          }
+        });
+      </script>
 
       <script>
         const steps = document.querySelectorAll(".form-step");
