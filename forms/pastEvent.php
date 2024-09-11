@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $documentPathsJson = json_encode($documentPaths);
 
     // Prepare SQL query to insert data into the database
-    $sql = "INSERT INTO Pastevents (event_name, event_details, event_location, event_date, event_image_paths, event_document_paths)
+    $sql = "INSERT INTO pastevents (event_name, event_details, event_location, event_date, event_image_paths, event_document_paths)
             VALUES (?, ?, ?, ?, ?, ?)";
 
     // Prepare and bind the statement
