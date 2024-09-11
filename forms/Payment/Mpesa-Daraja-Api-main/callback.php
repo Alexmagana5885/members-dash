@@ -1,7 +1,5 @@
 <?php
 include 'DB_connection.php'; // Ensure this file contains the proper database connection setup
-session_start(); // Start the session to access session variables
-
 header("Content-Type: application/json");
 
 $logFile = "Mpesastkresponse.json";
@@ -10,7 +8,7 @@ $log = fopen($logFile, "a");
 // Read the M-Pesa callback response
 $stkCallbackResponse = file_get_contents('php://input');
 fwrite($log, "M-Pesa callback response: " . $stkCallbackResponse . "\n");
-
+ 
 $data = json_decode($stkCallbackResponse);
 
 if (json_last_error() === JSON_ERROR_NONE) {
@@ -23,11 +21,9 @@ if (json_last_error() === JSON_ERROR_NONE) {
     $Amount = $stkCallback->CallbackMetadata->Item[0]->Value ?? null;
     $TransactionId = $stkCallback->CallbackMetadata->Item[1]->Value ?? null;
     $UserPhoneNumber = $stkCallback->CallbackMetadata->Item[4]->Value ?? null;
+    $UserEmail = $stkCallback->CallbackMetadata->Item[3]->Value ?? null;
 
-    // Retrieve the email from the session
-    $UserEmail = $_SESSION['user_email'] ?? null;
-
-    if ($ResultCode == 0 && $UserEmail) {
+    if ($ResultCode == 0) {
         // Update payment data in the database
         $stmt = $db->prepare("UPDATE personalmembership 
                               SET payment_number = ?, payment_code = ? 
@@ -46,7 +42,7 @@ if (json_last_error() === JSON_ERROR_NONE) {
             fwrite($log, "Prepare statement error: " . $db->error . "\n");
         }
     } else {
-        fwrite($log, "Transaction failed or email not found. ResultCode: $ResultCode, ResultDesc: $ResultDesc\n");
+        fwrite($log, "Transaction failed. ResultCode: $ResultCode, ResultDesc: $ResultDesc\n");
     }
 } else {
     fwrite($log, "JSON decode error: " . json_last_error_msg() . "\n");
