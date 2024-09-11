@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Your PHP code here
+
 ?>
 
 
@@ -84,35 +84,34 @@ session_start();
         }
       </style>
 
-<div id="response-popup" class="popup">
-  <?php
-  if (isset($_SESSION['response'])) {
-    $response = $_SESSION['response'];
+      <div id="response-popup" class="popup">
+        <?php
+        if (isset($_SESSION['response'])) {
+          $response = $_SESSION['response'];
 
-    if (!$response['success']) {
-      // Display error messages
-      if (!empty($response['errors'])) {
-        echo '<div class="alert alert-danger">';
-        foreach ($response['errors'] as $error) {
-          echo "<p>$error</p>";
+          if (!$response['success']) {
+            // Display error messages
+            if (!empty($response['errors'])) {
+              echo '<div class="alert alert-danger">';
+              foreach ($response['errors'] as $error) {
+                echo "<p>$error</p>";
+              }
+              echo '</div>';
+            } else {
+              echo '<div class="alert alert-danger">' . $response['message'] . '</div>';
+            }
+          } else {
+            // Display success message
+            echo '<div class="alert alert-success">' . $response['message'] . '</div>';
+          }
+          // Clear the session response
+          unset($_SESSION['response']);
+        } else {
+          // Default message
+          echo '<div style="color: blue;" class="alert alert-info">Welcome!! Kindly fill in your information correctly.</div>';
         }
-        echo '</div>';
-      } else {
-        echo '<div class="alert alert-danger">' . $response['message'] . '</div>';
-      }
-    } else {
-      // Display success message
-      echo '<div class="alert alert-success">' . $response['message'] . '</div>';
-    }
-    // Clear the session response
-    unset($_SESSION['response']);
-  } else {
-    // Default message
-    echo '<div style="color: blue;" class="alert alert-info">Welcome!! Kindly fill in your information correctly.</div>';
-  }
-  ?>
-</div>
-
+        ?>
+      </div>
 
       <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -153,7 +152,7 @@ session_start();
             <div class="progress-step-circle">4</div>
             <p>Submit</p>
           </div>
-        </div>
+        </div> 
 
         <!-- Form Steps -->
         <div id="personal-details" class="form-step active">

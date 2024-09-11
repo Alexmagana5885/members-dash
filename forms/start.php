@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $table = 'organizationmembership';
             $emailColumn = 'organization_email';
         }
-
+        
         if ($table && $emailColumn) {
             // Prepare the SQL statement
             $sql = "SELECT $emailColumn, password FROM $table WHERE $emailColumn = ?";

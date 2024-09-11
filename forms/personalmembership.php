@@ -5,7 +5,7 @@ require_once('DBconnection.php');
 // Function to sanitize user input
 function sanitize_input($data) {
     return htmlspecialchars(stripslashes(trim($data)));
-}
+} 
 
 // Initialize variables to store sanitized inputs
 $name = sanitize_input($_POST['name']);

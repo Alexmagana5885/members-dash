@@ -14,6 +14,8 @@ function hashPassword($password)
     return password_hash($password, PASSWORD_BCRYPT);
 }
 
+$response = array(); // Initialize response array
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and collect form data
     $organization_name = sanitize_input($_POST['OrganizationName']);
@@ -29,13 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $start_date = sanitize_input($_POST['startDate']);
     $what_you_do = sanitize_input($_POST['WhatYouDo']);
     $number_of_employees = sanitize_input($_POST['NumberOfEmployees']);
-    $password = sanitize_input($_POST['Password']);
-    $confirm_password = sanitize_input($_POST['ConfirmPassword']);
+    $password = sanitize_input($_POST['password']);
+    $confirm_password = sanitize_input($_POST['confirm-password']);
 
     // Verify password match
     if ($password !== $confirm_password) {
-        $_SESSION['error_message'] = "Passwords do not match.";
-        header('Location: registration_form.php'); // Redirect back to form
+        $response['error'] = "Passwords do not match.";
+        $_SESSION['response'] = $response;
+        header("Location: ../pages/Organizationregistration.php");
         exit();
     }
 
@@ -59,18 +62,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $logo_image_name = $organization_email . '_' . $timestamp . '.' . $logo_image_extension;
             $logo_image_path = $logo_image_dir . $logo_image_name;
             if (!move_uploaded_file($logo_image_tmp_name, $logo_image_path)) {
-                $_SESSION['error_message'] = "Failed to move logo image.";
-                header('Location: registration_form.php');
+                $response['error'] = "Failed to move logo image.";
+                $_SESSION['response'] = $response;
+                header("Location: ../pages/Organizationregistration.php");
                 exit();
             }
         } else {
-            $_SESSION['error_message'] = "Only JPG, JPEG, and PNG files are allowed for the logo image.";
-            header('Location: registration_form.php');
+            $response['error'] = "Only JPG, JPEG, and PNG files are allowed for the logo image.";
+            $_SESSION['response'] = $response;
+            header("Location: ../pages/Organizationregistration.php");
             exit();
         }
     } else {
-        $_SESSION['error_message'] = "Error uploading logo image.";
-        header('Location: registration_form.php');
+        $response['error'] = "Error uploading logo image.";
+        $_SESSION['response'] = $response;
+        header("Location: ../pages/Organizationregistration.php");
         exit();
     }
 
@@ -84,18 +90,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $registration_certificate_name = $organization_email . '_' . $timestamp . '.' . $registration_extension;
             $registration_certificate_path = $registration_certificate_dir . $registration_certificate_name;
             if (!move_uploaded_file($registration_tmp_name, $registration_certificate_path)) {
-                $_SESSION['error_message'] = "Failed to move registration certificate.";
-                header('Location: registration_form.php');
+                $response['error'] = "Failed to move registration certificate.";
+                $_SESSION['response'] = $response;
+                header("Location: ../pages/Organizationregistration.php");
                 exit();
             }
         } else {
-            $_SESSION['error_message'] = "Only PDF, DOC, DOCX, JPG, JPEG, and PNG files are allowed for the registration certificate.";
-            header('Location: registration_form.php');
+            $response['error'] = "Only PDF, DOC, DOCX, JPG, JPEG, and PNG files are allowed for the registration certificate.";
+            $_SESSION['response'] = $response;
+            header("Location: ../pages/Organizationregistration.php");
             exit();
         }
     } else {
-        $_SESSION['error_message'] = "Error uploading registration certificate.";
-        header('Location: registration_form.php');
+        $response['error'] = "Error uploading registration certificate.";
+        $_SESSION['response'] = $response;
+        header("Location: ../pages/Organizationregistration.php");
         exit();
     }
 
@@ -103,7 +112,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_check_query = "SELECT id FROM organizationmembership WHERE organization_email = ?";
     $email_check_stmt = $conn->prepare($email_check_query);
     if (!$email_check_stmt) {
-        die("Failed to prepare email check statement: " . $conn->error);
+        $response['error'] = "Failed to prepare email check statement: " . $conn->error;
+        $_SESSION['response'] = $response;
+        header("Location: ../pages/Organizationregistration.php");
+        exit();
     }
 
     $email_check_stmt->bind_param("s", $organization_email);
@@ -111,21 +123,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_check_stmt->store_result();
 
     if ($email_check_stmt->num_rows > 0) {
-        $_SESSION['error_message'] = "The email is already registered. Please use a different email.";
-        header('Location: registration_form.php');
+        $response['error'] = "The email is already registered. Please use a different email.";
+        $_SESSION['response'] = $response;
+        header("Location: ../pages/Organizationregistration.php");
         exit();
     }
 
     $email_check_stmt->close();
 
     // Insert data into the database
-    $sql = "INSERT INTO organizational_membership (
+    $sql = "INSERT INTO organizationmembership (
                 organization_name, 
                 organization_email, 
                 contact_person, 
                 logo_image, 
                 contact_phone_number, 
-                organization_date_of_registration, 
+                date_of_registration, 
                 organization_address, 
                 location_country, 
                 location_county, 
@@ -136,11 +149,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 what_you_do, 
                 number_of_employees, 
                 password
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param(
-            "sssssssssssssss",
+            "ssssssssssssssss",
             $organization_name,
             $organization_email,
             $contact_person,
@@ -161,15 +174,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             // Email sending logic here
-            $to = $email; // User's email
+            $to = $organization_email;
             $subject = "Welcome to Association of Government Librarians!";
             $message = "
-                Dear $name,
+                Dear $contact_person,
 
-                Congratulations! Your registration with Association of Government Librarians has been successfully completed.
+                Congratulations! Your registration with the Association of Government Librarians has been successfully completed.
                 We are thrilled to have you as part of our community. Here are your registration details:
-                Name: $name
-                Email: $email
+                Name: $organization_name
+                Email: $organization_email
                 You can now log in to your account and explore the various features and resources available to you. If you have any questions or need assistance, please feel free to reach out to our support team at admin@or.ke.
                 You can log in from here: https://member.log.agl.or.ke/members
                 Thank you for joining us, and we look forward to your active participation!
@@ -179,35 +192,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 +254748027123
                 ";
 
-            // Set content-type header for plain text email
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/plain;charset=UTF-8" . "\r\n";
-
-            // Additional headers
             $headers .= 'From: info@agl.or.ke' . "\r\n";
 
             // Send email
-            // Optionally, send a confirmation email here
-            $_SESSION['success_message'] = "Registration successful!";
-            header("Location: success.php"); // Redirect to success page
+            mail($to, $subject, $message, $headers);
+
+            $response['success'] = true;
+            $response['message'] = "Registration successful. Login to your account";
+            $_SESSION['response'] = $response;
+            header("Location: ../index.html");
             exit();
         } else {
-            $_SESSION['error_message'] = "Database error: Could not register organization.";
-            header("Location: registration_form.php"); // Redirect back to form
+            $response['error'] = "Database error: Could not register organization.";
+            $_SESSION['response'] = $response;
+            header("Location: ../pages/Organizationregistration.php");
             exit();
         }
 
         $stmt->close();
     } else {
-        $_SESSION['error_message'] = "Database error: Could not prepare statement.";
-        header("Location: registration_form.php");
+        $response['error'] = "Database error: Could not prepare statement.";
+        $_SESSION['response'] = $response;
+        header("Location: ../pages/Organizationregistration.php");
         exit();
     }
 
     $conn->close();
 } else {
-    $_SESSION['error_message'] = "Invalid request.";
-    header("Location: registration_form.php");
+    $response['error'] = "Invalid request.";
+    $_SESSION['response'] = $response;
+    header("Location: ../pages/Organizationregistration.php");
     exit();
 }
 ?>

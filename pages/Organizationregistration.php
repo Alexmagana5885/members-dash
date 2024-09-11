@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -479,335 +485,527 @@
     }
 </style>
 
+<style>
+    .popup {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
+    }
+
+    /* Popup visible state */
+    .popup.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    /* Success and danger alert styles */
+    .alert {
+        margin: 0;
+        padding: 10px;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+</style>
+
 <body>
-    <!-- Header -->
-    <header class="site-header">
-        <div class="logo">
-            <img src="../assets/img/logo.png" alt="" />
-        </div>
-        <button class="menu-toggle" id="menu-toggle">
-            &#9776;
-            <!-- Unicode for the three-bar menu icon -->
-        </button>
-        <nav class="navigation" id="navigation">
-            <ul>
-                <li><a href="https://www.agl.or.ke/">Home</a></li>
-                <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-                <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<div id="response-popup" class="popup">
+    <?php
+    $hasMessage = false; // Flag to check if any message is set
 
-    <!-- Main Content -->
-    <main style=" width: 100%; ">
+    // Check if session contains response data
+    if (isset($_SESSION['response'])) {
+        $response = $_SESSION['response'];
 
-        <body>
+        // Check if the response contains error messages
+        if (isset($response['error'])) {
+            echo '<div class="alert alert-danger">' . htmlspecialchars($response['error']) . '</div>';
+            unset($_SESSION['response']);
+            $hasMessage = true;
+        }
+
+        // Check if the response contains success messages
+        if (isset($response['success'])) {
+            echo '<div class="alert alert-success">' . htmlspecialchars($response['success']) . '</div>';
+            unset($_SESSION['response']);
+            $hasMessage = true;
+        }
+    }
+
+    if (!$hasMessage) {
+        // Default message if no specific message is set
+        echo '<div style="color: blue;" class="alert alert-info">Welcome!! Kindly fill in your information correctly.</div>';
+    }
+    ?>
+</div>
 
 
-            <form style="margin: 0 auto;" method="post" action="../forms/OrganisationalMembership.php"
-                enctype="multipart/form-data" class="container" id="registrationForm">
-                <h2>Registration Form</h2>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var popup = document.getElementById('response-popup');
+            if (popup) {
+                // Show the popup
+                popup.classList.add('show');
 
-                <!-- Progress Bar -->
-                <div class="progress-bar">
-                    <div class="progress-step active">
-                        <div class="progress-step-circle">1</div>
-                        <p>Organization Details</p>
-                    </div>
-                    <div class="progress-step">
-                        <div class="progress-step-circle">2</div>
-                        <p>Location Details/Profession</p>
-                    </div>
-                    <div class="progress-step">
-                        <div class="progress-step-circle">3</div>
-                        <p>Payment</p>
-                    </div>
+                // Hide the popup after 10 seconds
+                setTimeout(function() {
+                    popup.classList.remove('show');
+                }, 10000); // 10000ms = 10 seconds
+            }
+        });
+    </script>
 
-                </div>
 
-                <!-- Organization Details -->
-                <div id="organization-details" class="form-step active">
-                    <div class="form-stepINdiv">
-                        <!-- <h3>Organization Details</h3> -->
-                        <div class="stepINdivdiv">
-                            <label for="OrganizationName">Organization Name:</label>
-                            <input type="text" id="OrganizationName" name="OrganizationName" required><br><br>
+    <body>
+        <!-- Header -->
+        <header class="site-header">
+            <div class="logo">
+                <img src="../assets/img/logo.png" alt="" />
+            </div>
+            <button class="menu-toggle" id="menu-toggle">
+                &#9776;
+                <!-- Unicode for the three-bar menu icon -->
+            </button>
+            <nav class="navigation" id="navigation">
+                <ul>
+                    <li><a href="https://www.agl.or.ke/">Home</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
 
-                            <label for="OrganizationEmail">Organization Email:</label>
-                            <input type="email" id="OrganizationEmail" name="OrganizationEmail" required><br><br>
+        <!-- Main Content -->
+        <main style=" width: 100%; ">
 
-                            <label for="ContactPerson">Contact Person:</label>
-                            <input type="text" id="ContactPerson" name="ContactPerson" required><br><br>
+            <body>
 
-                            <label for="passport">Logo Image:</label>
-                            <input style="height: 35px ; padding: 10px" type="file" id="LogoImage" name="LogoImage"
-                                accept="image/*" required><br><br>
+
+                <form style="margin: 0 auto;" method="post" action="../forms/OrganisationalMembership.php"
+                    enctype="multipart/form-data" class="container" id="registrationForm">
+                    <h2>Registration Form</h2>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar">
+                        <div class="progress-step active">
+                            <div class="progress-step-circle">1</div>
+                            <p>Organization Details</p>
                         </div>
-
-                        <div class="stepINdivdiv">
-                            <label for="ContactPhoneNumber">Contact Phone Number:</label>
-                            <input type="tel" id="ContactPhoneNumber" name="ContactPhoneNumber" required><br><br>
-
-                            <label for="OrganizationDateofRegistration">Date of Registration:</label>
-                            <input type="date" id="OrganizationDateofRegistration" name="OrganizationDateofRegistration"
-                                required><br><br>
-
-                            <label for="OrganizationAddress">Organization Address:</label>
-                            <textarea id="OrganizationAddress" name="OrganizationAddress" rows="4"></textarea><br><br>
+                        <div class="progress-step">
+                            <div class="progress-step-circle">2</div>
+                            <p>Location Details/Profession</p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Location Details -->
-                <div id="location-details" class="form-step">
-                    <div class="form-stepINdiv">
-                        <!-- <h3>Location Details</h3> -->
-                        <div class="stepINdivdiv">
-                            <label for="LocationCountry">Location Country:</label>
-                            <input type="text" id="LocationCountry" name="LocationCountry" required><br><br>
-
-                            <label for="LocationCounty">Location County:</label>
-                            <input type="text" id="LocationCounty" name="LocationCounty" required><br><br>
-
-                            <label for="LocationTown">Location Town:</label>
-                            <input type="text" id="LocationTown" name="LocationTown" required><br><br>
-
-                            <label for="completionLetter">Organization Registration Certificate:</label>
-                            <input style="height: 35px; padding: 10px; " type="file" id="RegistrationCertificate"
-                                name="RegistrationCertificate" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                required><br><br>
-
-                        </div>
-
-                        <div class="stepINdivdiv">
-                            <label for="OrganizationType">Organization Type:</label>
-                            <input type="text" id="OrganizationType" name="OrganizationType"
-                                placeholder="e.g., governmental or non-governmental" required><br><br>
-
-                            <label for="startDate">Start Date:</label>
-                            <input type="date" id="startDate" name="startDate" required><br><br>
-
-                            <label for="WhatYouDo">What You Do:</label>
-                            <input type="text" id="WhatYouDo" name="WhatYouDo" required><br><br>
-
-                            <label for="NumberOfEmployees">Number of Employees:</label>
-                            <input type="number" id="NumberOfEmployees" name="NumberOfEmployees" required><br><br>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- Payment Details -->
-                <div id="payment" class="form-step">
-                    <div class="form-stepINdiv">
-
-                        <div class="stepINdivdiv">
-                            <p>Create a strong password with a minimum length of 8 characters, including a mix of
-                                upper-case letters, lower-case letters, numbers, and special characters.</p>
-                            <label for="password">Enter password</label><br>
-                            <div class="password-container">
-                                <input type="password" id="password" name="password" required
-                                    oninput="validatePasswords()">
-                                <span class="toggle-icon" onclick="togglePassword('password')">👁️</span>
-                            </div><br><br>
-
-                            <label for="confirm-password">Confirm password</label><br>
-                            <div class="password-container">
-                                <input type="password" id="confirm-password" name="confirm-password" required
-                                    oninput="validatePasswords()">
-                                <span class="toggle-icon" onclick="togglePassword('confirm-password')">👁️</span>
-                            </div><br><br>
-
-                            <div class="error-message" id="error-message1">Passwords do not match!</div>
-
-                            <div class="error-message" id="error-message2">Password does not meet policy requirements
-                                Above!</div>
-
-                        </div>
-
-                        <style>
-                            .payment-button:disabled {
-                                background-color: #ccc;
-                                cursor: not-allowed;
-                            }
-                        </style>
-
-                        <div class="stepINdivdiv">
-                            <label>Read the information bellow Before Registration</label><br>
-                            <p>Please ensure the information you provide is accurate and will be kept confidential.</p>
-                            <br>
-                            <p>You must create a strong password following our guidelines and remember it for future
-                                logins.
-                                After logging in, you will have 2 weeks to pay the registration fee of Ksh 2000.00 from
-                                your account,
-                                or your account will be deactivated.</p>
-
-
-                            <p>Please make sure all required sections of the form are completed before submitting it;
-                                otherwise, it will not be processed.</p>
-
+                        <div class="progress-step">
+                            <div class="progress-step-circle">3</div>
+                            <p>Submit</p>
                         </div>
 
                     </div>
-                </div>
 
-                <div class="error-message" id="error-messageScript">
-                    <?php
-                    session_start();
-                    if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])) {
-                        echo '<p id="errorMessage">' . $_SESSION['error_message'] . '</p>';
-                        unset($_SESSION['error_message']); // Clear the error message after displaying it
-                    }
-                    ?>
-                </div>
+                    <!-- Organization Details -->
+                    <div id="organization-details" class="form-step active">
+                        <div class="form-stepINdiv">
+                            <!-- <h3>Organization Details</h3> -->
+                            <div class="stepINdivdiv">
+                                <label for="OrganizationName">Organization Name:</label>
+                                <input type="text" id="OrganizationName" name="OrganizationName" required><br><br>
 
-                <script>
-                    document.addEventListener('DOMContentLoaded', (event) => {
-                        const errorMessage = document.getElementById('errorMessage');
-                        if (errorMessage) {
-                            // Hide the error message after 10 seconds
-                            setTimeout(() => {
-                                errorMessage.style.display = 'none';
-                            }, 10000); // 10000 milliseconds = 10 seconds
+                                <label for="OrganizationEmail">Organization Email:</label>
+                                <input type="email" id="OrganizationEmail" name="OrganizationEmail" required><br><br>
+                                <span id="organization-email-error" style="color: blue;"></span>
+
+                                <label for="ContactPerson">Contact Person:</label>
+                                <input type="text" id="ContactPerson" name="ContactPerson" required><br><br>
+
+                                <label for="passport">Logo Image:</label>
+                                <input style="height: 35px ; padding: 10px" type="file" id="LogoImage" name="LogoImage"
+                                    accept="image/*" required><br><br>
+                            </div>
+
+                            <div class="stepINdivdiv">
+                                <label for="ContactPhoneNumber">Contact Phone Number:</label>
+                                <input type="number" id="ContactPhoneNumber" name="ContactPhoneNumber" required><br><br>
+                                <span id="contact-phone-error" style="color: blue;"></span>
+
+                                <label for="OrganizationDateofRegistration">Organization Registration Date:</label>
+                                <input type="date" id="OrganizationDateofRegistration" name="OrganizationDateofRegistration" required><br><br>
+                                <span id="registration-date-error" style="color: red;"></span>
+
+
+                                <label for="OrganizationAddress">Organization Address:</label>
+                                <textarea id="OrganizationAddress" name="OrganizationAddress" rows="4" required></textarea><br><br>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location Details -->
+                    <div id="location-details" class="form-step">
+                        <div class="form-stepINdiv">
+                            <!-- <h3>Location Details</h3> -->
+                            <div class="stepINdivdiv">
+                                <label for="LocationCountry">Location Country:</label>
+                                <input type="text" id="LocationCountry" name="LocationCountry" required><br><br>
+
+                                <label for="LocationCounty">Location County:</label>
+                                <input type="text" id="LocationCounty" name="LocationCounty" required><br><br>
+
+                                <label for="LocationTown">Location Town:</label>
+                                <input type="text" id="LocationTown" name="LocationTown" required><br><br>
+
+                                <label for="completionLetter">Organization Registration Certificate:</label>
+                                <input style="height: 35px; padding: 10px; " type="file" id="RegistrationCertificate"
+                                    name="RegistrationCertificate" accept=".pdf"
+                                    required><br><br>
+
+                            </div>
+
+                            <div class="stepINdivdiv">
+                                <label for="OrganizationType">Organization Type:</label>
+                                <input type="text" id="OrganizationType" name="OrganizationType"
+                                    placeholder="e.g., governmental or non-governmental" required><br><br>
+
+                                <label for="startDate">Date Registered With AGL:</label>
+                                <input type="date" id="startDate" name="startDate" required><br><br>
+                                <span id="start-date-error" style="color: red;"></span>
+
+                                <label for="WhatYouDo">What You Do:</label>
+                                <input type="text" id="WhatYouDo" name="WhatYouDo" required><br><br>
+
+                                <label for="NumberOfEmployees">Number of Employees:</label>
+                                <input type="number" id="NumberOfEmployees" name="NumberOfEmployees" required><br><br>
+                                <span id="employees-error" style="color: red;"></span>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- submit Details -->
+                    <div id="payment" class="form-step">
+                        <div class="form-stepINdiv">
+
+                            <div class="stepINdivdiv">
+                                <p>Create a strong password with a minimum length of 8 characters, including a mix of
+                                    upper-case letters, lower-case letters, numbers, and special characters.</p>
+                                <label for="password">Enter password</label><br>
+                                <div class="password-container">
+                                    <input type="password" id="password" name="password" required
+                                        oninput="validatePasswords()">
+                                    <span class="toggle-icon" onclick="togglePassword('password')">👁️</span>
+                                </div><br><br>
+
+                                <label for="confirm-password">Confirm password</label><br>
+                                <div class="password-container">
+                                    <input type="password" id="confirm-password" name="confirm-password" required
+                                        oninput="validatePasswords()">
+                                    <span class="toggle-icon" onclick="togglePassword('confirm-password')">👁️</span>
+                                </div><br><br>
+
+                                <div class="error-message" id="error-message1">Passwords do not match!</div>
+
+                                <div class="error-message" id="error-message2">Password does not meet policy requirements
+                                    Above!</div>
+
+                            </div>
+
+                            <style>
+                                .payment-button:disabled {
+                                    background-color: #ccc;
+                                    cursor: not-allowed;
+                                }
+                            </style>
+
+                            <div class="stepINdivdiv">
+                                <label>Read the information bellow Before Registration</label><br>
+                                <p>Please ensure the information you provide is accurate and will be kept confidential.</p>
+                                <br>
+                                <p>You must create a strong password following our guidelines and remember it for future
+                                    logins.
+                                    After logging in, you will have 2 weeks to pay the registration fee of Ksh 2000.00 from
+                                    your account,
+                                    or your account will be deactivated.</p>
+
+
+                                <p>Please make sure all required sections of the form are completed before submitting it;
+                                    otherwise, it will not be processed.</p>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="error-message" id="error-messageScript">
+                        <?php
+                        session_start();
+                        if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])) {
+                            echo '<p id="errorMessage">' . $_SESSION['error_message'] . '</p>';
+                            unset($_SESSION['error_message']); // Clear the error message after displaying it
                         }
+                        ?>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', (event) => {
+                            const errorMessage = document.getElementById('errorMessage');
+                            if (errorMessage) {
+                                // Hide the error message after 10 seconds
+                                setTimeout(() => {
+                                    errorMessage.style.display = 'none';
+                                }, 10000); // 10000 milliseconds = 10 seconds
+                            }
+                        });
+                    </script>
+
+
+                    <div class="form-navigation">
+                        <button type="button" class="previous" disabled>Previous</button>
+                        <button type="button" class="next">Next</button>
+                    </div>
+                </form>
+
+                <!-- form input validation  -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const organizationEmailInput = document.getElementById('OrganizationEmail');
+                        const organizationEmailError = document.getElementById('organization-email-error');
+
+                        organizationEmailInput.addEventListener('input', function() {
+                            const emailValue = organizationEmailInput.value;
+                            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                            if (emailPattern.test(emailValue)) {
+                                organizationEmailError.textContent = ''; // Clear error message if valid
+                            } else {
+                                organizationEmailError.textContent = 'Ensure that you enter a valid working email address.';
+                            }
+                        });
+                    });
+
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const contactPhoneInput = document.getElementById('ContactPhoneNumber');
+                        const contactPhoneError = document.getElementById('contact-phone-error');
+
+                        contactPhoneInput.addEventListener('input', function() {
+                            const phoneValue = contactPhoneInput.value;
+                            const phonePattern = /^(\+|0)\d{9,14}$/;
+
+                            if (phonePattern.test(phoneValue)) {
+                                contactPhoneError.textContent = '';
+                            } else {
+                                contactPhoneError.textContent = 'Please enter a valid phone number starting with valid Country code, + or 0, followed by 9 to 14 digits.';
+                            }
+                        });
+                    });
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const registrationDateInput = document.getElementById('OrganizationDateofRegistration');
+                        const registrationDateError = document.getElementById('registration-date-error');
+
+                        registrationDateInput.addEventListener('change', function() {
+                            const selectedDate = new Date(registrationDateInput.value);
+                            const currentDate = new Date();
+
+                            // Remove the time component for comparison
+                            selectedDate.setHours(0, 0, 0, 0);
+                            currentDate.setHours(0, 0, 0, 0);
+
+                            // Check if the selected date is in the future
+                            if (selectedDate > currentDate) {
+                                registrationDateError.textContent = 'The registration date must be today or in the past.';
+                                registrationDateInput.value = ''; // Clear the input if the date is in the future
+                            } else {
+                                registrationDateError.textContent = ''; // Clear error message if valid
+                            }
+                        });
+                    });
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const startDateInput = document.getElementById('startDate');
+                        const startDateError = document.getElementById('start-date-error');
+
+                        startDateInput.addEventListener('change', function() {
+                            const selectedDate = new Date(startDateInput.value);
+                            const currentDate = new Date();
+
+                            selectedDate.setHours(0, 0, 0, 0);
+                            currentDate.setHours(0, 0, 0, 0);
+
+                            // Check if the selected date is in the future
+                            if (selectedDate > currentDate) {
+                                startDateError.textContent = 'The registration date cannot be in the future.';
+                                startDateInput.value = ''; // Clear the input if the date is in the future
+                            } else {
+                                startDateError.textContent = ''; // Clear error message if valid
+                            }
+                        });
+                    });
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const employeesInput = document.getElementById('NumberOfEmployees');
+                        const employeesError = document.getElementById('employees-error');
+
+                        employeesInput.addEventListener('input', function() {
+                            const numberOfEmployees = parseInt(employeesInput.value, 10);
+
+                            if (numberOfEmployees < 1) {
+                                employeesError.textContent = 'The number of employees cannot be less than 1.';
+                                employeesInput.value = ''; // Clear the input if the value is invalid
+                            } else {
+                                employeesError.textContent = ''; // Clear error message if valid
+                            }
+                        });
                     });
                 </script>
 
+                <script>
+                    const steps = document.querySelectorAll(".form-step");
+                    const nextBtn = document.querySelector(".next");
+                    const prevBtn = document.querySelector(".previous");
+                    const progressSteps = document.querySelectorAll(".progress-step");
 
-                <div class="form-navigation">
-                    <button type="button" class="previous" disabled>Previous</button>
-                    <button type="button" class="next">Next</button>
-                </div>
-            </form>
+                    let currentStep = 0;
 
-            <script>
-                const steps = document.querySelectorAll(".form-step");
-                const nextBtn = document.querySelector(".next");
-                const prevBtn = document.querySelector(".previous");
-                const progressSteps = document.querySelectorAll(".progress-step");
+                    function updateFormStep() {
+                        steps.forEach((step, index) => {
+                            step.classList.toggle("active", index === currentStep);
+                        });
+                        progressSteps.forEach((step, index) => {
+                            step.classList.toggle("active", index <= currentStep);
+                        });
 
-                let currentStep = 0;
+                        prevBtn.disabled = currentStep === 0;
+                        nextBtn.textContent = currentStep === steps.length - 1 ? "Submit" : "Next";
+                        updateButtonState();
+                    }
 
-                function updateFormStep() {
-                    steps.forEach((step, index) => {
-                        step.classList.toggle("active", index === currentStep);
-                    });
-                    progressSteps.forEach((step, index) => {
-                        step.classList.toggle("active", index <= currentStep);
-                    });
-
-                    prevBtn.disabled = currentStep === 0;
-                    nextBtn.textContent = currentStep === steps.length - 1 ? "Submit" : "Next";
-                    updateButtonState();
-                }
-
-                nextBtn.addEventListener("click", () => {
-                    if (currentStep < steps.length - 1) {
-                        currentStep++;
-                        updateFormStep();
-                    } else {
-                        const form = document.getElementById("registrationForm");
-                        if (form.checkValidity()) {
-                            form.submit();
+                    nextBtn.addEventListener("click", () => {
+                        if (currentStep < steps.length - 1) {
+                            currentStep++;
+                            updateFormStep();
                         } else {
-                            form.reportValidity();
-                        }
-                    }
-                });
-
-                prevBtn.addEventListener("click", () => {
-                    if (currentStep > 0) {
-                        currentStep--;
-                        updateFormStep();
-                    }
-                });
-
-                function checkFormCompletion() {
-                    const currentInputs = steps[currentStep].querySelectorAll("input[required], textarea[required], select[required]");
-                    let allFilled = true;
-
-                    currentInputs.forEach(input => {
-                        if (!input.value) {
-                            allFilled = false;
+                            const form = document.getElementById("registrationForm");
+                            if (form.checkValidity()) {
+                                form.submit();
+                            } else {
+                                form.reportValidity();
+                            }
                         }
                     });
 
-                    updateButtonState();
-                }
+                    prevBtn.addEventListener("click", () => {
+                        if (currentStep > 0) {
+                            currentStep--;
+                            updateFormStep();
+                        }
+                    });
 
-                function updateButtonState() {
-                    const password = document.getElementById('password') ? document.getElementById('password').value : '';
-                    const confirmPassword = document.getElementById('confirm-password') ? document.getElementById('confirm-password').value : '';
-                    const passwordPolicyRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+                    function checkFormCompletion() {
+                        const currentInputs = steps[currentStep].querySelectorAll("input[required], textarea[required], select[required]");
+                        let allFilled = true;
 
-                    const errorMessage1 = document.getElementById('error-message1');
-                    const errorMessage2 = document.getElementById('error-message2');
+                        currentInputs.forEach(input => {
+                            if (!input.value) {
+                                allFilled = false;
+                            }
+                        });
 
-                    let showError1 = false;
-                    let showError2 = false;
-
-                    if (password && confirmPassword && password !== confirmPassword) {
-                        showError1 = true;
+                        updateButtonState();
                     }
 
-                    if (password && !passwordPolicyRegex.test(password)) {
-                        showError2 = true;
+                    function updateButtonState() {
+                        const password = document.getElementById('password') ? document.getElementById('password').value : '';
+                        const confirmPassword = document.getElementById('confirm-password') ? document.getElementById('confirm-password').value : '';
+                        const passwordPolicyRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+
+                        const errorMessage1 = document.getElementById('error-message1');
+                        const errorMessage2 = document.getElementById('error-message2');
+
+                        let showError1 = false;
+                        let showError2 = false;
+
+                        if (password && confirmPassword && password !== confirmPassword) {
+                            showError1 = true;
+                        }
+
+                        if (password && !passwordPolicyRegex.test(password)) {
+                            showError2 = true;
+                        }
+
+                        if (errorMessage1) errorMessage1.style.display = showError1 ? 'block' : 'none';
+                        if (errorMessage2) errorMessage2.style.display = showError2 ? 'block' : 'none';
+
+                        const allInputsFilled = Array.from(steps[currentStep].querySelectorAll("input[required], textarea[required], select[required]")).every(input => input.value);
+
+                        nextBtn.disabled = !allInputsFilled || showError1 || showError2;
                     }
 
-                    if (errorMessage1) errorMessage1.style.display = showError1 ? 'block' : 'none';
-                    if (errorMessage2) errorMessage2.style.display = showError2 ? 'block' : 'none';
+                    document.querySelectorAll(".form-step input[required], .form-step textarea[required], .form-step select[required]").forEach(input => {
+                        input.addEventListener('input', checkFormCompletion);
+                    });
 
-                    const allInputsFilled = Array.from(steps[currentStep].querySelectorAll("input[required], textarea[required], select[required]")).every(input => input.value);
+                    const passwordField = document.getElementById('password');
+                    const confirmPasswordField = document.getElementById('confirm-password');
 
-                    nextBtn.disabled = !allInputsFilled || showError1 || showError2;
-                }
+                    if (passwordField) passwordField.addEventListener('input', updateButtonState);
+                    if (confirmPasswordField) confirmPasswordField.addEventListener('input', updateButtonState);
 
-                document.querySelectorAll(".form-step input[required], .form-step textarea[required], .form-step select[required]").forEach(input => {
-                    input.addEventListener('input', checkFormCompletion);
-                });
-
-                const passwordField = document.getElementById('password');
-                const confirmPasswordField = document.getElementById('confirm-password');
-
-                if (passwordField) passwordField.addEventListener('input', updateButtonState);
-                if (confirmPasswordField) confirmPasswordField.addEventListener('input', updateButtonState);
-
-                document.addEventListener('DOMContentLoaded', checkFormCompletion);
+                    document.addEventListener('DOMContentLoaded', checkFormCompletion);
 
 
-                function togglePassword(id) {
-                    const passwordField = document.getElementById(id);
-                    if (passwordField.type === 'password') {
-                        passwordField.type = 'text';
-                    } else {
-                        passwordField.type = 'password';
+                    function togglePassword(id) {
+                        const passwordField = document.getElementById(id);
+                        if (passwordField.type === 'password') {
+                            passwordField.type = 'text';
+                        } else {
+                            passwordField.type = 'password';
+                        }
                     }
-                }
-            </script>
+                </script>
 
-            <script src="https://js.stripe.com/v3/"></script>
-            <script src="../assets/JS/aglpaycard.js"></script>
+                <script src="https://js.stripe.com/v3/"></script>
+                <script src="../assets/JS/aglpaycard.js"></script>
 
 
-        </body>
+            </body>
 
-    </main>
+        </main>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <p>&copy; 2024 <a style="text-decoration: none;" href="https://www.agl.or.ke/">AGL</a> . All rights
-            reserved.</p>
-    </footer>
+        <!-- Footer -->
+        <footer class="site-footer">
+            <p>&copy; 2024 <a style="text-decoration: none;" href="https://www.agl.or.ke/">AGL</a> . All rights
+                reserved.</p>
+        </footer>
 
-    <!-- JavaScript for Menu Toggle -->
-    <script>
-        const menuToggle = document.getElementById("menu-toggle");
-        const navigation = document.getElementById("navigation");
+        <!-- JavaScript for Menu Toggle -->
+        <script>
+            const menuToggle = document.getElementById("menu-toggle");
+            const navigation = document.getElementById("navigation");
 
-        menuToggle.addEventListener("click", () => {
-            navigation.classList.toggle("active");
-        });
-    </script>
-</body>
+            menuToggle.addEventListener("click", () => {
+                navigation.classList.toggle("active");
+            });
+        </script>
+    </body>
 
 </html>
