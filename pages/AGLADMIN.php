@@ -303,7 +303,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             placeholder="Enter your phone number" required>
 
                         <label for="mpesa-amount" class="popup-label">Amount</label>
-                        <input type="text" id="mpesa-amount" name="amount" class="popup-input" value="0.5" readonly>
+                        <input type="text" id="mpesa-amount" name="amount" class="popup-input" value="1" readonly>
 
                         <!-- Hidden field to store the referring page URL -->
                         <input type="hidden" id="referringPage" name="referringPage"
@@ -332,7 +332,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         <input type="text" id="phone_number" name="phone_number" class="popup-input" placeholder="Enter your phone number" required>
 
                         <label for="amount" class="popup-label">Amount</label>
-                        <input type="text" id="amount" name="amount" class="popup-input" value="3600" readonly>
+                        <input type="text" id="amount" name="amount" class="popup-input" value="1" readonly>
 
                         <div class="popup-buttons">
                             <button class="popup-btn" type="submit">Make Payment</button>
