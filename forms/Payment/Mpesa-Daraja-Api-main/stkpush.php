@@ -1,4 +1,7 @@
 <?php
+// Start the session
+session_start();
+
 // INCLUDE THE ACCESS TOKEN FILE
 include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
@@ -25,6 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = $_POST['phone_number'] ?? null;
     $amount = $_POST['amount'] ?? null;
     $referringPage = $_POST['referringPage'] ?? 'index.html'; // Default to 'index.html' if no referring page is provided
+
+    // Store email in the session
+    $_SESSION['user_email'] = $email;
 
     // Normalize phone number
     $normalizedPhone = normalizePhoneNumber($phone);
@@ -83,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($ResponseCode == "0") {
                     // Prepare JSON data to send to callback
-                    $jsonDataToSend = json_encode([
+                    $jsonDataToSend = json_encode([ 
                         'MerchantRequestID' => $data->MerchantRequestID ?? null,
                         'CheckoutRequestID' => $CheckoutRequestID,
                         'ResultCode' => $ResponseCode,
@@ -92,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         'PhoneNumber' => $PartyA,
                         'Email' => $email // Add the email to the JSON data
                     ]);
- 
+
                     // Send JSON as form data to callback.php using cURL
                     $ch = curl_init($callbackurl);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -114,11 +120,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     curl_close($ch);
 
-                    // Echo the data sent for confirmation
-                    // echo "Success! The following data was sent to the callback URL:<br>";
-                    // echo "<pre>" . htmlspecialchars($jsonDataToSend) . "</pre>";
-                    header("Location: " . htmlspecialchars($referringPage));
-
+                    // Redirect to referring page
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                    
                     exit;
                 } else {
                     echo "Error response from M-Pesa API. Response: " . $curl_response;

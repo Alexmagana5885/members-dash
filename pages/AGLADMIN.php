@@ -113,7 +113,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     <div class="main-content">
 
-        <nav id="sidebar" class="sidebar">
+        <nav style="cursor: pointer;" id="sidebar" class="sidebar">
             <ul>
                 <li>
                     <a href="https://www.agl.or.ke/" class="active">Home<br /></a>

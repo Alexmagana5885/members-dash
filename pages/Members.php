@@ -60,7 +60,7 @@ require_once('../forms/DBconnection.php');
             <!-- Popup container for the table members -->
             <div id="MemberDISTablePopup-table" class="popup-table">
                 <div class="popup-content-table">
-                    <span class="close-btn-table">&times;</span>
+                 
                     <div style="margin-top: 20px;" class="MinPrtSecSpace-table">
                         <h3>Members Information</h3><br>
                         <div class="card_table-table">
@@ -111,7 +111,7 @@ require_once('../forms/DBconnection.php');
             <!-- Popup container for the table officials -->
             <div id="OfficialMembersTablePopup-table" class="popup-table">
                 <div class="popup-content-table">
-                    <span class="close-btn-table">&times;</span>
+                    
                     <div style="margin-top: 20px;" class="MinPrtSecSpace-table">
                         <h3>Official Members Information</h3><br>
                         <div class="card_table-table">
@@ -169,7 +169,7 @@ require_once('../forms/DBconnection.php');
             <!-- Popup container for the table organizations -->
             <div id="OrganizationMembershipTablePopup-table" class="popup-table">
                 <div class="popup-content-table">
-                    <span class="close-btn-table">&times;</span>
+                  
                     <div style="margin-top: 20px;" class="MinPrtSecSpace-table">
                         <h3>Organization Membership Information</h3><br>
                         <div class="card_table-table">
