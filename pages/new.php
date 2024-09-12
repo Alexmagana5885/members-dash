@@ -1,50 +1,53 @@
 <?php
-// DATABASE CONNECTION (Replace with your actual connection details)
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "your_database";
+include 'AGLdbconnection.php';
+header("Content-Type: application/json");
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Read and log the callback response
+$stkCallbackResponse = file_get_contents('php://input');
+$logFile = "Mpesastkresponse.json";
+$log = fopen($logFile, "a");
+fwrite($log, $stkCallbackResponse);
+fclose($log);
+
+// Decode the JSON response
+$data = json_decode($stkCallbackResponse);
+
+// Extract relevant data from the response
+$MerchantRequestID = $data->Body->stkCallback->MerchantRequestID;
+$CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID;
+$ResultCode = $data->Body->stkCallback->ResultCode;
+$ResultDesc = $data->Body->stkCallback->ResultDesc;
+$Amount = $data->Body->stkCallback->CallbackMetadata->Item[0]->Value;
+$TransactionId = $data->Body->stkCallback->CallbackMetadata->Item[1]->Value;
+$UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value;
+
+// Check if the transaction was successful
+if ($ResultCode == 0) {
+
+    // Retrieve the email associated with the CheckoutRequestID
+    $emailQuery = "SELECT email FROM mpesa_transactions WHERE CheckoutRequestID = '$CheckoutRequestID'";
+    $result = mysqli_query($db, $emailQuery);
+    
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $email = $row['email'];
+
+        // Update the personalmembership table with payment details
+        $updateQuery = "UPDATE personalmembership 
+                        SET payment_Number = '$UserPhoneNumber', payment_code = '$TransactionId' 
+                        WHERE email = '$email'";
+        mysqli_query($db, $updateQuery);
+        
+        if (mysqli_affected_rows($db) > 0) {
+            // Update successful
+            // Optionally, you can send a confirmation email or handle other actions
+        } else {
+            // Handle the case where the update did not affect any rows
+            // This might occur if the email address does not match any row
+        }
+    } else {
+        // Handle the case where no email was found
+        // Log or notify the situation as required
+    }
 }
-
-// READ THE MPESA RESPONSE
-$response = file_get_contents('php://input');
-$mpesaResponse = json_decode($response, true);
-
-// EXTRACT THE RELEVANT FIELDS FROM THE MPESA RESPONSE
-$CheckoutRequestID = $mpesaResponse['Body']['stkCallback']['CheckoutRequestID'] ?? null;
-$ResultCode = $mpesaResponse['Body']['stkCallback']['ResultCode'] ?? null;
-$ResultDesc = $mpesaResponse['Body']['stkCallback']['ResultDesc'] ?? null;
-$MpesaReceiptNumber = $mpesaResponse['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'] ?? null;
-$PhoneNumber = $mpesaResponse['Body']['stkCallback']['CallbackMetadata']['Item'][4]['Value'] ?? null;
-$Amount = $mpesaResponse['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'] ?? null;
-
-if ($ResultCode == "0") {
-    // PAYMENT SUCCESSFUL - UPDATE TRANSACTION DETAILS IN THE DATABASE
-    $stmt = $conn->prepare("UPDATE mpesa_transactions SET mpesa_receipt_number=?, result_code=?, result_description=? WHERE checkout_request_id=?");
-    $stmt->bind_param("ssss", $MpesaReceiptNumber, $ResultCode, $ResultDesc, $CheckoutRequestID);
-    $stmt->execute();
-    $stmt->close();
-
-    // Optionally retrieve the email and send a confirmation email
-    $result = $conn->query("SELECT email FROM mpesa_transactions WHERE checkout_request_id='$CheckoutRequestID'");
-    $row = $result->fetch_assoc();
-    $userEmail = $row['email'];
-
-    // Here you can send an email to $userEmail confirming the transaction
-    echo "Payment successful for user with email: " . $userEmail;
-} else {
-    // PAYMENT FAILED - UPDATE TRANSACTION DETAILS IN THE DATABASE
-    $stmt = $conn->prepare("UPDATE mpesa_transactions SET result_code=?, result_description=? WHERE checkout_request_id=?");
-    $stmt->bind_param("sss", $ResultCode, $ResultDesc, $CheckoutRequestID);
-    $stmt->execute();
-    $stmt->close();
-
-    echo "Payment failed: " . $ResultDesc;
-}
-
-$conn->close();
 ?>

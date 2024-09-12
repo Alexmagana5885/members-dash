@@ -1,89 +1,53 @@
 <?php
-include 'AGLdbconnection.php'; // Ensure this file contains the proper database connection setup
-session_start(); // Start the session to access stored session data
+include 'AGLdbconnection.php';
 header("Content-Type: application/json");
 
+// Read and log the callback response
+$stkCallbackResponse = file_get_contents('php://input');
 $logFile = "Mpesastkresponse.json";
 $log = fopen($logFile, "a");
+fwrite($log, $stkCallbackResponse);
+fclose($log);
 
-// Read the raw M-Pesa callback response
-$rawResponse = file_get_contents('php://input');
-fwrite($log, "Raw M-Pesa callback response: " . $rawResponse . "\n");
+// Decode the JSON response
+$data = json_decode($stkCallbackResponse);
 
-// Decode the M-Pesa callback JSON data
-$callbackData = json_decode($rawResponse, true);
+// Extract relevant data from the response
+$MerchantRequestID = $data->Body->stkCallback->MerchantRequestID;
+$CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID;
+$ResultCode = $data->Body->stkCallback->ResultCode;
+$ResultDesc = $data->Body->stkCallback->ResultDesc;
+$Amount = $data->Body->stkCallback->CallbackMetadata->Item[0]->Value;
+$TransactionId = $data->Body->stkCallback->CallbackMetadata->Item[1]->Value;
+$UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value;
 
-if (json_last_error() === JSON_ERROR_NONE) {
-    $stkCallback = $callbackData['Body']['stkCallback'] ?? null;
+// Check if the transaction was successful
+if ($ResultCode == 0) {
 
-    if ($stkCallback) {
-        $MerchantRequestID = $stkCallback['MerchantRequestID'] ?? null;
-        $CheckoutRequestID = $stkCallback['CheckoutRequestID'] ?? null;
-        $ResultCode = $stkCallback['ResultCode'] ?? null;
-        $ResultDesc = $stkCallback['ResultDesc'] ?? null;
+    // Retrieve the email associated with the CheckoutRequestID
+    $emailQuery = "SELECT email FROM mpesa_transactions WHERE CheckoutRequestID = '$CheckoutRequestID'";
+    $result = mysqli_query($db, $emailQuery);
+    
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $email = $row['email'];
 
-        // Extract values from CallbackMetadata
-        $amount = null;
-        $transactionId = null;
-        $phoneNumber = null;
-
-        if (isset($stkCallback['CallbackMetadata']['Item'])) {
-            foreach ($stkCallback['CallbackMetadata']['Item'] as $item) {
-                if ($item['Name'] == 'Amount') {
-                    $amount = $item['Value'];
-                } elseif ($item['Name'] == 'MpesaReceiptNumber') {
-                    $transactionId = $item['Value'];
-                } elseif ($item['Name'] == 'PhoneNumber') {
-                    $phoneNumber = $item['Value'];
-                }
-            }
-        }
-
-        // Get email from session
-        $email = $_SESSION['email'] ?? null;
-
-        if ($ResultCode == 0 && $email) {
-            // Prepare the SQL statement to update payment data using the email from the session
-            if ($stmt = $conn->prepare("SELECT * FROM personalmembership WHERE email = ?")) {
-                $stmt->bind_param('s', $email);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if ($result->num_rows > 0) {
-                    // If email exists, update payment data
-                    if ($updateStmt = $conn->prepare("UPDATE personalmembership 
-                                                       SET payment_number = ?, payment_code = ? 
-                                                       WHERE email = ?")) {
-                        $updateStmt->bind_param('sss', $phoneNumber, $transactionId, $email);
-
-                        if ($updateStmt->execute()) {
-                            fwrite($log, "Payment data updated successfully for email: $email.\n");
-                        } else {
-                            fwrite($log, "Error updating payment data: " . $updateStmt->error . "\n");
-                        }
-
-                        $updateStmt->close();
-                    } else {
-                        fwrite($log, "Prepare statement error: " . $conn->error . "\n");
-                    }
-                } else {
-                    fwrite($log, "No record found for email: $email.\n");
-                }
-
-                $stmt->close();
-            } else {
-                fwrite($log, "Prepare statement error: " . $conn->error . "\n");
-            }
+        // Update the personalmembership table with payment details
+        $updateQuery = "UPDATE personalmembership 
+                        SET payment_Number = '$UserPhoneNumber', payment_code = '$TransactionId' 
+                        WHERE email = '$email'";
+        mysqli_query($db, $updateQuery);
+        
+        if (mysqli_affected_rows($db) > 0) {
+            // Update successful
+            // Optionally, you can send a confirmation email or handle other actions
         } else {
-            fwrite($log, "Transaction failed. ResultCode: $ResultCode, ResultDesc: $ResultDesc\n");
+            // Handle the case where the update did not affect any rows
+            // This might occur if the email address does not match any row
         }
     } else {
-        fwrite($log, "No stkCallback found in response.\n");
+        // Handle the case where no email was found
+        // Log or notify the situation as required
     }
-} else {
-    fwrite($log, "JSON decode error: " . json_last_error_msg() . "\n");
 }
-
-fclose($log);
-$conn->close();
 ?>
