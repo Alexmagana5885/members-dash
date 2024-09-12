@@ -190,19 +190,90 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <p>Registration Date: <?php echo htmlspecialchars($registrationDate); ?></p>
                 </div>
 
+                <?php
+
+                // Get the session email
+                $sessionEmail = $_SESSION['user_email'];
+
+                // Query to get the latest transaction for the current user
+                $query = "SELECT amount, transaction_date 
+                        FROM mpesa_transactions 
+                        WHERE email = ? 
+                        ORDER BY transaction_date DESC 
+                        LIMIT 1";
+
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("s", $sessionEmail);
+                $stmt->execute();
+                $stmt->bind_result($amount, $transaction_date);
+                $stmt->fetch();
+                $stmt->close();
+
+                if ($transaction_date) {
+                    $lastPaymentDate = date("d/m/Y", timestamp: strtotime($transaction_date));
+
+                    $nextPaymentDate = date("d/m/Y", strtotime("+1 year", strtotime($transaction_date)));
+                    $currentBalance = $amount;
+                } else {
+                    // No transactions found, set default values
+                    $lastPaymentDate = "N/A";
+                    $nextPaymentDate = "N/A";
+                    $currentBalance = "0";
+                }
+
+                // Get the session email
+                // $sessionEmail = $_SESSION['user_email'];
+
+                // Check in personalmembership table
+                $query_personal = "SELECT payment_Number, payment_code FROM personalmembership WHERE email = ?";
+                $stmt = $conn->prepare($query_personal);
+                $stmt->bind_param("s", $sessionEmail);
+                $stmt->execute();
+                $stmt->bind_result($paymentNumberPersonal, $paymentCodePersonal);
+                $stmt->fetch();
+                $stmt->close();
+
+                // Check in organizationmembership table
+                $query_organization = "SELECT payment_Number, payment_code FROM organizationmembership WHERE organization_email = ?";
+                $stmt = $conn->prepare($query_organization);
+                $stmt->bind_param("s", $sessionEmail);
+                $stmt->execute();
+                $stmt->bind_result($paymentNumberOrganization, $paymentCodeOrganization);
+                $stmt->fetch();
+                $stmt->close();
+
+                // Default: Disable button if payment info exists
+                $disablePaymentButton = false;
+
+                // Check which table the email belongs to and if fields are filled
+                if (!empty($paymentNumberPersonal) || !empty($paymentCodePersonal)) {
+                    $disablePaymentButton = true; // personalmembership
+                } elseif (!empty($paymentNumberOrganization) || !empty($paymentCodeOrganization)) {
+                    $disablePaymentButton = true; // organizationmembership
+                }
+                ?>
+
+                <!-- HTML Section -->
                 <div class="card">
                     <h5>Member Payments</h5>
                     <hr>
-                    <p id="memberpayments-current-lastPay">Last payment: <span>12/08/2024</span></p>
-                    <p id="memberpayments-current-nextP">Next payment: <span>09/05/2024</span></p>
-                    <p id="memberpayments-current-balance">Current balance: <span>5000sh</span></p>
+                    <p id="memberpayments-current-lastPay">Last payment: <span><?php echo $lastPaymentDate; ?></span></p>
+                    <p id="memberpayments-current-nextP">Next payment: <span><?php echo $nextPaymentDate; ?></span></p>
+                    <p id="memberpayments-current-balance">Last Amount Paid: <span><?php echo $currentBalance; ?>sh</span></p>
                     <hr>
-                    <button class="MemberPaymentBtn" id="mpesa-btn" data-popup-target="mpesa-popup">Pay Membership
-                        Fee</button>
-                    <button class="MemberPaymentBtn" id="memberpayments-btn"
-                        data-popup-target="memberpayments-popup">Pay Membership Premium</button>
 
+                    <!-- Adjust the button to be inactive if payment data exists -->
+                    <button class="MemberPaymentBtn" id="mpesa-btn" data-popup-target="mpesa-popup"
+                        style="<?php echo $disablePaymentButton ? 'background-color: lightblue; cursor: not-allowed;' : ''; ?>"
+                        <?php echo $disablePaymentButton ? 'disabled' : ''; ?>>
+                        Pay Membership Fee
+                    </button>
+
+                    <button class="MemberPaymentBtn" id="memberpayments-btn" data-popup-target="memberpayments-popup">
+                        Pay Membership Premium
+                    </button>
                 </div>
+
 
                 <style>
                     .popup-container {
@@ -319,7 +390,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 <!-- Payment Popup Structure membership -->
 
                 <div id="memberpayments-popup" class="popup-container">
-                    <form  action="../forms/Payment/Mpesa-Daraja-Api-main/STKMembersubscription.php" method="post" id="memberpayments-popup-content" class="popup-content">
+                    <form action="../forms/Payment/Mpesa-Daraja-Api-main/STKMembersubscription.php" method="post" id="memberpayments-popup-content" class="popup-content">
                         <span class="popup-close" onclick="togglePopup('memberpayments-popup')">X</span>
                         <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
                         <p class="popup-description">Confirm that you are making a payment of 3,600 Ksh as annual
@@ -481,7 +552,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </div>
             <!-- ................................... -->
 
-
             <!-- ellert -->
             <!-- delete the stylesheet -->
             <style>
@@ -529,7 +599,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </style>
 
 
-            <!-- error response-popups -->
+            <!-- error response-popup-->
             <div>
 
                 <!-- blog post response -->
@@ -596,7 +666,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 ?>
 
             </div>
-
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {

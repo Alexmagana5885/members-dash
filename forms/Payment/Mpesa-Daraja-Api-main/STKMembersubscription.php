@@ -1,4 +1,7 @@
 <?php
+// Start session to store response messages
+session_start();
+
 // Include the access token file
 include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
@@ -48,17 +51,17 @@ curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
 curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); // Setting custom header
 
 $curl_post_data = array(
-  'BusinessShortCode' => $BusinessShortCode,
-  'Password' => $Password,
-  'Timestamp' => $Timestamp,
-  'TransactionType' => 'CustomerPayBillOnline',
-  'Amount' => $Amount,
-  'PartyA' => $PartyA,
-  'PartyB' => $BusinessShortCode,
-  'PhoneNumber' => $PartyA,
-  'CallBackURL' => $callbackurl,
-  'AccountReference' => $AccountReference,
-  'TransactionDesc' => $TransactionDesc
+    'BusinessShortCode' => $BusinessShortCode,
+    'Password' => $Password,
+    'Timestamp' => $Timestamp,
+    'TransactionType' => 'CustomerPayBillOnline',
+    'Amount' => $Amount,
+    'PartyA' => $PartyA,
+    'PartyB' => $BusinessShortCode,
+    'PhoneNumber' => $PartyA,
+    'CallBackURL' => $callbackurl,
+    'AccountReference' => $AccountReference,
+    'TransactionDesc' => $TransactionDesc
 );
 
 $data_string = json_encode($curl_post_data);
@@ -70,6 +73,18 @@ curl_close($curl);
 
 // Decode and handle the response
 $data = json_decode($curl_response);
+
+// Check if response contains an error
+if (isset($data->errorMessage)) {
+    $_SESSION['response'] = [
+        'success' => false,
+        'message' => $data->errorMessage
+    ];
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
+
+// Continue if no error
 $CheckoutRequestID = $data->CheckoutRequestID;
 $ResponseCode = $data->ResponseCode;
 
@@ -85,13 +100,22 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("sssss", $CheckoutRequestID, $userEmail, $phone, $money, $status);
 
 if ($stmt->execute()) {
-    echo "The CheckoutRequestID for this transaction is: " . $CheckoutRequestID;
-    // header("Location: " . $_SERVER['HTTP_REFERER']);
+    $_SESSION['response'] = [
+        'success' => true,
+        'message' => 'Kindly enter your Mpesa Pin to complete the payment' 
+    ];
 } else {
-    echo "Error: " . $stmt->error;
+    $_SESSION['response'] = [
+        'success' => false,
+        'message' => 'Database error: ' . $stmt->error
+    ];
 }
+
+// Redirect back to the previous page
+header("Location: " . $_SERVER['HTTP_REFERER']);
 
 // Close connections
 $stmt->close();
 $conn->close();
+exit();
 ?>

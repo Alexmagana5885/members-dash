@@ -84,7 +84,6 @@
 
             table {
                 width: 120%;
-                /* Set the width greater than 100% to enable scrolling */
                 font-size: 14px;
             }
 

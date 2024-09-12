@@ -1,7 +1,13 @@
 <?php
+// Start the session
+session_start();
+
 // Include the access token file
 include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
+
+// Initialize response array
+$response = ['success' => false, 'message' => '', 'errors' => []];
 
 // Define the normalizePhoneNumber function
 function normalizePhoneNumber($phone) {
@@ -22,6 +28,20 @@ function normalizePhoneNumber($phone) {
 $phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
 $money = isset($_POST['amount']) ? $_POST['amount'] : '1';
 $userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
+
+// Validate inputs
+if (empty($phone)) {
+    $response['errors'][] = 'Phone number is required.';
+}
+if (empty($userEmail)) {
+    $response['errors'][] = 'Email is required.';
+}
+if (!empty($response['errors'])) {
+    // Set response and redirect
+    $_SESSION['response'] = $response;
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
 
 // Define variables
 $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
@@ -48,17 +68,17 @@ curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
 curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); // Setting custom header
 
 $curl_post_data = array(
-  'BusinessShortCode' => $BusinessShortCode,
-  'Password' => $Password,
-  'Timestamp' => $Timestamp,
-  'TransactionType' => 'CustomerPayBillOnline',
-  'Amount' => $Amount,
-  'PartyA' => $PartyA,
-  'PartyB' => $BusinessShortCode,
-  'PhoneNumber' => $PartyA,
-  'CallBackURL' => $callbackurl,
-  'AccountReference' => $AccountReference,
-  'TransactionDesc' => $TransactionDesc
+    'BusinessShortCode' => $BusinessShortCode,
+    'Password' => $Password,
+    'Timestamp' => $Timestamp,
+    'TransactionType' => 'CustomerPayBillOnline',
+    'Amount' => $Amount,
+    'PartyA' => $PartyA,
+    'PartyB' => $BusinessShortCode,
+    'PhoneNumber' => $PartyA,
+    'CallBackURL' => $callbackurl,
+    'AccountReference' => $AccountReference,
+    'TransactionDesc' => $TransactionDesc
 );
 
 $data_string = json_encode($curl_post_data);
@@ -70,8 +90,8 @@ curl_close($curl);
 
 // Decode and handle the response
 $data = json_decode($curl_response);
-$CheckoutRequestID = $data->CheckoutRequestID;
-$ResponseCode = $data->ResponseCode;
+$CheckoutRequestID = isset($data->CheckoutRequestID) ? $data->CheckoutRequestID : null;
+$ResponseCode = isset($data->ResponseCode) ? $data->ResponseCode : '';
 
 // Database connection settings
 require_once('../../DBconnection.php');
@@ -79,19 +99,29 @@ require_once('../../DBconnection.php');
 // Determine status based on response code
 $status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
 
-// Insert data into database
-$sql = "INSERT INTO mpesa_transactions (CheckoutRequestID, email, phone, amount, status) VALUES (?, ?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sssss", $CheckoutRequestID, $userEmail, $phone, $money, $status);
+// Insert data into the database only if the transaction was initiated
+if ($CheckoutRequestID) {
+    $sql = "INSERT INTO mpesa_transactions (CheckoutRequestID, email, phone, amount, status) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $CheckoutRequestID, $userEmail, $phone, $money, $status);
 
-if ($stmt->execute()) {
-    // echo "The CheckoutRequestID for this transaction is: " . $CheckoutRequestID;
-    header("Location: " . $_SERVER['HTTP_REFERER']);
+    if ($stmt->execute()) {
+        $response['success'] = true;
+        $response['message'] = "Kindly enter your Mpesa Pin to complete the payment " ;
+    } else {
+        $response['errors'][] = "Database error: " . $stmt->error;
+    }
+
+    $stmt->close();
 } else {
-    echo "Error: " . $stmt->error;
+    $response['errors'][] = "Error in transaction processing. Please try again.";
 }
 
-// Close connections
-$stmt->close();
+// Close database connection
 $conn->close();
+
+// Store response in session and redirect
+$_SESSION['response'] = $response;
+header("Location: " . $_SERVER['HTTP_REFERER']);
+exit();
 ?>

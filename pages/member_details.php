@@ -40,12 +40,12 @@ table {
 
 th,
 td {
-    border: 1px solid #ddd;
+    border: 1px solid #dae6f5;
     padding: 8px;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #7caceb;
 }
 
 .container {
@@ -96,6 +96,7 @@ input[type="number"] {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 15px;
+    margin-bottom: 20px;
 }
 
 button {
@@ -175,6 +176,60 @@ button[type="button"]:hover {
     }
 }
 
+
+/* Styles for small screens */
+@media (max-width: 768px) {
+    .popup-content {
+        width: 90%;
+        margin: 10% auto;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .button-container button {
+        width: 80%;
+        margin-bottom: 10px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .popup-content {
+        width: 85%;
+        margin: 0 auto;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"] {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+
 </style>
 
 
@@ -182,7 +237,7 @@ button[type="button"]:hover {
 
 <body>
     <div class="container">
-        <h1>Member Details</h1> <button onclick="openPopup()">Make Official</button>
+        <h1>Member Details</h1> <button style="margin: 15px; background-color: #2b98ed; color: white; font-size: 15px; " onclick="openPopup()">Make Official</button>
         <table>
             <tr>
                 <th>ID</th>
@@ -253,8 +308,8 @@ button[type="button"]:hover {
                 <td><?php echo htmlspecialchars($member['work_address']); ?></td>
             </tr>
             <tr>
-                <th>Payment Method</th>
-                <td><?php echo htmlspecialchars($member['payment_method']); ?></td>
+                <th>Payment Number</th>
+                <td><?php echo htmlspecialchars($member['payment_Number']); ?></td>
             </tr>
             <tr>
                 <th>Payment Code</th>

@@ -1,25 +1,46 @@
 <?php
+session_start(); // Start the session
+
 include 'AGLdbconnection.php';
 header("Content-Type: application/json");
+
+// Initialize response array
+$response = [
+    'success' => false,
+    'message' => '',
+    'errors' => []
+];
 
 // Read and log the callback response
 $stkCallbackResponse = file_get_contents('php://input');
 $logFile = "Mpesastkresponse.json";
 $log = fopen($logFile, "a");
-fwrite($log, $stkCallbackResponse);
-fclose($log);
+if ($log === false) {
+    $response['errors'][] = "Failed to open log file: $logFile";
+    $_SESSION['response'] = $response;
+    exit;
+} else {
+    fwrite($log, $stkCallbackResponse);
+    fclose($log);
+}
 
 // Decode the JSON response
 $data = json_decode($stkCallbackResponse);
 
+if (json_last_error() !== JSON_ERROR_NONE) {
+    $response['errors'][] = "Failed to decode JSON: " . json_last_error_msg();
+    $_SESSION['response'] = $response;
+    exit;
+}
+
 // Extract relevant data from the response
-$MerchantRequestID = $data->Body->stkCallback->MerchantRequestID;
-$CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID;
-$ResultCode = $data->Body->stkCallback->ResultCode;
-$ResultDesc = $data->Body->stkCallback->ResultDesc;
-$Amount = $data->Body->stkCallback->CallbackMetadata->Item[0]->Value;
-$TransactionId = $data->Body->stkCallback->CallbackMetadata->Item[1]->Value;
-$UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value;
+$MerchantRequestID = $data->Body->stkCallback->MerchantRequestID ?? null;
+$CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID ?? null;
+$ResultCode = $data->Body->stkCallback->ResultCode ?? null;
+$ResultDesc = $data->Body->stkCallback->ResultDesc ?? null;
+$Amount = $data->Body->stkCallback->CallbackMetadata->Item[0]->Value ?? null;
+$TransactionId = $data->Body->stkCallback->CallbackMetadata->Item[1]->Value ?? null;
+$UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value ?? null;
 
 // Check if the transaction was successful
 if ($ResultCode == 0) {
@@ -28,7 +49,13 @@ if ($ResultCode == 0) {
     $emailQuery = "SELECT email FROM mpesa_transactions WHERE CheckoutRequestID = '$CheckoutRequestID'";
     $result = mysqli_query($db, $emailQuery);
     
-    if ($result && mysqli_num_rows($result) > 0) {
+    if (!$result) {
+        $response['errors'][] = "Database query failed: " . mysqli_error($db);
+        $_SESSION['response'] = $response;
+        exit;
+    }
+    
+    if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         $email = $row['email'];
 
@@ -36,7 +63,11 @@ if ($ResultCode == 0) {
         $updateQuery = "UPDATE personalmembership 
                         SET payment_Number = '$UserPhoneNumber', payment_code = '$TransactionId' 
                         WHERE email = '$email'";
-        mysqli_query($db, $updateQuery);
+        if (!mysqli_query($db, $updateQuery)) {
+            $response['errors'][] = "Database update failed: " . mysqli_error($db);
+            $_SESSION['response'] = $response;
+            exit;
+        }
         
         if (mysqli_affected_rows($db) > 0) {
             // Email details
@@ -58,14 +89,23 @@ if ($ResultCode == 0) {
             $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
             
             // Send email
-            mail($to, $subject, $message, $headers);
+            if (!mail($to, $subject, $message, $headers)) {
+                $response['errors'][] = "Failed to send email to $to";
+                $_SESSION['response'] = $response;
+                exit;
+            }
+
+            $response['success'] = true;
+            $response['message'] = "Payment successfully processed and confirmation email sent.";
         } else {
-            // Handle the case where the update did not affect any rows
-            // This might occur if the email address does not match any row
+            $response['errors'][] = "No rows affected during database update for email: $email";
         }
     } else {
-        // Handle the case where no email was found
-        // Log or notify the situation as required
+        $response['errors'][] = "No email found for CheckoutRequestID: $CheckoutRequestID";
     }
+} else {
+    $response['errors'][] = "Transaction failed with ResultCode: $ResultCode and ResultDesc: $ResultDesc";
 }
+
+$_SESSION['response'] = $response;
 ?>

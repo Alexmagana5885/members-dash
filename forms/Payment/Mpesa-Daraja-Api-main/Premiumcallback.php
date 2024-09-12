@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session
+
 include 'AGLdbconnection.php'; // Include your database connection file
 header("Content-Type: application/json");
 
@@ -12,7 +14,10 @@ $data = json_decode($stkCallbackResponse);
 
 // Check if decoding was successful
 if (json_last_error() !== JSON_ERROR_NONE) {
-    error_log("JSON decoding error: " . json_last_error_msg());
+    $_SESSION['response'] = [
+        'success' => false,
+        'message' => 'JSON decoding error: ' . json_last_error_msg()
+    ];
     http_response_code(400); // Bad request
     exit;
 }
@@ -54,24 +59,39 @@ if ($ResultCode == 0) {
             $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
             if (mail($to, $subject, $message, $headers)) {
-                // Email sent successfully
+                $_SESSION['response'] = [
+                    'success' => true,
+                    'message' => 'Payment processed successfully. Confirmation email sent.'
+                ];
             } else {
                 // Handle email sending failure
-                error_log("Failed to send email to $to");
+                $_SESSION['response'] = [
+                    'success' => false,
+                    'message' => 'Failed to send confirmation email.'
+                ];
             }
         } else {
             // Handle the case where the insert did not succeed
-            error_log("Failed to insert payment details for CheckoutRequestID: $CheckoutRequestID");
+            $_SESSION['response'] = [
+                'success' => false,
+                'message' => 'Failed to insert payment details.'
+            ];
         }
         $insertStmt->close();
     } else {
         // Handle the case where no email was found
-        error_log("No email found for CheckoutRequestID: $CheckoutRequestID");
+        $_SESSION['response'] = [
+            'success' => false,
+            'message' => 'No email found for CheckoutRequestID.'
+        ];
     }
     $stmt->close();
 } else {
     // Handle unsuccessful transaction response
-    error_log("Transaction failed with ResultCode: $ResultCode, ResultDesc: $ResultDesc");
+    $_SESSION['response'] = [
+        'success' => false,
+        'message' => 'Transaction failed: ' . $ResultDesc
+    ];
 }
 
 $conn->close();
