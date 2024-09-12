@@ -32,10 +32,11 @@ if ($ResultCode == 0) {
         $email = $row['email'];
 
         // Insert the payment details into the member_payments table
-        $insertStmt = $conn->prepare("INSERT INTO member_payments (member_email, phone_number, payment_code, amount, timestamp) 
+        $insertStmt = $conn->prepare("INSERT INTO member_payments (member_email, phone_number, payment_code, amount, `timestamp`) 
                                       VALUES (?, ?, ?, ?, NOW())");
         $insertStmt->bind_param('ssss', $email, $UserPhoneNumber, $TransactionId, $Amount);
         $insertStmt->execute();
+
         
         if ($insertStmt->affected_rows > 0) {
             // Send a confirmation email
