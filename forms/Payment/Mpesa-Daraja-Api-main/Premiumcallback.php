@@ -1,5 +1,5 @@
 <?php
-include 'AGLdbconnection.php';
+include 'AGLdbconnection.php'; // Include your database connection file
 header("Content-Type: application/json");
 
 // Read and log the callback response
@@ -9,6 +9,13 @@ file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
 // Decode the JSON response
 $data = json_decode($stkCallbackResponse);
+
+// Check if decoding was successful
+if (json_last_error() !== JSON_ERROR_NONE) {
+    error_log("JSON decoding error: " . json_last_error_msg());
+    http_response_code(400); // Bad request
+    exit;
+}
 
 // Extract relevant data from the response
 $MerchantRequestID = $data->Body->stkCallback->MerchantRequestID ?? null;
@@ -32,12 +39,11 @@ if ($ResultCode == 0) {
         $email = $row['email'];
 
         // Insert the payment details into the member_payments table
-        $insertStmt = $conn->prepare("INSERT INTO member_payments (member_email, phone_number, payment_code, amount, `timestamp`) 
-                                      VALUES (?, ?, ?, ?, NOW())");
-        $insertStmt->bind_param('ssss', $email, $UserPhoneNumber, $TransactionId, $Amount);
+        $timestamp = date('Y-m-d H:i:s'); // Current timestamp
+        $insertStmt = $conn->prepare("INSERT INTO member_payments (member_email, phone_number, payment_code, amount, timestamp) VALUES (?, ?, ?, ?, ?)");
+        $insertStmt->bind_param('sssss', $email, $UserPhoneNumber, $TransactionId, $Amount, $timestamp);
         $insertStmt->execute();
-
-        
+   
         if ($insertStmt->affected_rows > 0) {
             // Send a confirmation email
             $to = $email;
@@ -51,17 +57,21 @@ if ($ResultCode == 0) {
                 // Email sent successfully
             } else {
                 // Handle email sending failure
+                error_log("Failed to send email to $to");
             }
         } else {
             // Handle the case where the insert did not succeed
-            // This might occur if there was an issue with the database
+            error_log("Failed to insert payment details for CheckoutRequestID: $CheckoutRequestID");
         }
         $insertStmt->close();
     } else {
         // Handle the case where no email was found
-        // Log or notify the situation as required
+        error_log("No email found for CheckoutRequestID: $CheckoutRequestID");
     }
     $stmt->close();
+} else {
+    // Handle unsuccessful transaction response
+    error_log("Transaction failed with ResultCode: $ResultCode, ResultDesc: $ResultDesc");
 }
 
 $conn->close();
