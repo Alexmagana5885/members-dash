@@ -4,7 +4,7 @@ header("Content-Type: application/json");
 
 // Read and log the callback response
 $stkCallbackResponse = file_get_contents('php://input');
-$logFile = "Mpesastkresponse.json";
+$logFile = "PremiumMpesastkresponse.json";
 file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
 // Decode the JSON response
@@ -21,7 +21,6 @@ $UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value ??
 
 // Check if the transaction was successful
 if ($ResultCode == 0) {
-
     // Retrieve the email associated with the CheckoutRequestID
     $stmt = $conn->prepare("SELECT email FROM mpesa_transactions WHERE CheckoutRequestID = ?");
     $stmt->bind_param('s', $CheckoutRequestID);
@@ -39,8 +38,19 @@ if ($ResultCode == 0) {
         $insertStmt->execute();
         
         if ($insertStmt->affected_rows > 0) {
-            // Insert successful
-            // Optionally, you can send a confirmation email or handle other actions
+            // Send a confirmation email
+            $to = $email;
+            $subject = "Payment Confirmation";
+            $message = "Dear User,\n\nThank you for your Member payment of Ksh $Amount.\n\nTransaction ID: $TransactionId\n\nBest regards,\nAGL Team";
+            $headers = "From: payments@agl.or.ke\r\n";
+            $headers .= "Reply-To: payments@agl.or.ke\r\n";
+            $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+
+            if (mail($to, $subject, $message, $headers)) {
+                // Email sent successfully
+            } else {
+                // Handle email sending failure
+            }
         } else {
             // Handle the case where the insert did not succeed
             // This might occur if there was an issue with the database
