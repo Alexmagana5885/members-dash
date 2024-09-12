@@ -39,8 +39,26 @@ if ($ResultCode == 0) {
         mysqli_query($db, $updateQuery);
         
         if (mysqli_affected_rows($db) > 0) {
-            // Update successful
-            // Optionally, you can send a confirmation email or handle other actions
+            // Email details
+            $to = $email;
+            $subject = "Payment Confirmation";
+            $message = "
+                Dear Member,
+
+                Thank you for your recent payment towards your membership with AGL. We are pleased to inform you that your payment has been successfully processed.
+
+                Payment Amount: $Amount
+                Transaction Date: " . date('Y-m-d H:i:s') . "
+
+                Best regards,
+                AGL Team
+            ";
+            $headers = "From: payments@agl.or.ke\r\n";
+            $headers .= "Reply-To: payments@agl.or.ke\r\n";
+            $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+            
+            // Send email
+            mail($to, $subject, $message, $headers);
         } else {
             // Handle the case where the update did not affect any rows
             // This might occur if the email address does not match any row

@@ -1,9 +1,9 @@
 <?php
-// INCLUDE THE ACCESS TOKEN FILE
+// Include the access token file
 include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
 
-// Function to normalize phone number to '2547...' format
+// Define the normalizePhoneNumber function
 function normalizePhoneNumber($phone) {
     $phone = preg_replace('/\s+/', '', $phone);
     if (strpos($phone, '+') === 0) {
@@ -18,118 +18,80 @@ function normalizePhoneNumber($phone) {
     return $phone;
 }
 
-// Check if the form has been submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $email = $_POST['User-email'] ?? null;
-    $phone = $_POST['phone_number'] ?? null;
-    $amount = $_POST['amount'] ?? null;
-    $referringPage = $_POST['referringPage'] ?? 'index.html'; // Default to 'index.html' if no referring page is provided
+// Retrieve and normalize form data
+$phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
+$money = isset($_POST['amount']) ? $_POST['amount'] : '1';
+$userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
 
-    // Normalize phone number
-    $normalizedPhone = normalizePhoneNumber($phone);
+// Define variables
+$processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+$callbackurl = 'https://member.log.agl.or.ke/DARAJA/Premiumcallback.php';
+$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+$BusinessShortCode = '174379';
+$Timestamp = date('YmdHis');
 
-    // Ensure phone and amount are valid
-    if (!empty($normalizedPhone) && !empty($amount)) {
-        $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-        $callbackurl = 'https://member.log.agl.or.ke/DARAJA/Premiumcallback.php';
-        $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-        $BusinessShortCode = '174379';
-        $Timestamp = date('YmdHis');
+// Encrypt data to get password
+$Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 
-        $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
-        $PartyA = $normalizedPhone;
-        $PartyB = $BusinessShortCode;
-        $AccountReference = 'AGL';
-        $TransactionDesc = 'Membership fee payment';
-        $Amount = $amount;
+// Define other parameters
+$PartyA = $phone; // Phone number to receive the STK push
+$PartyB = $BusinessShortCode;
+$AccountReference = 'AGL';
+$TransactionDesc = 'Membership Registration fee payment';
+$Amount = $money;
 
-        $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
+$stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader);
+// Initialize cURL
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
+curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); // Setting custom header
 
-        $curl_post_data = array(
-            'BusinessShortCode' => $BusinessShortCode,
-            'Password' => $Password,
-            'Timestamp' => $Timestamp,
-            'TransactionType' => 'CustomerPayBillOnline',
-            'Amount' => $Amount,
-            'PartyA' => $PartyA,
-            'PartyB' => $BusinessShortCode,
-            'PhoneNumber' => $PartyA,
-            'CallBackURL' => $callbackurl,
-            'AccountReference' => $AccountReference,
-            'TransactionDesc' => $TransactionDesc
-        );
+$curl_post_data = array(
+  'BusinessShortCode' => $BusinessShortCode,
+  'Password' => $Password,
+  'Timestamp' => $Timestamp,
+  'TransactionType' => 'CustomerPayBillOnline',
+  'Amount' => $Amount,
+  'PartyA' => $PartyA,
+  'PartyB' => $BusinessShortCode,
+  'PhoneNumber' => $PartyA,
+  'CallBackURL' => $callbackurl,
+  'AccountReference' => $AccountReference,
+  'TransactionDesc' => $TransactionDesc
+);
 
-        $data_string = json_encode($curl_post_data);
+$data_string = json_encode($curl_post_data);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+$curl_response = curl_exec($curl);
+curl_close($curl);
 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+// Decode and handle the response
+$data = json_decode($curl_response);
+$CheckoutRequestID = $data->CheckoutRequestID;
+$ResponseCode = $data->ResponseCode;
 
-        $curl_response = curl_exec($curl);
+// Database connection settings
+require_once('../../DBconnection.php');
 
-        if ($curl_response === false) {
-            error_log('Curl error: ' . curl_error($curl), 3, '/var/log/mpesa_errors.log');
-            echo 'Curl error: ' . curl_error($curl);
-        } else {
-            $data = json_decode($curl_response);
+// Determine status based on response code
+$status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
 
-            if (json_last_error() === JSON_ERROR_NONE) {
-                $ResponseCode = $data->ResponseCode ?? null;
-                $CheckoutRequestID = $data->CheckoutRequestID ?? null;
+// Insert data into database
+$sql = "INSERT INTO mpesa_transactions (CheckoutRequestID, email, phone, amount, status) VALUES (?, ?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sssss", $CheckoutRequestID, $userEmail, $phone, $money, $status);
 
-                if ($ResponseCode == "0") {
-                    // Prepare JSON data to send to callback
-                    $jsonDataToSend = json_encode([
-                        'MerchantRequestID' => $data->MerchantRequestID ?? null,
-                        'CheckoutRequestID' => $CheckoutRequestID,
-                        'ResultCode' => $ResponseCode,
-                        'Amount' => $Amount,
-                        'MpesaReceiptNumber' => $data->MpesaReceiptNumber ?? null,
-                        'PhoneNumber' => $PartyA,
-                        'Email' => $email // Add the email to the JSON data
-                    ]);
-
-                    // Send JSON as form data to callback.php using cURL
-                    $ch = curl_init($callbackurl);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                        'jsonData' => $jsonDataToSend // Send JSON data as a form field
-                    ]);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        'Content-Type: application/x-www-form-urlencoded'
-                    ]);
-
-                    $callbackResponse = curl_exec($ch);
-
-                    if ($callbackResponse === false) {
-                        error_log('Callback curl error: ' . curl_error($ch), 3, '/var/log/mpesa_errors.log');
-                        echo 'Callback curl error: ' . curl_error($ch);
-                    } else {
-                        echo 'Callback response: ' . $callbackResponse;
-                    }
-
-                    curl_close($ch);
-
-                    // Redirect to the referring page
-                    header("Location: " . htmlspecialchars($referringPage));
-                    exit;
-                } else {
-                    echo "Error response from M-Pesa API. Response: " . $curl_response;
-                }
-            } else {
-                echo "JSON decode error: " . json_last_error_msg();
-            }
-        }
-
-        curl_close($curl);
-    } else {
-        echo "Phone number and amount are required.";
-    }
+if ($stmt->execute()) {
+    // echo "The CheckoutRequestID for this transaction is: " . $CheckoutRequestID;
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+} else {
+    echo "Error: " . $stmt->error;
 }
+
+// Close connections
+$stmt->close();
+$conn->close();
 ?>

@@ -85,7 +85,8 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("sssss", $CheckoutRequestID, $userEmail, $phone, $money, $status);
 
 if ($stmt->execute()) {
-    echo "The CheckoutRequestID for this transaction is: " . $CheckoutRequestID;
+    // echo "The CheckoutRequestID for this transaction is: " . $CheckoutRequestID;
+    header("Location: " . $_SERVER['HTTP_REFERER']);
 } else {
     echo "Error: " . $stmt->error;
 }
