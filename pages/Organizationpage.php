@@ -720,57 +720,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
             </div>
 
-            <!-- .............................. -->
-            <!-- $user_email = $_SESSION['user_email']; -->
-            <!-- messages -->
-
-            <?php
-
-            $session_email = $_SESSION['user_email'];
-            // if (isset($_SESSION['user_email'])) {
-
-            //     echo "Logged in as: " . htmlspecialchars($_SESSION['user_email'], ENT_QUOTES);
-            // } else {
-            //     echo "No email found in session.";
-            // }
-
-            $messages = [];
-
-            // Check if the email is in the `personalmembership` table
-            $checkPersonalMembershipQuery = "SELECT * FROM personalmembership WHERE email = ?";
-            $stmt = $conn->prepare($checkPersonalMembershipQuery);
-            $stmt->bind_param("s", $session_email);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $personalMember = $result->fetch_assoc();
-
-            if ($personalMember) {
-                // Fetch all messages from `membermessages` without filtering by recipient group
-                $memberMessagesQuery = "SELECT * FROM membermessages";
-                $result = $conn->query($memberMessagesQuery);
-                while ($row = $result->fetch_assoc()) {
-                    $messages[] = $row;
-                }
-
-                // Check if the email is also in the `officialsmembers` table
-                $checkOfficialMembershipQuery = "SELECT * FROM officialsmembers WHERE personalmembership_email = ?";
-                $stmt = $conn->prepare($checkOfficialMembershipQuery);
-                $stmt->bind_param("s", $session_email);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $officialMember = $result->fetch_assoc();
-
-                if ($officialMember) {
-                    // Fetch all messages from `officialmessages` without filtering by recipient group
-                    $officialMessagesQuery = "SELECT * FROM officialmessages";
-                    $result = $conn->query($officialMessagesQuery);
-                    while ($row = $result->fetch_assoc()) {
-                        $messages[] = $row;
-                    }
-                }
-            }
-            ?>
-
             <style>
                 @media (max-width: 600px) {
                     .message-popup {
@@ -786,6 +735,22 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     }
                 }
             </style>
+
+
+            <?php
+
+            $session_email = $_SESSION['user_email'];
+
+            $messages = [];
+
+            // Fetch all messages from `membermessages` without filtering by recipient group
+            $memberMessagesQuery = "SELECT * FROM membermessages";
+            $result = $conn->query($memberMessagesQuery);
+
+            while ($row = $result->fetch_assoc()) {
+                $messages[] = $row;
+            }
+            ?>
 
             <div class="message-popup" id="messagePopupReceivedMessages">
                 <div class="message-popup-header">
@@ -806,9 +771,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <?php endif; ?>
                 </div>
             </div>
-
-
-
 
             <!-- Full message pop-up -->
             <div class="full-message-popup" id="fullMessagePopupReceivedMessages">
