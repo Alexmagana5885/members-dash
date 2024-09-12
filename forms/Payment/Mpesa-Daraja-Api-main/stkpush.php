@@ -1,136 +1,102 @@
 <?php
-// INCLUDE THE ACCESS TOKEN FILE
-include 'accessToken.php';
-date_default_timezone_set('Africa/Nairobi');
+include 'AGLdbconnection.php';
+session_start();
+header("Content-Type: application/json");
 
-// Function to normalize phone number to '2547...' format
-function normalizePhoneNumber($phone) {
-    $phone = preg_replace('/\s+/', '', $phone);
-    if (strpos($phone, '+') === 0) {
-        $phone = substr($phone, 1);
+$logFile = "Mpesastkresponse.json";
+$log = fopen($logFile, "a");
+
+// Read the raw M-Pesa callback response
+$rawResponse = file_get_contents('php://input');
+
+// Check if the response contains multipart form data
+if (strpos($rawResponse, 'Content-Disposition') !== false) {
+    // Extract JSON data from multipart form data
+    preg_match('/\{.*\}/', $rawResponse, $matches);
+    if (isset($matches[0])) {
+        $rawResponse = $matches[0]; // Use the extracted JSON part
     }
-    if (preg_match('/^0[17]/', $phone)) {
-        $phone = '254' . substr($phone, 1);
-    }
-    if (preg_match('/^2547/', $phone)) {
-        return $phone;
-    }
-    return $phone;
 }
 
-// Check if the form has been submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $email = $_POST['User-email'] ?? null;
-    $phone = $_POST['phone_number'] ?? null;
-    $amount = $_POST['amount'] ?? null;
-    $referringPage = $_POST['referringPage'] ?? 'index.html'; // Default to 'index.html' if no referring page is provided
+fwrite($log, "Raw M-Pesa callback response: " . $rawResponse . "\n");
 
-    // Normalize phone number
-    $normalizedPhone = normalizePhoneNumber($phone);
+// Decode the M-Pesa callback JSON data
+$callbackData = json_decode($rawResponse, true);
 
-    // Ensure phone and amount are valid
-    if (!empty($normalizedPhone) && !empty($amount)) {
-        $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-        $callbackurl = 'https://member.log.agl.or.ke/DARAJA/callback.php';
-        $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-        $BusinessShortCode = '174379';
-        $Timestamp = date('YmdHis');
+if (json_last_error() === JSON_ERROR_NONE) {
+    $stkCallback = $callbackData['Body']['stkCallback'] ?? null;
 
-        $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
-        $PartyA = $normalizedPhone;
-        $PartyB = $BusinessShortCode;
-        $AccountReference = 'AGL';
-        $TransactionDesc = 'Membership fee payment';
-        $Amount = $amount;
+    if ($stkCallback) {
+        $MerchantRequestID = $stkCallback['MerchantRequestID'] ?? null;
+        $CheckoutRequestID = $stkCallback['CheckoutRequestID'] ?? null;
+        $ResultCode = $stkCallback['ResultCode'] ?? null;
+        $ResultDesc = $stkCallback['ResultDesc'] ?? null;
 
-        $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
+        // Extract values from CallbackMetadata
+        $amount = null;
+        $transactionId = null;
+        $phoneNumber = null;
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader);
-
-        $curl_post_data = array(
-            'BusinessShortCode' => $BusinessShortCode,
-            'Password' => $Password,
-            'Timestamp' => $Timestamp,
-            'TransactionType' => 'CustomerPayBillOnline',
-            'Amount' => $Amount,
-            'PartyA' => $PartyA,
-            'PartyB' => $BusinessShortCode,
-            'PhoneNumber' => $PartyA,
-            'CallBackURL' => $callbackurl,
-            'AccountReference' => $AccountReference,
-            'TransactionDesc' => $TransactionDesc
-        );
-
-        $data_string = json_encode($curl_post_data);
-
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
-
-        $curl_response = curl_exec($curl);
-
-        if ($curl_response === false) {
-            echo 'Curl error: ' . curl_error($curl);
-        } else {
-            $data = json_decode($curl_response);
-
-            if (json_last_error() === JSON_ERROR_NONE) {
-                $ResponseCode = $data->ResponseCode ?? null;
-                $CheckoutRequestID = $data->CheckoutRequestID ?? null;
-
-                if ($ResponseCode == "0") {
-                    // Prepare JSON data to send to callback
-                    $jsonDataToSend = json_encode([
-                        'MerchantRequestID' => $data->MerchantRequestID ?? null,
-                        'CheckoutRequestID' => $CheckoutRequestID,
-                        'ResultCode' => $ResponseCode,
-                        'Amount' => $Amount,
-                        'MpesaReceiptNumber' => $data->MpesaReceiptNumber ?? null,
-                        'PhoneNumber' => $PartyA,
-                        'Email' => $email // Add the email to the JSON data
-                    ]);
- 
-                    // Send JSON as form data to callback.php using cURL
-                    $ch = curl_init($callbackurl);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                        'jsonData' => $jsonDataToSend // Send JSON data as a form field
-                    ]);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        'Content-Type: application/x-www-form-urlencoded'
-                    ]);
-
-                    $callbackResponse = curl_exec($ch);
-
-                    if ($callbackResponse === false) {
-                        echo 'Callback curl error: ' . curl_error($ch);
-                    } else {
-                        echo 'Callback response: ' . $callbackResponse;
-                    }
-
-                    curl_close($ch);
-
-                    // Echo the data sent for confirmation
-                    // echo "Success! The following data was sent to the callback URL:<br>";
-                    // echo "<pre>" . htmlspecialchars($jsonDataToSend) . "</pre>";
-                    header("Location: " . $_SERVER['HTTP_REFERER']);
-
-                    exit;
-                } else {
-                    echo "Error response from M-Pesa API. Response: " . $curl_response;
+        if (isset($stkCallback['CallbackMetadata']['Item'])) {
+            foreach ($stkCallback['CallbackMetadata']['Item'] as $item) {
+                if ($item['Name'] == 'Amount') {
+                    $amount = $item['Value'];
+                } elseif ($item['Name'] == 'MpesaReceiptNumber') {
+                    $transactionId = $item['Value'];
+                } elseif ($item['Name'] == 'PhoneNumber') {
+                    $phoneNumber = $item['Value'];
                 }
-            } else {
-                echo "JSON decode error: " . json_last_error_msg();
             }
         }
 
-        curl_close($curl);
+        // Get email from session
+        $email = $_SESSION['email'] ?? null;
+
+        // Log extracted values for debugging
+        fwrite($log, "Extracted data - Email: $email, Amount: $amount, Transaction ID: $transactionId, Phone Number: $phoneNumber\n");
+
+        if ($ResultCode == 0 && $email) {
+            // Prepare the SQL statement to update payment data using the email from the session
+            if ($stmt = $conn->prepare("SELECT * FROM personalmembership WHERE email = ?")) {
+                $stmt->bind_param('s', $email);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    // If email exists, update payment data
+                    if ($updateStmt = $conn->prepare("UPDATE personalmembership 
+                                                       SET payment_number = ?, payment_code = ? 
+                                                       WHERE email = ?")) {
+                        $updateStmt->bind_param('sss', $phoneNumber, $transactionId, $email);
+
+                        if ($updateStmt->execute()) {
+                            fwrite($log, "Payment data updated successfully for email: $email.\n");
+                        } else {
+                            fwrite($log, "Error updating payment data: " . $updateStmt->error . "\n");
+                        }
+
+                        $updateStmt->close();
+                    } else {
+                        fwrite($log, "Prepare statement error: " . $conn->error . "\n");
+                    }
+                } else {
+                    fwrite($log, "No record found for email: $email.\n");
+                }
+
+                $stmt->close();
+            } else {
+                fwrite($log, "Prepare statement error: " . $conn->error . "\n");
+            }
+        } else {
+            fwrite($log, "Transaction failed. ResultCode: $ResultCode, ResultDesc: $ResultDesc, Email: $email\n");
+        }
     } else {
-        echo "Phone number and amount are required.";
+        fwrite($log, "No stkCallback found in response.\n");
     }
+} else {
+    fwrite($log, "JSON decode error: " . json_last_error_msg() . "\n");
 }
+
+fclose($log);
+$conn->close();
 ?>
