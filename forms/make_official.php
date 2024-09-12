@@ -18,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute the statement
     if ($stmt->execute()) {
-        echo "Member successfully made an official.";
+        // echo "Member successfully made an official.";
+        header("Location: " . $_SERVER['HTTP_REFERER']);
     } else {
         echo "Error: " . $stmt->error;
     }
