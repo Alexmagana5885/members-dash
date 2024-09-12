@@ -63,11 +63,38 @@ if ($ResultCode == 0) {
         $row = $result->fetch_assoc();
         $email = $row['email'];
 
-        // Update the personalmembership table with payment details
-        $updateQuery = $conn->prepare("UPDATE personalmembership 
-                                        SET payment_Number = ?, payment_code = ? 
-                                        WHERE email = ?");
-        $updateQuery->bind_param("sss", $UserPhoneNumber, $TransactionId, $email);
+        // Check if the email exists in the personalmembership table
+        $personalQuery = $conn->prepare("SELECT email FROM personalmembership WHERE email = ?");
+        $personalQuery->bind_param("s", $email);
+        $personalQuery->execute();
+        $personalResult = $personalQuery->get_result();
+
+        // Check if the email exists in the organizationmembership table
+        $organizationQuery = $conn->prepare("SELECT organization_email FROM organizationmembership WHERE organization_email = ?");
+        $organizationQuery->bind_param("s", $email);
+        $organizationQuery->execute();
+        $organizationResult = $organizationQuery->get_result();
+
+        // Update the corresponding table
+        if ($personalResult->num_rows > 0) {
+            // Email exists in personalmembership table, update payment details
+            $updateQuery = $conn->prepare("UPDATE personalmembership 
+                                            SET payment_Number = ?, payment_code = ? 
+                                            WHERE email = ?");
+            $updateQuery->bind_param("sss", $UserPhoneNumber, $TransactionId, $email);
+        } elseif ($organizationResult->num_rows > 0) {
+            // Email exists in organizationmembership table, update payment details
+            $updateQuery = $conn->prepare("UPDATE organizationmembership 
+                                            SET payment_Number = ?, payment_code = ? 
+                                            WHERE organization_email = ?");
+            $updateQuery->bind_param("sss", $UserPhoneNumber, $TransactionId, $email);
+        } else {
+            $response['errors'][] = "Email not found in either personalmembership or organizationmembership tables.";
+            $_SESSION['response'] = $response;
+            exit;
+        }
+
+        // Execute the update query
         if (!$updateQuery->execute()) {
             $response['errors'][] = "Database update failed: " . $conn->error;
             $_SESSION['response'] = $response;
