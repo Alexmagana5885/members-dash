@@ -70,9 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             }
                         }
 
-                        // Redirect to a common page
-                        $response['status'] = 'success';
-                        $response['redirect'] = 'pages/AGLADMIN.php'; // Redirect to a common page
+                        // Redirect to the appropriate page based on membership type
+                        if ($membershipType == 'OrganizationMember') {
+                            $response['status'] = 'success';
+                            $response['redirect'] = 'pages/Organizationpage.php'; // Redirect to Organization page
+                        } else {
+                            $response['status'] = 'success';
+                            $response['redirect'] = 'pages/AGLADMIN.php'; // Redirect to common page for others
+                        }
                     } else {
                         $response['status'] = 'error';
                         $response['message'] = 'Invalid password.';
