@@ -6,6 +6,9 @@ session_start();
 include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
 
+// DB Connection (replace with your actual DB credentials)
+require_once('../../DBconnection.php');
+
 // Function to normalize phone number to '2547...' format
 function normalizePhoneNumber($phone) {
     $phone = preg_replace('/\s+/', '', $phone);
@@ -88,6 +91,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $CheckoutRequestID = $data->CheckoutRequestID ?? null;
 
                 if ($ResponseCode == "0") {
+                    // Store the email and CheckoutRequestID in the database
+                    $sql = "INSERT INTO mpesa_transactions (CheckoutRequestID, email, phone, amount, status) 
+                            VALUES ('$CheckoutRequestID', '$email', '$PartyA', '$Amount', 'pending')";
+
+                    if ($conn->query($sql) === TRUE) {
+                        echo "Transaction data stored successfully.";
+                    } else {
+                        echo "Error storing transaction: " . $conn->error;
+                    }
+
                     // Prepare JSON data to send to callback
                     $jsonDataToSend = json_encode([
                         'MerchantRequestID' => $data->MerchantRequestID ?? null,
@@ -136,4 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Phone number and amount are required.";
     }
 }
+
+// Close the database connection
+$conn->close();
 ?>
