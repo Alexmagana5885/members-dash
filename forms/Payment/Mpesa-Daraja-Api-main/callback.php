@@ -1,7 +1,9 @@
 <?php
 session_start(); // Start the session
 
+// Include the database connection file
 include 'AGLdbconnection.php';
+
 header("Content-Type: application/json");
 
 // Initialize response array
@@ -46,30 +48,33 @@ $UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value ??
 if ($ResultCode == 0) {
 
     // Retrieve the email associated with the CheckoutRequestID
-    $emailQuery = "SELECT email FROM mpesa_transactions WHERE CheckoutRequestID = '$CheckoutRequestID'";
-    $result = mysqli_query($db, $emailQuery);
+    $emailQuery = $conn->prepare("SELECT email FROM mpesa_transactions WHERE CheckoutRequestID = ?");
+    $emailQuery->bind_param("s", $CheckoutRequestID);
+    $emailQuery->execute();
+    $result = $emailQuery->get_result();
     
     if (!$result) {
-        $response['errors'][] = "Database query failed: " . mysqli_error($db);
+        $response['errors'][] = "Database query failed: " . $conn->error;
         $_SESSION['response'] = $response;
         exit;
     }
     
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
         $email = $row['email'];
 
         // Update the personalmembership table with payment details
-        $updateQuery = "UPDATE personalmembership 
-                        SET payment_Number = '$UserPhoneNumber', payment_code = '$TransactionId' 
-                        WHERE email = '$email'";
-        if (!mysqli_query($db, $updateQuery)) {
-            $response['errors'][] = "Database update failed: " . mysqli_error($db);
+        $updateQuery = $conn->prepare("UPDATE personalmembership 
+                                        SET payment_Number = ?, payment_code = ? 
+                                        WHERE email = ?");
+        $updateQuery->bind_param("sss", $UserPhoneNumber, $TransactionId, $email);
+        if (!$updateQuery->execute()) {
+            $response['errors'][] = "Database update failed: " . $conn->error;
             $_SESSION['response'] = $response;
             exit;
         }
         
-        if (mysqli_affected_rows($db) > 0) {
+        if ($updateQuery->affected_rows > 0) {
             // Email details
             $to = $email;
             $subject = "Payment Confirmation";
