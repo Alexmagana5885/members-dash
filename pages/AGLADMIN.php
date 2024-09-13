@@ -24,6 +24,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -37,8 +39,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
         <!-- <button id="toggleMessages">View Messages</button> -->
 
-        <div id="toggleMessagesReceivedMessages" class="notification">
-            <img src="../assets/img/bell.png" alt="Notification">
+        <div style="text-align: center;" id="toggleMessagesReceivedMessages" class="notification">
+            <img   src="../assets/img/bell.png" alt="Notification">
             <h5 style="color: black; cursor: pointer;">Messages</h5>
         </div>
 
@@ -129,6 +131,11 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
+                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
+
+
                     <!-- <li><a href="new.php">new</a></li> -->
                     <!-- <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li> -->
@@ -139,9 +146,17 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="Payment/index.php">Payments</a></li>
+                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
+                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
+
                 <?php elseif ($role == 'member'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
+                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
+
                 <?php endif; ?>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -273,7 +288,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         Pay Membership Premium
                     </button>
                 </div>
-
 
                 <style>
                     .popup-container {
