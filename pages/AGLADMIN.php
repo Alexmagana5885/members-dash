@@ -24,6 +24,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
 
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -129,7 +130,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-                    <!-- <li><a href="new.php">new</a></li> -->
+                    <li><a href="new.php">new</a></li>
                     <!-- <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li> -->
                 <?php elseif ($role == 'admin'): ?>
@@ -841,6 +842,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             $sql = "SELECT id, event_name, event_image_path, event_description, event_location, event_date FROM plannedevent ORDER BY event_date DESC";
 
             $result = $conn->query($sql);
+
+
             ?>
 
             <div class="MinPrtSecSpace">
@@ -856,6 +859,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             $eventLocation = htmlspecialchars($row['event_location']);
                             $eventDate = htmlspecialchars($row['event_date']);
 
+                            // Fetch content from the database
                             echo '<div  class="eventDiv">';
                             echo '<h3>' . $eventName . '</h3>';
                             echo '<img src="' . $eventImagePath . '" alt="Event">';
@@ -943,10 +947,11 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             <!-- popups -->
 
             <!-- Post Planned Event Modal -->
+            <!-- Modal and form -->
             <div id="myModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <form action="../forms/PlannedEvent.php" method="post" enctype="multipart/form-data">
+                    <form id="eventForm" action="../forms/PlannedEvent.php" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="eventName">Event Name:</label>
                             <input type="text" id="eventName" name="eventName" required />
@@ -955,9 +960,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             <label for="eventImage">Event Image:</label>
                             <input type="file" id="eventImage" name="eventImage" required />
                         </div>
+
                         <div class="form-group">
                             <label for="eventDescription">Brief Introduction:</label>
-                            <textarea id="eventDescription" name="eventDescription" rows="4" required></textarea>
+                            <!-- Quill Editor Container -->
+                            <div id="quillEditor" style="height: 200px;"></div>
+                            <!-- Hidden field to store the formatted content -->
+                            <input type="hidden" id="eventDescription" name="eventDescription">
                         </div>
                         <div class="form-group">
                             <label for="eventLocation">Location:</label>
@@ -973,7 +982,29 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     </form>
                 </div>
             </div>
-            <!-- Post Planned Event Modal  script-->
+
+            <!-- Post Planned Event Modal script -->
+            <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+            <script>
+                // Initialize Quill editor
+                var quill = new Quill('#quillEditor', {
+                    theme: 'snow' // Use 'bubble' for a different style
+                });
+
+                // Listen for form submission
+                document.getElementById('eventForm').onsubmit = function(event) {
+                    // Prevent default submission if necessary
+                    // event.preventDefault();
+
+                    // Get HTML content from Quill editor
+                    var eventDescriptionInput = document.getElementById('eventDescription');
+                    eventDescriptionInput.value = quill.root.innerHTML; // Store the HTML content in the hidden input
+                };
+
+                
+            </script>
+
+
             <script>
                 var myModal = document.getElementById("myModal");
 
