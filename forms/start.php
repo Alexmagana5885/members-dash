@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $table = 'organizationmembership';
             $emailColumn = 'organization_email';
         }
-        
+
         if ($table && $emailColumn) {
             // Prepare the SQL statement
             $sql = "SELECT $emailColumn, password FROM $table WHERE $emailColumn = ?";
@@ -56,20 +56,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                     if ($resultCheck->num_rows > 0) {
                                         $_SESSION['role'] = 'admin';
+                                        error_log("User set as admin");
                                     } else {
                                         $_SESSION['role'] = 'member';
+                                        error_log("User set as member");
                                     }
                                 } else {
                                     $response['status'] = 'error';
-                                    $response['message'] = 'Database query error.';
+                                    $response['message'] = 'Database query error (role check).';
                                     echo json_encode($response);
                                     exit();
                                 }
                             } elseif ($membershipType == 'OrganizationMember') {
                                 $_SESSION['role'] = 'member';
+                                error_log("Organization member set as member");
                             }
                         }
 
+                        // Debugging session values
+                        error_log("Session role: " . $_SESSION['role']);
+                        
                         // Redirect to the appropriate page based on membership type
                         if ($membershipType == 'OrganizationMember') {
                             $response['status'] = 'success';
@@ -88,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             } else {
                 $response['status'] = 'error';
-                $response['message'] = 'Database query error.';
+                $response['message'] = 'Database query error (main query).';
             }
         } else {
             $response['status'] = 'error';
