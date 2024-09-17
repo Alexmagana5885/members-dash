@@ -44,7 +44,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <!-- <button id="toggleMessages">View Messages</button> -->
 
         <div style="text-align: center;" id="toggleMessagesReceivedMessages" class="notification">
-            <img   src="../assets/img/bell.png" alt="Notification">
+            <img src="../assets/img/bell.png" alt="Notification">
             <h5 style="color: black; cursor: pointer;">Messages</h5>
         </div>
 
@@ -141,8 +141,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="../forms/logout.php">Logout</a></li>
                     <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
                     <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
-
-
                     <!-- <li><a href="new.php">new</a></li> -->
 >>>>>>> cc9dda519df7a60fc20486c9b39147e9beb84143
                     <!-- <li><a href="MembersPortal.php">memberportal</a></li>
@@ -405,7 +403,16 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         <div class="popup-buttons">
                             <input type="hidden" id="hiddenFormData" name="formData">
                             <button class="popup-btn" type="submit">Make Payment</button>
-                        </div>
+                        </div><br><br>
+
+                        <p>if you made payment and did not respond, kindly fill the MPESA code here</p><br>
+
+                        <h4>Paybill: 34758</h4>
+
+                        <input type="text" id="mpesa-code" name="mpesa_code" class="popup-input" placeholder="Enter your M-Pesa payment code" required oninput="this.value = this.value.toUpperCase()">
+                        <a style="text-decoration: none; width: 100%; " class="popup-btn" href="sumbit">send</a>
+
+
                     </form>
                 </div>
 
@@ -562,8 +569,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         echo '<p>No upcoming registered events.</p>';
                     }
 
-
-
                     // $stmt->close();
                     // $conn->close();
                     ?>
@@ -704,11 +709,96 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 });
             </script>
 
+            <style>
+                /* Popup container */
+                .blog-popup {
+                    display: none;
+                    /* Hidden by default */
+                    position: fixed;
+                    /* Stay in place */
+                    z-index: 1;
+                    /* Sit on top */
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    /* Full width */
+                    height: 100%;
+                    /* Full height */
+                    overflow: auto;
+                    /* Enable scroll if needed */
+                    background-color: rgb(0, 0, 0);
+                    /* Fallback color */
+                    background-color: rgba(0, 0, 0, 0.4);
+                    /* Black w/ opacity */
+                }
+
+                /* Popup content */
+                .blog-popup-content {
+                    background-color: #fefefe;
+                    margin: 15% auto;
+                    /* 15% from the top and centered */
+                    padding: 20px;
+                    border: 1px solid #888;
+                    width: 80%;
+                    /* Could be more or less, depending on screen size */
+                }
+
+                /* Close button */
+                .blog-close {
+                    color: #aaa;
+                    float: right;
+                    font-size: 28px;
+                    font-weight: bold;
+                }
+
+                .blog-close:hover,
+                .blog-close:focus {
+                    color: black;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+            </style>
+
+          
+            <div id="blogPopup" class="blog-popup">
+                <div class="blog-popup-content">
+                    <span class="blog-close">&times;</span>
+                    <div id="blogPopupBody">
+                        <!-- Content will be dynamically injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var popup = document.getElementById('blogPopup');
+                    var closeBtn = document.querySelector('.blog-close');
+
+                    document.querySelectorAll('.blogSingle').forEach(function(blog) {
+                        blog.addEventListener('click', function() {
+                            var content = this.getAttribute('data-content');
+                            var popupBody = document.getElementById('blogPopupBody');
+                            popupBody.innerHTML = content; // Set the popup content
+                            popup.style.display = 'block'; // Show the popup
+                        });
+                    });
+
+                    closeBtn.addEventListener('click', function() {
+                        popup.style.display = 'none'; // Hide the popup
+                    });
+
+                    window.addEventListener('click', function(event) {
+                        if (event.target === popup) {
+                            popup.style.display = 'none'; // Hide the popup if clicked outside
+                        }
+                    });
+                });
+            </script>
+
+
 
             <h4 style="padding: 20px;">Blogs</h4>
             <div class="blogPoint">
-
-
                 <?php
                 // Query to get blog posts
                 $sql = "SELECT * FROM blog_posts";
@@ -717,11 +807,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 if ($result->num_rows > 0) {
                     // Output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo '<div class="Singleblog">';
+                        echo '<div class="blogSingle" data-content="' . htmlspecialchars($row["content"], ENT_QUOTES, 'UTF-8') . '">';
                         echo '    <div class="blogImage"><img src="' . $row["image_path"] . '" alt="Blog"></div>';
-                        echo '    <div class="blogcontent">';
+                        echo '    <div class="blogContent">';
                         echo '        <h4>' . $row["title"] . '</h4>';
-                        echo '        <p>' . $row["content"] . '</p>';
                         echo '        <h6>' . date("d/m/Y", strtotime($row["created_at"])) . '</h6>';
                         echo '    </div>';
                         echo '</div>';
@@ -731,9 +820,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 }
                 // $conn->close();
                 ?>
-
-
             </div>
+
 
             <!-- .............................. -->
             <!-- $user_email = $_SESSION['user_email']; -->
