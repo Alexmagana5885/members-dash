@@ -24,15 +24,15 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
-<<<<<<< HEAD
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-=======
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <<<<<<< HEAD
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        =======
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
->>>>>>> cc9dda519df7a60fc20486c9b39147e9beb84143
+        >>>>>>> cc9dda519df7a60fc20486c9b39147e9beb84143
 
 
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
 <body>
@@ -135,35 +135,35 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-<<<<<<< HEAD
-                    <li><a href="new.php">new</a></li>
-=======
-                    <li><a href="../forms/logout.php">Logout</a></li>
-                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
-                    <!-- <li><a href="new.php">new</a></li> -->
->>>>>>> cc9dda519df7a60fc20486c9b39147e9beb84143
-                    <!-- <li><a href="MembersPortal.php">memberportal</a></li>
+                    <<<<<<< HEAD
+                        <li><a href="new.php">new</a></li>
+                        =======
+                        <li><a href="../forms/logout.php">Logout</a></li>
+                        <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
+                        <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
+                        <!-- <li><a href="new.php">new</a></li> -->
+                        >>>>>>> cc9dda519df7a60fc20486c9b39147e9beb84143
+                        <!-- <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li> -->
-                <?php elseif ($role == 'admin'): ?>
-                    <li><a id="openPostEventModal">Post Planned Event</a></li>
-                    <li><a id="openMessagePopupSend">Send Message</a></li>
-                    <li><a id="openBlogPostModal">Post a Blog</a></li>
-                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-                    <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                    <li><a href="Payment/index.php">Payments</a></li>
-                    <li><a href="../forms/logout.php">Logout</a></li>
-                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
+                    <?php elseif ($role == 'admin'): ?>
+                        <li><a id="openPostEventModal">Post Planned Event</a></li>
+                        <li><a id="openMessagePopupSend">Send Message</a></li>
+                        <li><a id="openBlogPostModal">Post a Blog</a></li>
+                        <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                        <li><a id="MembersTable-link" href="Members.php">Members</a></li>
+                        <li><a href="Payment/index.php">Payments</a></li>
+                        <li><a href="../forms/logout.php">Logout</a></li>
+                        <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
+                        <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
 
-                <?php elseif ($role == 'member'): ?>
-                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-                    <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-                    <li><a href="../forms/logout.php">Logout</a></li>
-                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
+                    <?php elseif ($role == 'member'): ?>
+                        <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                        <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+                        <li><a href="../forms/logout.php">Logout</a></li>
+                        <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
+                        <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
 
-                <?php endif; ?>
+                    <?php endif; ?>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -759,7 +759,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 }
             </style>
 
-          
+
             <div id="blogPopup" class="blog-popup">
                 <div class="blog-popup-content">
                     <span class="blog-close">&times;</span>
@@ -776,9 +776,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
                     document.querySelectorAll('.blogSingle').forEach(function(blog) {
                         blog.addEventListener('click', function() {
+                            var title = this.getAttribute('data-title');
                             var content = this.getAttribute('data-content');
                             var popupBody = document.getElementById('blogPopupBody');
-                            popupBody.innerHTML = content; // Set the popup content
+                            popupBody.innerHTML = `<h4>${title}</h4><p>${content}</p>`; // Set the popup content
                             popup.style.display = 'block'; // Show the popup
                         });
                     });
@@ -807,7 +808,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 if ($result->num_rows > 0) {
                     // Output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo '<div class="blogSingle" data-content="' . htmlspecialchars($row["content"], ENT_QUOTES, 'UTF-8') . '">';
+                        echo '<div class="blogSingle" data-title="' . htmlspecialchars($row["title"], ENT_QUOTES, 'UTF-8') . '" data-content="' . htmlspecialchars($row["content"], ENT_QUOTES, 'UTF-8') . '">';
                         echo '    <div class="blogImage"><img src="' . $row["image_path"] . '" alt="Blog"></div>';
                         echo '    <div class="blogContent">';
                         echo '        <h4>' . $row["title"] . '</h4>';
@@ -821,6 +822,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 // $conn->close();
                 ?>
             </div>
+
 
 
             <!-- .............................. -->
@@ -1109,8 +1111,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     var eventDescriptionInput = document.getElementById('eventDescription');
                     eventDescriptionInput.value = quill.root.innerHTML; // Store the HTML content in the hidden input
                 };
-
-                
             </script>
 
 
