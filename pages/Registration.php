@@ -152,7 +152,7 @@ session_start();
             <div class="progress-step-circle">4</div>
             <p>Submit</p>
           </div>
-        </div> 
+        </div>
 
         <!-- Form Steps -->
         <div id="personal-details" class="form-step active">
@@ -190,13 +190,23 @@ session_start();
           <div class="form-stepINdiv">
             <div class="stepINdivdiv">
               <h3>Education</h3>
-              <label for="highestDegree">Highest Degree:</label>
-              <input type="text" id="highestDegree" name="highestDegree" required><br><br>
+              <!-- <label for="highestDegree">Highest Degree:</label>
+              <input type="text" id="highestDegree" name="highestDegree" required><br><br> -->
+
+              <label for="highestDegree">Highest Education Qualification:</label>
+              <select id="highestDegree" name="highestDegree" required>
+                <option value="">Select Highest Education</option>
+                <option value="Masters">Masters</option>
+                <option value="Degree">Degree</option>
+                <option value="Diploma">Diploma</option>
+                <option value="Certificate">Certificate</option>
+              </select><br><br>
+
 
               <label for="institution">Institution Name:</label>
               <input type="text" id="institution" name="institution" required><br><br>
 
-              <label for="startDate">Start Date:</label>
+              <label for="startDate">Start Date for your High Education</label>
               <input type="date" id="startDate" name="startDate" required><br><br>
               <span id="startDate-error" style="color: red;"></span>
             </div>
@@ -223,7 +233,7 @@ session_start();
               <label for="experience">Years of Experience:</label>
               <input type="number" id="experience" name="experience" required><br><br>
 
-              <label for="currentCompany">Current Company:</label>
+              <label for="currentCompany">Current Organization/Institution:</label>
               <input type="text" id="currentCompany" name="currentCompany" required><br><br>
             </div>
 

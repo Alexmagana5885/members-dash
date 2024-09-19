@@ -24,15 +24,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
-    <<<<<<< HEAD
-        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-        =======
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
-        >>>>>>> cc9dda519df7a60fc20486c9b39147e9beb84143
-
-
-        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
 <body>
@@ -115,8 +109,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     </style>
 
-
-
     <div class="main-content">
 
         <nav style="cursor: pointer;" id="sidebar" class="sidebar">
@@ -135,35 +127,32 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-                    <<<<<<< HEAD
-                        <li><a href="new.php">new</a></li>
-                        =======
-                        <li><a href="../forms/logout.php">Logout</a></li>
-                        <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                        <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
-                        <!-- <li><a href="new.php">new</a></li> -->
-                        >>>>>>> cc9dda519df7a60fc20486c9b39147e9beb84143
-                        <!-- <li><a href="MembersPortal.php">memberportal</a></li>
+                    <!-- <li><a href="new.php">new</a></li> -->
+                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
+                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
+                    <!-- <li><a href="new.php">new</a></li> -->
+                    <!-- <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li> -->
-                    <?php elseif ($role == 'admin'): ?>
-                        <li><a id="openPostEventModal">Post Planned Event</a></li>
-                        <li><a id="openMessagePopupSend">Send Message</a></li>
-                        <li><a id="openBlogPostModal">Post a Blog</a></li>
-                        <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-                        <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                        <li><a href="Payment/index.php">Payments</a></li>
-                        <li><a href="../forms/logout.php">Logout</a></li>
-                        <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                        <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
+                <?php elseif ($role == 'admin'): ?>
+                    <li><a id="openPostEventModal">Post Planned Event</a></li>
+                    <li><a id="openMessagePopupSend">Send Message</a></li>
+                    <li><a id="openBlogPostModal">Post a Blog</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                    <li><a id="MembersTable-link" href="Members.php">Members</a></li>
+                    <li><a href="adminP.php">Payments</a></li>
+                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
+                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
 
-                    <?php elseif ($role == 'member'): ?>
-                        <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-                        <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-                        <li><a href="../forms/logout.php">Logout</a></li>
-                        <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                        <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
+                <?php elseif ($role == 'member'): ?>
+                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
+                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
 
-                    <?php endif; ?>
+                <?php endif; ?>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -405,12 +394,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             <button class="popup-btn" type="submit">Make Payment</button>
                         </div><br><br>
 
-                        <p>if you made payment and did not respond, kindly fill the MPESA code here</p><br>
+                        <!-- <p>if you made payment and did not respond, kindly fill the MPESA code here</p><br>
 
                         <h4>Paybill: 34758</h4>
 
                         <input type="text" id="mpesa-code" name="mpesa_code" class="popup-input" placeholder="Enter your M-Pesa payment code" required oninput="this.value = this.value.toUpperCase()">
-                        <a style="text-decoration: none; width: 100%; " class="popup-btn" href="sumbit">send</a>
+                        <a style="text-decoration: none; width: 100%; " class="popup-btn" href="sumbit">send</a> -->
 
 
                     </form>
@@ -573,9 +562,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     // $conn->close();
                     ?>
                 </div>
-
-
-
             </div>
             <!-- ................................... -->
 
@@ -626,10 +612,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </style>
 
 
-            <!-- error response-popup-->
+            <!-- error response-popups-->
             <div>
 
-                <!-- blog post response -->
+
                 <?php
                 if (isset($_SESSION['response'])) {
                     $response = $_SESSION['response'];
@@ -656,8 +642,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     unset($_SESSION['response']);
                 }
                 ?>
-
-                <!-- upcomming event response -->
 
                 <?php
 
@@ -710,40 +694,29 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </script>
 
             <style>
-                /* Popup container */
                 .blog-popup {
                     display: none;
-                    /* Hidden by default */
                     position: fixed;
-                    /* Stay in place */
                     z-index: 1;
-                    /* Sit on top */
                     left: 0;
                     top: 0;
                     width: 100%;
-                    /* Full width */
                     height: 100%;
-                    /* Full height */
                     overflow: auto;
-                    /* Enable scroll if needed */
-                    background-color: rgb(0, 0, 0);
-                    /* Fallback color */
                     background-color: rgba(0, 0, 0, 0.4);
-                    /* Black w/ opacity */
                 }
 
-                /* Popup content */
                 .blog-popup-content {
                     background-color: #fefefe;
                     margin: 15% auto;
-                    /* 15% from the top and centered */
                     padding: 20px;
                     border: 1px solid #888;
-                    width: 80%;
-                    /* Could be more or less, depending on screen size */
+                    width: 50%;
+                    max-height: 90vh;
+                    overflow: auto;
+                    scrollbar-width: thin;
                 }
 
-                /* Close button */
                 .blog-close {
                     color: #aaa;
                     float: right;
@@ -756,6 +729,18 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     color: black;
                     text-decoration: none;
                     cursor: pointer;
+                }
+
+                @media (max-width: 600px) {
+                    .blog-popup-content {
+                        width: 90%;
+                        margin: 30% auto;
+                        padding: 15px;
+                    }
+
+                    .blog-close {
+                        font-size: 24px;
+                    }
                 }
             </style>
 
@@ -795,8 +780,78 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     });
                 });
             </script>
+            <style>
+                .blogPoint {
+                    width: 100%;
+                    background-color: #fff;
+                    min-height: 200px;
+                    padding: 10px;
+                    border-radius: 10px;
+                    display: grid;
+                    grid-auto-flow: column;
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                    gap: 10px;
+                    text-align: center;
+                    max-height: 600px;
+                    overflow-x: auto;
+                    /* Enable horizontal scrolling */
+                    overflow-y: hidden;
+                    scrollbar-width: thin;
+                }
+
+                .Singleblog {
+                    min-width: 300px;
+                    /* Set a minimum width */
+                    display: flex;
+                    flex-direction: column;
+                    padding: 10px;
+                    margin-right: 10px;
+                    margin-bottom: 20px;
+                    flex: 0 0 auto;
+                    /* Prevent shrinking and ensure a consistent width */
+                }
+
+                .blogImage {
+                    width: 100%;
+                    height: 200px;
+                    margin-bottom: 5px;
+                    border-radius: 20px 0 50px 0;
+                    object-fit: cover;
+                }
+
+                .blogImage img {
+                    width: 100%;
+                    border-radius: 20px 0 50px 0;
+                    object-fit: cover;
+                }
+
+                .blogcontent {
+                    width: 100%;
+                }
 
 
+                @media screen and (max-width: 600px) {
+                    .blogPoint {
+                        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+                        max-height: 600px;
+                        overflow-x: auto;
+                    }
+
+                    .Singleblog {
+                        width: 100%;
+                        margin-bottom: 10px;
+                    }
+
+                    .blogImage {
+                        width: 100%;
+                        margin-bottom: 0;
+                    }
+
+                    .blogcontent {
+                        width: 100%;
+                    }
+                }
+            </style>
 
             <h4 style="padding: 20px;">Blogs</h4>
             <div class="blogPoint">
@@ -953,7 +1008,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             $sql = "SELECT id, event_name, event_image_path, event_description, event_location, event_date FROM plannedevent ORDER BY event_date DESC";
 
             $result = $conn->query($sql);
-
 
             ?>
 
@@ -1149,10 +1203,17 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             <input type="text" id="pastEventName" name="eventName" required />
                         </div>
 
-                        <div class="past-event-form-group">
+                        <!-- <div class="past-event-form-group">
                             <label for="pastEventLocation">Event Details</label>
                             <textarea style="height: 200px; padding: 10px; " name="eventDetails"
                                 id="pastEventDetailsEditor" required></textarea>
+                        </div> -->
+
+                        <div class="past-event-form-group">
+                            <label for="pastEventDetails">Event Details</label>
+                            <div id="pastEventDetailsEditor" style="height: 200px; padding: 10px;"></div>
+                            <!-- Hidden input to store the content -->
+                            <input type="hidden" name="eventDetails" id="pastEventDetails" required />
                         </div>
 
 
@@ -1180,6 +1241,49 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     </form>
                 </div>
             </div>
+
+
+            <!-- quill -->
+
+            <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+            <script>
+                // Initialize the Quill editor for Event Details
+                var pastEventQuill = new Quill('#pastEventDetailsEditor', {
+                    theme: 'snow',
+                    placeholder: 'Enter event details...',
+                    modules: {
+                        toolbar: [
+                            [{
+                                'header': '1'
+                            }, {
+                                'header': '2'
+                            }],
+                            [{
+                                'list': 'ordered'
+                            }, {
+                                'list': 'bullet'
+                            }],
+                            ['bold', 'italic', 'underline'],
+                            ['link', 'image']
+                        ]
+                    }
+                });
+
+                // Attach an event listener for form submission
+                document.getElementById('pastEventForm').addEventListener('submit', function(event) {
+                    // Prevent the form from submitting immediately
+                    event.preventDefault();
+
+                    // Set the value of the hidden input to the Quill editor content
+                    document.getElementById('pastEventDetails').value = pastEventQuill.root.innerHTML;
+
+                    // Now submit the form
+                    this.submit();
+                });
+            </script>
+
+
+
             <!-- Past Events Modal script-->
             <script>
                 var modal = document.getElementById("pastEventModal");
@@ -1266,17 +1370,15 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <span class="close-blog-post">&times;</span>
                     <div id="errorMessages" style="color:red;"></div>
                     <div id="successMessage" style="color:green;"></div>
-                    <form id="blogPostForm" action="../forms/save_blog_post.php" method="post"
-                        enctype="multipart/form-data">
+                    <form id="blogPostForm" action="../forms/save_blog_post.php" method="post" enctype="multipart/form-data">
                         <div class="blog-post-form-group">
                             <label for="blogTitle">Blog Title:</label>
                             <input type="text" id="blogTitle" name="blogTitle" required />
                         </div>
                         <div class="blog-post-form-group">
                             <label for="blogContent">Content:</label>
-                            <textarea style="min-height: 150px;" id="blogContent" name="blogContent"
-                                required></textarea>
-
+                            <div style="min-height: 200px;" id="editor" class="quill-editor"></div>
+                            <input type="hidden" id="blogContent" name="blogContent" required />
                         </div>
                         <div class="blog-post-form-group">
                             <label for="blogImage">Blog Image:</label>
@@ -1288,6 +1390,44 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     </form>
                 </div>
             </div>
+
+            <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+            <script>
+                // Initialize the Quill editor
+                var quill = new Quill('#editor', {
+                    theme: 'snow',
+                    placeholder: 'Write your blog content...',
+                    modules: {
+                        toolbar: [
+                            [{
+                                'header': '1'
+                            }, {
+                                'header': '2'
+                            }],
+                            [{
+                                'list': 'ordered'
+                            }, {
+                                'list': 'bullet'
+                            }],
+                            ['bold', 'italic', 'underline'],
+
+                        ]
+                    }
+                });
+
+                // Attach an event listener for form submission
+                document.getElementById('blogPostForm').addEventListener('submit', function(event) {
+                    // Prevent the form from submitting immediately
+                    event.preventDefault();
+
+                    // Set the value of the hidden input to the Quill editor content
+                    document.getElementById('blogContent').value = quill.root.innerHTML;
+
+                    // Now submit the form
+                    this.submit();
+                });
+            </script>
+
 
 
             <!-- Blog Post Modal script -->
@@ -1311,24 +1451,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
             <!-- JavaScript Files -->
 
-
-            <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
-            <script src="../assets/JS/quill.min.js"></script>
-            <script src="../assets/JS/popups.js"></script>
-            <!-- // Initialize Quill editor -->
-            <script>
-                // Initialize Quill editor
-                var quill = new Quill('#pastEventDetailsEditor', {
-                    theme: 'snow'
-                });
-
-                // Handle form submission
-                document.getElementById('pastEventForm').onsubmit = function() {
-                    // Set hidden input value to the Quill editor content
-                    document.getElementById('pastEventDetailsHidden').value = quill.root.innerHTML;
-                };
-            </script>
 
 
             <?php
