@@ -150,7 +150,11 @@ session_start();
           </div>
           <div class="progress-step">
             <div class="progress-step-circle">4</div>
-            <p>Submit</p>
+            <p>Password</p>
+          </div>
+          <div class="progress-step">
+            <div class="progress-step-circle">5</div>
+            <p>review & Submit</p>
           </div>
         </div>
 
@@ -169,12 +173,22 @@ session_start();
               <label for="phone">Phone Number:</label>
               <input type="number" id="phone" name="phone" required><br><br>
               <span id="phone-error" style="color: blue;"></span>
+              
+
+              <label for="tickBox"> Confirm that the data is Correct
+              <input style="width: 10px;" required type="checkbox" id="tickBox" name="tickBox">
+             
+            </label>
             </div>
 
             <div class="stepINdivdiv">
-              <label for="dob">Date of Birth:</label>
-              <input type="date" id="dob" name="dob" required><br><br>
-              <span id="dob-error" style="color: red;"></span>
+
+              <label for="gender">Gender</label>
+              <select name="gender" id="gender" required>
+                <option value="">choose</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
 
               <label for="address">Address:</label>
               <textarea id="Homeaddress" name="Homeaddress" rows="4" required></textarea><br><br>
@@ -190,8 +204,6 @@ session_start();
           <div class="form-stepINdiv">
             <div class="stepINdivdiv">
               <h3>Education</h3>
-              <!-- <label for="highestDegree">Highest Degree:</label>
-              <input type="text" id="highestDegree" name="highestDegree" required><br><br> -->
 
               <label for="highestDegree">Highest Education Qualification:</label>
               <select id="highestDegree" name="highestDegree" required>
@@ -228,7 +240,7 @@ session_start();
             <div class="stepINdivdiv">
               <h3>Profession</h3>
               <label for="profession">Profession:</label>
-              <input type="text" id="profession" name="profession" required><br><br>
+              <input type="text" id="professionD" name="profession" required><br><br>
 
               <label for="experience">Years of Experience:</label>
               <input type="number" id="experience" name="experience" required><br><br>
@@ -299,6 +311,72 @@ session_start();
           </div>
         </div>
 
+        <div id="review" class="form-step">
+          <h2>Review your information</h2>
+          <h3 style="color: blue; ">Personal information</h3>
+          <div class="review-section">
+            <p><strong>Full Name:</strong> <span id="review-name"></span></p>
+            <p><strong>Email:</strong> <span id="review-email"></span></p>
+            <p><strong>Phone Number:</strong> <span id="review-phone"></span></p>
+            <p><strong>Gender:</strong> <span id="review-gender"></span></p>
+            <p><strong>Home Address:</strong> <span id="review-address"></span></p>
+            <p><strong>Passport Image:</strong> <span id="review-passport"></span></p>
+
+            <h3 style="color: blue">Education</h3>
+            <p><strong>Highest Qualification:</strong> <span id="review-highestDegree"></span></p>
+            <p><strong>Institution:</strong> <span id="review-institution"></span></p>
+            <p><strong>Start Date:</strong> <span id="review-startDate"></span></p>
+            <p><strong>Graduation Year:</strong> <span id="review-graduationYear"></span></p>
+
+
+          </div><br>
+
+          <div>
+            <h3 style="color: blue; ">Profession</h3>
+            <p><strong>Profession:</strong> <span id="review-profession"></span></p>
+            <p><strong>Years of Experience:</strong> <span id="review-experience"></span></p>
+            <p><strong>Current Company:</strong> <span id="review-currentCompany"></span></p>
+            <p><strong>Position:</strong> <span id="review-position"></span></p>
+            <p><strong>Work Address:</strong> <span id="review-workAddress"></span></p>
+            <br>
+
+            <style>
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            border: 2px solid blue;
+            border-radius: 3px;
+            appearance: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: white;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            color: blue;
+            font-size: 16px;
+            position: relative;
+            left: -1px;
+            top: -4px;
+        }
+
+            </style>
+
+            <label for="tickBox">
+              <input style="width: 10px;" required type="checkbox" id="tickBox" name="tickBox">
+              Confirm that the data is Correct
+            </label>
+
+          </div>
+
+
+        </div>
+
+
         <div class="error-message" id="error-messageScript">
           <?php
           session_start();
@@ -326,6 +404,40 @@ session_start();
                 errorMessage.style.display = 'none';
               }, 10000); // 10000 milliseconds = 10 seconds
             }
+          });
+        </script>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const nextButton = document.querySelector('.next');
+            const reviewStep = document.getElementById('review');
+
+            nextButton.addEventListener('click', function() {
+              if (reviewStep.classList.contains('active')) {
+                // Personal details
+                document.getElementById('review-name').textContent = document.getElementById('name').value;
+                document.getElementById('review-email').textContent = document.getElementById('email').value;
+                document.getElementById('review-phone').textContent = document.getElementById('phone').value;
+                document.getElementById('review-gender').textContent = document.getElementById('gender').value;
+                document.getElementById('review-address').textContent = document.getElementById('Homeaddress').value;
+
+                const passportFile = document.getElementById('passport').files[0];
+                document.getElementById('review-passport').textContent = passportFile ? passportFile.name : 'No file uploaded';
+
+                // Education details
+                document.getElementById('review-highestDegree').textContent = document.getElementById('highestDegree').value;
+                document.getElementById('review-institution').textContent = document.getElementById('institution').value;
+                document.getElementById('review-startDate').textContent = document.getElementById('startDate').value;
+                document.getElementById('review-graduationYear').textContent = document.getElementById('graduationYear').value;
+
+                // Profession details
+                document.getElementById('review-profession').textContent = document.getElementById('professionD').value;
+                document.getElementById('review-experience').textContent = document.getElementById('experience').value;
+                document.getElementById('review-currentCompany').textContent = document.getElementById('currentCompany').value;
+                document.getElementById('review-position').textContent = document.getElementById('position').value;
+                document.getElementById('review-workAddress').textContent = document.getElementById('workAddress').value;
+              }
+            });
           });
         </script>
 

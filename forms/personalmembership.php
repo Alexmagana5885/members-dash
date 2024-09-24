@@ -11,7 +11,9 @@ function sanitize_input($data) {
 $name = sanitize_input($_POST['name']);
 $email = sanitize_input($_POST['email']);
 $phone = sanitize_input($_POST['phone']);
-$dob = sanitize_input($_POST['dob']);
+$gender = sanitize_input($_POST['gender']);
+
+// $dob = sanitize_input($_POST['dob']);
 $homeAddress = sanitize_input($_POST['Homeaddress']);
 $highestDegree = sanitize_input($_POST['highestDegree']);
 $institution = sanitize_input($_POST['institution']);
@@ -92,11 +94,11 @@ $emailCheckStmt->close();
 
 if (empty($response['errors'])) {
     // SQL query to insert data into the database
-    $sql = "INSERT INTO personalmembership (name, email, phone, dob, home_address, passport_image, highest_degree, institution, start_date, graduation_year, completion_letter, profession, experience, current_company, position, work_address, password) 
+    $sql = "INSERT INTO personalmembership (name, email, phone, gender, home_address, passport_image, highest_degree, institution, start_date, graduation_year, completion_letter, profession, experience, current_company, position, work_address, password) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssssssssssssss", $name, $email, $phone, $dob, $homeAddress, $passportImagePath, $highestDegree, $institution, $startDate, $graduationYear, $completionLetterPath, $profession, $experience, $currentCompany, $position, $workAddress, $hashedPassword);
+    $stmt->bind_param("sssssssssssssssss", $name, $email, $phone, $gender, $homeAddress, $passportImagePath, $highestDegree, $institution, $startDate, $graduationYear, $completionLetterPath, $profession, $experience, $currentCompany, $position, $workAddress, $hashedPassword);
 
     if ($stmt->execute()) {
         $response['success'] = true;
