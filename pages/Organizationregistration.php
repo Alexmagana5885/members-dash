@@ -617,7 +617,11 @@ session_start();
                         </div>
                         <div class="progress-step">
                             <div class="progress-step-circle">3</div>
-                            <p>Submit</p>
+                            <p>Password</p>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-step-circle">3</div>
+                            <p>Review & Submit</p>
                         </div>
 
                     </div>
@@ -754,6 +758,30 @@ session_start();
                         </div>
                     </div>
 
+                    <div id="review" class="form-step">
+                                <h3>Review Your Information</h3>
+                                <p><strong>Organization Name:</strong> <span id="review-organizationName"></span></p>
+                                <p><strong>Organization Email:</strong> <span id="review-organizationEmail"></span></p>
+                                <p><strong>Contact Person:</strong> <span id="review-contactPerson"></span></p>
+                                <p><strong>Logo Image:</strong> <span id="review-logoImage"></span></p>
+                                <p><strong>Contact Phone Number:</strong> <span id="review-contactPhoneNumber"></span></p>
+                                <p><strong>Registration Date:</strong> <span id="review-registrationDate"></span></p>
+                                <p><strong>Organization Address:</strong> <span id="review-organizationAddress"></span></p>
+                                <p><strong>Location Country:</strong> <span id="review-locationCountry"></span></p>
+                                <p><strong>Location County:</strong> <span id="review-locationCounty"></span></p>
+                                <p><strong>Location Town:</strong> <span id="review-locationTown"></span></p>
+                                <p><strong>Registration Certificate:</strong> <span id="review-registrationCertificate"></span></p>
+                                <p><strong>Organization Type:</strong> <span id="review-organizationType"></span></p>
+                                <p><strong>Date Registered With AGL:</strong> <span id="review-startDate"></span></p>
+                                <p><strong>What You Do:</strong> <span id="review-whatYouDo"></span></p>
+                                <p><strong>Number of Employees:</strong> <span id="review-numberOfEmployees"></span></p>
+                                <p><strong>Password:</strong> <span id="review-password"></span></p>
+                            </div>
+
+                    
+
+                    
+
                     <div class="error-message" id="error-messageScript">
                         <?php
                         session_start();
@@ -782,6 +810,44 @@ session_start();
                         <button type="button" class="next">Next</button>
                     </div>
                 </form>
+                
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const nextButton = document.querySelector('.next');
+                        const reviewStep = document.getElementById('payment'); // Assuming the review step is called 'payment' in your form
+                        const organizationDetailsStep = document.getElementById('organization-details');
+                        const locationDetailsStep = document.getElementById('location-details');
+
+                        nextButton.addEventListener('click', function() {
+                        // Check if we are on the last step to display the review
+                        if (locationDetailsStep.classList.contains('active')) {
+                            // Organization Details
+                            document.getElementById('review-organizationName').textContent = document.getElementById('OrganizationName').value;
+                            document.getElementById('review-organizationEmail').textContent = document.getElementById('OrganizationEmail').value;
+                            document.getElementById('review-contactPerson').textContent = document.getElementById('ContactPerson').value;
+                            document.getElementById('review-logoImage').textContent = document.getElementById('LogoImage').files[0] ? document.getElementById('LogoImage').files[0].name : 'No file uploaded';
+                            document.getElementById('review-contactPhoneNumber').textContent = document.getElementById('ContactPhoneNumber').value;
+                            document.getElementById('review-registrationDate').textContent = document.getElementById('OrganizationDateofRegistration').value;
+                            document.getElementById('review-organizationAddress').textContent = document.getElementById('OrganizationAddress').value;
+
+                            // Location Details
+                            document.getElementById('review-locationCountry').textContent = document.getElementById('LocationCountry').value;
+                            document.getElementById('review-locationCounty').textContent = document.getElementById('LocationCounty').value;
+                            document.getElementById('review-locationTown').textContent = document.getElementById('LocationTown').value;
+                            document.getElementById('review-registrationCertificate').textContent = document.getElementById('RegistrationCertificate').files[0] ? document.getElementById('RegistrationCertificate').files[0].name : 'No file uploaded';
+                            document.getElementById('review-organizationType').textContent = document.getElementById('OrganizationType').value;
+                            document.getElementById('review-startDate').textContent = document.getElementById('startDate').value;
+                            document.getElementById('review-whatYouDo').textContent = document.getElementById('WhatYouDo').value;
+                            document.getElementById('review-numberOfEmployees').textContent = document.getElementById('NumberOfEmployees').value;
+
+                            // Password Review (Optional, if needed)
+                            // You might not want to show the password in plain text for security reasons
+                            document.getElementById('review-password').textContent = '******'; // Masked password
+                        }
+                        });
+                    });
+                </script>
+
 
                 <!-- form input validation  -->
                 <script>

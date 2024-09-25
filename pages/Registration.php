@@ -173,13 +173,16 @@ session_start();
               <label for="phone">Phone Number:</label>
               <input type="number" id="phone" name="phone" required><br><br>
               <span id="phone-error" style="color: blue;"></span>
-              
 
-              <label for="tickBox"> Confirm that the data is Correct
-              <input style="width: 10px;" required type="checkbox" id="tickBox" name="tickBox">
-             
+
+              <!-- <label for="tickBox">  Confirm that the data is Correct 
+                <input type="checkbox" id="tickBox" name="tickBox" required>
+
+              </label> -->
             </label>
             </div>
+
+            
 
             <div class="stepINdivdiv">
 
@@ -340,41 +343,40 @@ session_start();
             <p><strong>Work Address:</strong> <span id="review-workAddress"></span></p>
             <br>
 
-            <style>
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            border: 2px solid blue;
-            border-radius: 3px;
-            appearance: none;
-            outline: none;
-            cursor: pointer;
-        }
-
-        input[type="checkbox"]:checked {
-            background-color: white;
-        }
-
-        input[type="checkbox"]:checked::after {
-            content: '✓';
-            color: blue;
-            font-size: 16px;
-            position: relative;
-            left: -1px;
-            top: -4px;
-        }
-
-            </style>
-
-            <label for="tickBox">
-              <input style="width: 10px;" required type="checkbox" id="tickBox" name="tickBox">
-              Confirm that the data is Correct
-            </label>
-
           </div>
 
 
         </div>
+
+                    <!-- <style>
+                      input[type="checkbox"] {
+                          width: 20px;
+                          height: 20px;
+                          border: 2px solid blue;
+                          border-radius: 3px;
+                          appearance: none;
+                          outline: none;
+                          cursor: pointer;
+                      }
+
+                      input[type="checkbox"]:checked {
+                          background-color: white;
+                      }
+
+                      input[type="checkbox"]:checked::after {
+                          content: '✓';
+                          color: blue;
+                          font-size: 16px;
+                          position: relative;
+                          left: 1.5px;
+                          top: -4px;
+                      }
+                    </style> -->
+
+                      <!-- <label for="tickBox">  Confirm that the data is Correct 
+                        <input type="checkbox" id="tickBox" name="tickBox" required>
+
+                      </label> -->
 
 
         <div class="error-message" id="error-messageScript">
@@ -592,6 +594,7 @@ session_start();
 
         function checkFormCompletion() {
           const currentInputs = steps[currentStep].querySelectorAll("input[required], textarea[required], select[required]");
+          const checkboxInput = document.getElementById('tickBox');
           let allFilled = true;
 
           currentInputs.forEach(input => {
@@ -599,6 +602,11 @@ session_start();
               allFilled = false;
             }
           });
+
+            if (checkboxInput && !checkboxInput.checked) {
+              allFilled = false; // Checkbox is not checked
+            }
+            
 
           updateButtonState();
         }
