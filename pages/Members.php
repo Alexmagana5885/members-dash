@@ -41,6 +41,7 @@ require_once('../forms/DBconnection.php');
         <button id="show-individual">Individual Members</button>
         <button id="show-officials">Official Members</button>
         <button id="show-organisation">Organisation Members</button>
+        <a href="../forms/generate_pdf.php" target="_blank"><button>Download Individual Members PDF</button></a>
     </div>
 
     <div class="members-container">

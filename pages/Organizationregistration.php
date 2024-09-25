@@ -529,35 +529,35 @@ session_start();
 </style>
 
 <body>
-<div id="response-popup" class="popup">
-    <?php
-    $hasMessage = false; // Flag to check if any message is set
+    <div id="response-popup" class="popup">
+        <?php
+        $hasMessage = false; // Flag to check if any message is set
 
-    // Check if session contains response data
-    if (isset($_SESSION['response'])) {
-        $response = $_SESSION['response'];
+        // Check if session contains response data
+        if (isset($_SESSION['response'])) {
+            $response = $_SESSION['response'];
 
-        // Check if the response contains error messages
-        if (isset($response['error'])) {
-            echo '<div class="alert alert-danger">' . htmlspecialchars($response['error']) . '</div>';
-            unset($_SESSION['response']);
-            $hasMessage = true;
+            // Check if the response contains error messages
+            if (isset($response['error'])) {
+                echo '<div class="alert alert-danger">' . htmlspecialchars($response['error']) . '</div>';
+                unset($_SESSION['response']);
+                $hasMessage = true;
+            }
+
+            // Check if the response contains success messages
+            if (isset($response['success'])) {
+                echo '<div class="alert alert-success">' . htmlspecialchars($response['success']) . '</div>';
+                unset($_SESSION['response']);
+                $hasMessage = true;
+            }
         }
 
-        // Check if the response contains success messages
-        if (isset($response['success'])) {
-            echo '<div class="alert alert-success">' . htmlspecialchars($response['success']) . '</div>';
-            unset($_SESSION['response']);
-            $hasMessage = true;
+        if (!$hasMessage) {
+            // Default message if no specific message is set
+            echo '<div style="color: blue;" class="alert alert-info">Welcome!! Kindly fill in your information correctly.</div>';
         }
-    }
-
-    if (!$hasMessage) {
-        // Default message if no specific message is set
-        echo '<div style="color: blue;" class="alert alert-info">Welcome!! Kindly fill in your information correctly.</div>';
-    }
-    ?>
-</div>
+        ?>
+    </div>
 
 
     <script>
@@ -758,30 +758,7 @@ session_start();
                         </div>
                     </div>
 
-                    <div id="review" class="form-step">
-                                <h3>Review Your Information</h3>
-                                <p><strong>Organization Name:</strong> <span id="review-organizationName"></span></p>
-                                <p><strong>Organization Email:</strong> <span id="review-organizationEmail"></span></p>
-                                <p><strong>Contact Person:</strong> <span id="review-contactPerson"></span></p>
-                                <p><strong>Logo Image:</strong> <span id="review-logoImage"></span></p>
-                                <p><strong>Contact Phone Number:</strong> <span id="review-contactPhoneNumber"></span></p>
-                                <p><strong>Registration Date:</strong> <span id="review-registrationDate"></span></p>
-                                <p><strong>Organization Address:</strong> <span id="review-organizationAddress"></span></p>
-                                <p><strong>Location Country:</strong> <span id="review-locationCountry"></span></p>
-                                <p><strong>Location County:</strong> <span id="review-locationCounty"></span></p>
-                                <p><strong>Location Town:</strong> <span id="review-locationTown"></span></p>
-                                <p><strong>Registration Certificate:</strong> <span id="review-registrationCertificate"></span></p>
-                                <p><strong>Organization Type:</strong> <span id="review-organizationType"></span></p>
-                                <p><strong>Date Registered With AGL:</strong> <span id="review-startDate"></span></p>
-                                <p><strong>What You Do:</strong> <span id="review-whatYouDo"></span></p>
-                                <p><strong>Number of Employees:</strong> <span id="review-numberOfEmployees"></span></p>
-                                <p><strong>Password:</strong> <span id="review-password"></span></p>
-                            </div>
-
-                    
-
-                    
-
+                    <!-- error message -->
                     <div class="error-message" id="error-messageScript">
                         <?php
                         session_start();
@@ -810,40 +787,42 @@ session_start();
                         <button type="button" class="next">Next</button>
                     </div>
                 </form>
-                
+
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         const nextButton = document.querySelector('.next');
-                        const reviewStep = document.getElementById('payment'); // Assuming the review step is called 'payment' in your form
-                        const organizationDetailsStep = document.getElementById('organization-details');
-                        const locationDetailsStep = document.getElementById('location-details');
+                        const reviewStep = document.getElementById('review');
 
                         nextButton.addEventListener('click', function() {
-                        // Check if we are on the last step to display the review
-                        if (locationDetailsStep.classList.contains('active')) {
-                            // Organization Details
-                            document.getElementById('review-organizationName').textContent = document.getElementById('OrganizationName').value;
-                            document.getElementById('review-organizationEmail').textContent = document.getElementById('OrganizationEmail').value;
-                            document.getElementById('review-contactPerson').textContent = document.getElementById('ContactPerson').value;
-                            document.getElementById('review-logoImage').textContent = document.getElementById('LogoImage').files[0] ? document.getElementById('LogoImage').files[0].name : 'No file uploaded';
-                            document.getElementById('review-contactPhoneNumber').textContent = document.getElementById('ContactPhoneNumber').value;
-                            document.getElementById('review-registrationDate').textContent = document.getElementById('OrganizationDateofRegistration').value;
-                            document.getElementById('review-organizationAddress').textContent = document.getElementById('OrganizationAddress').value;
+                            if (reviewStep && reviewStep.classList.contains('active')) {
+                                // Organization Details
+                                document.getElementById('review-organization-name').textContent = document.getElementById('OrganizationName').value;
+                                document.getElementById('review-organization-email').textContent = document.getElementById('OrganizationEmail').value;
+                                document.getElementById('review-contact-person').textContent = document.getElementById('ContactPerson').value;
 
-                            // Location Details
-                            document.getElementById('review-locationCountry').textContent = document.getElementById('LocationCountry').value;
-                            document.getElementById('review-locationCounty').textContent = document.getElementById('LocationCounty').value;
-                            document.getElementById('review-locationTown').textContent = document.getElementById('LocationTown').value;
-                            document.getElementById('review-registrationCertificate').textContent = document.getElementById('RegistrationCertificate').files[0] ? document.getElementById('RegistrationCertificate').files[0].name : 'No file uploaded';
-                            document.getElementById('review-organizationType').textContent = document.getElementById('OrganizationType').value;
-                            document.getElementById('review-startDate').textContent = document.getElementById('startDate').value;
-                            document.getElementById('review-whatYouDo').textContent = document.getElementById('WhatYouDo').value;
-                            document.getElementById('review-numberOfEmployees').textContent = document.getElementById('NumberOfEmployees').value;
+                                const logoFile = document.getElementById('LogoImage').files[0];
+                                document.getElementById('review-logo').textContent = logoFile ? logoFile.name : 'No file uploaded';
 
-                            // Password Review (Optional, if needed)
-                            // You might not want to show the password in plain text for security reasons
-                            document.getElementById('review-password').textContent = '******'; // Masked password
-                        }
+                                document.getElementById('review-contact-phone').textContent = document.getElementById('ContactPhoneNumber').value;
+                                document.getElementById('review-organization-registration-date').textContent = document.getElementById('OrganizationDateofRegistration').value;
+                                document.getElementById('review-organization-address').textContent = document.getElementById('OrganizationAddress').value;
+
+                                // Location Details
+                                document.getElementById('review-location-country').textContent = document.getElementById('LocationCountry').value;
+                                document.getElementById('review-location-county').textContent = document.getElementById('LocationCounty').value;
+                                document.getElementById('review-location-town').textContent = document.getElementById('LocationTown').value;
+
+                                const certificateFile = document.getElementById('RegistrationCertificate').files[0];
+                                document.getElementById('review-registration-certificate').textContent = certificateFile ? certificateFile.name : 'No file uploaded';
+
+                                document.getElementById('review-organization-type').textContent = document.getElementById('OrganizationType').value;
+                                document.getElementById('review-start-date').textContent = document.getElementById('startDate').value;
+                                document.getElementById('review-what-you-do').textContent = document.getElementById('WhatYouDo').value;
+                                document.getElementById('review-number-of-employees').textContent = document.getElementById('NumberOfEmployees').value;
+
+                                // Password (For demonstration purposes, you might not want to display the password in plain text)
+                                document.getElementById('review-password').textContent = document.getElementById('password').value ? 'Password entered' : 'No password entered';
+                            }
                         });
                     });
                 </script>

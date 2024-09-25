@@ -238,6 +238,8 @@ button[type="button"]:hover {
 <body>
     <div class="container">
         <h1>Member Details</h1> <button style="margin: 15px; background-color: #2b98ed; color: white; font-size: 15px; " onclick="openPopup()">Make Official</button>
+        <button style="margin: 15px; background-color: #2b98ed; color: white; font-size: 15px;" onclick="window.location.href='../forms/generateMemberD_pdf.php'">Print Member Details</button>
+        
         <table>
             <tr>
                 <th>ID</th>
