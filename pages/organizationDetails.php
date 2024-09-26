@@ -25,6 +25,7 @@ $row = $result->fetch_assoc();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,61 +36,113 @@ $row = $result->fetch_assoc();
 </head>
 
 <style>
-    /* Ensure proper spacing and borders for the table */
-table {
-    width: 50%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
+    table {
+        width: 50%;
+        border-collapse: collapse;
+        margin: 20px auto;
+        border: 1px solid #007bff;
+    }
 
-/* Style for table headers */
-th {
-    text-align: left;
-    padding: 10px;
-    background-color: #f4f4f4;
-    border-bottom: 2px solid #ddd;
-}
+    th {
+        text-align: left;
+        padding: 10px;
+        background-color: #99ccff;
+        color: black;
+        border-bottom: 2px solid #0056b3;
+    }
 
-/* Style for table data cells */
-td {
-    text-align: right; /* Align data to the right */
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
+    td {
+        text-align: right;
+        padding: 10px;
+        border-bottom: 1px solid #007bff;
+    }
 
-/* Optional: Style for alternating row colors */
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+    tbody tr:nth-child(even) {
+        background-color: #e0f0ff;
+    }
 
-/* Style for table container */
-.table-container {
-    max-width: 1000px; /* Adjust as needed */
-    margin: auto;
-    overflow-x: auto;
-}
+    .table-container {
+        max-width: 1000px;
+        margin: auto;
+        overflow-x: auto;
+    }
 
-/* Style for images in the table */
-td img {
-    max-width: 200px; /* Adjust as needed */
-    height: auto;
-}
+    td img {
+        max-width: 200px;
+        height: auto;
+    }
 
-/* Style for links in table cells */
-td a {
-    color: #007bff;
-    text-decoration: none;
-}
+    td a {
+        color: #0056b3;
+        text-decoration: none;
+    }
 
-td a:hover {
-    text-decoration: underline;
-}
+    td a:hover {
+        text-decoration: underline;
+        color: #003d7a;
+    }
 
+    @media (max-width: 768px) {
+        table {
+            width: 90%;
+        }
+
+        th,
+        td {
+            padding: 8px;
+        }
+
+        th {
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 12px;
+        }
+    }
+
+    .organization-details {
+        text-align: center;
+        margin: 20px;
+    }
+
+    h2 {
+        font-size: 24px;
+        color: #0056b3;
+        margin-bottom: 20px;
+    }
+
+    .DownloadButton {
+        text-decoration: none;
+    }
+
+    .print-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    .print-button:hover {
+        background-color: #0056b3;
+    }
 </style>
 
 <body>
     <div class="container">
-        <h2>Organization Details</h2>
+        <div class="organization-details">
+            <h2>Organization Details</h2>
+            <a id="organizationPrintBTN" class="DownloadButton" href="../forms/Singleorganizationgenerate_pdf.php?email=<?php echo urlencode($row['organization_email']); ?>" target="_blank">
+                <button class="print-button">Print Information PDF</button>
+            </a>
+
+        </div>
+
+
         <table>
             <tr>
                 <th>ID</th>
@@ -171,6 +224,7 @@ td a:hover {
         <a href="javascript:history.back()">Go Back</a>
     </div>
 </body>
+
 </html>
 
 <?php

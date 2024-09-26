@@ -35,6 +35,7 @@ if (isset($_GET['email'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Member Details</title>
@@ -42,157 +43,193 @@ if (isset($_GET['email'])) {
     <link href="../assets/img/favicon.png" rel="favicon.png" />
     <link rel="stylesheet" href="styles.css"> <!-- Link your CSS file -->
 </head>
+
 <body>
 
-<style>
-    /* Styles for the member details table */
-.member-details {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 
-.member-details h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+    <style>
+        .member-details {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #0056b3;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
 
-.member-details table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        .member-details h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: blue;
+        }
 
-.member-details th, .member-details td {
-    padding: 10px;
-    text-align: left;
-}
+        .member-details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 10px;
 
-.member-details th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-    width: 30%;
-}
+        }
 
-.member-details td {
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-    width: 70%;
-}
+        .member-details th,
+        .member-details td {
+            padding: 12px;
+            text-align: left;
+        }
 
-/* Adjustments for the layout */
-.member-details table {
-    display: table;
-    width: 100%;
-}
+        .member-details th {
+            background-color: #a8d0e6;
+            color: #fff;
+            font-weight: bold;
+            width: 30%;
+        }
 
-.member-details tbody {
-    display: block;
-    width: 100%;
-}
+        .member-details td {
+            border-bottom: 1px solid #0056b3;
+            width: 100%;
+            padding: 10px;
+        }
 
-.member-details thead {
-    display: none; /* Hide the thead as we're creating a vertical layout */
-}
+        .member-details tbody {
+            display: block;
+            width: 100%;
+        }
 
-.member-details tr {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
+        .member-details thead {
+            display: none;
+        }
 
-.member-details tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+        .member-details tr {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
 
-.member-details td {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
+        .member-details tr:nth-child(even) {
+            background-color: #f0faff;
+            /* Optional: light alternating rows */
+        }
 
-.member-details td:before {
-    content: attr(data-label);
-    font-weight: bold;
-    margin-right: 10px;
-    flex: 1;
-    color: #333;
-}
+        .member-details td {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
 
-</style>
+        .member-details td:before {
+            content: attr(data-label);
+            font-weight: bold;
+            margin-right: 10px;
+            flex: 1;
+            color: #005f73;
+        }
 
-<div class="member-details">
-    <h2>Official Member Full Details</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Date of Birth</th>
-                <th>Home Address</th>
-                <th>Passport Image</th>
-                <th>Highest Degree</th>
-                <th>Institution</th>
-                <th>Start Date</th>
-                <th>Graduation Year</th>
-                <th>Completion Letter</th>
-                <th>Profession</th>
-                <th>Experience</th>
-                <th>Current Company</th>
-                <th>Position</th>
-                <th>Work Address</th>
-                <th>Payment Method</th>
-                <th>Payment Code</th>
-                <th>Password</th>
-                <th>Registration Date</th>
-                <th>Official Position</th>
-                <th>Official Start Date</th>
-                <th>Number of Terms</th>
-            </tr>
-        </thead>
-        <tbody>
-    <tr>
-        <td data-label="ID"><?php echo htmlspecialchars($row['id']); ?></td>
-        <td data-label="Name"><?php echo htmlspecialchars($row['name']); ?></td>
-        <td data-label="Email"><?php echo htmlspecialchars($row['email']); ?></td>
-        <td data-label="Phone"><?php echo htmlspecialchars($row['phone']); ?></td>
-        <td data-label="Date of Birth"><?php echo htmlspecialchars($row['dob']); ?></td>
-        <td data-label="Home Address"><?php echo htmlspecialchars($row['home_address']); ?></td>
-        <td data-label="Passport Image">
-            <a href="<?php echo htmlspecialchars($row['passport_image']); ?>" target="_blank">
-                <img src="<?php echo htmlspecialchars($row['passport_image']); ?>" alt="Passport Image" style="width: 100px; height: auto;">
+        /* Responsive styles for small screens */
+        @media (max-width: 600px) {
+            .member-details {
+                padding: 10px;
+                /* Reduced padding */
+            }
+
+            .member-details h2 {
+                font-size: 1.5em;
+                /* Smaller heading */
+            }
+
+            .member-details th,
+            .member-details td {
+                padding: 8px;
+                /* Reduced padding */
+            }
+
+            .member-details td:before {
+                font-size: 0.9em;
+                /* Smaller labels */
+            }
+        }
+    </style>
+
+
+
+    <div class="member-details">
+        <div style="text-align: center; margin: 20px;">
+            <h2 style="font-size: 24px; color: #333; margin-bottom: 15px;">Official Member Full Details</h2>
+            <a id="organizationPrintBTN" class="DownloadButton" href="../forms/Singlofficialgenerate_pdf.php?email=<?php echo urlencode($row['email']); ?>" target="_blank" style="text-decoration: none;">
+                <button class="print-button" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; transition: background-color 0.3s;">
+                    Print Information PDF
+                </button>
             </a>
-        </td>
-        <td data-label="Highest Degree"><?php echo htmlspecialchars($row['highest_degree']); ?></td>
-        <td data-label="Institution"><?php echo htmlspecialchars($row['institution']); ?></td>
-        <td data-label="Start Date"><?php echo htmlspecialchars($row['start_date']); ?></td>
-        <td data-label="Graduation Year"><?php echo htmlspecialchars($row['graduation_year']); ?></td>
-        <td data-label="Completion Letter">
-            <a href="<?php echo htmlspecialchars($row['completion_letter']); ?>" target="_blank">
-                View Completion Letter
-            </a>
-        </td>
-        <td data-label="Profession"><?php echo htmlspecialchars($row['profession']); ?></td>
-        <td data-label="Experience"><?php echo htmlspecialchars($row['experience']); ?></td>
-        <td data-label="Current Company"><?php echo htmlspecialchars($row['current_company']); ?></td>
-        <td data-label="Position"><?php echo htmlspecialchars($row['position']); ?></td>
-        <td data-label="Work Address"><?php echo htmlspecialchars($row['work_address']); ?></td>
-        <td data-label="Payment Method"><?php echo htmlspecialchars($row['payment_method']); ?></td>
-        <td data-label="Payment Code"><?php echo htmlspecialchars($row['payment_code']); ?></td>
-        <td data-label="Password"><?php echo htmlspecialchars($row['password']); ?></td>
-        <td data-label="Registration Date"><?php echo htmlspecialchars($row['registration_date']); ?></td>
-        <td data-label="Official Position"><?php echo htmlspecialchars($row['official_position']); ?></td>
-        <td data-label="Official Start Date"><?php echo htmlspecialchars($row['official_start_date']); ?></td>
-        <td data-label="Number of Terms"><?php echo htmlspecialchars($row['number_of_terms']); ?></td>
-    </tr>
-</tbody>
+        </div>
 
-    </table>
-</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Date of Birth</th>
+                    <th>Home Address</th>
+                    <th>Passport Image</th>
+                    <th>Highest Degree</th>
+                    <th>Institution</th>
+                    <th>Start Date</th>
+                    <th>Graduation Year</th>
+                    <th>Completion Letter</th>
+                    <th>Profession</th>
+                    <th>Experience</th>
+                    <th>Current Company</th>
+                    <th>Position</th>
+                    <th>Work Address</th>
+                    <th>Payment Method</th>
+                    <th>Payment Code</th>
+                    <th>Password</th>
+                    <th>Registration Date</th>
+                    <th>Official Position</th>
+                    <th>Official Start Date</th>
+                    <th>Number of Terms</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="ID"><?php echo htmlspecialchars($row['id']); ?></td>
+                    <td data-label="Name"><?php echo htmlspecialchars($row['name']); ?></td>
+                    <td data-label="Email"><?php echo htmlspecialchars($row['email']); ?></td>
+                    <td data-label="Phone"><?php echo htmlspecialchars($row['phone']); ?></td>
+                    <td data-label="Date of Birth"><?php echo htmlspecialchars($row['dob']); ?></td>
+                    <td data-label="Home Address"><?php echo htmlspecialchars($row['home_address']); ?></td>
+                    <td data-label="Passport Image">
+                        <a href="<?php echo htmlspecialchars($row['passport_image']); ?>" target="_blank">
+                            <img src="<?php echo htmlspecialchars($row['passport_image']); ?>" alt="Passport Image" style="width: 100px; height: auto;">
+                        </a>
+                    </td>
+                    <td data-label="Highest Degree"><?php echo htmlspecialchars($row['highest_degree']); ?></td>
+                    <td data-label="Institution"><?php echo htmlspecialchars($row['institution']); ?></td>
+                    <td data-label="Start Date"><?php echo htmlspecialchars($row['start_date']); ?></td>
+                    <td data-label="Graduation Year"><?php echo htmlspecialchars($row['graduation_year']); ?></td>
+                    <td data-label="Completion Letter">
+                        <a href="<?php echo htmlspecialchars($row['completion_letter']); ?>" target="_blank">
+                            View Completion Letter
+                        </a>
+                    </td>
+                    <td data-label="Profession"><?php echo htmlspecialchars($row['profession']); ?></td>
+                    <td data-label="Experience"><?php echo htmlspecialchars($row['experience']); ?></td>
+                    <td data-label="Current Company"><?php echo htmlspecialchars($row['current_company']); ?></td>
+                    <td data-label="Position"><?php echo htmlspecialchars($row['position']); ?></td>
+                    <td data-label="Work Address"><?php echo htmlspecialchars($row['work_address']); ?></td>
+                    <td data-label="Payment Method"><?php echo htmlspecialchars($row['payment_method']); ?></td>
+                    <td data-label="Payment Code"><?php echo htmlspecialchars($row['payment_code']); ?></td>
+                    <td data-label="Password"><?php echo htmlspecialchars($row['password']); ?></td>
+                    <td data-label="Registration Date"><?php echo htmlspecialchars($row['registration_date']); ?></td>
+                    <td data-label="Official Position"><?php echo htmlspecialchars($row['official_position']); ?></td>
+                    <td data-label="Official Start Date"><?php echo htmlspecialchars($row['official_start_date']); ?></td>
+                    <td data-label="Number of Terms"><?php echo htmlspecialchars($row['number_of_terms']); ?></td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
 
 </body>
+
 </html>
