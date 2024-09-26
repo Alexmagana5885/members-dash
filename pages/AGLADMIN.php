@@ -1040,22 +1040,25 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             echo '<div id="popupFormEventRegistration_' . $eventId . '" class="popup-form" style="display:none;">';
                             echo '<div class="form-container">';
                             echo '<h4>Event Name: ' . $eventName . '</h4>';
-                            echo '<form action="../forms/register_event.php" method="post">'; // Form action points to the PHP script
+                            echo '<form action="../forms/Payment/Mpesa-Daraja-Api-main/StkPushEvent.php" method="post">'; // Form action points to the PHP script
                             echo '<input type="hidden" name="event_id" value="' . $eventId . '">';
                             echo '<input type="hidden" name="event_name" value="' . $eventName . '">';
                             echo '<input type="hidden" name="event_location" value="' . $eventLocation . '">';
                             echo '<input type="hidden" name="event_date" value="' . $eventDate . '">';
 
                             echo '<label for="memberEmail">Member Email:</label>';
-                            echo '<input type="email" id="memberEmail" name="memberEmail" value="' . $userEmail . '" readonly>';
+                            echo '<input type="email" id="memberEmail" name="User-email" value="' . $userEmail . '" readonly>';
 
                             echo '<label for="memberName">Name:</label>';
                             echo '<input type="text" id="memberName" name="memberName" required>';
 
                             echo '<label for="contact">Contact:</label>';
-                            echo '<input type="text" id="contact" name="contact" required>';
+                            echo '<input type="text" id="contact" name="phone_number" required>';
 
-                            echo '<button type="submit">Submit</button>';
+                            echo '<label for="contact">Registration Amount. Ksh 300</label>';
+                            echo '<input value="1" readonly type="text" id="contact" name="amount" required>';
+
+                            echo '<button type="submit">Pay and Submit</button>';
                             echo '<button type="button" class="closeBtn" id="closeBtn_' . $eventId . '">Close</button>';
                             echo '</form>';
                             echo '</div>';

@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("issssss", $event_id, $event_name, $event_location, $event_date, $member_email, $member_name, $contact);
 
-        // Execute the statement
+        // Execute the statement 
         if ($stmt->execute()) {
             // Success: Set session response
             $_SESSION['response']['success'] = true;
