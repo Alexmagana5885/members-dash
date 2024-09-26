@@ -41,7 +41,8 @@ require_once('../forms/DBconnection.php');
         <button id="show-individual">Individual Members</button>
         <button id="show-officials">Official Members</button>
         <button id="show-organisation">Organisation Members</button>
-        <a href="../forms/generate_pdf.php" target="_blank"><button>Download Individual Members PDF</button></a>
+        <!-- <a class="DownloadButton" href="../forms/generate_pdf.php" target="_blank"><button>Print Members PDF</button></a><br><br> -->
+                            
     </div>
 
     <div class="members-container">
@@ -56,16 +57,96 @@ require_once('../forms/DBconnection.php');
                 die("Query failed: " . $conn->error);
             }
             ?>
+            <style>
+                .headMembersPart {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    padding: 20px;
+                    background-color: #f0f0f0;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
 
+                .headMembersPartbtns {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                }
+
+                .headMembersPartbtns h3 {
+                    font-size: 24px;
+                    margin-bottom: 10px;
+                    color: #333;
+                }
+
+                .DownloadButton button {
+                    padding: 10px 20px;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                }
+
+                .DownloadButton button:hover {
+                    background-color: #45a049;
+                }
+
+                .headMembersPartSearchp {
+                    display: flex;
+                    justify-content: flex-end;
+                    flex-grow: 1;
+                }
+
+                .searchArea {
+                    padding: 10px;
+                    width: 100%;
+                    max-width: 300px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    outline: none;
+                    font-size: 16px;
+                }
+
+                @media (max-width: 768px) {
+                    .headMembersPart {
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+
+                    .headMembersPartSearchp {
+                        width: 100%;
+                        margin-top: 10px;
+                    }
+
+                    .searchArea {
+                        width: 100%;
+                    }
+                }
+            </style>
 
             <!-- Popup container for the table members -->
             <div id="MemberDISTablePopup-table" class="popup-table">
                 <div class="popup-content-table">
-                 
+
                     <div style="margin-top: 20px;" class="MinPrtSecSpace-table">
-                        <h3>Members Information</h3><br>
+                        <div class="headMembersPart">
+                            <div class="headMembersPartbtns">
+                                <h3>Members Information</h3><br>
+                                <a id="MembersPartbtn" class="DownloadButton" href="../forms/Membersgenerate_pdf.php" target="_blank"><button>Print Members PDF</button></a><br><br>
+                            </div>
+                            <div class="headMembersPartSearchp">
+                                <input id="MembersSearch" placeholder="Search for Member..." class="searchArea" type="text">
+                            </div>
+                            <br>
+                        </div>
+
                         <div class="card_table-table">
-                            <table>
+                            <table id="individualMembersTable">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -112,11 +193,20 @@ require_once('../forms/DBconnection.php');
             <!-- Popup container for the table officials -->
             <div id="OfficialMembersTablePopup-table" class="popup-table">
                 <div class="popup-content-table">
-                    
+
                     <div style="margin-top: 20px;" class="MinPrtSecSpace-table">
-                        <h3>Official Members Information</h3><br>
+                        <div class="headMembersPart">
+                            <div class="headMembersPartbtns">
+                                <h3>Members Information</h3><br>
+                                <a id="officialsPrintBTN" class="DownloadButton" href="../forms/officialsgenerate_pdf.php" target="_blank"><button>Print Members PDF</button></a><br><br>
+                            </div>
+                            <div class="headMembersPartSearchp">
+                                <input id="officalmembersserach" placeholder="Search for Member..." class="searchArea" type="text">
+                            </div>
+                            <br>
+                        </div>
                         <div class="card_table-table">
-                            <table>
+                            <table id="officialMembersTable" >
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -170,11 +260,20 @@ require_once('../forms/DBconnection.php');
             <!-- Popup container for the table organizations -->
             <div id="OrganizationMembershipTablePopup-table" class="popup-table">
                 <div class="popup-content-table">
-                  
+
                     <div style="margin-top: 20px;" class="MinPrtSecSpace-table">
-                        <h3>Organization Membership Information</h3><br>
+                        <div class="headMembersPart">
+                            <div class="headMembersPartbtns">
+                                <h3>Members Information</h3><br>
+                                <a id="organizationPrintBTN" class="DownloadButton" href="../forms/organizationgenerate_pdf.php" target="_blank"><button>Print Members PDF</button></a><br><br>
+                            </div>
+                            <div class="headMembersPartSearchp">
+                                <input id="organizationalMembersSearch" placeholder="Search for Member..." class="searchArea" type="text">
+                            </div>
+                            <br>
+                        </div>
                         <div class="card_table-table">
-                            <table>
+                            <table id="organizationMembersTable" >
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -210,6 +309,43 @@ require_once('../forms/DBconnection.php');
         </div>
 
     </div>
+    <script>
+        // Function to filter the table rows based on input
+        function filterTable(inputId, tableId) {
+            const input = document.getElementById(inputId);
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById(tableId);
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) {
+                const tds = tr[i].getElementsByTagName('td');
+                let found = false;
+                for (let j = 0; j < tds.length; j++) {
+                    if (tds[j]) {
+                        const txtValue = tds[j].textContent || tds[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                tr[i].style.display = found ? "" : "none";
+            }
+        }
+
+        // Event listeners for search inputs
+        document.getElementById('MembersSearch').addEventListener('input', function() {
+            filterTable('MembersSearch', 'individualMembersTable');
+        });
+
+        document.getElementById('officalmembersserach').addEventListener('input', function() {
+            filterTable('officalmembersserach', 'officialMembersTable');
+        });
+
+        document.getElementById('organizationalMembersSearch').addEventListener('input', function() {
+            filterTable('organizationalMembersSearch', 'organizationMembersTable');
+        });
+    </script>
 
     <script>
         function showSection(sectionId) {
@@ -241,7 +377,6 @@ require_once('../forms/DBconnection.php');
         document.addEventListener('DOMContentLoaded', () => {
             showSection('individualmembers');
         });
-
     </script>
 
     <script>
