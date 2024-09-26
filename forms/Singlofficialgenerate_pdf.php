@@ -68,48 +68,56 @@ $pdf->SetFillColor(153, 204, 255); // Header background color
 $pdf->Cell(90, 10, 'Field', 1, 0, 'C', true);
 $pdf->Cell(100, 10, 'Details', 1, 1, 'C', true);
 
+function checkNull($value) {
+    return isset($value) && $value !== '' ? htmlspecialchars($value) : 'Null';
+}
+
 // Set font for the table body
 $pdf->SetFont('Arial', '', 11);
 
+
+
+// Table data
 // Table data
 $pdf->Cell(90, 10, 'ID', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['id']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['id']), 1, 1);
 $pdf->Cell(90, 10, 'Name', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['name']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['name']), 1, 1);
 $pdf->Cell(90, 10, 'Email', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['email']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['email']), 1, 1);
 $pdf->Cell(90, 10, 'Phone', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['phone']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['phone']), 1, 1);
 // $pdf->Cell(90, 10, 'Date of Birth', 1);
-// $pdf->Cell(100, 10, htmlspecialchars($row['dob']), 1, 1);
+// $pdf->Cell(100, 10, checkNull($row['dob']), 1, 1);
 $pdf->Cell(90, 10, 'Home Address', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['home_address']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['home_address']), 1, 1);
 $pdf->Cell(90, 10, 'Highest Degree', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['highest_degree']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['highest_degree']), 1, 1);
 $pdf->Cell(90, 10, 'Institution', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['institution']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['institution']), 1, 1);
 $pdf->Cell(90, 10, 'Start Date', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['start_date']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['start_date']), 1, 1);
 $pdf->Cell(90, 10, 'Graduation Year', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['graduation_year']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['graduation_year']), 1, 1);
 $pdf->Cell(90, 10, 'Profession', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['profession']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['profession']), 1, 1);
 $pdf->Cell(90, 10, 'Current Company', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['current_company']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['current_company']), 1, 1);
 $pdf->Cell(90, 10, 'Position', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['official_position']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['official_position']), 1, 1);
 $pdf->Cell(90, 10, 'Work Address', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['work_address']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['work_address']), 1, 1);
 // $pdf->Cell(90, 10, 'Payment Method', 1);
-// $pdf->Cell(100, 10, htmlspecialchars($row['payment_method']), 1, 1);
+// $pdf->Cell(100, 10, checkNull($row['payment_method']), 1, 1);
 $pdf->Cell(90, 10, 'Payment Code', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['payment_code']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['payment_code']), 1, 1);
 $pdf->Cell(90, 10, 'Registration Date', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['registration_date']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['registration_date']), 1, 1);
 $pdf->Cell(90, 10, 'Official Start Date', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['official_start_date']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['official_start_date']), 1, 1);
 $pdf->Cell(90, 10, 'Number of Terms', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['number_of_terms']), 1, 1);
+$pdf->Cell(100, 10, checkNull($row['number_of_terms']), 1, 1);
+
 
 // Output the PDF as a downloadable file
 $pdf->Output('D', 'member_details_' . urlencode($email) . '.pdf'); // Include email in filename

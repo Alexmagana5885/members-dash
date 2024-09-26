@@ -29,208 +29,206 @@ $member = $result->fetch_assoc();
     <title>Member Details</title>
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
-    
-    
-<style>
-    /* Base styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    border: 1px solid #dae6f5;
-    padding: 8px;
-}
-
-th {
-    background-color: #7caceb;
-}
-
-.container {
-    margin: 20px;
-}
-
-.popup {
-    display: none;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-.popup-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 5px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin: 10px 0 5px;
-}
-
-input[type="text"],
-input[type="date"],
-input[type="number"] {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.button-container {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 15px;
-    margin-bottom: 20px;
-}
-
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button[type="submit"] {
-    background-color: #2b98ed;
-    color: white;
-}
-
-button[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-button[type="button"] {
-    background-color: #86b0d1;
-    color: white;
-}
-
-button[type="button"]:hover {
-    background-color: #e53935;
-}
-
-/* Styles for small screens */
-@media (max-width: 768px) {
-    .popup-content {
-        width: 90%;
-        margin: 10% auto;
-    }
-
-    form {
-        flex-direction: column;
-    }
-
-    .button-container {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .button-container button {
-        width: 80%;
-        margin-bottom: 10px;
-    }
-
-    table {
-        font-size: 14px; 
-    }
-}
-
-@media (max-width: 480px) {
-    .popup-content {
-        width: 95%;
-        margin: 5% auto;
-    }
-
-    table {
-        font-size: 12px; 
-    }
-
-    label {
-        font-size: 14px; 
-    }
-
-    input[type="text"],
-    input[type="date"],
-    input[type="number"] {
-        font-size: 14px; 
-    }
-
-    button {
-        font-size: 14px; 
-        padding: 8px 16px;
-    }
-}
 
 
-/* Styles for small screens */
-@media (max-width: 768px) {
-    .popup-content {
-        width: 90%;
-        margin: 10% auto;
-    }
+    <style>
+        /* Base styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    form {
-        flex-direction: column;
-    }
+        th,
+        td {
+            border: 1px solid #dae6f5;
+            padding: 8px;
+        }
 
-    .button-container {
-        flex-direction: column;
-        align-items: stretch;
-    }
+        th {
+            background-color: #7caceb;
+        }
 
-    .button-container button {
-        width: 80%;
-        margin-bottom: 10px;
-    }
+        .container {
+            margin: 20px;
+        }
 
-    table {
-        font-size: 14px;
-    }
-}
+        .popup {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
 
-@media (max-width: 480px) {
-    .popup-content {
-        width: 85%;
-        margin: 0 auto;
-    }
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+        }
 
-    table {
-        font-size: 12px;
-    }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-    label {
-        font-size: 14px;
-    }
+        label {
+            margin: 10px 0 5px;
+        }
 
-    input[type="text"],
-    input[type="date"],
-    input[type="number"] {
-        font-size: 14px;
-    }
+        input[type="text"],
+        input[type="date"],
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
 
-    button {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-}
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #2b98ed;
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        button[type="button"] {
+            background-color: #86b0d1;
+            color: white;
+        }
+
+        button[type="button"]:hover {
+            background-color: #e53935;
+        }
+
+        /* Styles for small screens */
+        @media (max-width: 768px) {
+            .popup-content {
+                width: 90%;
+                margin: 10% auto;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .button-container button {
+                width: 80%;
+                margin-bottom: 10px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .popup-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            label {
+                font-size: 14px;
+            }
+
+            input[type="text"],
+            input[type="date"],
+            input[type="number"] {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
 
 
-</style>
+        /* Styles for small screens */
+        @media (max-width: 768px) {
+            .popup-content {
+                width: 90%;
+                margin: 10% auto;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .button-container button {
+                width: 80%;
+                margin-bottom: 10px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .popup-content {
+                width: 85%;
+                margin: 0 auto;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            label {
+                font-size: 14px;
+            }
+
+            input[type="text"],
+            input[type="date"],
+            input[type="number"] {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
 
 
 </head>
@@ -238,8 +236,11 @@ button[type="button"]:hover {
 <body>
     <div class="container">
         <h1>Member Details</h1> <button style="margin: 15px; background-color: #2b98ed; color: white; font-size: 15px; " onclick="openPopup()">Make Official</button>
-        <button style="margin: 15px; background-color: #2b98ed; color: white; font-size: 15px;" onclick="window.location.href='../forms/generateMemberD_pdf.php'">Print Member Details</button>
-        
+        <button style="margin: 15px; background-color: #2b98ed; color: white; font-size: 15px;"
+            onclick="window.location.href='../forms/generateMemberD_pdf.php?email=<?php echo htmlspecialchars($member['email']); ?>'">
+            Print Member Details
+        </button>
+
         <table>
             <tr>
                 <th>ID</th>

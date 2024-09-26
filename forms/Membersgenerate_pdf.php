@@ -18,7 +18,6 @@ if (!$result) {
     die("Query failed: " . $conn->error); // Use $conn here
 }
 
-// Create a class that extends FPDF to include header and footer
 class PDF extends FPDF {
     // Header
     function Header() {
@@ -35,10 +34,10 @@ class PDF extends FPDF {
         // Set column headers
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(20, 10, 'ID', 1);
-        $this->Cell(40, 10, 'Name', 1);
+        $this->Cell(75, 10, 'Name', 1);
         $this->Cell(30, 10, 'Phone', 1);
-        $this->Cell(60, 10, 'Email', 1);
-        $this->Cell(25, 10, 'Position', 1);
+        $this->Cell(65, 10, 'Email', 1);
+        $this->Cell(70, 10, 'Position', 1);
         $this->Ln();
     }
 
@@ -51,8 +50,7 @@ class PDF extends FPDF {
     }
 }
 
-// Create a new PDF instance
-$pdf = new PDF();
+$pdf = new PDF('L'); // 'L' sets the orientation to landscape
 $pdf->AddPage();
 
 // Set font for the table body
@@ -62,10 +60,25 @@ $pdf->SetFont('Arial', '', 11);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $pdf->Cell(20, 10, htmlspecialchars($row['id']), 1);
-        $pdf->Cell(40, 10, htmlspecialchars($row['name']), 1);
-        $pdf->Cell(30, 10, htmlspecialchars($row['phone']), 1);
-        $pdf->Cell(60, 10, htmlspecialchars($row['email']), 1);
-        $pdf->Cell(25, 10, htmlspecialchars($row['position']), 1);
+
+    
+        $xPos = $pdf->GetX(); // Save the current X position
+        $yPos = $pdf->GetY(); // Save the current Y position
+        $pdf->MultiCell(75, 10, htmlspecialchars($row['name']), 1); // Name
+        $pdf->SetXY($xPos + 75, $yPos); // Move to the right after MultiCell
+
+        $pdf->Cell(30, 10, htmlspecialchars($row['phone']), 1); // Phone
+
+        $xPos = $pdf->GetX(); // Save the current X position
+        $yPos = $pdf->GetY(); // Save the current Y position
+        $pdf->MultiCell(65, 10, htmlspecialchars($row['email']), 1); // Email
+        $pdf->SetXY($xPos + 65, $yPos); // Move to the right after MultiCell
+
+        $xPos = $pdf->GetX(); // Save the current X position
+        $yPos = $pdf->GetY(); // Save the current Y position
+        $pdf->MultiCell(70, 10, htmlspecialchars($row['position']), 1); // Position
+        $pdf->SetXY($xPos + 70, $yPos); // Move to the right after MultiCell
+
         $pdf->Ln();
     }
 
@@ -78,4 +91,6 @@ if ($result->num_rows > 0) {
 
 // Close the database connection
 $conn->close(); // Use $conn here
+
+
 ?>
