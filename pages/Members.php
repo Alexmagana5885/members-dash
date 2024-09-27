@@ -138,6 +138,8 @@ require_once('../forms/DBconnection.php');
                             <div class="headMembersPartbtns">
                                 <h3>Members Information</h3><br>
                                 <a id="MembersPartbtn" class="DownloadButton" href="../forms/Membersgenerate_pdf.php" target="_blank"><button>Print Members PDF</button></a><br><br>
+                                <a id="MembersPartbtnCSV" class="DownloadButton" href="../forms/Membersgenerate_CSV.php" target="_blank"><button>Print Members CSV</button></a><br><br>
+                            
                             </div>
                             <div class="headMembersPartSearchp">
                                 <input id="MembersSearch" placeholder="Search for Member..." class="searchArea" type="text">
