@@ -204,10 +204,7 @@ $row = $result->fetch_assoc();
                 <th>What You Do</th>
                 <td><?php echo htmlspecialchars($row['what_you_do']); ?></td>
             </tr>
-            <tr>
-                <th>Number of Employees</th>
-                <td><?php echo htmlspecialchars($row['number_of_employees']); ?></td>
-            </tr>
+
             <tr>
                 <th>Organization Type</th>
                 <td><?php echo htmlspecialchars($row['organization_type']); ?></td>

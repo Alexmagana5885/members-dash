@@ -259,8 +259,8 @@ $member = $result->fetch_assoc();
                 <td><?php echo htmlspecialchars($member['email']); ?></td>
             </tr>
             <tr>
-                <th>Date of Birth</th>
-                <td><?php echo htmlspecialchars($member['dob']); ?></td>
+                <th>Gender</th>
+                <td><?php echo htmlspecialchars($member['gender']); ?></td>
             </tr>
             <tr>
                 <th>Home Address</th>
@@ -278,10 +278,7 @@ $member = $result->fetch_assoc();
                 <th>Institution</th>
                 <td><?php echo htmlspecialchars($member['institution']); ?></td>
             </tr>
-            <tr>
-                <th>Start Date</th>
-                <td><?php echo htmlspecialchars($member['start_date']); ?></td>
-            </tr>
+
             <tr>
                 <th>Graduation Year</th>
                 <td><?php echo htmlspecialchars($member['graduation_year']); ?></td>
