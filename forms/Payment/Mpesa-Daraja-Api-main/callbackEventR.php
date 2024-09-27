@@ -15,7 +15,7 @@ $response = [
 
 // Read and log the callback response
 $stkCallbackResponse = file_get_contents('php://input');
-$logFile = "callbackEventR.json";
+$logFile = "EventRcallback.json";
 $log = fopen($logFile, "a");
 if ($log === false) {
     $response['errors'][] = "Failed to open log file: $logFile";

@@ -211,6 +211,7 @@ session_start();
               <label for="highestDegree">Highest Education Qualification:</label>
               <select id="highestDegree" name="highestDegree" required>
                 <option value="">Select Highest Education</option>
+                <option value="PHD">PHD</option>
                 <option value="Masters">Masters</option>
                 <option value="Degree">Degree</option>
                 <option value="Diploma">Diploma</option>
@@ -221,9 +222,9 @@ session_start();
               <label for="institution">Institution Name:</label>
               <input type="text" id="institution" name="institution" required><br><br>
 
-              <label for="startDate">Start Date for your High Education</label>
+              <!-- <label for="startDate">Start Date for your High Education</label>
               <input type="date" id="startDate" name="startDate" required><br><br>
-              <span id="startDate-error" style="color: red;"></span>
+              <span id="startDate-error" style="color: red;"></span> -->
             </div>
 
             <div class="stepINdivdiv">
@@ -253,7 +254,7 @@ session_start();
             </div>
 
             <div class="stepINdivdiv">
-              <label for="position">Position:</label>
+              <label for="position">Current Organization/Institution Position:</label>
               <input type="text" id="position" name="position" required><br><br>
 
               <label for="workAddress">Work Address:</label>
@@ -313,7 +314,6 @@ session_start();
 
           </div>
         </div>
-
         <div id="review" class="form-step">
           <h2>Review your information</h2>
           <h3 style="color: blue; ">Personal information</h3>

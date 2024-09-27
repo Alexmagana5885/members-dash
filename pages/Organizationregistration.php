@@ -652,7 +652,7 @@ session_start();
                                 <span id="contact-phone-error" style="color: blue;"></span>
 
                                 <label for="OrganizationDateofRegistration">Organization Registration Date:</label>
-                                <input type="date" id="OrganizationDateofRegistration" name="OrganizationDateofRegistration" required><br><br>
+                                <input placeholder="when was the organization created" type="date" id="OrganizationDateofRegistration" name="OrganizationDateofRegistration" required><br><br>
                                 <span id="registration-date-error" style="color: red;"></span>
 
 
@@ -695,9 +695,9 @@ session_start();
                                 <label for="WhatYouDo">What You Do:</label>
                                 <input type="text" id="WhatYouDo" name="WhatYouDo" required><br><br>
 
-                                <label for="NumberOfEmployees">Number of Employees:</label>
+                                <!-- <label for="NumberOfEmployees">Number of Employees:</label>
                                 <input type="number" id="NumberOfEmployees" name="NumberOfEmployees" required><br><br>
-                                <span id="employees-error" style="color: red;"></span>
+                                <span id="employees-error" style="color: red;"></span> -->
 
                             </div>
                         </div>
@@ -758,6 +758,38 @@ session_start();
                         </div>
                     </div>
 
+                    <div id="review" class="form-step">
+                        <h2>Review your information</h2>
+
+                        <h3 style="color: blue;">Organization Information</h3>
+                        <div class="review-section">
+                            <p><strong>Organization Name:</strong> <span id="review-organization-name"></span></p>
+                            <p><strong>Organization Email:</strong> <span id="review-organization-email"></span></p>
+                            <p><strong>Contact Person:</strong> <span id="review-contact-person"></span></p>
+                            <p><strong>Contact Phone Number:</strong> <span id="review-contact-phone"></span></p>
+                            <p><strong>Logo Image:</strong> <span id="review-logo"></span></p>
+                            <p><strong>Organization Registration Date:</strong> <span id="review-organization-registration-date"></span></p>
+                            <p><strong>Organization Address:</strong> <span id="review-organization-address"></span></p>
+                        </div>
+
+                        <h3 style="color: blue;">Location Details</h3>
+                        <div class="review-section">
+                            <p><strong>Location Country:</strong> <span id="review-location-country"></span></p>
+                            <p><strong>Location County:</strong> <span id="review-location-county"></span></p>
+                            <p><strong>Location Town:</strong> <span id="review-location-town"></span></p>
+                            <p><strong>Organization Registration Certificate:</strong> <span id="review-registration-certificate"></span></p>
+                            <p><strong>Organization Type:</strong> <span id="review-organization-type"></span></p>
+                            <p><strong>Date Registered With AGL:</strong> <span id="review-start-date"></span></p>
+                            <p><strong>What You Do:</strong> <span id="review-what-you-do"></span></p>
+                            <!-- <p><strong>Number of Employees:</strong> <span id="review-number-of-employees"></span></p>
+                         -->
+                        </div>
+
+
+                    </div>
+
+
+
                     <!-- error message -->
                     <div class="error-message" id="error-messageScript">
                         <?php
@@ -781,6 +813,45 @@ session_start();
                         });
                     </script>
 
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const nextButton = document.querySelector('.next');
+                            const reviewStep = document.getElementById('review');
+
+                            nextButton.addEventListener('click', function() {
+                                if (reviewStep.classList.contains('active')) {
+                                    // Organization details
+                                    document.getElementById('review-organizationName').textContent = document.getElementById('organizationName').value;
+                                    document.getElementById('review-organizationEmail').textContent = document.getElementById('organizationEmail').value;
+                                    document.getElementById('review-contactPerson').textContent = document.getElementById('contactPerson').value;
+                                    document.getElementById('review-contactPhone').textContent = document.getElementById('contactPhone').value;
+
+                                    const logoFile = document.getElementById('logo').files[0];
+                                    document.getElementById('review-logoImage').textContent = logoFile ? logoFile.name : 'No file uploaded';
+
+                                    document.getElementById('review-registrationDate').textContent = document.getElementById('registrationDate').value;
+                                    document.getElementById('review-organizationAddress').textContent = document.getElementById('organizationAddress').value;
+
+                                    // Location details
+                                    document.getElementById('review-locationCountry').textContent = document.getElementById('locationCountry').value;
+                                    document.getElementById('review-locationCounty').textContent = document.getElementById('locationCounty').value;
+                                    document.getElementById('review-locationTown').textContent = document.getElementById('locationTown').value;
+
+                                    const registrationCertFile = document.getElementById('registrationCertificate').files[0];
+                                    document.getElementById('review-registrationCertificate').textContent = registrationCertFile ? registrationCertFile.name : 'No file uploaded';
+
+                                    document.getElementById('review-organizationType').textContent = document.getElementById('organizationType').value;
+                                    document.getElementById('review-startDate').textContent = document.getElementById('startDate').value;
+                                    document.getElementById('review-whatYouDo').textContent = document.getElementById('whatYouDo').value;
+
+                                    // Password
+                                    document.getElementById('review-password').textContent = document.getElementById('password').value;
+                                }
+                            });
+                        });
+                    </script>
+
+
 
                     <div class="form-navigation">
                         <button type="button" class="previous" disabled>Previous</button>
@@ -795,38 +866,71 @@ session_start();
 
                         nextButton.addEventListener('click', function() {
                             if (reviewStep && reviewStep.classList.contains('active')) {
+                                // Ensure form fields are available before trying to access them
+
                                 // Organization Details
-                                document.getElementById('review-organization-name').textContent = document.getElementById('OrganizationName').value;
-                                document.getElementById('review-organization-email').textContent = document.getElementById('OrganizationEmail').value;
-                                document.getElementById('review-contact-person').textContent = document.getElementById('ContactPerson').value;
-
-                                const logoFile = document.getElementById('LogoImage').files[0];
-                                document.getElementById('review-logo').textContent = logoFile ? logoFile.name : 'No file uploaded';
-
-                                document.getElementById('review-contact-phone').textContent = document.getElementById('ContactPhoneNumber').value;
-                                document.getElementById('review-organization-registration-date').textContent = document.getElementById('OrganizationDateofRegistration').value;
-                                document.getElementById('review-organization-address').textContent = document.getElementById('OrganizationAddress').value;
+                                const organizationName = document.getElementById('OrganizationName');
+                                const organizationEmail = document.getElementById('OrganizationEmail');
+                                const contactPerson = document.getElementById('ContactPerson');
+                                const contactPhoneNumber = document.getElementById('ContactPhoneNumber');
+                                const organizationRegistrationDate = document.getElementById('OrganizationDateofRegistration');
+                                const organizationAddress = document.getElementById('OrganizationAddress');
+                                const logoFileInput = document.getElementById('LogoImage');
+                                const certificateFileInput = document.getElementById('RegistrationCertificate');
 
                                 // Location Details
-                                document.getElementById('review-location-country').textContent = document.getElementById('LocationCountry').value;
-                                document.getElementById('review-location-county').textContent = document.getElementById('LocationCounty').value;
-                                document.getElementById('review-location-town').textContent = document.getElementById('LocationTown').value;
+                                const locationCountry = document.getElementById('LocationCountry');
+                                const locationCounty = document.getElementById('LocationCounty');
+                                const locationTown = document.getElementById('LocationTown');
 
-                                const certificateFile = document.getElementById('RegistrationCertificate').files[0];
-                                document.getElementById('review-registration-certificate').textContent = certificateFile ? certificateFile.name : 'No file uploaded';
+                                // Organization specifics
+                                const organizationType = document.getElementById('OrganizationType');
+                                const startDate = document.getElementById('startDate');
+                                const whatYouDo = document.getElementById('WhatYouDo');
+                                const numberOfEmployees = document.getElementById('NumberOfEmployees');
 
-                                document.getElementById('review-organization-type').textContent = document.getElementById('OrganizationType').value;
-                                document.getElementById('review-start-date').textContent = document.getElementById('startDate').value;
-                                document.getElementById('review-what-you-do').textContent = document.getElementById('WhatYouDo').value;
-                                document.getElementById('review-number-of-employees').textContent = document.getElementById('NumberOfEmployees').value;
+                                // Password field (do not display in plain text)
+                                const password = document.getElementById('password');
 
-                                // Password (For demonstration purposes, you might not want to display the password in plain text)
-                                document.getElementById('review-password').textContent = document.getElementById('password').value ? 'Password entered' : 'No password entered';
+                                // Fill review section
+                                if (organizationName) document.getElementById('review-organization-name').textContent = organizationName.value || 'N/A';
+                                if (organizationEmail) document.getElementById('review-organization-email').textContent = organizationEmail.value || 'N/A';
+                                if (contactPerson) document.getElementById('review-contact-person').textContent = contactPerson.value || 'N/A';
+                                if (contactPhoneNumber) document.getElementById('review-contact-phone').textContent = contactPhoneNumber.value || 'N/A';
+                                if (organizationRegistrationDate) document.getElementById('review-organization-registration-date').textContent = organizationRegistrationDate.value || 'N/A';
+                                if (organizationAddress) document.getElementById('review-organization-address').textContent = organizationAddress.value || 'N/A';
+
+                                // Display logo file name if uploaded
+                                if (logoFileInput) {
+                                    const logoFile = logoFileInput.files[0];
+                                    document.getElementById('review-logo').textContent = logoFile ? logoFile.name : 'No file uploaded';
+                                }
+
+                                // Display location details
+                                if (locationCountry) document.getElementById('review-location-country').textContent = locationCountry.value || 'N/A';
+                                if (locationCounty) document.getElementById('review-location-county').textContent = locationCounty.value || 'N/A';
+                                if (locationTown) document.getElementById('review-location-town').textContent = locationTown.value || 'N/A';
+
+                                // Display certificate file name if uploaded
+                                if (certificateFileInput) {
+                                    const certificateFile = certificateFileInput.files[0];
+                                    document.getElementById('review-registration-certificate').textContent = certificateFile ? certificateFile.name : 'No file uploaded';
+                                }
+
+                                // Organization specifics
+                                if (organizationType) document.getElementById('review-organization-type').textContent = organizationType.value || 'N/A';
+                                if (startDate) document.getElementById('review-start-date').textContent = startDate.value || 'N/A';
+                                if (whatYouDo) document.getElementById('review-what-you-do').textContent = whatYouDo.value || 'N/A';
+                                if (numberOfEmployees) document.getElementById('review-number-of-employees').textContent = numberOfEmployees.value || 'N/A';
+
+                                // Password validation (Never display the password in plain text for security reasons)
+                                if (password) {
+                                    document.getElementById('review-password').textContent = password.value ? 'Password entered' : 'No password entered';
+                                }
                             }
                         });
                     });
                 </script>
-
 
                 <!-- form input validation  -->
                 <script>
