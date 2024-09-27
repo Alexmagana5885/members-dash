@@ -1004,8 +1004,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             // Check if the email is set in the session
             $userEmail = isset($_SESSION['user_email']) ? htmlspecialchars($_SESSION['user_email']) : '';
 
-            $sql = "SELECT id, event_name, event_image_path, event_description, event_location, event_date FROM plannedevent ORDER BY event_date DESC";
-
+            $sql = "SELECT id, event_name, event_image_path, event_description, event_location, event_date, RegistrationAmount 
+            FROM plannedevent 
+            ORDER BY event_date DESC";
             $result = $conn->query($sql);
 
             ?>
@@ -1022,6 +1023,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             $eventDescription = htmlspecialchars($row['event_description']);
                             $eventLocation = htmlspecialchars($row['event_location']);
                             $eventDate = htmlspecialchars($row['event_date']);
+                            $registrationAmount = htmlspecialchars($row['RegistrationAmount']);
 
                             // Fetch content from the database
                             echo '<div  class="eventDiv">';
@@ -1054,8 +1056,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             echo '<label for="contact">Contact:</label>';
                             echo '<input type="text" id="contact" name="phone_number" required>';
 
-                            echo '<label for="contact">Registration Amount. Ksh 300</label>';
-                            echo '<input value="1" readonly type="text" id="contact" name="amount" required>';
+                            echo '<label for="contact">Registration Amount. Ksh ' . number_format($registrationAmount) . '</label>';
+                            echo '<input value="' . number_format($registrationAmount) . '" readonly type="text" id="contact" name="amount" required>';
 
                             echo '<button type="submit">Pay and Submit</button>';
                             echo '<button type="button" class="closeBtn" id="closeBtn_' . $eventId . '">Close</button>';
@@ -1125,8 +1127,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         </div>
                         <div class="form-group">
                             <label for="eventImage">Event Image:</label>
-                            <input type="file" id="eventImage" name="eventImage" required />
+                            <input type="file" id="eventImage" name="eventImage" accept="image/*" required />
                         </div>
+
 
                         <div class="form-group">
                             <label for="eventDescription">Brief Introduction:</label>
@@ -1142,6 +1145,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         <div class="form-group">
                             <label for="eventDate">Date:</label>
                             <input type="date" id="eventDate" name="eventDate" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="RegistrationAmount">Event Registration Amount in Ksh:</label>
+                            <input type="number" id="eventDate" name="RegistrationAmount" required />
                         </div>
                         <div class="form-group">
                             <button type="submit">Save Event</button>

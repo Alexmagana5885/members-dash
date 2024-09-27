@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $eventDescription = htmlspecialchars($_POST['eventDescription']);
     $eventLocation = htmlspecialchars($_POST['eventLocation']);
     $eventDate = $_POST['eventDate'];
+    $registrationAmount = $_POST['RegistrationAmount']; // Capture Registration Amount
 
     // Check if the file is uploaded
     if (isset($_FILES['eventImage']) && $_FILES['eventImage']['error'] == 0) {
@@ -24,13 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Move the uploaded file to the target directory
         if (move_uploaded_file($_FILES['eventImage']['tmp_name'], $targetFilePath)) {
-            // Prepare SQL query to insert data into the database
-            $sql = "INSERT INTO plannedevent (event_name, event_image_path, event_description, event_location, event_date)
-                    VALUES (?, ?, ?, ?, ?)";
+            // Prepare SQL query to insert data into the database, including registration amount
+            $sql = "INSERT INTO plannedevent (event_name, event_image_path, event_description, event_location, event_date, RegistrationAmount)
+                    VALUES (?, ?, ?, ?, ?, ?)";
 
             // Prepare and bind the statement
             if ($stmt = $conn->prepare($sql)) {
-                $stmt->bind_param('sssss', $eventName, $targetFilePath, $eventDescription, $eventLocation, $eventDate);
+                $stmt->bind_param('sssssd', $eventName, $targetFilePath, $eventDescription, $eventLocation, $eventDate, $registrationAmount);
 
                 // Execute the query
                 if ($stmt->execute()) {

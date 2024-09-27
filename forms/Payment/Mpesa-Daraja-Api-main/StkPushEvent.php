@@ -66,75 +66,91 @@ if ($checkResult->num_rows > 0) {
     exit();
 }
 
-// If not registered, proceed with payment processing
-$processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-$callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callbackEventR.php';
-$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-$BusinessShortCode = '174379';
-$Timestamp = date('YmdHis');
-
-// Encrypt data to get password
-$Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
-
-// Define other parameters
-$PartyA = $phone; // Phone number to receive the STK push
-$AccountReference = 'AGL';
-$TransactionDesc = 'Membership Registration fee payment';
-$Amount = $money;
-
-$stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
-
-// Initialize cURL
-$curl = curl_init();
-curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
-curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); // Setting custom header
-
-$curl_post_data = array(
-    'BusinessShortCode' => $BusinessShortCode,
-    'Password' => $Password,
-    'Timestamp' => $Timestamp,
-    'TransactionType' => 'CustomerPayBillOnline',
-    'Amount' => $Amount,
-    'PartyA' => $PartyA,
-    'PartyB' => $BusinessShortCode,
-    'PhoneNumber' => $PartyA,
-    'CallBackURL' => $callbackurl,
-    'AccountReference' => $AccountReference,
-    'TransactionDesc' => $TransactionDesc
-);
-
-$data_string = json_encode($curl_post_data);
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($curl, CURLOPT_POST, true);
-curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
-$curl_response = curl_exec($curl);
-curl_close($curl);
-
-// Decode and handle the response
-$data = json_decode($curl_response);
-$CheckoutRequestID = isset($data->CheckoutRequestID) ? $data->CheckoutRequestID : null;
-$ResponseCode = isset($data->ResponseCode) ? $data->ResponseCode : '';
-
-// Determine status based on response code
-$status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
-
-// Insert all data into `EventRegcheckout` table
-if ($CheckoutRequestID) {
-    // Insert into `EventRegcheckout`
-    $eventSql = "INSERT INTO eventregcheckout (CheckoutRequestID, event_id, event_name, event_location, event_date, email, member_name, phone, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $eventStmt = $conn->prepare($eventSql);
-    $eventStmt->bind_param("ssssssssss", $CheckoutRequestID, $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone, $money, $status);
-
-    if ($eventStmt->execute()) {
+// If amount is 0, insert into event_registrations and skip STK push
+if ($money == 0) {
+    $insertSql = "INSERT INTO event_registrations (event_id, event_name, event_location, event_date, member_email, member_name, contact, registration_date, payment_code) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), 00)";
+    $insertStmt = $conn->prepare($insertSql);
+    $insertStmt->bind_param("sssssss", $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone);
+    
+    if ($insertStmt->execute()) {
         $response['success'] = true;
-        $response['message'] = "Kindly enter your Mpesa Pin to complete the payment";
+        $response['message'] = "Registration successful. No payment required.";
     } else {
-        $response['errors'][] = "Event Database error: " . $eventStmt->error;
+        $response['errors'][] = "Event Database error: " . $insertStmt->error;
     }
-
-    $eventStmt->close();
+    
+    $insertStmt->close();
 } else {
-    $response['errors'][] = "Error in transaction processing. Please try again.";
+    // Proceed with STK push for non-zero amount
+    $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+    $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callbackEventR.php';
+    $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+    $BusinessShortCode = '174379';
+    $Timestamp = date('YmdHis');
+
+    // Encrypt data to get password
+    $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
+
+    // Define other parameters
+    $PartyA = $phone; // Phone number to receive the STK push
+    $AccountReference = 'AGL';
+    $TransactionDesc = 'Membership Registration fee payment';
+    $Amount = $money;
+
+    $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
+
+    // Initialize cURL
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); // Setting custom header
+
+    $curl_post_data = array(
+        'BusinessShortCode' => $BusinessShortCode,
+        'Password' => $Password,
+        'Timestamp' => $Timestamp,
+        'TransactionType' => 'CustomerPayBillOnline',
+        'Amount' => $Amount,
+        'PartyA' => $PartyA,
+        'PartyB' => $BusinessShortCode,
+        'PhoneNumber' => $PartyA,
+        'CallBackURL' => $callbackurl,
+        'AccountReference' => $AccountReference,
+        'TransactionDesc' => $TransactionDesc
+    );
+
+    $data_string = json_encode($curl_post_data);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+    $curl_response = curl_exec($curl);
+    curl_close($curl);
+
+    // Decode and handle the response
+    $data = json_decode($curl_response);
+    $CheckoutRequestID = isset($data->CheckoutRequestID) ? $data->CheckoutRequestID : null;
+    $ResponseCode = isset($data->ResponseCode) ? $data->ResponseCode : '';
+
+    // Determine status based on response code
+    $status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
+
+    // Insert all data into `EventRegcheckout` table
+    if ($CheckoutRequestID) {
+        // Insert into `EventRegcheckout`
+        $eventSql = "INSERT INTO eventregcheckout (CheckoutRequestID, event_id, event_name, event_location, event_date, email, member_name, phone, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $eventStmt = $conn->prepare($eventSql);
+        $eventStmt->bind_param("ssssssssss", $CheckoutRequestID, $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone, $money, $status);
+
+        if ($eventStmt->execute()) {
+            $response['success'] = true;
+            $response['message'] = "Kindly enter your Mpesa Pin to complete the payment";
+        } else {
+            $response['errors'][] = "Event Database error: " . $eventStmt->error;
+        }
+
+        $eventStmt->close();
+    } else {
+        $response['errors'][] = "Error in transaction processing. Please try again.";
+    }
 }
 
 // Close database connection
@@ -144,5 +160,4 @@ $conn->close();
 $_SESSION['response'] = $response;
 header("Location: " . $_SERVER['HTTP_REFERER']);
 exit();
-
 ?>
