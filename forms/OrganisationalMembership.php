@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $organization_type = sanitize_input($_POST['OrganizationType']);
     $start_date = sanitize_input($_POST['startDate']);
     $what_you_do = sanitize_input($_POST['WhatYouDo']);
-    $number_of_employees = sanitize_input($_POST['NumberOfEmployees']);
+    // $number_of_employees = sanitize_input($_POST['NumberOfEmployees']);
     $password = sanitize_input($_POST['password']);
     $confirm_password = sanitize_input($_POST['confirm-password']);
 
@@ -147,13 +147,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 organization_type, 
                 start_date, 
                 what_you_do, 
-                number_of_employees, 
+                -- number_of_employees, 
                 password
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param(
-            "ssssssssssssssss",
+            "sssssssssssssss",
             $organization_name,
             $organization_email,
             $contact_person,
@@ -168,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $organization_type,
             $start_date,
             $what_you_do,
-            $number_of_employees,
+            // $number_of_employees,
             $hashed_password
         );
 

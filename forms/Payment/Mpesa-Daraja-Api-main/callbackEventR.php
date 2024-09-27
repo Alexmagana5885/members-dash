@@ -24,7 +24,7 @@ if ($log === false) {
 } else {
     fwrite($log, $stkCallbackResponse);
     fclose($log);
-}
+} 
 
 // Decode the JSON response
 $data = json_decode($stkCallbackResponse);
