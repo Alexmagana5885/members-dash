@@ -471,7 +471,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 $sessionEmail = $_SESSION['user_email'];
 
                 // Fetch education information from the database
-                $query = "SELECT highest_degree, institution, start_date, graduation_year FROM personalmembership WHERE email = ?";
+                $query = "SELECT highest_degree, institution, graduation_year FROM personalmembership WHERE email = ?";
                 $stmt = $conn->prepare($query);
                 $stmt->bind_param("s", $sessionEmail);
                 $stmt->execute();
@@ -483,7 +483,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     $educationInfo = [
                         'highest_degree' => 'N/A',
                         'institution' => 'N/A',
-                        'start_date' => 'N/A',
+                        // 'start_date' => 'N/A',
                         'graduation_year' => 'N/A'
                     ];
                 }
@@ -498,8 +498,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <p>Institution: <span
                             id="institution"><?php echo htmlspecialchars($educationInfo['institution']); ?></span></p>
                     <br>
-                    <p>Start Date: <span
-                            id="start-date"><?php echo htmlspecialchars($educationInfo['start_date']); ?></span></p><br>
+
                     <p>Graduation Year: <span
                             id="graduation-year"><?php echo htmlspecialchars($educationInfo['graduation_year']); ?></span>
                     </p>
