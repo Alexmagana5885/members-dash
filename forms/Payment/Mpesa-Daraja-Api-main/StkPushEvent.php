@@ -107,7 +107,7 @@ $status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
 // Insert all data into `EventRegcheckout` table
 if ($CheckoutRequestID) {
     // Insert into `EventRegcheckout`
-    $eventSql = "INSERT INTO EventRegcheckout (CheckoutRequestID, event_id, event_name, event_location, event_date, email, member_name, phone, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $eventSql = "INSERT INTO eventregcheckout (CheckoutRequestID, event_id, event_name, event_location, event_date, email, member_name, phone, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $eventStmt = $conn->prepare($eventSql);
     $eventStmt->bind_param("ssssssssss", $CheckoutRequestID, $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone, $money, $status);
 
