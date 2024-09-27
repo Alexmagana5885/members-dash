@@ -31,7 +31,6 @@ $eventLocation = isset($_POST['event_location']) ? $_POST['event_location'] : ''
 $eventDate = isset($_POST['event_date']) ? $_POST['event_date'] : '';
 $userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
 $memberName = isset($_POST['memberName']) ? $_POST['memberName'] : '';
-
 $phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
 $money = isset($_POST['amount']) ? $_POST['amount'] : '';
 
@@ -49,7 +48,25 @@ if (!empty($response['errors'])) {
     exit();
 }
 
-// Define variables
+// Database connection settings
+require_once('../../DBconnection.php');
+
+// Check if the user is already registered for the event
+$checkSql = "SELECT * FROM event_registrations WHERE event_id = ? AND member_email = ?";
+$checkStmt = $conn->prepare($checkSql);
+$checkStmt->bind_param("ss", $eventId, $userEmail);
+$checkStmt->execute();
+$checkResult = $checkStmt->get_result();
+
+if ($checkResult->num_rows > 0) {
+    // User is already registered for the event
+    $response['errors'][] = 'You have already registered for this event.';
+    $_SESSION['response'] = $response;
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
+
+// If not registered, proceed with payment processing
 $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callbackEventR.php';
 $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
@@ -98,9 +115,6 @@ $data = json_decode($curl_response);
 $CheckoutRequestID = isset($data->CheckoutRequestID) ? $data->CheckoutRequestID : null;
 $ResponseCode = isset($data->ResponseCode) ? $data->ResponseCode : '';
 
-// Database connection settings
-require_once('../../DBconnection.php');
-
 // Determine status based on response code
 $status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
 
@@ -130,4 +144,5 @@ $conn->close();
 $_SESSION['response'] = $response;
 header("Location: " . $_SERVER['HTTP_REFERER']);
 exit();
+
 ?>
