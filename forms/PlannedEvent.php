@@ -3,17 +3,35 @@ session_start(); // Start the session
 
 require_once('DBconnection.php');
 
+// Include the HTMLPurifier library
+require_once '../assets/htmlpurifier-master/library/HTMLPurifier.auto.php';
+
 // Initialize response array
 $response = array('success' => false, 'message' => '', 'errors' => array());
 
 // Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize input data
+    // Sanitize input data for event name, location, and date
     $eventName = htmlspecialchars($_POST['eventName']);
-    $eventDescription = htmlspecialchars($_POST['eventDescription']);
     $eventLocation = htmlspecialchars($_POST['eventLocation']);
     $eventDate = $_POST['eventDate'];
     $registrationAmount = $_POST['RegistrationAmount']; // Capture Registration Amount
+
+    // Sanitize QuillEditor input using HTMLPurifier
+    $config = HTMLPurifier_Config::createDefault();
+    $purifier = new HTMLPurifier($config);
+    $eventDescription = $purifier->purify($_POST['eventDescription']); // Sanitize HTML content
+
+    // Trim the event description and check if it only contains empty HTML
+    $trimmedEventDescription = trim(strip_tags($eventDescription, '<img>')); // Allow images but strip other HTML tags
+
+    // Check if the event description is empty after purifying and stripping
+    if (empty($trimmedEventDescription)) {
+        $response['message'] = 'Event description cannot be empty.';
+        $_SESSION['response'] = $response;
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
 
     // Check if the file is uploaded
     if (isset($_FILES['eventImage']) && $_FILES['eventImage']['error'] == 0) {

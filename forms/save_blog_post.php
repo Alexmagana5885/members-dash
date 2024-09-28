@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Check file size (limit to 500KB)
-        if ($_FILES['blogImage']['size'] > 500000) {
+        if ($_FILES['blogImage']['size'] > 5000000) {
             $response['errors'][] = "Sorry, your file is too large.";
             $uploadOk = 0;
         }

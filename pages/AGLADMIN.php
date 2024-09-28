@@ -24,10 +24,72 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" /> -->
+    <link href="../assets/CSS/quilleditor.css" rel="stylesheet" />
 
 </head>
+
+<style>
+    /* General styles for Quill content */
+    .quill-content {
+        font-family: Arial, sans-serif;
+        /* Set your desired font family */
+        line-height: 1.6;
+        /* Increase line height for readability */
+        color: #333;
+        /* Set a color for the text */
+    }
+
+    /* Styling headers */
+    .quill-content h1,
+    .quill-content h2,
+    .quill-content h3 {
+        color: #0056b3;
+        /* Example header color */
+        margin: 0.5em 0;
+        /* Add some margin for spacing */
+    }
+
+    /* Styling paragraphs */
+    .quill-content p {
+        margin-bottom: 1em;
+        /* Space between paragraphs */
+    }
+
+    /* Styling lists */
+    .quill-content ol,
+    .quill-content ul {
+        margin-left: 20px;
+        /* Indent lists */
+        margin-bottom: 1em;
+        /* Space below lists */
+    }
+
+    /* Adding a custom style for blockquotes */
+    .quill-content blockquote {
+        border-left: 4px solid #ccc;
+        /* Left border for blockquotes */
+        padding-left: 1em;
+        /* Space inside blockquotes */
+        color: #666;
+        /* Color for blockquotes */
+        font-style: italic;
+        /* Italic style for blockquotes */
+    }
+
+    /* Custom styles for images */
+    .quill-content img {
+        max-width: 100%;
+        /* Ensure images do not overflow their container */
+        height: auto;
+        /* Maintain aspect ratio */
+        display: block;
+        /* Block display to add margin */
+        margin: 0 auto;
+        /* Center images */
+    }
+</style>
 
 <body>
     <header>
@@ -131,7 +193,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="../forms/logout.php">Logout</a></li>
                     <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
                     <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
-                    <!-- <li><a href="new.php">new</a></li> -->
+                    <li><a href="new.html">new</a></li>
                     <!-- <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li> -->
                 <?php elseif ($role == 'admin'): ?>
@@ -692,93 +754,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 });
             </script>
 
-            <style>
-                .blog-popup {
-                    display: none;
-                    position: fixed;
-                    z-index: 1;
-                    left: 0;
-                    top: 0;
-                    width: 100%;
-                    height: 100%;
-                    overflow: auto;
-                    background-color: rgba(0, 0, 0, 0.4);
-                }
 
-                .blog-popup-content {
-                    background-color: #fefefe;
-                    margin: 15% auto;
-                    padding: 20px;
-                    border: 1px solid #888;
-                    width: 50%;
-                    max-height: 90vh;
-                    overflow: auto;
-                    scrollbar-width: thin;
-                }
-
-                .blog-close {
-                    color: #aaa;
-                    float: right;
-                    font-size: 28px;
-                    font-weight: bold;
-                }
-
-                .blog-close:hover,
-                .blog-close:focus {
-                    color: black;
-                    text-decoration: none;
-                    cursor: pointer;
-                }
-
-                @media (max-width: 600px) {
-                    .blog-popup-content {
-                        width: 90%;
-                        margin: 30% auto;
-                        padding: 15px;
-                    }
-
-                    .blog-close {
-                        font-size: 24px;
-                    }
-                }
-            </style>
-
-
-            <div id="blogPopup" class="blog-popup">
-                <div class="blog-popup-content">
-                    <span class="blog-close">&times;</span>
-                    <div id="blogPopupBody">
-                        <!-- Content will be dynamically injected here -->
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var popup = document.getElementById('blogPopup');
-                    var closeBtn = document.querySelector('.blog-close');
-
-                    document.querySelectorAll('.blogSingle').forEach(function(blog) {
-                        blog.addEventListener('click', function() {
-                            var title = this.getAttribute('data-title');
-                            var content = this.getAttribute('data-content');
-                            var popupBody = document.getElementById('blogPopupBody');
-                            popupBody.innerHTML = `<h4>${title}</h4><p>${content}</p>`; // Set the popup content
-                            popup.style.display = 'block'; // Show the popup
-                        });
-                    });
-
-                    closeBtn.addEventListener('click', function() {
-                        popup.style.display = 'none'; // Hide the popup
-                    });
-
-                    window.addEventListener('click', function(event) {
-                        if (event.target === popup) {
-                            popup.style.display = 'none'; // Hide the popup if clicked outside
-                        }
-                    });
-                });
-            </script>
             <style>
                 .blogPoint {
                     width: 100%;
@@ -852,6 +828,68 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 }
             </style>
 
+            <style>
+                .blog-content {
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    padding: 20px;
+                    background-color: #f9f9f9;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
+
+                .blog-content h1,
+                .blog-content h2,
+                .blog-content h3 {
+                    color: #0056b3;
+                    margin: 0.5em 0;
+                }
+
+                .blog-content p {
+                    margin-bottom: 1em;
+                }
+
+                .blog-content ol,
+                .blog-content ul {
+                    margin-left: 20px;
+                    margin-bottom: 1em;
+                }
+
+                .blog-content blockquote {
+                    border-left: 4px solid #ccc;
+                    padding-left: 1em;
+                    color: #666;
+                    font-style: italic;
+                    margin: 1em 0;
+                }
+
+                .blog-content img {
+                    max-width: 100%;
+                    height: auto;
+                    display: block;
+                    margin: 0 auto;
+                    border-radius: 5px;
+                }
+
+                .moreButton {
+                    width: 80%;
+                    background-color: #007BFF;
+                    color: white;
+                    border: none;
+                    padding: 10px 15px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    transition: background-color 0.3s ease;
+                }
+
+                .moreButton:hover {
+                    background-color: #0056b3;
+                }
+            </style>
+
+
             <h4 style="padding: 20px;">Blogs</h4>
             <div class="blogPoint">
                 <?php
@@ -862,11 +900,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 if ($result->num_rows > 0) {
                     // Output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo '<div class="blogSingle" data-title="' . htmlspecialchars($row["title"], ENT_QUOTES, 'UTF-8') . '" data-content="' . htmlspecialchars($row["content"], ENT_QUOTES, 'UTF-8') . '">';
-                        echo '    <div class="blogImage"><img src="' . $row["image_path"] . '" alt="Blog"></div>';
+                        echo '<div class="blogSingle" data-title="' . htmlspecialchars($row["title"], ENT_QUOTES, 'UTF-8') . '" data-content="' . htmlspecialchars($row["content"], ENT_QUOTES, 'UTF-8') . '" data-id="' . htmlspecialchars($row["id"], ENT_QUOTES, 'UTF-8') . '">';
+                        echo '    <div class="blogImage"><img src="' . htmlspecialchars($row["image_path"], ENT_QUOTES, 'UTF-8') . '" alt="Blog"></div>';
                         echo '    <div class="blogContent">';
-                        echo '        <h4>' . $row["title"] . '</h4>';
+                        echo '        <h4>' . htmlspecialchars($row["title"], ENT_QUOTES, 'UTF-8') . '</h4>';
                         echo '        <h6>' . date("d/m/Y", strtotime($row["created_at"])) . '</h6>';
+                        echo '        <button class="moreButton">Read More</button>'; // More button
                         echo '    </div>';
                         echo '</div>';
                     }
@@ -876,6 +915,21 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 // $conn->close();
                 ?>
             </div>
+
+            <script>
+                // Add event listener for the More button
+                document.querySelectorAll('.moreButton').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const blogSingle = this.closest('.blogSingle');
+                        const blogId = blogSingle.getAttribute('data-id'); // Get the blog ID
+
+                        // Redirect to another page with the blog ID
+                        window.location.href = 'blogs.php?id=' + blogId;
+                    });
+                });
+            </script>
+
+
 
 
 
@@ -1020,22 +1074,25 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             $eventId = htmlspecialchars($row['id']);
                             $eventName = htmlspecialchars($row['event_name']);
                             $eventImagePath = htmlspecialchars($row['event_image_path']);
-                            $eventDescription = htmlspecialchars($row['event_description']);
+                            $eventDescription = $row['event_description'];
                             $eventLocation = htmlspecialchars($row['event_location']);
                             $eventDate = htmlspecialchars($row['event_date']);
                             $registrationAmount = htmlspecialchars($row['RegistrationAmount']);
 
                             // Fetch content from the database
-                            echo '<div  class="eventDiv">';
+                            // Fetch content from the database
+                            echo '<div class="eventDiv">';
                             echo '<h3>' . $eventName . '</h3>';
                             echo '<img src="' . $eventImagePath . '" alt="Event">';
-                            echo '<p>' . $eventDescription . '</p>';
+                            echo '<div class="quill-content">' . $eventDescription . '</div>';
+
                             echo '<div class="eventDivindiv">';
                             echo '<p>' . $eventLocation . '</p>';
                             echo '<p>' . $eventDate . '</p>';
                             echo '</div>';
                             echo '<button class="plannedEventsBTN" id="registerBtnEventRegistration_' . $eventId . '">Register for the event</button>';
                             echo '</div>';
+
 
                             // Event registration popup form
                             echo '<div id="popupFormEventRegistration_' . $eventId . '" class="popup-form" style="display:none;">';
@@ -1057,7 +1114,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             echo '<input type="text" id="contact" name="phone_number" required>';
 
                             echo '<label for="contact">Registration Amount. Ksh ' . number_format($registrationAmount) . '</label>';
-                            echo '<input value="' . number_format($registrationAmount) . '" readonly type="text" id="contact" name="amount" required>';
+                            echo '<input value="' . number_format($registrationAmount,) . '" readonly type="text" id="contact" name="amount" required>';
 
                             echo '<button type="submit">Pay and Submit</button>';
                             echo '<button type="button" class="closeBtn" id="closeBtn_' . $eventId . '">Close</button>';
@@ -1130,7 +1187,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             <input type="file" id="eventImage" name="eventImage" accept="image/*" required />
                         </div>
 
-
                         <div class="form-group">
                             <label for="eventDescription">Brief Introduction:</label>
                             <!-- Quill Editor Container -->
@@ -1148,7 +1204,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         </div>
                         <div class="form-group">
                             <label for="RegistrationAmount">Event Registration Amount in Ksh:</label>
-                            <input type="number" id="eventDate" name="RegistrationAmount" required />
+                            <input type="number" id="RegistrationAmount" name="RegistrationAmount" required />
                         </div>
                         <div class="form-group">
                             <button type="submit">Save Event</button>
@@ -1157,25 +1213,26 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 </div>
             </div>
 
-            <!-- Post Planned Event Modal script -->
-            <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+            <script src="../assets/JS/quilleditor.js"></script>
+            <!-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> -->
             <script>
-                // Initialize Quill editor
-                var quill = new Quill('#quillEditor', {
-                    theme: 'snow' // Use 'bubble' for a different style
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Initialize Quill editor
+                    var quill = new Quill('#quillEditor', {
+                        theme: 'snow'
+                    });
+
+                    // Handle the form submission
+                    document.getElementById('eventForm').onsubmit = function(event) {
+                        event.preventDefault();
+                        var eventDescriptionInput = document.getElementById('eventDescription');
+                        eventDescriptionInput.value = quill.root.innerHTML;
+
+                        // Now submit the form
+                        this.submit();
+                    };
                 });
-
-                // Listen for form submission
-                document.getElementById('eventForm').onsubmit = function(event) {
-                    // Prevent default submission if necessary
-                    // event.preventDefault();
-
-                    // Get HTML content from Quill editor
-                    var eventDescriptionInput = document.getElementById('eventDescription');
-                    eventDescriptionInput.value = quill.root.innerHTML; // Store the HTML content in the hidden input
-                };
             </script>
-
 
             <script>
                 var myModal = document.getElementById("myModal");
@@ -1236,7 +1293,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         </div>
                         <div class="past-event-form-group">
                             <label for="pastEventImages">Event Images:</label>
-                            <input type="file" id="pastEventImages" name="eventImages[]" multiple required />
+                            <input accept="image/*" type="file" id="pastEventImages" name="eventImages[]" multiple required />
+
                         </div>
                         <div class="past-event-form-group">
                             <label for="pastEventDocuments">Event Documents:</label>
