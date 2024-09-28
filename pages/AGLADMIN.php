@@ -97,6 +97,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             <img src="../assets/img/logo.png" alt="AGL">
         </div>
         <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
+
         <!-- <button id="toggleMessages">View Messages</button> -->
 
         <div style="text-align: center;" id="toggleMessagesReceivedMessages" class="notification">
@@ -106,7 +107,43 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     </header>
 
+    <style>
+        .innerlinksNav{
+            width: 100%; 
+            display: flex;
+            justify-content: space-around;
+            background-color: #6ec1e4;
+            height: 40px;
+            text-align: center;
+        }
+
+        .innerlinksNav-a{
+         
+            /* margin-left: 50px; */
+            margin-top: 10px;
+            color: #f2f2f2;
+            font-size: 20px;
+            text-decoration: none;                      
+            font-style: bold;
+            background-color: #007BFF;
+            border-radius: 5px;
+            padding: 7px;
+            bottom: 10px;
+        }
+        .Aligner{
+            height: 5px;
+            background-color: #6ec1e4;
+        }
     </style>
+
+    <div class="innerlinksNav" >
+        <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
+        <a class="innerlinksNav-a" href="#PlannedEvents">Comming Events</a>
+        <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
+    </div>
+    <div class="Aligner" ></div>
+
+
 
     <style>
         .blogPoint {
@@ -176,43 +213,61 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <nav style="cursor: pointer;" id="sidebar" class="sidebar">
             <ul>
                 <li>
-                    <a href="https://www.agl.or.ke/" class="active">Home<br /></a>
+                    <a href="https://www.agl.or.ke/" class="active" >Home<br /></a>
                 </li>
 
                 <?php if ($role == 'superadmin'): ?>
-                    <li><a id="openPostEventModal">Post Planned Event</a></li>
-                    <li><a id="openPastEventModal">Post Past Event</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
+                    <li><a id="openPostEventModal">Add a Planned Event</a></li>
+                    <li><a id="openPastEventModal">Add a Past Event</a></li>
+                    <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
                     <!-- <li><a href="admin/settings.html">Admit New Members</a></li> -->
-                    <li><a id="openBlogPostModal">Post a Blog</a></li>
-                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+
+
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
-                    <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
-                    <!-- <li><a href="new.php">new</a></li> -->
+
+                    <li><a href="https://www.agl.or.ke/contact-us/">Contacts</a></li>
+                    <li><a href="mailto:info@agl.or.ke" target="_blank">Email Us</a></li>
+                    <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank" >Chat on WhatsApp</a></li>
+
+                    <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
+                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
-                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
-                    <li><a href="new.html">new</a></li>
+
+
+                    <!-- <li><a href="new.html">new</a></li> -->
                     <!-- <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li> -->
                 <?php elseif ($role == 'admin'): ?>
-                    <li><a id="openPostEventModal">Post Planned Event</a></li>
-                    <li><a id="openMessagePopupSend">Send Message</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/"target="_blank" >About</a></li>
+                    <li><a id="openPostEventModal">Add a Planned Event</a></li>
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
-                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
+                    <li><a id="openMessagePopupSend">Send Message</a></li>
+
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
+
+                    <li><a href="mailto:info@agl.or.ke">Email</a></li>
+                    <li><a href="tel:+254748027123">Call</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
+
+                    <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
+                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
-                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
 
                 <?php elseif ($role == 'member'): ?>
-                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-                    <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
+
+                    <li><a href="mailto:info@agl.or.ke"> target="_blank"Email Us</a></li>
+                    <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
+                    <a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
+                    <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
+                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
-                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
 
                 <?php endif; ?>
             </ul>
@@ -674,7 +729,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 
             <!-- error response-popups-->
-            <div>
+            <div >
 
 
                 <?php
@@ -790,13 +845,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     width: 100%;
                     height: 200px;
                     margin-bottom: 5px;
-                    border-radius: 20px 0 50px 0;
+                    border-radius: 10px 10px 0 0;
                     object-fit: cover;
                 }
 
                 .blogImage img {
                     width: 100%;
-                    border-radius: 20px 0 50px 0;
+                    border-radius: 10px 10px 0 0;
                     object-fit: cover;
                 }
 
@@ -826,51 +881,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         width: 100%;
                     }
                 }
-            </style>
 
-            <style>
-                .blog-content {
-                    font-family: Arial, sans-serif;
-                    line-height: 1.6;
-                    color: #333;
-                    padding: 20px;
-                    background-color: #f9f9f9;
-                    border-radius: 5px;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                }
-
-                .blog-content h1,
-                .blog-content h2,
-                .blog-content h3 {
-                    color: #0056b3;
-                    margin: 0.5em 0;
-                }
-
-                .blog-content p {
-                    margin-bottom: 1em;
-                }
-
-                .blog-content ol,
-                .blog-content ul {
-                    margin-left: 20px;
-                    margin-bottom: 1em;
-                }
-
-                .blog-content blockquote {
-                    border-left: 4px solid #ccc;
-                    padding-left: 1em;
-                    color: #666;
-                    font-style: italic;
-                    margin: 1em 0;
-                }
-
-                .blog-content img {
-                    max-width: 100%;
-                    height: auto;
-                    display: block;
-                    margin: 0 auto;
-                    border-radius: 5px;
-                }
 
                 .moreButton {
                     width: 80%;
@@ -882,6 +893,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     cursor: pointer;
                     font-size: 16px;
                     transition: background-color 0.3s ease;
+                    margin-top: 5px;
                 }
 
                 .moreButton:hover {
@@ -889,9 +901,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 }
             </style>
 
-
-            <h4 style="padding: 20px;">Blogs</h4>
-            <div class="blogPoint">
+            <h4 id="blogPoint" style="padding: 20px;">Blogs</h4>
+            <div  class="blogPoint">
                 <?php
                 // Query to get blog posts
                 $sql = "SELECT * FROM blog_posts";
@@ -1065,7 +1076,25 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
             ?>
 
-            <div class="MinPrtSecSpace">
+            <!-- planned event style -->
+
+            <style>
+                .plannedEventimg {
+                    width: 100%;
+                    height: 250px;
+                    margin-bottom: 5px;
+                    object-fit: cover;
+                }
+
+                .quill-content {
+                    max-height: 290px;
+                    overflow: auto;
+                    scrollbar-width: thin;
+                    text-align: start;
+                }
+            </style>
+
+            <div id="PlannedEvents" class="MinPrtSecSpace">
                 <h3 style="padding:20px;">Planned Events</h3>
                 <div class="table-card">
                     <?php
@@ -1083,7 +1112,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             // Fetch content from the database
                             echo '<div class="eventDiv">';
                             echo '<h3>' . $eventName . '</h3>';
-                            echo '<img src="' . $eventImagePath . '" alt="Event">';
+                            echo '<img class="plannedEventimg" src="' . $eventImagePath . '" alt="Event">';
                             echo '<div class="quill-content">' . $eventDescription . '</div>';
 
                             echo '<div class="eventDivindiv">';
@@ -1543,6 +1572,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 .PastEventsmoreButton:hover {
                     background-color: #0056b3;
                 }
+
+                .past-eventDiv-img {
+                    width: 100%;
+                    height: 250px;
+                    margin-bottom: 5px;
+                    object-fit: cover;
+                }
             </style>
             <?php
             // Step 2: Fetch Data from the Database
@@ -1552,7 +1588,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             // Step 3: Display Data in HTML
             if ($result->num_rows > 0) {
                 echo '<div class="MinPrtSecSpace">
-                <div class="table-card">';
+                <div id= "PastEvents" class="table-card">';
                 while ($row = $result->fetch_assoc()) {
                     // Decode JSON if needed
                     $imagePathsJson = $row["event_image_paths"];
@@ -1571,7 +1607,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <div class="eventDivindiv">
                     <h3>' . htmlspecialchars($row["event_location"]) . '</h3>
                     <h3>' . htmlspecialchars($row["event_date"]) . '</h3></div>
-                    <img src="' . $imagePath . '" alt="Event">
+                    <img class="past-eventDiv-img" src="' . $imagePath . '" alt="Event">
                     <p>' . htmlspecialchars($row["event_name"]) . '</p><br>
                     <a href="Event.php?id=' . $eventId . '" class="PastEventsmoreButton">More</a> 
         

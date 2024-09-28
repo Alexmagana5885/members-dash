@@ -44,10 +44,10 @@ if (!empty($response['errors'])) {
 }
 
 // Define variables
-$processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+$processrequestUrl = ' https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 // $callbackurl = 'https://member.log.agl.or.ke/DARAJA/callback.php';
 $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
-$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+$passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
 $BusinessShortCode = '174379';
 $Timestamp = date('YmdHis');
 
