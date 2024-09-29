@@ -3,6 +3,7 @@ session_start(); // Start the session
 
 // Include the database connection file
 include 'AGLdbconnection.php';
+require '../members/assets/fpdf/fpdf.php'; 
 
 header("Content-Type: application/json");
 
@@ -71,6 +72,33 @@ if ($ResultCode == 0) {
         $eventDate = $checkoutData['event_date'];
         $registrationDate = date('Y-m-d H:i:s');
 
+        // Check if the email exists in personalmembership or organizationmembership
+        $personalQuery = $conn->prepare("SELECT passport_image, name FROM personalmembership WHERE email = ?");
+        $personalQuery->bind_param("s", $email);
+        $personalQuery->execute();
+        $personalResult = $personalQuery->get_result();
+
+        $organizationQuery = $conn->prepare("SELECT logo_image, organization_name FROM organizationmembership WHERE organization_email = ?");
+        $organizationQuery->bind_param("s", $email);
+        $organizationQuery->execute();
+        $organizationResult = $organizationQuery->get_result();
+
+        $image = '';
+        $name = '';
+        
+        // Check if the email is in the personalmembership table
+        if ($personalResult->num_rows > 0) {
+            $personalData = $personalResult->fetch_assoc();
+            $image = $personalData['passport_image'];
+            $name = $personalData['name'];
+        } 
+        // Check if the email is in the organizationmembership table
+        elseif ($organizationResult->num_rows > 0) {
+            $organizationData = $organizationResult->fetch_assoc();
+            $image = $organizationData['logo_image'];
+            $name = $organizationData['organization_name'];
+        }
+
         // Insert the data into event_registrations table
         $insertQuery = $conn->prepare("INSERT INTO event_registrations (event_id, event_name, event_location, event_date, member_email, member_name, contact, registration_date, payment_code) 
                                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -82,7 +110,30 @@ if ($ResultCode == 0) {
             exit;
         }
 
-        // Send email to confirm registration
+        // Create the PDF file
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+
+        // Add logo image
+        if ($image) {
+            $pdf->Image($image, 10, 10, 30); 
+        }
+
+        // Add event name
+        $pdf->Cell(0, 40, $eventName, 0, 1, 'C');
+
+        // Add participant or organization name
+        $pdf->Cell(0, 10, $name, 0, 1, 'C');
+
+        // Add event date
+        $pdf->Cell(0, 10, "Event Date: $eventDate", 0, 1, 'C');
+
+        // Save the PDF to a file
+        $pdfFileName = "event_registration_$TransactionId.pdf";
+        $pdf->Output("F", $pdfFileName);
+
+        // Send email with PDF attachment
         $to = $email;
         $subject = "Registration Successful!";
         $message = "
@@ -94,7 +145,7 @@ if ($ResultCode == 0) {
             Location: $eventLocation
             Time: 10:00 AM
 
-            Please check your email for more details and any future updates. If you have any questions, feel free to reach out at support@agl.or.ke.
+            Please check your email for more details and any future updates. Attached is your event registration confirmation.
 
             We look forward to seeing you there!
 
@@ -105,6 +156,23 @@ if ($ResultCode == 0) {
         $headers .= "Reply-To: events@agl.or.ke\r\n";
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
+        // Attach the PDF to the email
+        $file = chunk_split(base64_encode(file_get_contents($pdfFileName)));
+        $uid = md5(uniqid(time()));
+
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"\r\n\r\n";
+        $message = "--".$uid."\r\n";
+        $message .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $message .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+        $message .= $message."\r\n\r\n";
+        $message .= "--".$uid."\r\n";
+        $message .= "Content-Type: application/octet-stream; name=\"".$pdfFileName."\"\r\n"; 
+        $message .= "Content-Transfer-Encoding: base64\r\n";
+        $message .= "Content-Disposition: attachment; filename=\"".$pdfFileName."\"\r\n\r\n";
+        $message .= $file."\r\n\r\n";
+        $message .= "--".$uid."--";
+
         if (!mail($to, $subject, $message, $headers)) {
             $response['errors'][] = "Failed to send registration confirmation email to $to";
             $_SESSION['response'] = $response;
@@ -112,15 +180,18 @@ if ($ResultCode == 0) {
         }
 
         $response['success'] = true;
-        $response['message'] = "Event registration successful, payment processed, and confirmation email sent.";
+        $response['message'] = "Event registration successful, payment processed, and confirmation email sent with PDF.";
     } else {
         $response['errors'][] = "No records found for CheckoutRequestID: $CheckoutRequestID";
         $_SESSION['response'] = $response;
         exit;
     }
 } else {
-    $response['errors'][] = "Transaction failed with ResultCode: $ResultCode and ResultDesc: $ResultDesc";
+    $response['errors'][] = "Transaction failed with ResultCode: $ResultCode, Description: $ResultDesc";
+    $_SESSION['response'] = $response;
+    exit;
 }
 
+// Save response in session
 $_SESSION['response'] = $response;
 ?>

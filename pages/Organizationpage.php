@@ -37,15 +37,66 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
         <!-- <button id="toggleMessages">View Messages</button> -->
 
-        <div style="text-align: center;"  id="toggleMessagesReceivedMessages" class="notification">
+        <div style="text-align: center;" id="toggleMessagesReceivedMessages" class="notification">
             <img src="../assets/img/bell.png" alt="Notification">
             <h5 style="color: black; cursor: pointer;">Messages</h5>
         </div>
 
     </header>
 
+    <style>
+        .innerlinksNav {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background-color: #6ec1e4;
+            height: 40px;
+            text-align: center;
+        }
+
+        .innerlinksNav-a {
+            margin-top: 10px;
+            color: #f2f2f2;
+            font-size: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            background-color: #007BFF;
+            border-radius: 5px;
+            padding: 7px 15px;
+            font-family: 'Arial', sans-serif;
+            /* Set a clean, modern font */
+            transition: all 0.3s ease;
+            /* Smooth transition for resizing */
+        }
+
+        .innerlinksNav-a:hover {
+            background-color: #0056b3;
+            /* Darker blue on hover */
+        }
+
+        .Aligner {
+            height: 5px;
+            background-color: #6ec1e4;
+        }
+
+        /* Responsive design for small screens */
+        @media (max-width: 600px) {
+            .innerlinksNav-a {
+                font-size: 14px;
+                /* Smaller font size */
+                padding: 5px 10px;
+                /* Reduced padding for smaller buttons */
+            }
+        }
     </style>
 
+
+    <div class="innerlinksNav">
+        <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
+        <a class="innerlinksNav-a" href="#PlannedEvents">Comming Events</a>
+        <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
+    </div>
+    <div class="Aligner"></div>
 
     <div class="main-content">
 
@@ -84,11 +135,15 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
 
                 <?php elseif ($role == 'member'): ?>
-                    <li><a href="https://www.agl.or.ke/about-us/">About</a></li>
-                    <li><a href="https://www.agl.or.ke/contact-us/">Contact</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
+
+                    <li><a href="mailto:info@agl.or.ke"> target="_blank"Email Us</a></li>
+                    <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
+                    <a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
+                    <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
+                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
-                    <li><a href="mailto:info@agl.or.ke">Email: info@agl.or.ke</a></li>
-                    <li><a href="tel:+254748027123">Phone: 0748027123</a></li>
 
                 <?php endif; ?>
             </ul>

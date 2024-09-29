@@ -108,8 +108,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     </header>
 
     <style>
-        .innerlinksNav{
-            width: 100%; 
+        .innerlinksNav {
+            width: 100%;
             display: flex;
             justify-content: space-around;
             background-color: #6ec1e4;
@@ -117,31 +117,49 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             text-align: center;
         }
 
-        .innerlinksNav-a{
-         
-            /* margin-left: 50px; */
+        .innerlinksNav-a {
             margin-top: 10px;
             color: #f2f2f2;
             font-size: 20px;
-            text-decoration: none;                      
-            font-style: bold;
+            text-decoration: none;
+            font-weight: bold;
             background-color: #007BFF;
             border-radius: 5px;
-            padding: 7px;
-            bottom: 10px;
+            padding: 7px 15px;
+            font-family: 'Arial', sans-serif;
+            /* Set a clean, modern font */
+            transition: all 0.3s ease;
+            /* Smooth transition for resizing */
         }
-        .Aligner{
+
+        .innerlinksNav-a:hover {
+            background-color: #0056b3;
+            /* Darker blue on hover */
+        }
+
+        .Aligner {
             height: 5px;
             background-color: #6ec1e4;
         }
+
+        /* Responsive design for small screens */
+        @media (max-width: 600px) {
+            .innerlinksNav-a {
+                font-size: 14px;
+                /* Smaller font size */
+                padding: 5px 10px;
+                /* Reduced padding for smaller buttons */
+            }
+        }
     </style>
 
-    <div class="innerlinksNav" >
+
+    <div class="innerlinksNav">
         <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
         <a class="innerlinksNav-a" href="#PlannedEvents">Comming Events</a>
         <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
     </div>
-    <div class="Aligner" ></div>
+    <div class="Aligner"></div>
 
 
 
@@ -213,7 +231,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <nav style="cursor: pointer;" id="sidebar" class="sidebar">
             <ul>
                 <li>
-                    <a href="https://www.agl.or.ke/" class="active" >Home<br /></a>
+                    <a href="https://www.agl.or.ke/" class="active">Home<br /></a>
                 </li>
 
                 <?php if ($role == 'superadmin'): ?>
@@ -231,18 +249,19 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://www.agl.or.ke/contact-us/">Contacts</a></li>
                     <li><a href="mailto:info@agl.or.ke" target="_blank">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
-                    <li><a href="https://wa.me/254722605048" target="_blank" >Chat on WhatsApp</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
 
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
 
 
-                    <!-- <li><a href="new.html">new</a></li> -->
+                    <li><a href="new.php">new</a></li>
+                    <li><a href="try.py">info</a></li>
                     <!-- <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li> -->
                 <?php elseif ($role == 'admin'): ?>
-                    <li><a href="https://www.agl.or.ke/about-us/"target="_blank" >About</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a id="openPostEventModal">Add a Planned Event</a></li>
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
@@ -729,7 +748,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 
             <!-- error response-popups-->
-            <div >
+            <div>
 
 
                 <?php
@@ -902,7 +921,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </style>
 
             <h4 id="blogPoint" style="padding: 20px;">Blogs</h4>
-            <div  class="blogPoint">
+            <div class="blogPoint">
                 <?php
                 // Query to get blog posts
                 $sql = "SELECT * FROM blog_posts";
