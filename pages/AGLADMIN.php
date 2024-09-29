@@ -256,8 +256,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="../forms/logout.php">Logout</a></li>
 
 
-                    <li><a href="new.php">new</a></li>
-                    <li><a href="try.py">info</a></li>
+                    <!-- <li><a href="new.php">new</a></li>
+                    <li><a href="info.php" target="_blank">info</a></li> -->
                     <!-- <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li> -->
                 <?php elseif ($role == 'admin'): ?>
