@@ -10,7 +10,8 @@ date_default_timezone_set('Africa/Nairobi');
 $response = ['success' => false, 'message' => '', 'errors' => []];
 
 // Define the normalizePhoneNumber function
-function normalizePhoneNumber($phone) {
+function normalizePhoneNumber($phone)
+{
     $phone = preg_replace('/\s+/', '', $phone);
     if (strpos($phone, '+') === 0) {
         $phone = substr($phone, 1);
@@ -72,19 +73,26 @@ if ($money == 0) {
     $insertSql = "INSERT INTO event_registrations (event_id, event_name, event_location, event_date, member_email, member_name, contact, registration_date, payment_code) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), 00)";
     $insertStmt = $conn->prepare($insertSql);
     $insertStmt->bind_param("sssssss", $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone);
-    
+
     if ($insertStmt->execute()) {
         $response['success'] = true;
         $response['message'] = "Registration successful. No payment required.";
     } else {
         $response['errors'][] = "Event Database error: " . $insertStmt->error;
     }
-    
-    $insertStmt->close(); 
+
+    $insertStmt->close();
 } else {
     // Proceed with STK push for non-zero amount
+    // $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+    // $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callbackEventR.php';
+    // $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+    // $BusinessShortCode = '174379';
+    // $Timestamp = date('YmdHis');
+
     $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-    $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callbackEventR.php';
+    // $callbackurl = 'https://member.log.agl.or.ke/DARAJA/Premiumcallback.php';
+    $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/Premiumcallback.php';
     $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
     $BusinessShortCode = '174379';
     $Timestamp = date('YmdHis');
@@ -161,4 +169,3 @@ $conn->close();
 $_SESSION['response'] = $response;
 header("Location: " . $_SERVER['HTTP_REFERER']);
 exit();
-?>
