@@ -21,17 +21,17 @@ function normalizePhoneNumber($phone) {
     return $phone;
 }
 
-// Retrieve and normalize form data
+// Retrieve and normalize form data 
 $phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
 $money = isset($_POST['amount']) ? $_POST['amount'] : '1';
 $userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
 
 // Define variables
-$processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+$processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 // $callbackurl = 'https://member.log.agl.or.ke/DARAJA/Premiumcallback.php';
 $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/Premiumcallback.php';
-$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-$BusinessShortCode = '174379';
+$passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
+$BusinessShortCode = '6175135';
 $Timestamp = date('YmdHis');
 
 // Encrypt data to get password

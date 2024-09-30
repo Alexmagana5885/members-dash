@@ -34,6 +34,7 @@ $memberName = isset($_POST['memberName']) ? $_POST['memberName'] : '';
 $phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
 $money = isset($_POST['amount']) ? $_POST['amount'] : '';
 
+
 // Validate inputs
 if (empty($phone)) {
     $response['errors'][] = 'Phone number is required.';
@@ -79,7 +80,7 @@ if ($money == 0) {
         $response['errors'][] = "Event Database error: " . $insertStmt->error;
     }
     
-    $insertStmt->close();
+    $insertStmt->close(); 
 } else {
     // Proceed with STK push for non-zero amount
     $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';

@@ -44,11 +44,11 @@ if (!empty($response['errors'])) {
 }
 
 // Define variables
-$processrequestUrl = ' https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+$processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 // $callbackurl = 'https://member.log.agl.or.ke/DARAJA/callback.php';
 $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
 $passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
-$BusinessShortCode = '174379';
+$BusinessShortCode = '6175135';
 $Timestamp = date('YmdHis');
 
 // Encrypt data to get password
@@ -56,7 +56,7 @@ $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 
 // Define other parameters
 $PartyA = $phone; // Phone number to receive the STK push
-$PartyB = $BusinessShortCode;
+$PartyB = $BusinessShortCode; 
 $AccountReference = 'AGL';
 $TransactionDesc = 'Membership Registration fee payment';
 $Amount = $money;
