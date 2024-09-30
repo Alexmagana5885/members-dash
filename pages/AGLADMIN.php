@@ -1146,7 +1146,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             echo '<div id="popupFormEventRegistration_' . $eventId . '" class="popup-form" style="display:none;">';
                             echo '<div class="form-container">';
                             echo '<h4>Event Name: ' . $eventName . '</h4>';
-                            echo '<form action="../forms/Payment/Mpesa-Daraja-Api-main/StkPushEvent.php" method="post">'; // Form action points to the PHP script
+                            echo '<form action="../forms/Payment/Mpesa-Daraja-Api-main/StkPushEvent.php" method="post">';
                             echo '<input type="hidden" name="event_id" value="' . $eventId . '">';
                             echo '<input type="hidden" name="event_name" value="' . $eventName . '">';
                             echo '<input type="hidden" name="event_location" value="' . $eventLocation . '">';

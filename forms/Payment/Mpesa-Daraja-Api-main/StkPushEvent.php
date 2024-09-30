@@ -35,7 +35,6 @@ $memberName = isset($_POST['memberName']) ? $_POST['memberName'] : '';
 $phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
 $money = isset($_POST['amount']) ? $_POST['amount'] : '';
 
-
 // Validate inputs
 if (empty($phone)) {
     $response['errors'][] = 'Phone number is required.';
@@ -84,14 +83,7 @@ if ($money == 0) {
     $insertStmt->close();
 } else {
     // Proceed with STK push for non-zero amount
-    // $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-    // $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callbackEventR.php';
-    // $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-    // $BusinessShortCode = '174379';
-    // $Timestamp = date('YmdHis');
-
     $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-    // $callbackurl = 'https://member.log.agl.or.ke/DARAJA/Premiumcallback.php';
     $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/Premiumcallback.php';
     $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
     $BusinessShortCode = '174379';
@@ -131,34 +123,42 @@ if ($money == 0) {
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_POST, true);
     curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+    
+    // Execute cURL request
     $curl_response = curl_exec($curl);
+    if (curl_errno($curl)) {
+        $response['errors'][] = "cURL error: " . curl_error($curl);
+    }
     curl_close($curl);
 
-    // Decode and handle the response
+    // Log the entire response for debugging
     $data = json_decode($curl_response);
+    error_log("cURL Response: " . print_r($data, true));
+
+    // Extract response details
     $CheckoutRequestID = isset($data->CheckoutRequestID) ? $data->CheckoutRequestID : null;
     $ResponseCode = isset($data->ResponseCode) ? $data->ResponseCode : '';
+    $ResponseDescription = isset($data->ResponseDescription) ? $data->ResponseDescription : '';
 
     // Determine status based on response code
-    $status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
-
-    // Insert all data into `EventRegcheckout` table
     if ($CheckoutRequestID) {
-        // Insert into `EventRegcheckout`
+        $status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
+
+        // Insert all data into `EventRegcheckout` table
         $eventSql = "INSERT INTO eventregcheckout (CheckoutRequestID, event_id, event_name, event_location, event_date, email, member_name, phone, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $eventStmt = $conn->prepare($eventSql);
         $eventStmt->bind_param("ssssssssss", $CheckoutRequestID, $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone, $money, $status);
 
         if ($eventStmt->execute()) {
             $response['success'] = true;
-            $response['message'] = "Kindly enter your Mpesa Pin to complete the payment";
+            $response['message'] = "Kindly enter your Mpesa Pin to complete the payment.";
         } else {
             $response['errors'][] = "Event Database error: " . $eventStmt->error;
         }
 
         $eventStmt->close();
     } else {
-        $response['errors'][] = "Error in transaction processing. Please try again.";
+        $response['errors'][] = "Error in transaction processing: " . $ResponseDescription;
     }
 }
 
@@ -166,6 +166,12 @@ if ($money == 0) {
 $conn->close();
 
 // Store response in session and redirect
-$_SESSION['response'] = $response;
-header("Location: " . $_SERVER['HTTP_REFERER']);
-exit();
+// $_SESSION['response'] = $response;
+// header("Location: " . $_SERVER['HTTP_REFERER']);
+// exit();
+
+
+if ($ResponseCode == "0") {
+  echo "The CheckoutRequestID for this transaction is : " . $CheckoutRequestID;
+}
+?>
