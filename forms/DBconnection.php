@@ -16,3 +16,11 @@ if ($conn->connect_error) {
 // require_once('DBconnection.php');
 
 ?>
+
+
+Error: (XID ekgkka) “/usr/local/cpanel/3rdparty/bin/git” reported error
+ code “1” when it ended: error: The following untracked working 
+ tree files would be overwritten by merge:
+  forms/Payment/Mpesa-Daraja-Api-main/PremiumMpesastkresponse.json
+ forms/Payment/Mpesa-Daraja-Api-main/callbackEventR.json 
+ Please move or remove them before you merge. Aborting
