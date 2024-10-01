@@ -91,6 +91,7 @@ if ($ResultCode == 0) {
             Thank you for registering for $eventName! We're excited to have you join us on $eventDate.
 
             Event Details:
+            
             Location: $eventLocation
             Time: 10:00 AM
 
