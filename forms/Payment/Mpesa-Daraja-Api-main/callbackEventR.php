@@ -2,7 +2,8 @@
 session_start(); // Start the session
 
 // Include the database connection file
-include 'AGLdbconnection.php';
+
+require_once('../../DBconnection.php');
 require('../../assets/fpdf/fpdf.php');
 require_once('../../forms/DBconnection.php');
 require('../../assets/phpqrcode/qrlib.php'); // Include the phpqrcode library
