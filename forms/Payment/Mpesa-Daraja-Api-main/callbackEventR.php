@@ -3,17 +3,21 @@ session_start(); // Start the session
 
 // Include the database connection file
 
-require_once('../../DBconnection.php');
-require('../../assets/fpdf/fpdf.php');
-require_once('../../forms/DBconnection.php');
-require('../../assets/phpqrcode/qrlib.php'); // Include the phpqrcode library
+// require_once('../../DBconnection.php');
+// require('../../assets/fpdf/fpdf.php');
+// require_once('../../forms/DBconnection.php');
+// require('../../assets/phpqrcode/qrlib.php'); 
+
+require_once('../members/forms/DBconnection.php');
+require('../members/assets/fpdf/fpdf.php');
+require('../members/assets/phpqrcode/qrlib.php');
 
 header("Content-Type: application/json");
 
 // Initialize response array
 $response = [
     'success' => false,
-    'message' => '',           
+    'message' => '',
     'errors' => []
 ];
 
@@ -77,30 +81,31 @@ if ($ResultCode == 0) {
 
         // Insert the data into event_registrations table
         $insertQuery = $conn->prepare("INSERT INTO event_registrations (event_id, event_name, event_location, event_date, member_email, member_name, contact, registration_date, payment_code, invitation_card)  
-                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $invitationCardPath = ''; // Initialize invitation card path
-        $insertQuery->bind_param("issssssis", $eventId, $eventName, $eventLocation, $eventDate, $email, $memberName, $UserPhoneNumber, $registrationDate, $TransactionId);
+        $insertQuery->bind_param("issssssiss", $eventId, $eventName, $eventLocation, $eventDate, $email, $memberName, $UserPhoneNumber, $registrationDate, $TransactionId, $invitationCardPath);
         
         if (!$insertQuery->execute()) {
             $response['errors'][] = "Failed to insert event registration: " . $conn->error;
             $_SESSION['response'] = $response;
             exit;
         }
+        
 
         // PDF generation
         // Determine the file path for the PDF
         $pdfDirectory = '../../assets/Documents/EventCards/'; // Directory to save PDFs
         $pdfFilename = $email . '_' . str_replace(' ', '_', $eventName) . '.pdf'; // Name of the PDF file
         $pdfFilePath = $pdfDirectory . $pdfFilename; // Complete path to save PDF
-        
+
         // Create PDF
         $pdf = new FPDF('P', 'mm', [127, 178]); // Set custom page size
         $pdf->AddPage();
-        
+
         // Set fill color and draw background rectangle
         $pdf->SetFillColor(195, 198, 214);
         $pdf->Rect(0, 0, 127, 178, 'F');
-        
+
         // Add header image
         $header_image = '../../assets/img/logo.png';
         if (file_exists($header_image)) {
@@ -124,16 +129,16 @@ if ($ResultCode == 0) {
         $pdf->Cell(0, 10, 'Event Date: ' . $eventDate, 0, 1, 'C');
         $pdf->Ln(3);
         $pdf->Cell(0, 10, 'Location: ' . $eventLocation, 0, 1, 'C');
-        
+
         // Generate QR code with a unique filename
         $sanitizedEmail = preg_replace('/[^a-zA-Z0-9_]/', '_', $email); // Sanitize email for filename
         $sanitizedEventName = preg_replace('/[^a-zA-Z0-9_]/', '_', $eventName); // Sanitize event name for filename
         $qr_filename = $sanitizedEmail . '_' . $sanitizedEventName . '.png'; // Create unique filename
         $qr_file = '../../assets/img/qrcodes/' . $qr_filename; // Set the file path for the QR code
-        
+
         $qr_content = "Member Name: $memberName\nEvent: $eventName\nDate: $eventDate\nLocation: $eventLocation\nEmail: $email";
         QRcode::png($qr_content, $qr_file, QR_ECLEVEL_L, 4); // Generate the QR code and save it to the specified path
-        
+
         // Add QR code to PDF
         if (file_exists($qr_file)) {
             $qr_image_width = 60;
@@ -147,7 +152,7 @@ if ($ResultCode == 0) {
         // Update the invitation_card field with the PDF path
         $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ? AND event_id = ?");
         $updateQuery->bind_param("ssi", $pdfFilePath, $email, $eventId);
-        
+
         if (!$updateQuery->execute()) {
             $response['errors'][] = "Failed to update invitation card path: " . $conn->error;
             $_SESSION['response'] = $response;
@@ -198,4 +203,3 @@ $_SESSION['response'] = $response;
 
 // Return the JSON response
 echo json_encode($response);
-?>
