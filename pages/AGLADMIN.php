@@ -153,7 +153,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     </style>
 
-
     <div class="innerlinksNav">
         <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
         <a class="innerlinksNav-a" href="#PlannedEvents">Comming Events</a>
