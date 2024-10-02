@@ -3,14 +3,13 @@ session_start(); // Start the session
 
 // Include the database connection file
 
-// require_once('../../DBconnection.php');
-// require('../../assets/fpdf/fpdf.php');
-// require_once('../../forms/DBconnection.php');
-// require('../../assets/phpqrcode/qrlib.php'); 
+require_once('../../DBconnection.php');
+require('../../assets/fpdf/fpdf.php');
+require('../../assets/phpqrcode/qrlib.php'); 
 
-require_once('../members/forms/DBconnection.php');
-require('../members/assets/fpdf/fpdf.php');
-require('../members/assets/phpqrcode/qrlib.php');
+// require_once('../members/forms/DBconnection.php');
+// require('../members/assets/fpdf/fpdf.php');
+// require('../members/assets/phpqrcode/qrlib.php');
 
 header("Content-Type: application/json");
 
