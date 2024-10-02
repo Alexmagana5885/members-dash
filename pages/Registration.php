@@ -328,7 +328,7 @@ session_start();
             <h3 style="color: blue">Education</h3>
             <p><strong>Highest Qualification:</strong> <span id="review-highestDegree"></span></p>
             <p><strong>Institution:</strong> <span id="review-institution"></span></p>
-            <p><strong>Start Date:</strong> <span id="review-startDate"></span></p>
+            <!-- <p><strong>Start Date:</strong> <span id="review-startDate"></span></p> -->
             <p><strong>Graduation Year:</strong> <span id="review-graduationYear"></span></p>
 
 
@@ -429,7 +429,6 @@ session_start();
                 // Education details
                 document.getElementById('review-highestDegree').textContent = document.getElementById('highestDegree').value;
                 document.getElementById('review-institution').textContent = document.getElementById('institution').value;
-                document.getElementById('review-startDate').textContent = document.getElementById('startDate').value;
                 document.getElementById('review-graduationYear').textContent = document.getElementById('graduationYear').value;
 
                 // Profession details
