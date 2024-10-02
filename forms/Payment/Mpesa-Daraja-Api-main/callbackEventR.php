@@ -3,9 +3,9 @@ session_start(); // Start the session
 
 // Include the database connection file
 include 'AGLdbconnection.php';
-require('../assets/fpdf/fpdf.php');
-require_once('../forms/DBconnection.php');
-require('../assets/phpqrcode/qrlib.php'); // Include the phpqrcode library
+require('../../assets/fpdf/fpdf.php');
+require_once('../../forms/DBconnection.php');
+require('../../assets/phpqrcode/qrlib.php'); // Include the phpqrcode library
 
 header("Content-Type: application/json");
 
@@ -88,7 +88,7 @@ if ($ResultCode == 0) {
 
         // PDF generation
         // Determine the file path for the PDF
-        $pdfDirectory = '../assets/Documents/EventCards/'; // Directory to save PDFs
+        $pdfDirectory = '../../assets/Documents/EventCards/'; // Directory to save PDFs
         $pdfFilename = $email . '_' . str_replace(' ', '_', $eventName) . '.pdf'; // Name of the PDF file
         $pdfFilePath = $pdfDirectory . $pdfFilename; // Complete path to save PDF
         
@@ -101,7 +101,7 @@ if ($ResultCode == 0) {
         $pdf->Rect(0, 0, 127, 178, 'F');
         
         // Add header image
-        $header_image = '../assets/img/logo.png';
+        $header_image = '../../assets/img/logo.png';
         if (file_exists($header_image)) {
             $header_image_width = 50;
             $x_position = ($pdf->GetPageWidth() - $header_image_width) / 2;
@@ -128,7 +128,7 @@ if ($ResultCode == 0) {
         $sanitizedEmail = preg_replace('/[^a-zA-Z0-9_]/', '_', $email); // Sanitize email for filename
         $sanitizedEventName = preg_replace('/[^a-zA-Z0-9_]/', '_', $eventName); // Sanitize event name for filename
         $qr_filename = $sanitizedEmail . '_' . $sanitizedEventName . '.png'; // Create unique filename
-        $qr_file = '../assets/img/qrcodes/' . $qr_filename; // Set the file path for the QR code
+        $qr_file = '../../assets/img/qrcodes/' . $qr_filename; // Set the file path for the QR code
         
         $qr_content = "Member Name: $memberName\nEvent: $eventName\nDate: $eventDate\nLocation: $eventLocation\nEmail: $email";
         QRcode::png($qr_content, $qr_file, QR_ECLEVEL_L, 4); // Generate the QR code and save it to the specified path

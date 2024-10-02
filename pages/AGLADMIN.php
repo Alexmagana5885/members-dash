@@ -653,8 +653,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 
                 // Prepare the SQL query
-                $sql = "SELECT event_name, event_location, event_date FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
+                $sql = "SELECT event_name, event_location, event_date, invitation_card FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
                 $stmt = $conn->prepare($sql);
+
 
                 if ($stmt === false) {
                     die('Prepare failed: ' . htmlspecialchars($conn->error));
@@ -673,6 +674,22 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 }
 
                 ?>
+
+                <style>
+                    .iventcard {
+                        background-color: #007bff;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        width: 100%;
+                    }
+
+                    .iventcard:hover {
+                        background-color: #0056b3;
+                    }
+                </style>
                 <div class="card">
                     <h4>Registered Events</h4>
 
@@ -681,20 +698,25 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <?php
                     if ($resultmessage->num_rows > 0) {
                         while ($row = $resultmessage->fetch_assoc()) {
+                            $uniqueId = strtolower(str_replace(' ', '_', htmlspecialchars($row['event_name']))) . '_' . htmlspecialchars($row['event_date']);
+
                             echo '<div>';
                             echo '<h5>' . htmlspecialchars($row['event_name']) . '</h5>';
                             echo '<p>' . htmlspecialchars($row['event_location']) . '</p>';
                             echo '<p>' . htmlspecialchars($row['event_date']) . '</p>';
+
+                            // Use the invitation_card path for the download
+                            $invitationCardPath = htmlspecialchars($row['invitation_card']);
+                            echo '<button style="background-color: #007bff;" class="iventcard" id="' . $uniqueId . '" type="button" onclick="window.location.href=\'' . $invitationCardPath . '\'">Download Invitation Card</button>';
+
                             echo '</div>';
                             echo '<hr>';
                         }
                     } else {
                         echo '<p>No upcoming registered events.</p>';
                     }
-
-                    // $stmt->close();
-                    // $conn->close();
                     ?>
+
                 </div>
             </div>
             <!-- ................................... -->
