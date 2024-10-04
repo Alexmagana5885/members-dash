@@ -7,7 +7,8 @@ require('../assets/phpqrcode/qrlib.php'); // Include the phpqrcode library
 // Set member email
 // $member_email = 'maganaadmin@agl.or.ke';
 
-$member_email = $userEmail;
+// $member_email = $userEmail;
+$member_email = 'maganaadmin@agl.or.ke';
 
 // Query to fetch event and member data
 $query = "SELECT er.event_name, er.event_date, er.event_location, er.member_name, er.member_email,
