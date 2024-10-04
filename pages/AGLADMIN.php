@@ -253,9 +253,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="qrcode.php">QRCODE</a></li>
 
 
-                    <!-- <li><a href="new.php">new</a></li>
+                    <!-- 
                     <li><a href="info.php" target="_blank">info</a></li> -->
                     <!-- <li><a href="MembersPortal.php">memberportal</a></li>
                     <li><a href="AdminMember.php">memberadmin</a></li> -->
