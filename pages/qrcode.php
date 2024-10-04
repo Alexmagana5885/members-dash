@@ -12,7 +12,7 @@ $result = $stmt->get_result();
 
 // Fetch the user data
 $userData = $result->fetch_assoc();
-
+ 
 if ($userData) {
     // Prepare the content for the QR code
     $content = "Name: " . $userData['name'] . "\n" .
