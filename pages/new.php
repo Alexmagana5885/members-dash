@@ -5,9 +5,6 @@ require_once('../forms/DBconnection.php');
 require('../assets/phpqrcode/qrlib.php'); // Include the phpqrcode library
 
 // Set member email
-// $member_email = 'maganaadmin@agl.or.ke';
-
-// $member_email = $userEmail;
 $member_email = 'maganaadmin@agl.or.ke';
 
 // Query to fetch event and member data
@@ -101,14 +98,21 @@ if ($result->num_rows > 0) {
     $qr_file = '../assets/qr/temp_qrcode.png'; // Path to save the QR code image
 
     // Generate the QR code and save it as an image
-    QRcode::png($qr_content, $qr_file, QR_ECLEVEL_L, 4);
+    if (QRcode::png($qr_content, $qr_file, QR_ECLEVEL_L, 4) === false) {
+        echo "Error generating QR code.";
+        exit;
+    }
+
+    // Check if the QR code file was created successfully
+    if (!file_exists($qr_file)) {
+        echo "QR code file was not created.";
+        exit;
+    }
 
     // Add QR code image to the new page and center it
-    if (file_exists($qr_file)) {
-        $qr_image_width = 60; // Define QR code image width
-        $x_position = ($page_width - $qr_image_width) / 2; // Calculate X to center the image
-        $pdf->Image($qr_file, $x_position, 60, $qr_image_width); // Centered QR code at Y=60
-    }
+    $qr_image_width = 60; // Define QR code image width
+    $x_position = ($page_width - $qr_image_width) / 2; // Calculate X to center the image
+    $pdf->Image($qr_file, $x_position, 60, $qr_image_width); // Centered QR code at Y=60
 
     // Output the PDF in the browser
     $pdf->Output('I', 'Invitation_Card.pdf');
