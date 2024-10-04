@@ -95,24 +95,27 @@ if ($result->num_rows > 0) {
 
     // Generate QR code for user information
     $qr_content = "Member Name: $member_name\nEvent: $event_name\nDate: $event_date\nLocation: $event_location\nEmail: $member_email";
-    $qr_file = '../assets/qr/temp_qrcode.png'; // Path to save the QR code image
+    
+    // Define the directory to save the QR code
+    $qr_directory = '../assets/qr/';
+    
+    // Create the directory if it doesn't exist
+    if (!is_dir($qr_directory)) {
+        mkdir($qr_directory, 0755, true); // Create directory with permissions
+    }
+    
+    // Set the path to save the QR code image
+    $qr_file = $qr_directory . 'temp_qrcode.png'; 
 
     // Generate the QR code and save it as an image
-    if (QRcode::png($qr_content, $qr_file, QR_ECLEVEL_L, 4) === false) {
-        echo "Error generating QR code.";
-        exit;
-    }
-
-    // Check if the QR code file was created successfully
-    if (!file_exists($qr_file)) {
-        echo "QR code file was not created.";
-        exit;
-    }
+    QRcode::png($qr_content, $qr_file, QR_ECLEVEL_L, 4);
 
     // Add QR code image to the new page and center it
-    $qr_image_width = 60; // Define QR code image width
-    $x_position = ($page_width - $qr_image_width) / 2; // Calculate X to center the image
-    $pdf->Image($qr_file, $x_position, 60, $qr_image_width); // Centered QR code at Y=60
+    if (file_exists($qr_file)) {
+        $qr_image_width = 60; // Define QR code image width
+        $x_position = ($page_width - $qr_image_width) / 2; // Calculate X to center the image
+        $pdf->Image($qr_file, $x_position, 60, $qr_image_width); // Centered QR code at Y=60
+    }
 
     // Output the PDF in the browser
     $pdf->Output('I', 'Invitation_Card.pdf');
