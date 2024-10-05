@@ -49,7 +49,7 @@ if ($result->num_rows > 0) {
     $pdf->SetXY(5, 20);
     $pdf->Cell(30, 5,  $event_location, 0, 0, 'L'); // Left-aligned location
     if (file_exists($header_image)) {
-        $header_image_width = 20; // Reduced width of the logo image
+        $header_image_width = 25; // Reduced width of the logo image
         $header_image_x = ($page_width - $header_image_width) / 2; // Centered image
         $pdf->Image($header_image, $header_image_x, 15, $header_image_width); // Add logo image
     }
@@ -65,12 +65,12 @@ if ($result->num_rows > 0) {
     $pdf->Ln(10);
 
     // Set font for event name and center it
-    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->SetFont('Arial', '', 13);
     $pdf->Cell(0, 8, $event_name, 0, 1, 'C'); // Center text
     $pdf->Ln(3);
 
     // Add member name and center it
-    $pdf->SetFont('Arial', '', 10);
+    $pdf->SetFont('Arial', 'B', 12);
     $pdf->Cell(0, 8, $member_name, 0, 1, 'C');
 
     // Add more space before the QR code
@@ -88,7 +88,7 @@ if ($result->num_rows > 0) {
 
     // Center the QR code image
     if (file_exists($qrCodeFile)) {
-        $qr_code_width = 30; // Width of the QR code
+        $qr_code_width = 35; // Width of the QR code
         $x_position = ($page_width - $qr_code_width) / 2; // Center the image
         $pdf->Image($qrCodeFile, $x_position, 50, $qr_code_width); // Centered QR code at Y=50
         $pdf->Ln(5); // Space below the QR code
