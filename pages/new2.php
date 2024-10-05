@@ -44,15 +44,12 @@ if ($result->num_rows > 0) {
     $pdf->Cell(0, 8, 'Association of Government Librarians', 0, 1, 'C'); // Center 'AGL' text at the top
     $pdf->Ln(5);
 
-
-
+    // Add header image
     if (file_exists($header_image)) {
         $header_image_width = 25; // Reduced width of the logo image
         $header_image_x = ($page_width - $header_image_width) / 2; // Centered image
         $pdf->Image($header_image, $header_image_x, 15, $header_image_width); // Add logo image
     }
-
-
 
     // Add a blue line below the header section
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
@@ -63,22 +60,22 @@ if ($result->num_rows > 0) {
     $pdf->Ln(10);
 
     // Set font for event name and center it
-    $pdf->SetFont('Arial', '', 13);
+    $pdf->SetFont('Arial', 'B', 14); // Bold for emphasis
     $pdf->Cell(0, 8, $event_name, 0, 1, 'C'); // Center text
-    $pdf->Ln(3);
+    $pdf->Ln(2); // Reduced space
 
     // Add member name and center it
-    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->SetFont('Arial', '', 12);
     $pdf->Cell(0, 8, $member_name, 0, 1, 'C');
-
+    
     // Add more space before the QR code
     $pdf->Ln(5);
 
     // Prepare the content for the QR code using the user data
     $content = "Name: " . $member_name . "\n" .
-        "Email: " . $member_email . "\n" .
-        "Location: " . $event_location . "\n" .
-        "Event Date: " . $event_date;
+               "Email: " . $member_email . "\n" .
+               "Location: " . $event_location . "\n" .
+               "Event Date: " . $event_date;
 
     // Generate the QR code image and save it to a file
     $qrCodeFile = 'qr_code.png'; // Path where QR code will be saved
@@ -88,32 +85,28 @@ if ($result->num_rows > 0) {
     if (file_exists($qrCodeFile)) {
         $qr_code_width = 35; // Width of the QR code
         $x_position = ($page_width - $qr_code_width) / 2; // Center the image
-        $pdf->Image($qrCodeFile, $x_position, 50, $qr_code_width); // Centered QR code at Y=50
+        $pdf->Image($qrCodeFile, $x_position, 55, $qr_code_width); // Centered QR code at Y=50
         $pdf->Ln(5); // Space below the QR code
     } else {
         $pdf->Cell(0, 8, 'QR Code not found.', 0, 1, 'C'); // Center error message
         $pdf->Ln(5); // Spacing after error message
     }
 
-    $pdf->Ln(20);
-
     // Add a blue line below the QR code
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
     $pdf->SetLineWidth(0.5); // Set line width
     $pdf->Line(5, $pdf->GetY() + 5, 95, $pdf->GetY() + 5); // Draw the line below the QR code
 
-    // Add website link in italics below the line
+    // Add event location and date
+    $pdf->SetFont('Arial', '', 9); // Smaller font for location and date
+    $pdf->SetXY(5, $pdf->GetY() + 10);
+    $pdf->Cell(30, 5, $event_location, 0, 0, 'L'); // Left-aligned location
 
-    // Add the event location, date, and logo in a single row
-    $pdf->SetFont('Arial', '', 8); // Smaller font for location and date
-    $pdf->SetXY(5, 20);
-    $pdf->Cell(30, 5,  $event_location, 0, 0, 'L'); // Left-aligned location
+    $pdf->SetXY($page_width - 40, $pdf->GetY() - 5); // Adjust X position for right alignment
+    $pdf->Cell(30, 5, $event_date, 0, 0, 'R'); // Right-aligned date
 
-    $pdf->SetXY($page_width - 40, 20); // Adjust X position for right alignment
-    $pdf->Cell(30, 5,  $event_date, 0, 0, 'R'); // Right-aligned date
-    
-
-    $pdf->Ln(5); // Add space below the line
+    // Add space before website link
+    $pdf->Ln(8); // Adjust space as needed
     $pdf->SetFont('Arial', 'I', 7); // Set font for the website link
     $pdf->Cell(0, 8, 'https://www.agl.or.ke/', 0, 1, 'C'); // Center website link
 
