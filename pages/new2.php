@@ -44,18 +44,6 @@ if ($result->num_rows > 0) {
     $pdf->Cell(0, 8, 'Association of Government Librarians', 0, 1, 'C'); // Center 'AGL' text at the top
     $pdf->Ln(5);
 
-    // Add the event location, date, and logo in a single row
-    $pdf->SetFont('Arial', '', 8); // Smaller font for location and date
-    $pdf->SetXY(5, 20);
-    $pdf->Cell(30, 5,  $event_location, 0, 0, 'L'); // Left-aligned location
-    if (file_exists($header_image)) {
-        $header_image_width = 25; // Reduced width of the logo image
-        $header_image_x = ($page_width - $header_image_width) / 2; // Centered image
-        $pdf->Image($header_image, $header_image_x, 15, $header_image_width); // Add logo image
-    }
-    $pdf->SetXY($page_width - 40, 20); // Adjust X position for right alignment
-    $pdf->Cell(30, 5,  $event_date, 0, 0, 'R'); // Right-aligned date
-
     // Add a blue line below the header section
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
     $pdf->SetLineWidth(0.5); // Set line width
@@ -68,10 +56,6 @@ if ($result->num_rows > 0) {
     $pdf->SetFont('Arial', '', 13);
     $pdf->Cell(0, 8, $event_name, 0, 1, 'C'); // Center text
     $pdf->Ln(3);
-
-    // Add member name and center it
-    $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(0, 8, $member_name, 0, 1, 'C');
 
     // Add more space before the QR code
     $pdf->Ln(5);
@@ -127,6 +111,13 @@ if ($result->num_rows > 0) {
     $pdf->SetXY(0, $pdf->GetY() + 10); // Set position below the rectangle
     $pdf->SetFont('Arial', 'B', 12); // Set font for member status
     $pdf->Cell(0, 8, $member_status, 0, 1, 'C'); // Center member status text
+
+    // Add event location and member name below the member status
+    $pdf->Ln(5); // Space before member name and location
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->Cell(0, 8, $member_name, 0, 1, 'C'); // Center member name
+    $pdf->Cell(0, 8, $event_location, 0, 1, 'C'); // Center event location
+    $pdf->Cell(0, 8, $event_date, 0, 1, 'C'); // Center event date
 
     // Output the PDF in the browser
     $pdf->Output('I', 'Invitation_Card.pdf');
