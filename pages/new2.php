@@ -47,14 +47,14 @@ if ($result->num_rows > 0) {
     // Add the event location, date, and logo in a single row
     $pdf->SetFont('Arial', '', 8); // Smaller font for location and date
     $pdf->SetXY(5, 20);
-    $pdf->Cell(30, 5, 'Location: ' . $event_location, 0, 0, 'L'); // Left-aligned location
+    $pdf->Cell(30, 5,  $event_location, 0, 0, 'L'); // Left-aligned location
     if (file_exists($header_image)) {
         $header_image_width = 20; // Reduced width of the logo image
         $header_image_x = ($page_width - $header_image_width) / 2; // Centered image
         $pdf->Image($header_image, $header_image_x, 15, $header_image_width); // Add logo image
     }
     $pdf->SetXY($page_width - 40, 20); // Adjust X position for right alignment
-    $pdf->Cell(30, 5, 'Date: ' . $event_date, 0, 0, 'R'); // Right-aligned date
+    $pdf->Cell(30, 5,  $event_date, 0, 0, 'R'); // Right-aligned date
 
     // Add a blue line below the header section
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
@@ -96,6 +96,8 @@ if ($result->num_rows > 0) {
         $pdf->Cell(0, 8, 'QR Code not found.', 0, 1, 'C'); // Center error message
         $pdf->Ln(5); // Spacing after error message
     }
+
+    $pdf->Ln(20);
 
     // Add a blue line below the QR code
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
