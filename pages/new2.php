@@ -45,16 +45,15 @@ if ($result->num_rows > 0) {
     $pdf->Ln(5);
 
     // Add the event location, date, and logo in a single row
-    $pdf->SetFont('Arial', '', 8); // Smaller font for location and date
-    $pdf->SetXY(5, 20);
-    $pdf->Cell(30, 5,  $event_location, 0, 0, 'L'); // Left-aligned location
+
+
     if (file_exists($header_image)) {
         $header_image_width = 25; // Reduced width of the logo image
         $header_image_x = ($page_width - $header_image_width) / 2; // Centered image
         $pdf->Image($header_image, $header_image_x, 15, $header_image_width); // Add logo image
     }
-    $pdf->SetXY($page_width - 40, 20); // Adjust X position for right alignment
-    $pdf->Cell(30, 5,  $event_date, 0, 0, 'R'); // Right-aligned date
+
+
 
     // Add a blue line below the header section
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
@@ -97,17 +96,20 @@ if ($result->num_rows > 0) {
         $pdf->Ln(5); // Spacing after error message
     }
 
-    $pdf->Ln(20);
+    $pdf->Ln(25);
 
     // Add a blue line below the QR code
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
     $pdf->SetLineWidth(0.5); // Set line width
     $pdf->Line(5, $pdf->GetY() + 5, 95, $pdf->GetY() + 5); // Draw the line below the QR code
 
-    // Add website link in italics below the line
-    $pdf->Ln(5); // Add space below the line
-    $pdf->SetFont('Arial', 'I', 7); // Set font for the website link
-    $pdf->Cell(0, 8, 'https://www.agl.or.ke/', 0, 1, 'C'); // Center website link
+        $pdf->SetFont('Arial', '', 8); // Smaller font for location and date
+    $pdf->SetXY(5, 20);
+    $pdf->Cell(30, 5,  $event_location, 0, 0, 'L'); // Left-aligned location
+
+    $pdf->SetXY($page_width - 40, 20); // Adjust X position for right alignment
+    $pdf->Cell(30, 5,  $event_date, 0, 0, 'R'); // Right-aligned date
+
 
     // Determine member status
     $status_query = "SELECT position FROM officialsmembers WHERE personalmembership_email = '$member_email'";
@@ -118,6 +120,12 @@ if ($result->num_rows > 0) {
         $status_data = $status_result->fetch_assoc();
         $member_status = $status_data['position']; // Set status to the position found
     }
+
+        // Add website link in italics below the line
+        $pdf->Ln(5); // Add space below the line
+        $pdf->SetFont('Arial', 'I', 7); // Set font for the website link
+        $pdf->Cell(0, 8, 'https://www.agl.or.ke/', 0, 1, 'C'); // Center website link
+    
 
     // Add sky blue background for member status
     $pdf->SetFillColor(135, 206, 250); // Sky blue color
