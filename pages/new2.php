@@ -44,17 +44,15 @@ if ($result->num_rows > 0) {
     $pdf->Cell(0, 8, 'Association of Government Librarians', 0, 1, 'C'); // Center 'AGL' text at the top
     $pdf->Ln(5);
 
-    // Add the event location, date, and logo in a single row
-    $pdf->SetFont('Arial', '', 8); // Smaller font for location and date
-    $pdf->SetXY(5, 20);
-    $pdf->Cell(30, 5,  $event_location, 0, 0, 'L'); // Left-aligned location
+
+
     if (file_exists($header_image)) {
         $header_image_width = 25; // Reduced width of the logo image
         $header_image_x = ($page_width - $header_image_width) / 2; // Centered image
         $pdf->Image($header_image, $header_image_x, 15, $header_image_width); // Add logo image
     }
-    $pdf->SetXY($page_width - 40, 20); // Adjust X position for right alignment
-    $pdf->Cell(30, 5,  $event_date, 0, 0, 'R'); // Right-aligned date
+
+
 
     // Add a blue line below the header section
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
@@ -78,9 +76,9 @@ if ($result->num_rows > 0) {
 
     // Prepare the content for the QR code using the user data
     $content = "Name: " . $member_name . "\n" .
-               "Email: " . $member_email . "\n" .
-               "Location: " . $event_location . "\n" .
-               "Event Date: " . $event_date;
+        "Email: " . $member_email . "\n" .
+        "Location: " . $event_location . "\n" .
+        "Event Date: " . $event_date;
 
     // Generate the QR code image and save it to a file
     $qrCodeFile = 'qr_code.png'; // Path where QR code will be saved
@@ -105,6 +103,16 @@ if ($result->num_rows > 0) {
     $pdf->Line(5, $pdf->GetY() + 5, 95, $pdf->GetY() + 5); // Draw the line below the QR code
 
     // Add website link in italics below the line
+
+    // Add the event location, date, and logo in a single row
+    $pdf->SetFont('Arial', '', 8); // Smaller font for location and date
+    $pdf->SetXY(5, 20);
+    $pdf->Cell(30, 5,  $event_location, 0, 0, 'L'); // Left-aligned location
+
+    $pdf->SetXY($page_width - 40, 20); // Adjust X position for right alignment
+    $pdf->Cell(30, 5,  $event_date, 0, 0, 'R'); // Right-aligned date
+    
+
     $pdf->Ln(5); // Add space below the line
     $pdf->SetFont('Arial', 'I', 7); // Set font for the website link
     $pdf->Cell(0, 8, 'https://www.agl.or.ke/', 0, 1, 'C'); // Center website link
@@ -136,4 +144,3 @@ if ($result->num_rows > 0) {
 
 // Close the database connection
 $conn->close();
-?>
