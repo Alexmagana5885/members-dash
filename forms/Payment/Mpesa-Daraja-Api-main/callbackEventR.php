@@ -183,7 +183,7 @@ if ($ResultCode == 0) {
             Location: $eventLocation
             Time: 10:00 AM
 
-            Please check your email for more details and any future updates.
+            Kindly download your invitation Card from the Portal. 
 
             We look forward to seeing you there!
 
