@@ -15,8 +15,8 @@ $response = [
 ];
 
 // Check and create directories for PDFs and QR codes
-$pdfDirectory = '../../assets/Documents/EventCards/';
-$qrCodeDirectory = '../../assets/img/qrcodes/';
+$pdfDirectory = '../../../assets/Documents/EventCards/';
+$qrCodeDirectory = '../../../assets/img/qrcodes/';
 
 if (!is_dir($pdfDirectory)) {
     if (!mkdir($pdfDirectory, 0777, true)) {
