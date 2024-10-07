@@ -1,11 +1,11 @@
 <?php
 // Include the necessary libraries
-require('../assets/fpdf/fpdf.php');
-require_once('../forms/DBconnection.php');
-require_once '../assets/phpqrcode/qrlib.php';
+require('../../assets/fpdf/fpdf.php');
+require_once('../../forms/DBconnection.php');
+require_once '../../assets/phpqrcode/qrlib.php';
 
 // Set member email
-$member_email = 'maganaadmin@agl.or.ke';
+$member_email = $email;
 
 // Create directory for QR codes if it doesn't exist
 $qrDir = '../assets/img/qrcodes/';

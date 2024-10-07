@@ -1,14 +1,9 @@
 <?php
 session_start(); // Start the session
 
-
 require_once('../../DBconnection.php');
 require('../../../assets/fpdf/fpdf.php');
 require('../../../assets/phpqrcode/qrlib.php');
-
-// require_once('../members/forms/DBconnection.php');
-// require('../members/assets/fpdf/fpdf.php');
-// require('../members/assets/phpqrcode/qrlib.php');
 
 header("Content-Type: application/json");
 
@@ -78,7 +73,7 @@ if ($ResultCode == 0) {
     $checkoutQuery->bind_param("s", $CheckoutRequestID);
     $checkoutQuery->execute();
     $checkoutResult = $checkoutQuery->get_result();
-
+ 
     if (!$checkoutResult) {
         $response['errors'][] = "Database query failed: " . $conn->error;
         $_SESSION['response'] = $response;
@@ -109,7 +104,7 @@ if ($ResultCode == 0) {
             exit;
         }
         
-        // PDF generation
+        // PDF and QR code generation logic (REPLACED)
         // Determine the file path for the PDF
         $pdfFilename = $email . '_' . str_replace(' ', '_', $eventName) . '.pdf'; // Name of the PDF file
         $pdfFilePath = $pdfDirectory . $pdfFilename; // Complete path to save PDF
@@ -200,21 +195,25 @@ if ($ResultCode == 0) {
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
         if (!mail($to, $subject, $message, $headers)) {
-            $response['errors'][] = "Failed to send confirmation email.";
+            $response['errors'][] = "Failed to send email to $to";
+            $_SESSION['response'] = $response;
+            exit;
         }
 
-        // Prepare the response
+        // Set the success response
         $response['success'] = true;
-        $response['message'] = 'Registration successful! Confirmation email sent.';
+        $response['message'] = "Transaction successful! Registration complete.";
+        $_SESSION['response'] = $response;
 
     } else {
-        $response['errors'][] = "No matching record found for CheckoutRequestID.";
+        $response['errors'][] = "No matching CheckoutRequestID found for event registration.";
+        $_SESSION['response'] = $response;
     }
 } else {
-    $response['errors'][] = "Payment failed: $ResultDesc";
+    $response['message'] = "Transaction failed: $ResultDesc";
+    $_SESSION['response'] = $response;
 }
 
-// Set session response and return JSON response
-$_SESSION['response'] = $response;
-echo json_encode($response);
+// Close database connection
+$conn->close();
 ?>
