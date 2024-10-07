@@ -76,7 +76,7 @@ addMemberData($pdf, 'Email', checkNull($member['email']));
 addMemberData($pdf, 'Home Address', checkNull($member['home_address']));
 addMemberData($pdf, 'Highest Degree', checkNull($member['highest_degree']));
 addMemberData($pdf, 'Institution', checkNull($member['institution']));
-addMemberData($pdf, 'Start Date', checkNull($member['start_date']));
+addMemberData($pdf, 'Gender', checkNull($member['gender']));
 addMemberData($pdf, 'Graduation Year', checkNull($member['graduation_year']));
 addMemberData($pdf, 'Profession', checkNull($member['profession']));
 addMemberData($pdf, 'Experience', checkNull($member['experience']));

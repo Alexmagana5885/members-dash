@@ -2,6 +2,7 @@
 // Include the necessary libraries
 require('../assets/fpdf/fpdf.php');
 require_once('../forms/DBconnection.php');
+require_once('../path/to/phpqrcode/qrlib.php'); // Make sure to include the QR code library
 
 // Set member email
 $member_email = 'maganaadmin@agl.or.ke';
@@ -27,7 +28,7 @@ if ($result->num_rows > 0) {
     $event_location = $data['event_location'];
     $member_name = $data['member_name'];
 
-    // Create PDF with smaller size
+    // Create a PDF with smaller size
     $pdf = new FPDF('P', 'mm', [100, 150]); // Set smaller custom page size
     $pdf->AddPage();
 
@@ -53,7 +54,6 @@ if ($result->num_rows > 0) {
     $pdf->Cell(0, 3, 'Association of Government Librarians', 0, 1, 'R'); // Center 'AGL' text below the logo
     $pdf->Ln(5);
 
-
     // Add a blue line below the header section
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
     $pdf->SetLineWidth(0.5); // Set line width
@@ -71,29 +71,30 @@ if ($result->num_rows > 0) {
     $pdf->SetFont('Arial', '', 10);
     $pdf->Cell(0, 8, $member_name, 0, 1, 'C');
 
-    // Add more space before the member image
+    // Add more space before the QR code
     $pdf->Ln(5);
 
-    // Member passport image logic (replace QR code section with an image)
-    $member_image = '../assets/img/alex.JPG'; // Placeholder path for member image
-    if (file_exists($member_image)) {
-        $member_image_width = 35; // Width of the image
-        $x_position = ($page_width - $member_image_width) / 2; // Center the image
-        $pdf->Image($member_image, $x_position, 55, $member_image_width); // Centered image at Y=55
-        $pdf->Ln(10); // Space below the member image
+    // QR code logic (generate and replace member image logic)
+    $qrCodeFile = '../assets/img/qrcodes/'.$member_email.'.png'; // Path for QR code image
+    QRcode::png($member_email, $qrCodeFile, QR_ECLEVEL_L, 3); // Generate QR code based on member email
+
+    if (file_exists($qrCodeFile)) {
+        $qr_code_width = 35; // Width of the QR code image
+        $x_position = ($page_width - $qr_code_width) / 2; // Center the QR code
+        $pdf->Image($qrCodeFile, $x_position, 55, $qr_code_width); // Centered QR code at Y=55
+        $pdf->Ln(10); // Space below the QR code
     } else {
-        $pdf->Cell(0, 8, 'Member image not found.', 0, 1, 'C'); // Center error message
+        $pdf->Cell(0, 8, 'QR code not found.', 0, 1, 'C'); // Center error message
         $pdf->Ln(5); // Spacing after error message
     }
-    // space after the image
+    // space after the QR code
 
     $pdf->Ln(15);
 
-    // Add a blue line below the member image
+    // Add a blue line below the QR code
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
     $pdf->SetLineWidth(0.5); // Set line width
-    $pdf->Line(5, $pdf->GetY() + 5, 95, $pdf->GetY() + 5); // Draw the line below the member image
-
+    $pdf->Line(5, $pdf->GetY() + 5, 95, $pdf->GetY() + 5); // Draw the line below the QR code
 
     // Set the same height for both cells
     $cellHeight = 5;
@@ -110,8 +111,6 @@ if ($result->num_rows > 0) {
     // Create a cell for the event date with the same width
     $pdf->SetXY($page_width - 95, $pdf->GetY() - 5); // Adjust X position for right alignment
     $pdf->Cell(90, $cellHeight, $event_date, 0, 1, 'R'); // Right-aligned date with the same width
-
-
 
     // Determine member status
     $status_query = "SELECT position FROM officialsmembers WHERE personalmembership_email = '$member_email'";
@@ -144,3 +143,4 @@ if ($result->num_rows > 0) {
 
 // Close the database connection
 $conn->close();
+?>
