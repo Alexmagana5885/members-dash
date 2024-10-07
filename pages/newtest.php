@@ -155,8 +155,8 @@ if ($result->num_rows > 0) {
 
     // Add member status text in the sky blue section
     $pdf->SetXY(0, $pdf->GetY() + 10); // Position it right after the rectangle
-    $pdf->SetFont('Arial', 'B', 10); // Bold for emphasis
-    $pdf->Cell(0, 10, $member_status, 0, 1, 'C'); // Centered status
+    $pdf->SetFont('Arial', 'B', 14); // Bold for emphasis
+    $pdf->Cell(0, 5, $member_status, 0, 1, 'C'); // Centered status
 
     // Add space before the footer
     // $pdf->Ln(10);
