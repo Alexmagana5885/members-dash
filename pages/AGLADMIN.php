@@ -255,6 +255,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="../forms/logout.php">Logout</a></li>
                     <li><a href="qrcode.php">QRCODE</a></li>
                     <li><a href="new2.php">invitation card</a></li>
+               
 
 
                     <!-- 

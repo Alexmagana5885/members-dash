@@ -2,7 +2,7 @@
 session_start(); // Start the session
 
 // Include the database connection file
-include 'AGLdbconnection.php';
+include '../forms/AGLdbconnection.php';
 require('../members/assets/fpdf/fpdf.php');
 require_once('../members/forms/DBconnection.php');
 require('../members/assets/phpqrcode/qrlib.php'); // Include the phpqrcode library
@@ -139,7 +139,7 @@ if ($ResultCode == 0) {
             $x_position = ($pdf->GetPageWidth() - $qr_image_width) / 2;
             $pdf->Image($qr_file, $x_position, 60, $qr_image_width);
         }
-
+ 
         // Output the PDF to the file
         $pdf->Output('F', $pdfFilePath); // Save the PDF to the specified file path
 
