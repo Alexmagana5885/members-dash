@@ -154,17 +154,13 @@ if ($result->num_rows > 0) {
     $pdf->Rect(0, $pdf->GetY() + 10, 100, 20, 'F'); // Adjust the height of the rectangle for status and link
 
     // Add member status text in the sky blue section
-    $pdf->SetXY(0, $pdf->GetY() + 10); // Position it right after the rectangle
-    $pdf->SetFont('Arial', 'B', 14); // Bold for emphasis
-    $pdf->Cell(0, 5, $member_status, 0, 1, 'C'); // Centered status
+    $pdf->SetXY(0, $pdf->GetY() + 10); // Set position below the rectangle
+    $pdf->SetFont('Arial', 'B', 12); // Set font for member status
+    $pdf->Cell(0, 8, $member_status, 0, 1, 'C'); // Center member status text
 
-    // Add space before the footer
-    // $pdf->Ln(10);
-
-    // Add footer content
-    $pdf->SetFont('Arial', '', 8);
-    $pdf->SetXY(0, 130); // Position for footer
-    $pdf->Cell(0, 5, 'info@agl.or.ke', 0, 1, 'C'); // Center footer text
+    // Add website link below member status
+    $pdf->SetFont('Arial', 'I', 7); // Set font for the website link
+    $pdf->Cell(0, 5, 'https://www.agl.or.ke/', 0, 1, 'C'); // Center website link
 
     // Output the PDF
     $pdf->Output();
