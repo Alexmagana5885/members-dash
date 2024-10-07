@@ -117,7 +117,7 @@ if ($result->num_rows > 0) {
         $pdf->Cell(0, 8, 'QR code not found.', 0, 1, 'C'); // Center error message
         $pdf->Ln(5); // Spacing after error message
     }
-
+    $pdf->Ln(15);
     // Add a blue line below the QR code
     $pdf->SetDrawColor(0, 0, 255); // Set color to blue
     $pdf->SetLineWidth(0.5); // Set line width
@@ -156,7 +156,7 @@ if ($result->num_rows > 0) {
     // Add member status text in the sky blue section
     $pdf->SetXY(0, $pdf->GetY() + 10); // Position it right after the rectangle
     $pdf->SetFont('Arial', 'B', 10); // Bold for emphasis
-    $pdf->Cell(0, 10, 'Member Status: ' . $member_status, 0, 1, 'C'); // Centered status
+    $pdf->Cell(0, 10, $member_status, 0, 1, 'C'); // Centered status
 
     // Add space before the footer
     $pdf->Ln(10);
@@ -164,8 +164,7 @@ if ($result->num_rows > 0) {
     // Add footer content
     $pdf->SetFont('Arial', '', 8);
     $pdf->SetXY(0, 130); // Position for footer
-    $pdf->Cell(0, 10, 'Thank you for being a member!', 0, 1, 'C'); // Center footer text
-    $pdf->Cell(0, 10, 'For inquiries, contact us at: info@agl.or.ke', 0, 1, 'C'); // Center footer text
+    $pdf->Cell(0, 10, 'info@agl.or.ke', 0, 1, 'C'); // Center footer text
 
     // Output the PDF
     $pdf->Output();
