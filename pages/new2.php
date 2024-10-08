@@ -1,10 +1,12 @@
 <?php
 session_start(); // Start the session
 
+// Include the database connection file
 
 require_once('../../DBconnection.php');
-require('../../../assets/fpdf/fpdf.php');
-require('../../../assets/phpqrcode/qrlib.php');
+require('../../assets/fpdf/fpdf.php');
+require_once('../../forms/DBconnection.php');
+require('../../assets/phpqrcode/qrlib.php'); 
 
 // require_once('../members/forms/DBconnection.php');
 // require('../members/assets/fpdf/fpdf.php');
@@ -18,26 +20,6 @@ $response = [
     'message' => '',
     'errors' => []
 ];
-
-// Check and create directories for PDFs and QR codes
-$pdfDirectory = '../../assets/Documents/EventCards/';
-$qrCodeDirectory = '../../assets/img/qrcodes/';
-
-if (!is_dir($pdfDirectory)) {
-    if (!mkdir($pdfDirectory, 0777, true)) {
-        $response['errors'][] = "Failed to create PDF directory: $pdfDirectory";
-        $_SESSION['response'] = $response;
-        exit;
-    }
-}
-
-if (!is_dir($qrCodeDirectory)) {
-    if (!mkdir($qrCodeDirectory, 0777, true)) {
-        $response['errors'][] = "Failed to create QR code directory: $qrCodeDirectory";
-        $_SESSION['response'] = $response;
-        exit;
-    }
-}
 
 // Read and log the callback response
 $stkCallbackResponse = file_get_contents('php://input');
@@ -78,7 +60,7 @@ if ($ResultCode == 0) {
     $checkoutQuery->bind_param("s", $CheckoutRequestID);
     $checkoutQuery->execute();
     $checkoutResult = $checkoutQuery->get_result();
- 
+
     if (!$checkoutResult) {
         $response['errors'][] = "Database query failed: " . $conn->error;
         $_SESSION['response'] = $response;
@@ -101,7 +83,7 @@ if ($ResultCode == 0) {
         $insertQuery = $conn->prepare("INSERT INTO event_registrations (event_id, event_name, event_location, event_date, member_email, member_name, contact, registration_date, payment_code, invitation_card)  
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $invitationCardPath = ''; // Initialize invitation card path
-        $insertQuery->bind_param("ssssssssss", $eventId, $eventName, $eventLocation, $eventDate, $email, $memberName, $UserPhoneNumber, $registrationDate, $TransactionId, $invitationCardPath);
+        $insertQuery->bind_param("issssssiss", $eventId, $eventName, $eventLocation, $eventDate, $email, $memberName, $UserPhoneNumber, $registrationDate, $TransactionId, $invitationCardPath);
         
         if (!$insertQuery->execute()) {
             $response['errors'][] = "Failed to insert event registration: " . $conn->error;
@@ -109,8 +91,10 @@ if ($ResultCode == 0) {
             exit;
         }
         
+
         // PDF generation
         // Determine the file path for the PDF
+        $pdfDirectory = '../../assets/Documents/EventCards/'; // Directory to save PDFs
         $pdfFilename = $email . '_' . str_replace(' ', '_', $eventName) . '.pdf'; // Name of the PDF file
         $pdfFilePath = $pdfDirectory . $pdfFilename; // Complete path to save PDF
 
@@ -150,7 +134,7 @@ if ($ResultCode == 0) {
         $sanitizedEmail = preg_replace('/[^a-zA-Z0-9_]/', '_', $email); // Sanitize email for filename
         $sanitizedEventName = preg_replace('/[^a-zA-Z0-9_]/', '_', $eventName); // Sanitize event name for filename
         $qr_filename = $sanitizedEmail . '_' . $sanitizedEventName . '.png'; // Create unique filename
-        $qr_file = $qrCodeDirectory . $qr_filename; // Set the file path for the QR code
+        $qr_file = '../../assets/img/qrcodes/' . $qr_filename; // Set the file path for the QR code
 
         $qr_content = "Member Name: $memberName\nEvent: $eventName\nDate: $eventDate\nLocation: $eventLocation\nEmail: $email";
         QRcode::png($qr_content, $qr_file, QR_ECLEVEL_L, 4); // Generate the QR code and save it to the specified path
@@ -175,7 +159,7 @@ if ($ResultCode == 0) {
             exit;
         }
 
-        // Send email with registration confirmation
+        // Send email with registration confirmation (as already implemented)
         $to = $email;
         $subject = "Registration Successful!";
         $message = "
@@ -191,7 +175,7 @@ if ($ResultCode == 0) {
             Please check your email for more details and any future updates.
 
             We look forward to seeing you there!
- 
+
             Warm regards,
             The AGL Team
         ";
@@ -200,21 +184,22 @@ if ($ResultCode == 0) {
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
         if (!mail($to, $subject, $message, $headers)) {
-            $response['errors'][] = "Failed to send confirmation email.";
+            $response['errors'][] = "Failed to send registration confirmation email to $to";
+            $_SESSION['response'] = $response;
+            exit;
         }
 
-        // Prepare the response
         $response['success'] = true;
-        $response['message'] = 'Registration successful! Confirmation email sent.';
-
+        $response['message'] = "Event registration successful, PDF generated, and confirmation email sent.";
     } else {
-        $response['errors'][] = "No matching record found for CheckoutRequestID.";
+        $response['errors'][] = "No records found for CheckoutRequestID: $CheckoutRequestID";
     }
 } else {
-    $response['errors'][] = "Payment failed: $ResultDesc";
+    $response['errors'][] = "Transaction failed: $ResultDesc";
 }
 
-// Set session response and return JSON response
+// Save the response to the session
 $_SESSION['response'] = $response;
+
+// Return the JSON response
 echo json_encode($response);
-?>
