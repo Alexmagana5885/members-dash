@@ -709,7 +709,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             echo '<p>' . htmlspecialchars($row['event_date']) . '</p>';
 
                             // Use the invitation_card path for the download
-                            $invitationCardPath = htmlspecialchars($row['invitation_card']);
+                            $invitationCardPath = 'members/' . htmlspecialchars($row['invitation_card']);
+
                             echo '<button style="background-color: #007bff;" class="iventcard" id="' . $uniqueId . '" type="button" onclick="window.location.href=\'' . $invitationCardPath . '\'">Download Invitation Card</button>';
 
                             echo '</div>';
