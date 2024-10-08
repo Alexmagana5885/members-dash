@@ -4,7 +4,7 @@ require('../assets/fpdf/fpdf.php');
 require_once('../forms/DBconnection.php');
 require_once '../assets/phpqrcode/qrlib.php';
 
-// Set member email
+// Set member email 
 // $member_email = $email;
 
 $member_email = 'maganaadmin@agl.or.ke';

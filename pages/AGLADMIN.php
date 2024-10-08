@@ -248,7 +248,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
-                    <li><a href="newtest.php">invitation card</a></li>
+                    <li><a href="new2.php">invitation card</a></li>
                
                 <?php elseif ($role == 'admin'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>

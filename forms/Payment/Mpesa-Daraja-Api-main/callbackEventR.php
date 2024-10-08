@@ -9,6 +9,7 @@ require_once('../../forms/DBconnection.php');
 require('../../assets/phpqrcode/qrlib.php'); 
 
 
+
 header("Content-Type: application/json");
 
 // Initialize response array
@@ -87,64 +88,10 @@ if ($ResultCode == 0) {
             $_SESSION['response'] = $response;
             exit;
         }
-        
 
-        // PDF generation
-        // Determine the file path for the PDF
-        $pdfDirectory = '../../assets/Documents/EventCards/'; // Directory to save PDFs
-        $pdfFilename = $email . '_' . str_replace(' ', '_', $eventName) . '.pdf'; // Name of the PDF file
-        $pdfFilePath = $pdfDirectory . $pdfFilename; // Complete path to save PDF
+        // invitation card
 
-        // Create PDF
-        $pdf = new FPDF('P', 'mm', [127, 178]); // Set custom page size
-        $pdf->AddPage();
 
-        // Set fill color and draw background rectangle
-        $pdf->SetFillColor(195, 198, 214);
-        $pdf->Rect(0, 0, 127, 178, 'F');
-
-        // Add header image
-        $header_image = '../../assets/img/logo.png';
-        if (file_exists($header_image)) {
-            $header_image_width = 50;
-            $x_position = ($pdf->GetPageWidth() - $header_image_width) / 2;
-            $pdf->Image($header_image, $x_position, 5, $header_image_width);
-        }
-        $pdf->Ln(12); // Spacing after header image
-
-        // Add event name
-        $pdf->SetFont('Arial', 'B', 16);
-        $pdf->Cell(0, 10, $eventName, 0, 1, 'C');
-        $pdf->Ln(3); // Spacing
-
-        // Add member name
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(0, 10, 'Name: ' . $memberName, 0, 1, 'C');
-        $pdf->Ln(12); // Spacing
-
-        // Add event date and location
-        $pdf->Cell(0, 10, 'Event Date: ' . $eventDate, 0, 1, 'C');
-        $pdf->Ln(3);
-        $pdf->Cell(0, 10, 'Location: ' . $eventLocation, 0, 1, 'C');
-
-        // Generate QR code with a unique filename
-        $sanitizedEmail = preg_replace('/[^a-zA-Z0-9_]/', '_', $email); // Sanitize email for filename
-        $sanitizedEventName = preg_replace('/[^a-zA-Z0-9_]/', '_', $eventName); // Sanitize event name for filename
-        $qr_filename = $sanitizedEmail . '_' . $sanitizedEventName . '.png'; // Create unique filename
-        $qr_file = '../../assets/img/qrcodes/' . $qr_filename; // Set the file path for the QR code
-
-        $qr_content = "Member Name: $memberName\nEvent: $eventName\nDate: $eventDate\nLocation: $eventLocation\nEmail: $email";
-        QRcode::png($qr_content, $qr_file, QR_ECLEVEL_L, 4); // Generate the QR code and save it to the specified path
-
-        // Add QR code to PDF
-        if (file_exists($qr_file)) {
-            $qr_image_width = 60;
-            $x_position = ($pdf->GetPageWidth() - $qr_image_width) / 2;
-            $pdf->Image($qr_file, $x_position, 60, $qr_image_width);
-        }
-
-        // Output the PDF to the file
-        $pdf->Output('F', $pdfFilePath); // Save the PDF to the specified file path
 
         // Update the invitation_card field with the PDF path
         $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ? AND event_id = ?");
@@ -167,9 +114,9 @@ if ($ResultCode == 0) {
             Event Details:
             
             Location: $eventLocation
-            Time: 10:00 AM
 
-            Please check your email for more details and any future updates.
+            Kindly download your invitation card from the portal.
+
 
             We look forward to seeing you there!
 
