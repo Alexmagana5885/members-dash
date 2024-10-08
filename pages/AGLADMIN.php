@@ -697,6 +697,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <h4>Registered Events</h4>
 
                     <hr>
+                    
 
                     <?php
                     if ($resultmessage->num_rows > 0) {
