@@ -273,7 +273,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
                     <li><a href="mailto:info@agl.or.ke">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
-                    <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>>
+                    <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
