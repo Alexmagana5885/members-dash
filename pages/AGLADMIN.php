@@ -254,7 +254,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
                     <!-- <li><a href="qrcode.php">QRCODE</a></li> -->
-                    <li><a href="new.php">invitation card</a></li>
+                    <li><a href="new2.php">invitation card</a></li>
                
 
 
