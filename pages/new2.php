@@ -191,7 +191,7 @@ if ($ResultCode == 0) {
             Please check your email for more details and any future updates.
 
             We look forward to seeing you there!
-
+ 
             Warm regards,
             The AGL Team
         ";
