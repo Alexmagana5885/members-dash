@@ -168,7 +168,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "No event registration found for this member.";
 }
-
+ 
 // Close the database connection
 $conn->close();
 ?>
