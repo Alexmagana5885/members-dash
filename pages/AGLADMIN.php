@@ -239,29 +239,17 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="openPastEventModal">Add a Past Event</a></li>
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
-                    <!-- <li><a href="admin/settings.html">Admit New Members</a></li> -->
-
-
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
-
                     <li><a href="https://www.agl.or.ke/contact-us/">Contacts</a></li>
                     <li><a href="mailto:info@agl.or.ke" target="_blank">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
-
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
-                    <!-- <li><a href="qrcode.php">QRCODE</a></li> -->
                     <li><a href="newtest.php">invitation card</a></li>
                
-
-
-                    <!-- 
-                    <li><a href="info.php" target="_blank">info</a></li> -->
-                    <!-- <li><a href="MembersPortal.php">memberportal</a></li>
-                    <li><a href="AdminMember.php">memberadmin</a></li> -->
                 <?php elseif ($role == 'admin'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a id="openPostEventModal">Add a Planned Event</a></li>
@@ -283,9 +271,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
 
-                    <li><a href="mailto:info@agl.or.ke"> target="_blank"Email Us</a></li>
+                    <li><a href="mailto:info@agl.or.ke">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
-                    <a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>>
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
