@@ -3,11 +3,13 @@ session_start(); // Start the session
 
 // Include the database connection file
 
-require_once('../../DBconnection.php');
-require('../../../assets/fpdf/fpdf.php');
-require('../../../assets/phpqrcode/qrlib.php');
+// require_once('../../DBconnection.php');
+// require('../../../assets/fpdf/fpdf.php');
+// require('../../../assets/phpqrcode/qrlib.php');
 
-
+require_once('../members/forms/DBconnection.php');
+require('../members/assets/fpdf/fpdf.php');
+require('../members/assets/phpqrcode/qrlib.php');
 
 header("Content-Type: application/json");
 
@@ -95,8 +97,12 @@ if ($ResultCode == 0) {
         $member_email = $email;
 
         // Create directory for QR codes if it doesn't exist
-        $qrDir = '../../../../assets/img/qrcodes/';
-        $PDFDir = '../../../../assets/Documents/EventCards';
+        // $qrDir = '../../../../assets/img/qrcodes/';
+        // $PDFDir = '../../../../assets/Documents/EventCards';
+
+        $qrDir = '../members/forms/DBconnection.php';
+        $PDFDir = '../members/forms/DBconnection.php';
+
 
         if (!is_dir($qrDir)) {
             mkdir($qrDir, 0755, true); // Create the directory with proper permissions
