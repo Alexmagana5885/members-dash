@@ -83,7 +83,7 @@ if ($result->num_rows > 0) {
 
     // Header section (Association of Government Librarians text)
     $pdf->SetFont('Arial', 'B', 12); // Set font for 'AGL'
-    $pdf->SetXY(0, 25); // Adjust position below the logo
+    $pdf->SetXY(0, 25); 
     $pdf->Cell(0, 3, 'Association of Government Librarians', 0, 1, 'R'); // Center 'AGL' text below the logo
     $pdf->Ln(5);
 
