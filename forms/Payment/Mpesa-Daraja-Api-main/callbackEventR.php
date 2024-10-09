@@ -3,13 +3,13 @@ session_start(); // Start the session
 
 // Include the database connection file
 
-// require_once('../../DBconnection.php');
-// require('../../../assets/fpdf/fpdf.php');
-// require('../../../assets/phpqrcode/qrlib.php');
+require_once('../../DBconnection.php');
+require('../../../assets/fpdf/fpdf.php');
+require('../../../assets/phpqrcode/qrlib.php');
 
-require_once('../members/forms/DBconnection.php');
-require('../members/assets/fpdf/fpdf.php');
-require('../members/assets/phpqrcode/qrlib.php');
+// require_once('../members/forms/DBconnection.php');
+// require('../members/assets/fpdf/fpdf.php');
+// require('../members/assets/phpqrcode/qrlib.php');
 
 header("Content-Type: application/json");
 
@@ -97,11 +97,11 @@ if ($ResultCode == 0) {
         $member_email = $email;
 
         // Create directory for QR codes if it doesn't exist
-        // $qrDir = '../../../../assets/img/qrcodes/';
-        // $PDFDir = '../../../../assets/Documents/EventCards';
+        $qrDir = '../../../../assets/img/qrcodes/';
+        $PDFDir = '../../../../assets/Documents/EventCards';
 
-        $qrDir = '../members/forms/DBconnection.php';
-        $PDFDir = '../members/forms/DBconnection.php';
+        // $qrDir = '../members/forms/DBconnection.php';
+        // $PDFDir = '../members/forms/DBconnection.php';
 
 
 
@@ -274,7 +274,7 @@ if ($ResultCode == 0) {
         } else {
             echo "No event registration found for this member.";
         }
-
+ 
 
         $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ? AND event_id = ?");
         $updateQuery->bind_param("ssi", $pdfFilePath, $member_email, $event_id);
@@ -298,13 +298,10 @@ if ($ResultCode == 0) {
             Dear $memberName,
 
             Thank you for registering for $eventName! We're excited to have you join us on $eventDate.
-
-            Event Details:
             
             Location: $eventLocation
 
             Kindly download your invitation card from the portal.
-
 
             We look forward to seeing you there!
 
