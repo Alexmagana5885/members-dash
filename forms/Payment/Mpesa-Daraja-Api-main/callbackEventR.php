@@ -98,7 +98,7 @@ if ($ResultCode == 0) {
 
         // Create directory for QR codes if it doesn't exist
         $qrDir = '../../../../assets/img/qrcodes/';
-        $PDFDir = '../../../../assets/Documents/EventCards';
+        $PDFDir = '../../../../assets/Documents/EventCards/';
 
         // $qrDir = '../members/forms/DBconnection.php';
         // $PDFDir = '../members/forms/DBconnection.php';
@@ -262,34 +262,36 @@ if ($ResultCode == 0) {
             $pdf->SetFont('Arial', 'I', 7); // Set font for the website link
             $pdf->Cell(0, 5, 'https://www.agl.or.ke/', 0, 1, 'C'); // Center website link
 
-
+            // Sanitize the event name
             $sanitized_event_name = str_replace(' ', '_', $event_name);
 
             // Create the PDF file name using the event name and member email
-            $pdfFile = $PDFDir . '/' . $sanitized_event_name . '_' . $member_email . '.pdf';
+            $pdfFilePath = $PDFDir . $sanitized_event_name . '_' . md5($member_email) . '.pdf'; // Define the file path and name
+
+            // Save the PDF to a file ('F' stands for File)
+            $pdf->Output($pdfFilePath, 'F');
+
+            // Update the database with the PDF file path
+            $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ? AND event_id = ?");
+            $updateQuery->bind_param("ssi", $pdfFilePath, $member_email, $event_id);
+
+            // Update the invitation_card field with the PDF path
+            // $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ? AND event_id = ?");
+            // $updateQuery->bind_param("ssi", $pdfFilePath, $email, $eventId);
 
 
-            // Output the PDF
-            $pdf->Output();
+
+            if (!$updateQuery->execute()) {
+                $response['errors'][] = "Failed to update invitation card path: " . $conn->error;
+                $_SESSION['response'] = $response;
+                exit;
+            }
         } else {
             echo "No event registration found for this member.";
         }
- 
-
-        $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ? AND event_id = ?");
-        $updateQuery->bind_param("ssi", $pdfFilePath, $member_email, $event_id);
-
-        // Update the invitation_card field with the PDF path
-        // $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ? AND event_id = ?");
-        // $updateQuery->bind_param("ssi", $pdfFilePath, $email, $eventId);
 
 
 
-        if (!$updateQuery->execute()) {
-            $response['errors'][] = "Failed to update invitation card path: " . $conn->error;
-            $_SESSION['response'] = $response;
-            exit;
-        }
 
         // Send email with registration confirmation (as already implemented)
         $to = $email;
