@@ -104,6 +104,7 @@ if ($ResultCode == 0) {
         $PDFDir = '../members/forms/DBconnection.php';
 
 
+
         if (!is_dir($qrDir)) {
             mkdir($qrDir, 0755, true); // Create the directory with proper permissions
         }
