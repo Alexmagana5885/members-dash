@@ -2,13 +2,22 @@
 require_once('../../DBconnection.php');
 
 header("Content-Type: application/json");
+
+// $stkCallbackResponse = file_get_contents('php://input');
+// $logFile = "callbackEventR.json";
+// $log = fopen($logFile, "a");
+// fwrite($log, $stkCallbackResponse);
+// fclose($log);
+
+// $data = json_decode($stkCallbackResponse);
+
 $stkCallbackResponse = file_get_contents('php://input');
 $logFile = "callbackEventR.json";
-$log = fopen($logFile, "a");
-fwrite($log, $stkCallbackResponse);
-fclose($log);
+file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
+// Decode the JSON response
 $data = json_decode($stkCallbackResponse);
+
 
 $MerchantRequestID = $data->Body->stkCallback->MerchantRequestID;
 $CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID;
