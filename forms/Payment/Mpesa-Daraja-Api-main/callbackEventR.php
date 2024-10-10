@@ -3,13 +3,13 @@ session_start(); // Start the session
 
 // Include the database connection file
 
-// require_once('../../DBconnection.php');
-// require('../../../assets/fpdf/fpdf.php');
-// require('../../../assets/phpqrcode/qrlib.php');
+require_once('../../DBconnection.php');
+require('../../../assets/fpdf/fpdf.php');
+require('../../../assets/phpqrcode/qrlib.php');
 
-require_once('../members/forms/DBconnection.php');
-require('../members/assets/fpdf/fpdf.php');
-require('../members/assets/phpqrcode/qrlib.php');
+// require_once('../members/forms/DBconnection.php');
+// require('../members/assets/fpdf/fpdf.php');
+// require('../members/assets/phpqrcode/qrlib.php');
 
 header("Content-Type: application/json");
 
@@ -98,11 +98,11 @@ if ($ResultCode == 0) {
 
         // Create directory for QR codes if it doesn't exist
 
-        // $qrDir = '../../../../assets/img/qrcodes/';
-        // $PDFDir = '../../../../assets/Documents/EventCards/';
+        $qrDir = '../../../../assets/img/qrcodes/';
+        $PDFDir = '../../../../assets/Documents/EventCards/';
 
-        $qrDir = '../members/assets/testqr/';
-        $PDFDir = '../members/assets/testpdf/';
+        // $qrDir = '../members/assets/testqr/';
+        // $PDFDir = '../members/assets/testpdf/';
 
 
 
@@ -169,9 +169,9 @@ if ($ResultCode == 0) {
             $pdf = new FPDF('P', 'mm', [100, 150]); // Set smaller custom page size
             $pdf->AddPage();
 
-            $header_image = '../members/assets/img/logo.png';
+            // $header_image = '../members/assets/img/logo.png';
 
-            // $header_image = '../../../assets/img/logo.png';
+            $header_image = '../../../assets/img/logo.png';
 
             $page_width = $pdf->GetPageWidth(); // Get the page width
 
