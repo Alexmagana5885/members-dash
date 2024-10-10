@@ -55,6 +55,7 @@ $UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value ??
 if ($ResultCode == 0) {
 
     // Retrieve the email associated with the CheckoutRequestID from the eventregcheckout table
+   
     $checkoutQuery = $conn->prepare("SELECT email, member_name, event_id, event_name, event_location, event_date FROM eventregcheckout WHERE CheckoutRequestID = ?");
     $checkoutQuery->bind_param("s", $CheckoutRequestID);
     $checkoutQuery->execute();
@@ -93,8 +94,8 @@ if ($ResultCode == 0) {
         // invitation card
 
         // Set member email 
-        // $member_email = $email;
-        $member_email = 'maganaadmin@agl.or.ke';
+        $member_email = $email;
+        // $member_email = 'maganaadmin@agl.or.ke';
 
         // Create directory for QR codes if it doesn't exist
 
