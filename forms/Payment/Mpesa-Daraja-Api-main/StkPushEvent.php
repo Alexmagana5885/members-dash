@@ -6,10 +6,10 @@ session_start();
 include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
 
-// Initialize response array
+//  response array
 $response = ['success' => false, 'message' => '', 'errors' => []];
 
-// Define the normalizePhoneNumber function
+//  normalizePhoneNumber function
 function normalizePhoneNumber($phone)
 {
     $phone = preg_replace('/\s+/', '', $phone);
@@ -43,13 +43,12 @@ if (empty($userEmail)) {
     $response['errors'][] = 'Email is required.';
 }
 if (!empty($response['errors'])) {
-    // Set response and redirect
     $_SESSION['response'] = $response;
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }
 
-// Database connection settings
+// db connection 
 require_once('../../DBconnection.php');
 
 // Check if the user is already registered for the event
@@ -82,13 +81,9 @@ if ($money == 0) {
 
     $insertStmt->close();
 } else {
-    // Proceed with STK push for non-zero amount
+    // Proceed with STK push for non 0 amount
     $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'; 
-
     $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callbackEventR.php'; 
-    // $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callbackeventtry.php';
-    // $callbackurl = 'https://member.log.agl.or.ke/DARAJA/callbackEventR.php';
-
     $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
     $BusinessShortCode = '174379';
     $Timestamp = date('YmdHis');
@@ -97,7 +92,7 @@ if ($money == 0) {
     $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 
     // Define other parameters
-    $PartyA = $phone; // Phone number to receive the STK push
+    $PartyA = $phone; 
     $AccountReference = 'AGL';
     $TransactionDesc = 'Membership Registration fee payment';
     $Amount = $money;
@@ -107,7 +102,7 @@ if ($money == 0) {
     // Initialize cURL
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); // Setting custom header
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader);
 
     $curl_post_data = array(
         'BusinessShortCode' => $BusinessShortCode,
@@ -148,7 +143,7 @@ if ($money == 0) {
     if ($CheckoutRequestID) {
         $status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
 
-        // Insert all data into `EventRegcheckout` table
+        // Insert all data into EventRegcheckout table
         $eventSql = "INSERT INTO eventregcheckout (CheckoutRequestID, event_id, event_name, event_location, event_date, email, member_name, phone, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $eventStmt = $conn->prepare($eventSql);
         $eventStmt->bind_param("ssssssssss", $CheckoutRequestID, $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone, $money, $status);
@@ -166,17 +161,13 @@ if ($money == 0) {
     }
 }
 
-// Close database connection
+
 $conn->close();
 
-// Store response in session and redirect
 $_SESSION['response'] = $response;
 header("Location: " . $_SERVER['HTTP_REFERER']);
 exit();
 
 
-// if ($ResponseCode == "0") {
-//   echo "The CheckoutRequestID for this transaction is : " . $CheckoutRequestID;
-// }
 
 ?>
