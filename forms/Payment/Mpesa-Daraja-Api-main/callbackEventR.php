@@ -20,25 +20,19 @@ $response = [
 
 $stkCallbackResponse = file_get_contents('php://input');
 $logFile = "callbackEventR.json";
-$log = fopen($logFile, "a");
-if ($log === false) {
-    $response['errors'][] = "Failed to open log file: $logFile";
-    $_SESSION['response'] = $response;
-    exit;
-} else {
-    fwrite($log, $stkCallbackResponse);
-    fclose($log);
-}
+file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
 $data = json_decode($stkCallbackResponse);
 
-;
-
 if (json_last_error() !== JSON_ERROR_NONE) {
-    $response['errors'][] = "Failed to decode JSON: " . json_last_error_msg();
-    $_SESSION['response'] = $response;
+    $_SESSION['response'] = [
+        'success' => false,
+        'message' => 'Failed to decode JSON:' . json_last_error_msg()
+    ];
+    http_response_code(400); 
     exit;
 }
+
 
 // Extract relevant data from the response
 $MerchantRequestID = $data->Body->stkCallback->MerchantRequestID ?? null;
