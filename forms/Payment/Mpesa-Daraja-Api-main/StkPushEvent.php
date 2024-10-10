@@ -77,7 +77,7 @@ if ($money == 0) {
         $response['message'] = "Registration successful. No payment required.";
     } else {
         $response['errors'][] = "Event Database error: " . $insertStmt->error;
-    }
+    } 
 
     $insertStmt->close();
 } else {
