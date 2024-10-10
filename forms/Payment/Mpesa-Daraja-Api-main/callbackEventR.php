@@ -27,7 +27,7 @@ $data = json_decode($stkCallbackResponse);
 if (json_last_error() !== JSON_ERROR_NONE) {
     $_SESSION['response'] = [
         'success' => false,
-        'message' => 'Failed to decode JSON:' . json_last_error_msg()
+        'message' => 'Failed to decode JSON: alex' . json_last_error_msg()
     ];
     http_response_code(400); 
     exit;
