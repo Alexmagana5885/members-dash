@@ -2,14 +2,9 @@
 session_start(); // Start the session
 
 // Include the database connection file
-
 require_once('../../DBconnection.php');
 require('../../../assets/fpdf/fpdf.php');
 require('../../../assets/phpqrcode/qrlib.php');
-
-// require_once('../members/forms/DBconnection.php');
-// require('../members/assets/fpdf/fpdf.php');
-// require('../members/assets/phpqrcode/qrlib.php');
 
 header("Content-Type: application/json");
 
@@ -35,7 +30,6 @@ if ($log === false) {
 
 // Decode the JSON response
 $data = json_decode($stkCallbackResponse);
-
 if (json_last_error() !== JSON_ERROR_NONE) {
     $response['errors'][] = "Failed to decode JSON: " . json_last_error_msg();
     $_SESSION['response'] = $response;
@@ -53,19 +47,17 @@ $UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value ??
 
 // Check if the transaction was successful
 if ($ResultCode == 0) {
-
     // Retrieve the email associated with the CheckoutRequestID from the eventregcheckout table
     $checkoutQuery = $conn->prepare("SELECT email, member_name, event_id, event_name, event_location, event_date FROM eventregcheckout WHERE CheckoutRequestID = ?");
     $checkoutQuery->bind_param("s", $CheckoutRequestID);
-    $checkoutQuery->execute();
-    $checkoutResult = $checkoutQuery->get_result();
-
-    if (!$checkoutResult) {
+    
+    if (!$checkoutQuery->execute()) {
         $response['errors'][] = "Database query failed: " . $conn->error;
         $_SESSION['response'] = $response;
         exit;
     }
 
+    $checkoutResult = $checkoutQuery->get_result();
     if ($checkoutResult->num_rows > 0) {
         $checkoutData = $checkoutResult->fetch_assoc();
 
@@ -81,6 +73,7 @@ if ($ResultCode == 0) {
         // Insert the data into event_registrations table
         $insertQuery = $conn->prepare("INSERT INTO event_registrations (event_id, event_name, event_location, event_date, member_email, member_name, contact, registration_date, payment_code, invitation_card)  
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        
         $invitationCardPath = ''; // Initialize invitation card path
         $insertQuery->bind_param("issssssiss", $eventId, $eventName, $eventLocation, $eventDate, $email, $memberName, $UserPhoneNumber, $registrationDate, $TransactionId, $invitationCardPath);
 
@@ -90,21 +83,9 @@ if ($ResultCode == 0) {
             exit;
         }
 
-        // invitation card
-
-
-        // Set member email 
-        $member_email = $email;
-
-        // Create directory for QR codes if it doesn't exist
-
+        // Create directories for QR codes and PDF cards if they don't exist
         $qrDir = '../../../../assets/img/qrcodes/';
         $PDFDir = '../../../../assets/Documents/EventCards/';
-
-        // $qrDir = '../members/assets/testqr/';
-        // $PDFDir = '../members/assets/testpdf/';
-
-
 
         if (!is_dir($qrDir)) {
             mkdir($qrDir, 0755, true); // Create the directory with proper permissions
@@ -116,13 +97,16 @@ if ($ResultCode == 0) {
 
         // Query to fetch event and member data
         $query = "SELECT er.event_name, er.event_date, er.event_location, er.member_name, er.member_email,
-                 pm.passport_image
-          FROM event_registrations er
-          LEFT JOIN personalmembership pm ON er.member_email = pm.email
-          WHERE er.member_email = '$member_email'";
+                     pm.passport_image
+              FROM event_registrations er
+              LEFT JOIN personalmembership pm ON er.member_email = pm.email
+              WHERE er.member_email = ?";
 
         // Execute the query
-        $result = $conn->query($query);
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         // Check if any records were returned
         if ($result->num_rows > 0) {
@@ -136,13 +120,12 @@ if ($ResultCode == 0) {
 
             // Prepare and execute the query to get user data for the QR code
             $stmt = $conn->prepare("SELECT name, phone, home_address, highest_degree, institution, graduation_year, profession, experience, current_company, position, work_address FROM personalmembership WHERE email = ?");
-            $stmt->bind_param("s", $member_email);
+            $stmt->bind_param("s", $email);
             $stmt->execute();
             $userResult = $stmt->get_result();
 
             // Fetch the user data
             $userData = $userResult->fetch_assoc();
-
             if ($userData) {
                 // Prepare the content for the QR code
                 $content = "Name: " . $userData['name'] . "\n" .
@@ -158,10 +141,11 @@ if ($ResultCode == 0) {
                     "Work Address: " . $userData['work_address'];
 
                 // Generate the QR code image and save it to a file
-                $qrCodeFile = $qrDir . 'qr_code_' . md5($member_email) . '.png'; // Unique filename based on email
+                $qrCodeFile = $qrDir . 'qr_code_' . md5($email) . '.png'; // Unique filename based on email
                 QRcode::png($content, $qrCodeFile, QR_ECLEVEL_L, 4);
             } else {
-                echo 'No user found with that email address.';
+                $response['errors'][] = 'No user found with that email address.';
+                $_SESSION['response'] = $response;
                 exit;
             }
 
@@ -169,10 +153,8 @@ if ($ResultCode == 0) {
             $pdf = new FPDF('P', 'mm', [100, 150]); // Set smaller custom page size
             $pdf->AddPage();
 
-            // $header_image = '../members/assets/img/logo.png';
-
+            // Header image
             $header_image = '../../../assets/img/logo.png';
-
             $page_width = $pdf->GetPageWidth(); // Get the page width
 
             $pdf->SetFillColor(195, 198, 214); // RGB values for background color
@@ -201,134 +183,57 @@ if ($ResultCode == 0) {
 
             // Set font for event name and center it
             $pdf->SetFont('Arial', 'B', 10); // Bold for emphasis
-            $pdf->Cell(0, 2, $event_name, 0, 2, 'C'); // Center text
-            $pdf->Ln(1); // Reduced space
+            $pdf->Cell(0, 2, $event_name, 0, 2, 'C'); // Centered event name
+            $pdf->Ln(2);
 
-            // Add member name and center it
-            $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(0, 8, $member_name, 0, 1, 'C');
+            // Add details in normal font
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->Cell(0, 2, 'Date: ' . $event_date, 0, 2, 'C');
+            $pdf->Cell(0, 2, 'Location: ' . $event_location, 0, 2, 'C');
+            $pdf->Ln(3); // Extra line for spacing
 
-            // Add more space before the QR code
-            $pdf->Ln(5);
+            // Add member information
+            $pdf->Cell(0, 2, 'Member: ' . $member_name, 0, 2, 'C');
+            $pdf->Cell(0, 2, 'Email: ' . $email, 0, 2, 'C');
 
-            // QR code image logic
-            if (file_exists($qrCodeFile)) {
-                $qrCodeWidth = 35; // Width of the QR code image
-                $x_position = ($page_width - $qrCodeWidth) / 2; // Center the image
-                $pdf->Image($qrCodeFile, $x_position, 55, $qrCodeWidth); // Centered image at Y=55
-                $pdf->Ln(10); // Space below the QR code
-            } else {
-                $pdf->Cell(0, 8, 'QR code not found.', 0, 1, 'C'); // Center error message
-                $pdf->Ln(5); // Spacing after error message
-            }
-            $pdf->Ln(20);
-            // Add a blue line below the QR code
-            $pdf->SetDrawColor(0, 0, 255); // Set color to blue
-            $pdf->SetLineWidth(0.5); // Set line width
-            $pdf->Line(5, $pdf->GetY() + 5, 95, $pdf->GetY() + 5); // Draw the line below the QR code
+            // Add QR code image to the PDF
+            $pdf->Ln(5); // Add space before the QR code
+            $pdf->Image($qrCodeFile, 30, $pdf->GetY(), 40); // QR code image with size
 
-            // Set the same height for both cells
-            $cellHeight = 5;
+            // Output PDF to a file
+            $pdfFileName = $PDFDir . 'EventCard_' . md5($email) . '.pdf'; // Unique filename based on email
+            $pdf->Output('F', $pdfFileName);
 
-            // Set the font for location and date
-            $pdf->SetFont('Arial', '', 9); // Smaller font for location and date
-
-            // Set the Y position for the cells
-            $pdf->SetXY(5, $pdf->GetY() + 10);
-
-            // Create a cell for the event location
-            $pdf->Cell(90, $cellHeight, $event_location, 0, 1, 'L'); // Left-aligned location with increased width
-
-            // Create a cell for the event date with the same width
-            $pdf->SetXY($page_width - 95, $pdf->GetY() - 5); // Adjust X position for right alignment
-            $pdf->Cell(90, $cellHeight, $event_date, 0, 1, 'R'); // Right-aligned date with the same width
-
-            // Determine member status
-            $status_query = "SELECT position FROM officialsmembers WHERE personalmembership_email = '$member_email'";
-            $status_result = $conn->query($status_query);
-
-            $member_status = 'Member'; // Default status
-            if ($status_result->num_rows > 0) {
-                $status_data = $status_result->fetch_assoc();
-                $member_status = $status_data['position']; // Set status to the position found
-            }
-
-            // Add sky blue background for member status
-            $pdf->SetFillColor(135, 206, 250); // Sky blue color
-            $pdf->Rect(0, $pdf->GetY() + 10, 100, 20, 'F'); // Adjust the height of the rectangle for status and link
-
-            // Add member status text in the sky blue section
-            $pdf->SetXY(0, $pdf->GetY() + 10); // Set position below the rectangle
-            $pdf->SetFont('Arial', 'B', 12); // Set font for member status
-            $pdf->Cell(0, 8, $member_status, 0, 1, 'C'); // Center member status text
-
-            // Add website link below member status
-            $pdf->SetFont('Arial', 'I', 7); // Set font for the website link
-            $pdf->Cell(0, 5, 'https://www.agl.or.ke/', 0, 1, 'C'); // Center website link
-
-            // Sanitize the event name
-            $sanitized_event_name = str_replace(' ', '_', $event_name);
-
-            // Create the PDF file name using the event name and member email
-            $pdfFilePath = $PDFDir . $sanitized_event_name . '_' . md5($member_email) . '.pdf'; // Define the file path and name
-
-            // Save the PDF to a file ('F' stands for File)
-            $pdf->Output($pdfFilePath, 'F');
-
-            // Update the database with the PDF file path
-            $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ? AND event_id = ?");
-            $updateQuery->bind_param("ssi", $pdfFilePath, $member_email, $event_id);
+            // Update the invitation card path in the database
+            $invitationCardPath = $pdfFileName;
+            $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ?");
+            $updateQuery->bind_param("ss", $invitationCardPath, $email);
 
             if (!$updateQuery->execute()) {
                 $response['errors'][] = "Failed to update invitation card path: " . $conn->error;
-                $_SESSION['response'] = $response;
-                exit;
+            } else {
+                $response['success'] = true;
+                $response['message'] = "Payment successful, registration completed!";
+                $response['invitation_card_path'] = $invitationCardPath;
             }
+
+            // Close the statements
+            $stmt->close();
+            $checkoutQuery->close();
+            $insertQuery->close();
+            $updateQuery->close();
         } else {
-            echo "No event registration found for this member.";
+            $response['errors'][] = 'No registrations found for the provided email.';
         }
-
-
-
-
-        // Send email with registration confirmation (as already implemented)
-        $to = $email;
-        $subject = "Registration Successful!";
-        $message = "
-            Dear $memberName,
-
-            Thank you for registering for $eventName! We're excited to have you join us on $eventDate.
-            
-            Location: $eventLocation
-
-            Kindly download your invitation card from the portal.
-
-            We look forward to seeing you there!
-
-            Warm regards,
-            The AGL Team
-        ";
-        $headers = "From: events@agl.or.ke\r\n";
-        $headers .= "Reply-To: events@agl.or.ke\r\n";
-        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-
-        if (!mail($to, $subject, $message, $headers)) {
-            $response['errors'][] = "Failed to send registration confirmation email to $to";
-            $_SESSION['response'] = $response;
-            exit;
-        }
-
-        $response['success'] = true;
-        $response['message'] = "Event registration successful, PDF generated, and confirmation email sent.";
     } else {
-        $response['errors'][] = "No records found for CheckoutRequestID: $CheckoutRequestID";
+        $response['errors'][] = 'No checkout information found for this CheckoutRequestID.';
     }
 } else {
-    $response['errors'][] = "Transaction failed: $ResultDesc";
+    $response['errors'][] = "Payment failed with Result Code: $ResultCode and Description: $ResultDesc";
 }
 
-// Save the response to the session
+// Send the response back to the user
 $_SESSION['response'] = $response;
-
-// Return the JSON response
-echo json_encode($response);
+header('Location: ../../payment_response.php');
+exit();
+?>
