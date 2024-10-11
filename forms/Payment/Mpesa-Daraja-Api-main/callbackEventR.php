@@ -7,36 +7,40 @@ include 'AGLdbconnection.php';
 require('../../../assets/fpdf/fpdf.php');
 require('../../../assets/phpqrcode/qrlib.php'); 
 
-header("Content-Type: application/json");
+// header("Content-Type: application/json");
 
-// Read and log the callback response
-$stkCallbackResponse = file_get_contents('php://input');
-$logFile = "callbackEventR.json";
-file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
+// $stkCallbackResponse = file_get_contents('php://input');
+// $logFile = "callbackEventR.json";
+// file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
-// Decode the JSON response
-$data = json_decode($stkCallbackResponse);
-
-// Check if decoding was successful
-if (json_last_error() !== JSON_ERROR_NONE) {
-    $_SESSION['response'] = [
-        'success' => false,
-        'message' => 'JSON decoding error alex: ' . json_last_error_msg()
-    ];
-    http_response_code(400); // Bad request
-    exit;
-}
+// $data = json_decode($stkCallbackResponse);
 
 
+// if (json_last_error() !== JSON_ERROR_NONE) {
+//     $_SESSION['response'] = [
+//         'success' => false,
+//         'message' => 'JSON decoding error alex: ' . json_last_error_msg()
+//     ];
+//     http_response_code(400); 
+//     exit;
+// }
+
+
+
+// Log the callback response for debugging
+file_put_contents('mpesa_callback_response.log', file_get_contents('php://input'), FILE_APPEND);
+
+// Read the incoming callback data
+$data = json_decode(file_get_contents('php://input'), true);
 
 // Extract relevant data from the response
-$MerchantRequestID = $data->Body->stkCallback->MerchantRequestID ?? null;
-$CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID ?? null;
-$ResultCode = $data->Body->stkCallback->ResultCode ?? null;
-$ResultDesc = $data->Body->stkCallback->ResultDesc ?? null;
-$Amount = $data->Body->stkCallback->CallbackMetadata->Item[0]->Value ?? null;
-$TransactionId = $data->Body->stkCallback->CallbackMetadata->Item[1]->Value ?? null;
-$UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value ?? null;
+$MerchantRequestID = $data['Body']['stkCallback']['MerchantRequestID'] ?? null;
+$CheckoutRequestID = $data['Body']['stkCallback']['CheckoutRequestID'] ?? null;
+$ResultCode = $data['Body']['stkCallback']['ResultCode'] ?? null;
+$ResultDesc = $data['Body']['stkCallback']['ResultDesc'] ?? null;
+$Amount = $data['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'] ?? null;
+$TransactionId = $data['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'] ?? null;
+$UserPhoneNumber = $data['Body']['stkCallback']['CallbackMetadata']['Item'][4]['Value'] ?? null;
 
 // Check if the transaction was successful
 if ($ResultCode == 0) {
