@@ -21,26 +21,61 @@ $response = [
 ];
 
 // Read and log the callback response
+
+// $stkCallbackResponse = file_get_contents('php://input');
+// $logFile = "callbackEventR.json";
+// $log = fopen($logFile, "a");
+// if ($log === false) {
+//     $response['errors'][] = "Failed to open log file: $logFile";
+//     $_SESSION['response'] = $response;
+//     exit;
+// } else {
+//     fwrite($log, $stkCallbackResponse);
+//     fclose($log);
+// }
+
+// $data = json_decode($stkCallbackResponse);
+
+// if (json_last_error() !== JSON_ERROR_NONE) {
+//     $response['errors'][] = "Failed to decode JSON: " . json_last_error_msg();
+//     $_SESSION['response'] = $response;
+//     exit;
+// }
+
+
+
 $stkCallbackResponse = file_get_contents('php://input');
+
+// Define log file path
 $logFile = "callbackEventR.json";
-$log = fopen($logFile, "a");
-if ($log === false) {
-    $response['errors'][] = "Failed to open log file: $logFile";
+
+// Open the log file and write the JSON response
+if (file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND) === false) {
+    $response['errors'][] = "Failed to write to log file: $logFile";
     $_SESSION['response'] = $response;
     exit;
-} else {
-    fwrite($log, $stkCallbackResponse);
-    fclose($log);
 }
 
 // Decode the JSON response
-$data = json_decode($stkCallbackResponse);
+$data = json_decode($stkCallbackResponse, true);
 
+// Check for JSON decoding errors
 if (json_last_error() !== JSON_ERROR_NONE) {
     $response['errors'][] = "Failed to decode JSON: " . json_last_error_msg();
     $_SESSION['response'] = $response;
     exit;
 }
+
+// If no errors, proceed to handle the decoded data
+// Example: Accessing the result code
+if (isset($data['ResultCode']) && $data['ResultCode'] == 0) {
+    // Handle successful transaction
+} else {
+    // Handle failed transaction
+}
+
+
+
 
 // Extract relevant data from the response
 $MerchantRequestID = $data->Body->stkCallback->MerchantRequestID ?? null;
