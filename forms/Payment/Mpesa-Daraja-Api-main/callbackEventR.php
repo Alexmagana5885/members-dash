@@ -3,46 +3,29 @@ session_start(); // Start the session
 
 // Include the database connection file
 
-require_once('../../DBconnection.php');
+include 'AGLdbconnection.php';
 require('../../../assets/fpdf/fpdf.php');
 require('../../../assets/phpqrcode/qrlib.php'); 
 
-// require_once('../members/forms/DBconnection.php');
-// require('../members/assets/fpdf/fpdf.php');
-// require('../members/assets/phpqrcode/qrlib.php');
-
 header("Content-Type: application/json");
-
-// Initialize response array
-$response = [
-    'success' => false,
-    'message' => '',
-    'errors' => []
-];
 
 // Read and log the callback response
 $stkCallbackResponse = file_get_contents('php://input');
-
-// Define log file path
 $logFile = "callbackEventR.json";
+file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
-// Open the log file and write the JSON response
-if (file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND) === false) {
-    $response['errors'][] = "Failed to write to log file: $logFile";
-    $_SESSION['response'] = $response;
-    exit;
-}
+// Decode the JSON response
+$data = json_decode($stkCallbackResponse);
 
-// Decode the JSON response (as an array)
-$data = json_decode($stkCallbackResponse, true);
-
-// Check for JSON decoding errors
+// Check if decoding was successful
 if (json_last_error() !== JSON_ERROR_NONE) {
-    $response['errors'][] = "Failed to decode JSON: " . json_last_error_msg();
-    $_SESSION['response'] = $response;
+    $_SESSION['response'] = [
+        'success' => false,
+        'message' => 'JSON decoding error alex: ' . json_last_error_msg()
+    ];
+    http_response_code(400); // Bad request
     exit;
 }
-
 
 
 

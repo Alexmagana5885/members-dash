@@ -2,6 +2,7 @@
 session_start(); // Start the session
 
 include 'AGLdbconnection.php'; // Include your database connection file
+
 header("Content-Type: application/json");
 
 // Read and log the callback response
