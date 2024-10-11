@@ -19,8 +19,8 @@
 
 // sand box
 
-$consumerKey = "R6MsFA5Xx6r6j6m1sIxfnDDJHclnYGMBKRTY3oxT0sbPylfz"; 
-$consumerSecret = "46FMjLVzxA6mcxaqqtmV6fd8HgHzRXQPGdqAfhqO5RzIRvFshuIUZuMxaI4be0QM"; 
+$consumerKey = "ZvEvAI9fv38wO0fVqEbsI8mrFglMvSAPeGGlAGjkFud5A8JJ"; 
+$consumerSecret = "19ja4PecNcGn0fiv36bO3WzqUq7YQVApXjtw2chLGyljinQziLOV9CmYm1qra2bG"; 
 
 $access_token_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 $headers = ['Content-Type:application/json; charset=utf8'];
