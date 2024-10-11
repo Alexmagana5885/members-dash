@@ -57,7 +57,7 @@ $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 // Define other parameters
 $PartyA = $phone; // Phone number to receive the STK push
 $PartyB = $BusinessShortCode; 
-$AccountReference = 'AGL';
+$AccountReference = '6175135';
 $TransactionDesc = 'Membership Registration fee payment';
 $Amount = $money;
 
