@@ -68,10 +68,10 @@ if ($ResultCode == 0) {
         // Insert data into event_registrations table
         $insertQuery = $conn->prepare("INSERT INTO event_registrations (event_id, event_name, event_location, event_date, member_email, member_name, contact, registration_date, payment_code, invitation_card)  
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $invitationCardPath = ''; // Initialize invitation card path
+        $invitationCardPath = ''; // Initialize invitation card path 
 
         if ($insertQuery) {
-            $insertQuery->bind_param("issssssiss", $eventId, $eventName, $eventLocation, $eventDate, $email, $memberName, $UserPhoneNumber, $registrationDate, $TransactionId, $invitationCardPath);
+            $insertQuery->bind_param("isssssssss", $eventId, $eventName, $eventLocation, $eventDate, $email, $memberName, $UserPhoneNumber, $registrationDate, $TransactionId, $invitationCardPath);
             if ($insertQuery->execute()) {
                 // Success, set session variables
                 $_SESSION['success'] = "Registration successful.";
