@@ -6,7 +6,8 @@ header("Content-Type: application/json");
 
 // Read and log the callback response
 $stkCallbackResponse = file_get_contents('php://input');
-$logFile = "PremiumMpesastkresponse.json";
+// $logFile = "PremiumMpesastkresponse.json";
+$logFile = "MemberReg.json";
 file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
 // Decode the JSON response
