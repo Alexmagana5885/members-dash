@@ -54,7 +54,7 @@ if (!empty($response['errors'])) {
 
 try {
     // db connection 
-    require_once('../../DBconnection.php');
+    include 'AGLdbconnection.php';
 
     // Check if the user is already registered for the event
     $checkSql = "SELECT * FROM event_registrations WHERE event_id = ? AND member_email = ?";
@@ -159,7 +159,7 @@ try {
     $response['errors'][] = "Error: " . $e->getMessage();
 }
 
-// $_SESSION['response'] = $response;
-// header("Location: " . $_SERVER['HTTP_REFERER']);
-// exit();
+$_SESSION['response'] = $response;
+header("Location: " . $_SERVER['HTTP_REFERER']);
+exit();
 ?>

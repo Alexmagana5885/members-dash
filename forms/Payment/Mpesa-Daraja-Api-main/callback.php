@@ -12,7 +12,7 @@ file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
 // Decode the JSON response
 $data = json_decode($stkCallbackResponse);
-
+ 
 // Check if decoding was successful
 if (json_last_error() !== JSON_ERROR_NONE) {
     $_SESSION['response'] = [
