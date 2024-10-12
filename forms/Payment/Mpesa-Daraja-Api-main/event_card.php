@@ -5,15 +5,9 @@ require('../../../assets/fpdf/fpdf.php');
 require_once '../../../assets/phpqrcode/qrlib.php';
 
 // Set member email 
-$member_email = 'maganaadmin@agl.or.ke';
+// $member_email = '';
 
-
-// session_start(); 
-
-// if (isset($_SESSION['user_email'])) {
-//     $member_email = $_SESSION['user_email'];
-    
-// }
+$member_email = isset($_POST['email']) ? $_POST['email'] : '';
 
 // Create directory for QR codes if it doesn't exist
 $qrDir = '../../../assets/img/qrcodes/';
@@ -180,6 +174,7 @@ if ($result->num_rows > 0) {
     }
 
     $pdfFileName = $pdfDir . 'registration_' . md5($member_email) . '.pdf';
+    
     $pdf->Output('F', $pdfFileName);
 } else {
     echo "No event registration found for this member.";
