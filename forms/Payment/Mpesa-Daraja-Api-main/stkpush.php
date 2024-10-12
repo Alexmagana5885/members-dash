@@ -25,7 +25,7 @@ function normalizePhoneNumber($phone) {
 }
 
 // Retrieve and normalize form data
-$phonenumber = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
+$phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
 $money = isset($_POST['amount']) ? $_POST['amount'] : '1';
 $userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
 
