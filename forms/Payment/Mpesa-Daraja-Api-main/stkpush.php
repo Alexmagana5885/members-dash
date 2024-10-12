@@ -25,7 +25,7 @@ function normalizePhoneNumber($phone) {
 }
 
 // Retrieve and normalize form data
-$phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
+$phonenumber = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
 $money = isset($_POST['amount']) ? $_POST['amount'] : '1';
 $userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
 
@@ -44,15 +44,16 @@ if (!empty($response['errors'])) {
 }
 
 // Define variables
-// $processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-// $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
-// $passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
-// $BusinessShortCode = '6175135';
 
-$processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'; 
-$callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php'; 
-$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-$BusinessShortCode = '174379';
+$processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+$callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
+$passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
+$BusinessShortCode = '6175135';
+
+// $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'; 
+// $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php'; 
+// $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+// $BusinessShortCode = '174379';
 
 $Timestamp = date('YmdHis');
 
@@ -61,7 +62,8 @@ $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 
 // Define other parameters
 $PartyA = $phone; // Phone number to receive the STK push
-$PartyB = $BusinessShortCode; 
+// $phone = $phonenumber; 
+$PartyB = '8209382'; 
 $AccountReference = '6175135';
 $TransactionDesc = 'Membership Registration fee payment';
 $Amount = $money;
