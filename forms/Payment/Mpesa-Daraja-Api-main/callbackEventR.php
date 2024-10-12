@@ -89,6 +89,7 @@ if ($ResultCode == 0) {
         }
 
         // Send POST request to event_card.php
+        
         $url = 'event_card.php';
         $postData = ['email' => $email];
 

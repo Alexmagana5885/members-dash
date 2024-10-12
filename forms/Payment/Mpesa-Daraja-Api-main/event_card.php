@@ -184,7 +184,8 @@ if ($result->num_rows > 0) {
 
     $updateQuery = "UPDATE event_registrations 
                 SET invitation_card = '$pdf_relative_path' 
-                WHERE member_email = '$member_email'";
+                WHERE member_email = '$member_email' 
+                AND event_name = '$event_name'";
 
     if ($conn->query($updateQuery) === TRUE) {
         echo "PDF generated and stored successfully.";
