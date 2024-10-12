@@ -159,7 +159,7 @@ try {
     $response['errors'][] = "Error: " . $e->getMessage();
 }
 
-$_SESSION['response'] = $response;
-header("Location: " . $_SERVER['HTTP_REFERER']);
-exit();
+// $_SESSION['response'] = $response;
+// header("Location: " . $_SERVER['HTTP_REFERER']);
+// exit();
 ?>

@@ -129,7 +129,7 @@ if ($CheckoutRequestID) {
 $conn->close();
 
 // Store response in session and redirect
-// $_SESSION['response'] = $response;
-// header("Location: " . $_SERVER['HTTP_REFERER']);
+$_SESSION['response'] = $response;
+header("Location: " . $_SERVER['HTTP_REFERER']);
 exit();
 ?>
