@@ -173,7 +173,9 @@ if ($result->num_rows > 0) {
         mkdir($pdfDir, 0755, true); // Create the directory with proper permissions
     }
 
-    $pdfFileName = $pdfDir . 'registration_' . md5($member_email) . '.pdf';
+    $sanitized_event_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $event_name);
+    $pdfFileName = $pdfDir . $sanitized_event_name . '_' . $member_email . '.pdf';
+    
     
     $pdf->Output('F', $pdfFileName);
 } else {
