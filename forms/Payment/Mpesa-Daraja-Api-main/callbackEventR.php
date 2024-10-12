@@ -81,7 +81,7 @@ if ($ResultCode == 0) {
         $headers = "From: events@agl.or.ke\r\n";
         $headers .= "Reply-To: events@agl.or.ke\r\n";
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-
+ 
         if (!mail($to, $subject, $message, $headers)) {
             $response['errors'][] = "Failed to send registration confirmation email to $to";
             $_SESSION['response'] = $response;
