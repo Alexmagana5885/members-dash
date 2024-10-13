@@ -25,11 +25,23 @@ FROM event_registrations er
 WHERE er.member_email = '$member_email' AND er.event_id = '$event_id'
  ";
 
-error_log("Member Email: $member_email");
-error_log("Event ID: $event_id");
-if (!$result) {
-    echo "Query Error: " . $conn->error;
+
+if ($result && $result->num_rows > 0) {
+    // Fetch and output each row
+    while ($data = $result->fetch_assoc()) {
+        echo "Event Name: " . $data['event_name'] . "<br>";
+        echo "Event Date: " . $data['event_date'] . "<br>";
+        echo "Event Location: " . $data['event_location'] . "<br>";
+        echo "Member Name: " . $data['member_name'] . "<br>";
+        echo "Member Email: " . $data['member_email'] . "<br>";
+        echo "Invitation Card: " . $data['invitation_card'] . "<br>";
+        echo "Contact: " . $data['contact'] . "<br>";
+        echo "Payment Code: " . $data['payment_code'] . "<br><br>";
+    }
+} else {
+    echo "no data output.";
 }
+
 
 
 // Execute the query
