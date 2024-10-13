@@ -10,7 +10,7 @@ function sanitize_input($data) {
 } 
 
 $event_name = sanitize_input($_POST['user_email']);
-$id = sanitize_input($_POST['event_id']);
+$event_id = sanitize_input($_POST['event_id']);
 
 $qrDir = '../assets/img/qrcodes/';
 if (!is_dir($qrDir)) {
