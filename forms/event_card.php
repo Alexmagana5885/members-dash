@@ -10,11 +10,22 @@ function sanitize_input($data)
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
-$member_email = sanitize_input($_POST['user_email']);
-$event_id = sanitize_input($_POST['event_id']);
+$member_email = sanitize_input($_POST['user_email'] ?? '');
+$event_id = sanitize_input($_POST['event_id'] ?? '');
 
-echo "Member Email: " . $member_email . "<br>";
-echo "Event ID: " . $event_id . "<br>";
+// Validate email format
+if (!filter_var($member_email, FILTER_VALIDATE_EMAIL)) {
+    echo "Invalid email format.<br>";
+} else {
+    echo "Member Email: " . $member_email . "<br>";
+}
+
+if (empty($event_id)) {
+    echo "Event ID is required.<br>";
+} else {
+    echo "Event ID: " . $event_id . "<br>";
+}
+
 
 $qrDir = '../assets/img/qrcodes/';
 if (!is_dir($qrDir)) {
