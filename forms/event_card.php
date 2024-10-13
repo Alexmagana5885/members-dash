@@ -5,23 +5,12 @@ require('../assets/fpdf/fpdf.php');
 require_once '../assets/phpqrcode/qrlib.php';
 
 
-// $member_email = $_POST['member_email'];
-// $event_id = $_POST['event_id'];
+$member_email = $_POST['member_email'];
+$event_id = $_POST['event_id'];
 
-// Retrieve and sanitize inputs
-$member_email = filter_var($_POST['member_email'], FILTER_SANITIZE_EMAIL);
-$event_id = isset($_POST['event_id']) ? intval($_POST['event_id']) : 0;
+echo "Member Email: " . $member_email . "<br>";
+echo "Event ID: " . $event_id;
 
-// Validate inputs
-if (!filter_var($member_email, FILTER_VALIDATE_EMAIL)) {
-    die("Invalid email format");
-}
-
-if ($event_id <= 0) {
-    die("Invalid event ID");
-}
-
-// Continue with your processing, like storing in the database or sending an email
 
 
 $qrDir = '../assets/img/qrcodes/';
