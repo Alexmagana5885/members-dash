@@ -13,6 +13,9 @@ function sanitize_input($data)
 $member_email = sanitize_input($_POST['user_email']);
 $event_id = sanitize_input($_POST['event_id']);
 
+echo "Member Email: " . $member_email . "<br>";
+echo "Event ID: " . $event_id . "<br>";
+
 $qrDir = '../assets/img/qrcodes/';
 if (!is_dir($qrDir)) {
     mkdir($qrDir, 0755, true); // Create the directory with proper permissions
@@ -25,22 +28,6 @@ FROM event_registrations er
 WHERE er.member_email = '$member_email' AND er.event_id = '$event_id'
  ";
 $result = $conn->query($query);
-
-if ($result && $result->num_rows > 0) {
-    // Fetch and output each row
-    while ($data = $result->fetch_assoc()) {
-        echo "Event Name: " . $data['event_name'] . "<br>";
-        echo "Event Date: " . $data['event_date'] . "<br>";
-        echo "Event Location: " . $data['event_location'] . "<br>";
-        echo "Member Name: " . $data['member_name'] . "<br>";
-        echo "Member Email: " . $data['member_email'] . "<br>";
-        echo "Invitation Card: " . $data['invitation_card'] . "<br>";
-        echo "Contact: " . $data['contact'] . "<br>";
-        echo "Payment Code: " . $data['payment_code'] . "<br><br>";
-    }
-} else {
-    echo "no data output.";
-}
 
 
 
