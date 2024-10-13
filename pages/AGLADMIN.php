@@ -644,7 +644,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 
                 // Prepare the SQL query
-                $sql = "SELECT event_name, event_location, event_date, invitation_card FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
+                $sql = "SELECT event_name, event_location, event_date, member_email, invitation_card FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
                 $stmt = $conn->prepare($sql);
 
 
@@ -685,8 +685,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <h4>Registered Events</h4>
 
                     <hr>
-
-
                     <?php
                     if ($resultmessage->num_rows > 0) {
                         while ($row = $resultmessage->fetch_assoc()) {
@@ -697,9 +695,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             echo '<p>' . htmlspecialchars($row['event_location']) . '</p>';
                             echo '<p>' . htmlspecialchars($row['event_date']) . '</p>';
 
+                            echo '<p hidden>' . htmlspecialchars($row['member_email']) . '</p>';
+
+
                             // Create a form that will send data to event_card.php
                             echo '<form method="POST" action="../forms/event_card.php">';
-                            echo '<input type="hidden" name="email" value="' . htmlspecialchars($_SESSION['user_email']) . '">'; // Use the session email
+                            echo '<input type="hidden" name="email" value="' . htmlspecialchars($row['member_email']) . '">'; // Use the session email
                             echo '<input type="hidden" name="eventName" value="' . htmlspecialchars($row['event_name']) . '">'; // Pass the event name
 
                             // Use the invitation_card path for the download
