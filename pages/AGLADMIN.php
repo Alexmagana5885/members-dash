@@ -644,7 +644,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 
                 // Prepare the SQL query
-                $sql = "SELECT event_name, event_location, event_date, event_id, invitation_card FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
+                $sql = "SELECT event_name, event_location, member_email,event_id, event_id, invitation_card FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
                 $stmt = $conn->prepare($sql);
 
 
