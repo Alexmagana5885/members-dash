@@ -184,20 +184,20 @@ if ($result->num_rows > 0) {
     $pdf->Output('F', $pdfFileName);
 
 
-//     $pdf_relative_path = str_replace('../assets/Documents/EventCards/', '', $pdfFileName);
+    $pdf_relative_path = str_replace('../assets/Documents/EventCards/', '', $pdfFileName);
 
-//     $updateQuery = "UPDATE event_registrations 
-//                 SET invitation_card = '$pdf_relative_path' 
-//                 WHERE member_email = '$member_email' 
-//                 AND event_name = '$event_name'";
+    $updateQuery = "UPDATE event_registrations 
+                SET invitation_card = '$pdf_relative_path' 
+                WHERE member_email = '$member_email' 
+                AND event_name = '$event_name'";
 
-//     if ($conn->query($updateQuery) === TRUE) {
-//         echo "PDF generated and stored successfully.";
-//     } else {
-//         echo "Error updating invitation card: " . $conn->error;
-//     }
-// } else {
-//     echo "No event registration found for this member.";
+    if ($conn->query($updateQuery) === TRUE) {
+        echo "PDF generated and stored successfully.";
+    } else {
+        echo "Error updating invitation card: " . $conn->error;
+    }
+} else {
+    echo "No event registration found for this member.";
 }
 
 // Close the database connection
