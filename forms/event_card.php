@@ -25,6 +25,13 @@ FROM event_registrations er
 WHERE er.member_email = '$member_email' AND er.event_id = '$event_id'
  ";
 
+error_log("Member Email: $member_email");
+error_log("Event ID: $event_id");
+if (!$result) {
+    echo "Query Error: " . $conn->error;
+}
+
+
 // Execute the query
 $result = $conn->query($query);
 
