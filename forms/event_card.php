@@ -182,35 +182,12 @@ if ($result->num_rows > 0) {
     }
 
     $sanitized_event_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $event_name);
-    $pdfFileName = $pdfDir . $sanitized_event_name . '_' . $member_email . '.pdf';
+    $pdfFileName = $sanitized_event_name . '_' . $member_email . '.pdf';
 
 
     $pdf->Output('D', $pdfFileName);
 
 
-    // if (file_exists($pdfFileName)) {
-    //     header('Content-Type: application/pdf');
-    //     header('Content-Disposition: attachment; filename="' . basename($pdfFileName) . '"');
-    //     header('Content-Length: ' . filesize($pdfFileName));
-    //     readfile($pdfFileName); 
-    //     exit; 
-    // } else {
-    //     echo 'File not found.';
-    // }
-
-
-    // $pdf_relative_path = str_replace('../assets/Documents/EventCards/', '', $pdfFileName);
-
-    // $updateQuery = "UPDATE event_registrations 
-    //             SET invitation_card = '$pdf_relative_path' 
-    //             WHERE member_email = '$member_email' 
-    //             AND event_name = '$event_name'";
-
-    // if ($conn->query($updateQuery) === TRUE) {
-    //     echo "PDF generated and stored successfully.";
-    // } else {
-    //     echo "Error updating invitation card: " . $conn->error;
-    // }
 } else {
     echo "No event registration found for this member.";
 }
