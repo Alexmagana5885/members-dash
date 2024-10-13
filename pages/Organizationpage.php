@@ -153,7 +153,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     </style>
 
-
     <div class="innerlinksNav">
         <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
         <a class="innerlinksNav-a" href="#PlannedEvents">Comming Events</a>
@@ -240,26 +239,17 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="openPastEventModal">Add a Past Event</a></li>
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
-                    <!-- <li><a href="admin/settings.html">Admit New Members</a></li> -->
-
-
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
-
                     <li><a href="https://www.agl.or.ke/contact-us/">Contacts</a></li>
                     <li><a href="mailto:info@agl.or.ke" target="_blank">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
-
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
+                    <!-- <li><a href="new2.php">invitation card</a></li> -->
 
-
-                    <!-- <li><a href="new.php">new</a></li>
-                    <li><a href="info.php" target="_blank">info</a></li> -->
-                    <!-- <li><a href="MembersPortal.php">memberportal</a></li>
-                    <li><a href="AdminMember.php">memberadmin</a></li> -->
                 <?php elseif ($role == 'admin'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a id="openPostEventModal">Add a Planned Event</a></li>
@@ -281,9 +271,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
 
-                    <li><a href="mailto:info@agl.or.ke"> target="_blank"Email Us</a></li>
+                    <li><a href="mailto:info@agl.or.ke">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
-                    <a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
@@ -654,8 +644,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 
                 // Prepare the SQL query
-                $sql = "SELECT event_name, event_location, event_date FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
+                $sql = "SELECT event_name, event_location, member_email,event_id, event_id, invitation_card FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
                 $stmt = $conn->prepare($sql);
+
 
                 if ($stmt === false) {
                     die('Prepare failed: ' . htmlspecialchars($conn->error));
@@ -674,28 +665,56 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 }
 
                 ?>
+
+                <style>
+                    .iventcard {
+                        background-color: #007bff;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        width: 100%;
+                    }
+
+                    .iventcard:hover {
+                        background-color: #0056b3;
+                    }
+                </style>
                 <div class="card">
                     <h4>Registered Events</h4>
 
                     <hr>
-
                     <?php
                     if ($resultmessage->num_rows > 0) {
                         while ($row = $resultmessage->fetch_assoc()) {
+                            $uniqueId = strtolower(str_replace(' ', '_', htmlspecialchars($row['event_name']))) . '_' . htmlspecialchars($row['event_date']);
+
                             echo '<div>';
                             echo '<h5>' . htmlspecialchars($row['event_name']) . '</h5>';
                             echo '<p>' . htmlspecialchars($row['event_location']) . '</p>';
                             echo '<p>' . htmlspecialchars($row['event_date']) . '</p>';
+
+                            echo '<p hidden>' . htmlspecialchars($row['event_id']) . '</p>';
+
+                            // Create a form that will send data to event_card.php
+                            echo '<form method="POST" action="../forms/event_card.php">';
+                            echo '<input type="hidden" name="email" value="' . $row['member_email'] . '">'; 
+                            echo '<input type="hidden" name="eventName" value="' . $row['event_id'] . '">'; 
+                            
+                            // Use the invitation_card path for the download
+                            echo '<button style="background-color: #007bff;" class="iventcard" type="submit">Download Invitation Card</button>';
+                            echo '</form>';
+
                             echo '</div>';
                             echo '<hr>';
                         }
                     } else {
                         echo '<p>No upcoming registered events.</p>';
                     }
-
-                    // $stmt->close();
-                    // $conn->close();
                     ?>
+
+
                 </div>
             </div>
             <!-- ................................... -->
