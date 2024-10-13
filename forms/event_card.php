@@ -24,7 +24,7 @@ $query = "SELECT er.event_name, er.event_date, er.event_location, er.member_name
 FROM event_registrations er
 WHERE er.member_email = '$member_email' AND er.event_id = '$event_id'
  ";
-
+$result = $conn->query($query);
 
 if ($result && $result->num_rows > 0) {
     // Fetch and output each row
@@ -45,7 +45,7 @@ if ($result && $result->num_rows > 0) {
 
 
 // Execute the query
-$result = $conn->query($query);
+// $result = $conn->query($query);
 
 // Check if any records were returned
 if ($result->num_rows > 0) {
