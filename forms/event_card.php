@@ -5,11 +5,12 @@ require('../assets/fpdf/fpdf.php');
 require_once '../assets/phpqrcode/qrlib.php';
 
 
-function sanitize_input($data) {
+function sanitize_input($data)
+{
     return htmlspecialchars(stripslashes(trim($data)));
-} 
+}
 
-$event_name = sanitize_input($_POST['user_email']);
+$member_email = sanitize_input($_POST['user_email']);
 $event_id = sanitize_input($_POST['event_id']);
 
 $qrDir = '../assets/img/qrcodes/';
@@ -19,10 +20,10 @@ if (!is_dir($qrDir)) {
 
 // Query to fetch event and member data
 $query = "SELECT er.event_name, er.event_date, er.event_location, er.member_name, er.member_email,
-                 pm.passport_image
-          FROM event_registrations er
-          LEFT JOIN personalmembership pm ON er.member_email = pm.email
-          WHERE er.member_email = '$member_email' AND id = '$event_id' ";
+       er.invitation_card, er.contact, er.payment_code
+FROM event_registrations er
+WHERE er.member_email = '$member_email' AND er.event_id = '$event_id'
+ ";
 
 // Execute the query
 $result = $conn->query($query);
