@@ -46,9 +46,13 @@ if ($recipient_choice === 'all_members') {
 
 } elseif ($recipient_choice === 'officials_only') {
     // Fetch emails of officials
-    $sql_officials = "SELECT personalmembership.email 
-                      FROM personalmembership 
-                      JOIN officialsmembers ON personalmembership.email = officialsmembers.personalmembership_email";
+    // $sql_officials = "SELECT personalmembership.email 
+    //                   FROM personalmembership 
+    //                   JOIN officialsmembers ON personalmembership.email = officialsmembers.personalmembership_email";
+
+    // $result_officials = $conn->query($sql_officials);
+
+    $sql_officials = " SELECT personalmembership_email FROM officialsmembers ";
 
     $result_officials = $conn->query($sql_officials);
 

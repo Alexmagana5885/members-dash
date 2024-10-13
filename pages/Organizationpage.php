@@ -160,8 +160,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     </div>
     <div class="Aligner"></div>
 
-
-
     <style>
         .blogPoint {
             width: 100%;
@@ -234,7 +232,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 </li>
 
                 <?php if ($role == 'superadmin'): ?>
-                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
+                    <!-- <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a id="openPostEventModal">Add a Planned Event</a></li>
                     <li><a id="openPastEventModal">Add a Past Event</a></li>
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
@@ -247,7 +245,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
-                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="../forms/logout.php">Logout</a></li> -->
                     <!-- <li><a href="new2.php">invitation card</a></li> -->
 
                 <?php elseif ($role == 'admin'): ?>
@@ -255,14 +253,11 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="openPostEventModal">Add a Planned Event</a></li>
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
-
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
-
                     <li><a href="mailto:info@agl.or.ke">Email</a></li>
                     <li><a href="tel:+254748027123">Call</a></li>
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
-
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
@@ -270,7 +265,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 <?php elseif ($role == 'member'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
-
                     <li><a href="mailto:info@agl.or.ke">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
@@ -298,7 +292,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 $userEmail = $_SESSION['user_email'];
 
                 // Fetch user details based on the session email
-                $sql = "SELECT * FROM personalmembership WHERE email = ?";
+                $sql = "SELECT * FROM organizationmembership WHERE organization_email = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("s", $userEmail);
                 $stmt->execute();
@@ -306,10 +300,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
                 // Fetch data
                 if ($row = $result->fetch_assoc()) {
-                    $name = $row['name'];
-                    $registrationDate = $row['registration_date'];
-                    $passportImage = $row['passport_image'];
-                    $userEmail = $row['email'];
+                    $name = $row['organization_name'];
+                    $registrationDate = $row['date_of_registration'];
+                    $passportImage = $row['logo_image'];
+                    $userEmail = $row['organization_email'];
                 } else {
                     echo "No user found";
                 }

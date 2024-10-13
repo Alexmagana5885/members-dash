@@ -10,7 +10,7 @@ $response = array('success' => false, 'message' => '', 'errors' => array());
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize input data
     $eventName = htmlspecialchars(trim($_POST['eventName']));
-    $eventDetails = htmlspecialchars(trim($_POST['eventDetails'])); // Make sure to sanitize the Quill editor content appropriately
+    $eventDetails = htmlspecialchars(trim($_POST['eventDetails'])); // Sanitize Quill editor content
     $eventLocation = htmlspecialchars(trim($_POST['eventLocation']));
     $eventDate = htmlspecialchars(trim($_POST['eventDate'])); 
 
@@ -24,6 +24,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         foreach ($_FILES['eventImages']['tmp_name'] as $key => $tmpName) {
             if ($_FILES['eventImages']['error'][$key] == UPLOAD_ERR_OK) {
+                // Check file size
+                if ($_FILES['eventImages']['size'][$key] > 20 * 1024 * 1024) { // 20MB limit
+                    $response['errors'][] = "File size exceeds 20MB: " . $_FILES['eventImages']['name'][$key];
+                    continue; // Skip this file
+                }
+
                 $fileName = basename($_FILES['eventImages']['name'][$key]);
                 $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                 $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif']; // Allowed image extensions
@@ -52,6 +58,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         foreach ($_FILES['eventDocuments']['tmp_name'] as $key => $tmpName) {
             if ($_FILES['eventDocuments']['error'][$key] == UPLOAD_ERR_OK) {
+                // Check file size
+                if ($_FILES['eventDocuments']['size'][$key] > 20 * 1024 * 1024) { // 20MB limit
+                    $response['errors'][] = "File size exceeds 20MB: " . $_FILES['eventDocuments']['name'][$key];
+                    continue; // Skip this file
+                }
+
                 $fileName = basename($_FILES['eventDocuments']['name'][$key]);
                 $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                 $allowedExtensions = ['pdf']; // Only allow PDF documents
