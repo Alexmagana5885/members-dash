@@ -8,6 +8,7 @@ require_once '../../../assets/phpqrcode/qrlib.php';
 // $member_email = '';
 
 $member_email = isset($_POST['email']) ? $_POST['email'] : '';
+$event_name = isset($_POST['eventName']) ? $_POST['eventName'] : '';
 
 // Create directory for QR codes if it doesn't exist
 $qrDir = '../../../assets/img/qrcodes/';
@@ -20,8 +21,8 @@ $query = "SELECT er.event_name, er.event_date, er.event_location, er.member_name
                  pm.passport_image
           FROM event_registrations er
           LEFT JOIN personalmembership pm ON er.member_email = pm.email
-          WHERE er.member_email = '$member_email'";
-
+          WHERE er.member_email = '$member_email' AND event_name = '$event_name' ";
+          
 // Execute the query
 $result = $conn->query($query);
 

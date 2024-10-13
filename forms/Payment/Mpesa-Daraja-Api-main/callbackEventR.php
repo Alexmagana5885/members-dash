@@ -91,7 +91,7 @@ if ($ResultCode == 0) {
         // Send POST request to event_card.php
         
         $url = 'event_card.php';
-        $postData = ['email' => $email];
+        $postData = ['email' => $email, 'eventName' => $eventName];
 
         // Initialize cURL session
         $ch = curl_init($url);
@@ -104,7 +104,7 @@ if ($ResultCode == 0) {
         curl_close($ch);
         
         // Optionally log the result of the cURL request
-        file_put_contents('event_card_response.log', $result, FILE_APPEND);
+        // file_put_contents('event_card_response.log', $result, FILE_APPEND);
 
         $response['success'] = true;
         $response['message'] = "Event registration successful, confirmation email sent, and event card processing initiated.";
