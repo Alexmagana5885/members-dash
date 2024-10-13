@@ -4,22 +4,14 @@ include 'DBconnection.php';
 require('../assets/fpdf/fpdf.php');
 require_once '../assets/phpqrcode/qrlib.php';
 
-// Set member email 
-// $member_email = 'Maganaalex634@gmail.com';
-// $event_name = 'alex 1';
 
 function sanitize_input($data) {
     return htmlspecialchars(stripslashes(trim($data)));
 } 
 
 $event_name = sanitize_input($_POST['user_email']);
-$id = sanitize_input($_POST['id']);
+$id = sanitize_input($_POST['event_id']);
 
-// $member_email = isset($_POS['user_email']) ? $_POS['user_email'] : '';
-
-// $event_name = isset($_POST['eventName']) ? $_POST['eventName'] : '';
-
-// Create directory for QR codes if it doesn't exist
 $qrDir = '../assets/img/qrcodes/';
 if (!is_dir($qrDir)) {
     mkdir($qrDir, 0755, true); // Create the directory with proper permissions
@@ -30,7 +22,7 @@ $query = "SELECT er.event_name, er.event_date, er.event_location, er.member_name
                  pm.passport_image
           FROM event_registrations er
           LEFT JOIN personalmembership pm ON er.member_email = pm.email
-          WHERE er.member_email = '$member_email' AND id = '$id' ";
+          WHERE er.member_email = '$member_email' AND id = '$event_id' ";
 
 // Execute the query
 $result = $conn->query($query);
