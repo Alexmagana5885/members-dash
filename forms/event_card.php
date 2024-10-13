@@ -11,8 +11,8 @@ require_once '../assets/phpqrcode/qrlib.php';
 $member_email = $_POST['email'];
 $event_id = $_POST['eventName'];
 
-echo "Member Email: " . $member_email . "<br>";
-echo "Event ID: " . $event_id;
+// echo "Member Email: " . $member_email . "<br>";
+// echo "Event ID: " . $event_id;
 
 
 
