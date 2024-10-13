@@ -5,7 +5,7 @@ require('../assets/fpdf/fpdf.php');
 require_once '../assets/phpqrcode/qrlib.php';
 
 
-$member_email = $_POST['user_email'];
+$member_email = $_POST['member_email'];
 $event_id = $_POST['event_id'];
 
 
