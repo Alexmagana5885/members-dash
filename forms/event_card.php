@@ -7,7 +7,22 @@ require_once '../assets/phpqrcode/qrlib.php';
 
 // event_card.php
 
-print_r($_POST) ."<br>"; // Check if the form data is received
+echo "<pre>";
+print_r($_POST);
+echo "</pre><br>";
+
+// Check if the required fields are set
+if (isset($_POST['email']) && isset($_POST['eventName'])) {
+    // Retrieve the values
+    $email = $_POST['email'];
+    $eventName = $_POST['eventName'];
+    
+    // You can now use $email and $eventName in your processing logic
+    echo "Email: " . htmlspecialchars($email, ENT_QUOTES) . "<br>";
+    echo "Event Name: " . htmlspecialchars($eventName, ENT_QUOTES) . "<br>";
+} else {
+    // Display an error message if the required fields are not set
+    echo "Error: Missing required form data.";}
                     
 
 $member_email = $_POST['member_email'];
