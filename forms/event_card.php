@@ -5,6 +5,11 @@ require('../assets/fpdf/fpdf.php');
 require_once '../assets/phpqrcode/qrlib.php';
 
 
+// event_card.php
+
+print_r($_POST) ."<br>"; // Check if the form data is received
+                    
+
 $member_email = $_POST['member_email'];
 $event_id = $_POST['event_id'];
 
