@@ -5,8 +5,8 @@ require('../assets/fpdf/fpdf.php');
 require_once '../assets/phpqrcode/qrlib.php';
 
 
-$member_email = $_POST['member_email'];
-$event_id = $_POST['event_id'];
+// $member_email = $_POST['member_email'];
+// $event_id = $_POST['event_id'];
 
 // Retrieve and sanitize inputs
 $member_email = filter_var($_POST['member_email'], FILTER_SANITIZE_EMAIL);
