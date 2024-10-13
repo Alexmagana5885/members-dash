@@ -8,10 +8,16 @@ require_once '../assets/phpqrcode/qrlib.php';
 // $member_email = 'Maganaalex634@gmail.com';
 // $event_name = 'alex 1';
 
-$member_email = isset($_POS['user_email']) ? $_POS['user_email'] : '';
+function sanitize_input($data) {
+    return htmlspecialchars(stripslashes(trim($data)));
+} 
 
+$event_name = sanitize_input($_POST['user_email']);
+$member_email = sanitize_input($_POST['eventName']);
 
-$event_name = isset($_POST['eventName']) ? $_POST['eventName'] : '';
+// $member_email = isset($_POS['user_email']) ? $_POS['user_email'] : '';
+
+// $event_name = isset($_POST['eventName']) ? $_POST['eventName'] : '';
 
 // Create directory for QR codes if it doesn't exist
 $qrDir = '../assets/img/qrcodes/';
