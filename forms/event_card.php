@@ -5,11 +5,11 @@ require('../assets/fpdf/fpdf.php');
 require_once '../assets/phpqrcode/qrlib.php';
 
 
+// event_card.php
 
-                    
 
-$member_email = $_POST['member_email'];
-$event_id = $_POST['event_id'];
+$member_email = $_POST['email'];
+$event_id = $_POST['eventName'];
 
 echo "Member Email: " . $member_email . "<br>";
 echo "Event ID: " . $event_id;
