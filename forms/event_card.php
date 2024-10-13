@@ -8,6 +8,21 @@ require_once '../assets/phpqrcode/qrlib.php';
 $member_email = $_POST['member_email'];
 $event_id = $_POST['event_id'];
 
+// Retrieve and sanitize inputs
+$member_email = filter_var($_POST['member_email'], FILTER_SANITIZE_EMAIL);
+$event_id = isset($_POST['event_id']) ? intval($_POST['event_id']) : 0;
+
+// Validate inputs
+if (!filter_var($member_email, FILTER_VALIDATE_EMAIL)) {
+    die("Invalid email format");
+}
+
+if ($event_id <= 0) {
+    die("Invalid event ID");
+}
+
+// Continue with your processing, like storing in the database or sending an email
+
 
 $qrDir = '../assets/img/qrcodes/';
 if (!is_dir($qrDir)) {
@@ -21,7 +36,6 @@ FROM event_registrations er
 WHERE er.member_email = '$member_email' AND er.event_id = '$event_id'
  ";
 $result = $conn->query($query);
-
 
 
 // Execute the query
