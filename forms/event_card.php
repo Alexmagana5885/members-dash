@@ -1,8 +1,8 @@
 <?php
 // Include the necessary libraries
-include 'AGLdbconnection.php';
-require('../../../assets/fpdf/fpdf.php');
-require_once '../../../assets/phpqrcode/qrlib.php';
+include 'DBconnection.php';
+require('../assets/fpdf/fpdf.php');
+require_once '../assets/phpqrcode/qrlib.php';
 
 // Set member email 
 $member_email = 'Maganaalex634@gmail.com';
@@ -14,7 +14,7 @@ $event_name = 'alex 1';
 // $event_name = isset($_POST['eventName']) ? $_POST['eventName'] : '';
 
 // Create directory for QR codes if it doesn't exist
-$qrDir = '../../../assets/img/qrcodes/';
+$qrDir = '../assets/img/qrcodes/';
 if (!is_dir($qrDir)) {
     mkdir($qrDir, 0755, true); // Create the directory with proper permissions
 }
@@ -74,7 +74,7 @@ if ($result->num_rows > 0) {
     $pdf = new FPDF('P', 'mm', [100, 150]); // Set smaller custom page size
     $pdf->AddPage();
 
-    $header_image = '../../../assets/img/logo.png';
+    $header_image = '../assets/img/logo.png';
     $page_width = $pdf->GetPageWidth(); // Get the page width
 
     $pdf->SetFillColor(195, 198, 214); // RGB values for background color
@@ -170,7 +170,7 @@ if ($result->num_rows > 0) {
 
     // Output the PDF
 
-    $pdfDir = '../../../assets/Documents/EventCards/'; // Specify your desired directory
+    $pdfDir = '../assets/Documents/EventCards/'; // Specify your desired directory
 
     // Create the directory if it doesn't exist
     if (!is_dir($pdfDir)) {
@@ -184,7 +184,7 @@ if ($result->num_rows > 0) {
     $pdf->Output('F', $pdfFileName);
 
 
-//     $pdf_relative_path = str_replace('../assets/Documents/EventCards/', '', $pdfFileName); 
+//     $pdf_relative_path = str_replace('../assets/Documents/EventCards/', '', $pdfFileName);
 
 //     $updateQuery = "UPDATE event_registrations 
 //                 SET invitation_card = '$pdf_relative_path' 
