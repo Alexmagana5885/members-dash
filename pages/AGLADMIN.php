@@ -158,7 +158,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <a class="innerlinksNav-a" href="#PlannedEvents">Comming Events</a>
         <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
     </div>
-    <div class="Aligner"></div> 
+    <div class="Aligner"></div>
 
 
 
@@ -249,7 +249,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
                     <!-- <li><a href="new2.php">invitation card</a></li> -->
-               
+
                 <?php elseif ($role == 'admin'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a id="openPostEventModal">Add a Planned Event</a></li>
@@ -685,7 +685,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <h4>Registered Events</h4>
 
                     <hr>
-                    
+
 
                     <?php
                     if ($resultmessage->num_rows > 0) {
@@ -697,9 +697,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             echo '<p>' . htmlspecialchars($row['event_location']) . '</p>';
                             echo '<p>' . htmlspecialchars($row['event_date']) . '</p>';
 
+                            // Create a form that will send data to event_card.php
+                            echo '<form method="POST" action="../forms/event_card.php">';
+                            echo '<input type="hidden" name="email" value="' . htmlspecialchars($_SESSION['user_email']) . '">'; // Use the session email
+                            echo '<input type="hidden" name="eventName" value="' . htmlspecialchars($row['event_name']) . '">'; // Pass the event name
+
                             // Use the invitation_card path for the download
-                            $invitationCardPath = htmlspecialchars($row['invitation_card']);
-                            echo '<button style="background-color: #007bff;" class="iventcard" id="' . $uniqueId . '" type="button" onclick="window.location.href=\'' . $invitationCardPath . '\'">Download Invitation Card</button>';
+                            echo '<button style="background-color: #007bff;" class="iventcard" type="submit">Download Invitation Card</button>';
+                            echo '</form>';
 
                             echo '</div>';
                             echo '<hr>';
@@ -708,6 +713,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                         echo '<p>No upcoming registered events.</p>';
                     }
                     ?>
+
 
                 </div>
             </div>
