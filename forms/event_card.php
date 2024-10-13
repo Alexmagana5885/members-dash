@@ -5,26 +5,8 @@ require('../assets/fpdf/fpdf.php');
 require_once '../assets/phpqrcode/qrlib.php';
 
 
-function sanitize_input($data)
-{
-    return htmlspecialchars(stripslashes(trim($data)));
-}
-
-$member_email = sanitize_input($_POST['user_email'] ?? '');
-$event_id = sanitize_input($_POST['event_id'] ?? '');
-
-// Validate email format
-if (!filter_var($member_email, FILTER_VALIDATE_EMAIL)) {
-    echo "Invalid email format.<br>";
-} else {
-    echo "Member Email: " . $member_email . "<br>";
-}
-
-if (empty($event_id)) {
-    echo "Event ID is required.<br>";
-} else {
-    echo "Event ID: " . $event_id . "<br>";
-}
+$member_email = $_POST['user_email'];
+$event_id = $_POST['event_id'];
 
 
 $qrDir = '../assets/img/qrcodes/';
