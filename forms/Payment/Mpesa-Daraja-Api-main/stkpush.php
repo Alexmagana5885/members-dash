@@ -10,27 +10,28 @@ date_default_timezone_set('Africa/Nairobi');
 $response = ['success' => false, 'message' => '', 'errors' => []];
 
 // Define the normalizePhoneNumber function
-function normalizePhoneNumber($phone) {
-    $phone = preg_replace('/\s+/', '', $phone);
-    if (strpos($phone, '+') === 0) {
-        $phone = substr($phone, 1);
+function normalizePhoneNumber($phone_number)
+{
+    $phone_number = preg_replace('/\s+/', '', $phone_number);
+    if (strpos($phone_number, '+') === 0) {
+        $phone_number = substr($phone_number, 1);
     }
-    if (preg_match('/^0[17]/', $phone)) {
-        $phone = '254' . substr($phone, 1);
+    if (preg_match('/^0[17]/', $phone_number)) {
+        $phone_number = '254' . substr($phone_number, 1);
     }
-    if (preg_match('/^2547/', $phone)) {
-        return $phone;
+    if (preg_match('/^2547/', $phone_number)) {
+        return $phone_number;
     }
-    return $phone;
+    return $phone_number;
 }
 
 // Retrieve and normalize form data
-$phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
-$money = isset($_POST['amount']) ? $_POST['amount'] : '1';
+$phone_number = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
+$money_paid = isset($_POST['amount']) ? $_POST['amount'] : '1';
 $userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
 
 // Validate inputs
-if (empty($phone)) {
+if (empty($phone_number)) {
     $response['errors'][] = 'Phone number is required.';
 }
 if (empty($userEmail)) {
@@ -42,6 +43,7 @@ if (!empty($response['errors'])) {
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }
+
 
 // Define variables
 
@@ -60,15 +62,26 @@ $Timestamp = date('YmdHis');
 // Encrypt data to get password
 $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 
-// Define other parameters
-$PartyA = $phone; // Phone number to receive the STK push
+// $PartyA = $phone; 
 // $phone = $phonenumber; 
-$PartyB = '8209382'; 
+// $PartyB = '8209382'; 
+// $AccountReference = '6175135';
+// $TransactionDesc = 'Membership Registration fee payment';
+// $Amount = $money;
+// $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
+
+
+
+$phone = $phone_number; // phone number to receive the STK push
+$money = $money_paid; // amount to be processed
+$PartyA = $phone;
+$PartyB = '8209382';
 $AccountReference = '6175135';
 $TransactionDesc = 'Membership Registration fee payment';
 $Amount = $money;
-
 $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
+
+
 
 // Initialize cURL
 $curl = curl_init();
@@ -115,7 +128,7 @@ if ($CheckoutRequestID) {
 
     if ($stmt->execute()) {
         $response['success'] = true;
-        $response['message'] = "Kindly enter your Mpesa Pin to complete the payment " ;
+        $response['message'] = "Kindly enter your Mpesa Pin to complete the payment ";
     } else {
         $response['errors'][] = "Database error: " . $stmt->error;
     }
@@ -132,4 +145,3 @@ $conn->close();
 $_SESSION['response'] = $response;
 header("Location: " . $_SERVER['HTTP_REFERER']);
 exit();
-?>
