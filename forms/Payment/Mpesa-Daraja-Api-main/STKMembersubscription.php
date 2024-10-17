@@ -7,48 +7,53 @@ include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
 
 // Define the normalizePhoneNumber function
-function normalizePhoneNumber($phone) {
-    $phone = preg_replace('/\s+/', '', $phone);
-    if (strpos($phone, '+') === 0) {
-        $phone = substr($phone, 1);
+function normalizePhoneNumber($phone_number)
+{
+    $phone_number = preg_replace('/\s+/', '', $phone_number);
+    if (strpos($phone_number, '+') === 0) {
+        $phone_number = substr($phone_number, 1);
     }
-    if (preg_match('/^0[17]/', $phone)) {
-        $phone = '254' . substr($phone, 1);
+    if (preg_match('/^0[17]/', $phone_number)) {
+        $phone_number = '254' . substr($phone_number, 1);
     }
-    if (preg_match('/^2547/', $phone)) {
-        return $phone;
+    if (preg_match('/^2547/', $phone_number)) {
+        return $phone_number;
     }
-    return $phone;
+    return $phone_number;
 }
 
 // Retrieve and normalize form data 
-$phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
-$money = isset($_POST['amount']) ? $_POST['amount'] : '1';
+$phone_number = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
+$money_paid = isset($_POST['amount']) ? $_POST['amount'] : '1';
 $userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
 
-// Define variables
+if (empty($phone_number)) {
+    $response['errors'][] = 'Phone number is required.';
+}
+if (empty($userEmail)) {
+    $response['errors'][] = 'Email is required.';
+}
+if (!empty($response['errors'])) {
+    $_SESSION['response'] = $response;
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
 
-// $processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-// $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/Premiumcallback.php';
-// $passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
-// $BusinessShortCode = '6175135';
-// $Timestamp = date('YmdHis');
-
-$processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'; 
-$callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/Premiumcallback.php';
-$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-$BusinessShortCode = '174379';
+$processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+$callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
+$passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
 $Timestamp = date('YmdHis');
- 
-// Encrypt data to get password
+$BusinessShortCode = '6175135';
 $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 
-// Define other parameters
-$PartyA = $phone; // Phone number to receive the STK push
-$PartyB = $BusinessShortCode;
-$AccountReference = 'AGL';
+$phone = $phone_number;
+$money = $money_paid;
+$PartyA = $phone;
+$PartyB = '8209382';
+$AccountReference = '6175135';
 $TransactionDesc = 'Membership Registration fee payment';
 $Amount = $money;
+
 
 $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
 
@@ -61,10 +66,10 @@ $curl_post_data = array(
     'BusinessShortCode' => $BusinessShortCode,
     'Password' => $Password,
     'Timestamp' => $Timestamp,
-    'TransactionType' => 'CustomerPayBillOnline',
+    'TransactionType' => 'CustomerBuyGoodsOnline',
     'Amount' => $Amount,
     'PartyA' => $PartyA,
-    'PartyB' => $BusinessShortCode,
+    'PartyB' => $PartyB,
     'PhoneNumber' => $PartyA,
     'CallBackURL' => $callbackurl,
     'AccountReference' => $AccountReference,
@@ -109,7 +114,7 @@ $stmt->bind_param("sssss", $CheckoutRequestID, $userEmail, $phone, $money, $stat
 if ($stmt->execute()) {
     $_SESSION['response'] = [
         'success' => true,
-        'message' => 'Kindly enter your Mpesa Pin to complete the payment' 
+        'message' => 'Kindly enter your Mpesa Pin to complete the payment'
     ];
 } else {
     $_SESSION['response'] = [
@@ -125,4 +130,3 @@ header("Location: " . $_SERVER['HTTP_REFERER']);
 $stmt->close();
 $conn->close();
 exit();
-?>

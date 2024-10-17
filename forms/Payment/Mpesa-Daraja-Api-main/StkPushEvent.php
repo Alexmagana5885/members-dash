@@ -85,16 +85,19 @@ try {
         $insertStmt->close();
     } else {
         // Proceed with STK push for non 0 amount
-        $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'; 
-        $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callbackEventR.php'; 
-        $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-        $BusinessShortCode = '174379';
+        $processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+        $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
+        $passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
         $Timestamp = date('YmdHis');
-        $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
-
+        $BusinessShortCode = '6175135';
+        $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp); 
+        
+        $phone = $phone_number; 
+        $money = $money_paid;
         $PartyA = $phone; 
-        $AccountReference = 'AGL';
-        $TransactionDesc = 'Membership Registration fee payment';
+        $PartyB = '8209382'; 
+        $AccountReference = '6175135';
+        $TransactionDesc = 'Membership Registration fee payment'; 
         $Amount = $money;
 
         $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
@@ -107,10 +110,10 @@ try {
             'BusinessShortCode' => $BusinessShortCode,
             'Password' => $Password,
             'Timestamp' => $Timestamp,
-            'TransactionType' => 'CustomerPayBillOnline',
+            'TransactionType' => 'CustomerBuyGoodsOnline',
             'Amount' => $Amount,
             'PartyA' => $PartyA,
-            'PartyB' => $BusinessShortCode,
+            'PartyB' => $PartyB,
             'PhoneNumber' => $PartyA,
             'CallBackURL' => $callbackurl,
             'AccountReference' => $AccountReference,
