@@ -22,16 +22,19 @@ function normalizePhoneNumber($phone_number)
     return $phone_number;
 }
 
-// Retrieve and normalize form data 
-$phone_number = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
-$money_paid = isset($_POST['amount']) ? $_POST['amount'] : '1';
-$userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
+// Validate and sanitize form data
+$phone_number = isset($_POST['phone_number']) ? normalizePhoneNumber(filter_var($_POST['phone_number'], FILTER_SANITIZE_STRING)) : '';
+$money_paid = isset($_POST['amount']) ? filter_var($_POST['amount'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : '1';
+$userEmail = isset($_POST['User-email']) ? filter_var($_POST['User-email'], FILTER_VALIDATE_EMAIL) : '';
 
+$response = ['errors' => []];
+
+// Validate required fields
 if (empty($phone_number)) {
     $response['errors'][] = 'Phone number is required.';
 }
 if (empty($userEmail)) {
-    $response['errors'][] = 'Email is required.';
+    $response['errors'][] = 'Valid email is required.';
 }
 if (!empty($response['errors'])) {
     $_SESSION['response'] = $response;
@@ -39,30 +42,28 @@ if (!empty($response['errors'])) {
     exit();
 }
 
+// Set M-Pesa API credentials
 $processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
-$passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
+$passkey = getenv('MPESA_PASSKEY'); // Use environment variables for sensitive data
+$BusinessShortCode = getenv('MPESA_BUSINESS_SHORTCODE'); // Environment variable
 $Timestamp = date('YmdHis');
-$BusinessShortCode = '6175135';
 $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 
-$phone = $phone_number;
-$money = $money_paid;
-$PartyA = $phone;
-$PartyB = '8209382';
-$AccountReference = '6175135';
+// Prepare M-Pesa API request data
+$PartyA = $phone_number;
+$PartyB = '8209382'; // Till number
+$AccountReference = $BusinessShortCode;
 $TransactionDesc = 'Membership Registration fee payment';
-$Amount = $money;
-
+$Amount = $money_paid;
 
 $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
 
-// Initialize cURL
+// Initialize cURL and send request to M-Pesa API
 $curl = curl_init();
 curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
-curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); // Setting custom header
-
-$curl_post_data = array(
+curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader);
+$curl_post_data = json_encode([
     'BusinessShortCode' => $BusinessShortCode,
     'Password' => $Password,
     'Timestamp' => $Timestamp,
@@ -74,19 +75,29 @@ $curl_post_data = array(
     'CallBackURL' => $callbackurl,
     'AccountReference' => $AccountReference,
     'TransactionDesc' => $TransactionDesc
-);
-
-$data_string = json_encode($curl_post_data);
+]);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_POST, true);
-curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
+curl_setopt($curl, CURLOPT_TIMEOUT, 30); // Set a timeout for the request
+
 $curl_response = curl_exec($curl);
+
+// Check for cURL errors
+if ($curl_error = curl_error($curl)) {
+    $_SESSION['response'] = [
+        'success' => false,
+        'message' => 'cURL error: ' . $curl_error
+    ];
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
+
 curl_close($curl);
 
-// Decode and handle the response
+// Decode and handle M-Pesa API response
 $data = json_decode($curl_response);
 
-// Check if response contains an error
 if (isset($data->errorMessage)) {
     $_SESSION['response'] = [
         'success' => false,
@@ -96,34 +107,46 @@ if (isset($data->errorMessage)) {
     exit();
 }
 
-// Continue if no error
-$CheckoutRequestID = $data->CheckoutRequestID;
-$ResponseCode = $data->ResponseCode;
+$CheckoutRequestID = $data->CheckoutRequestID ?? null;
+$ResponseCode = $data->ResponseCode ?? null;
+
+if (!$CheckoutRequestID || !$ResponseCode) {
+    $_SESSION['response'] = [
+        'success' => false,
+        'message' => 'Invalid response from M-Pesa. Please try again.'
+    ];
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
+
+// Determine transaction status
+$status = ($ResponseCode === "0") ? 'Pending' : 'Failed';
 
 // Database connection settings
 require_once('../../DBconnection.php');
 
-// Determine status based on response code
-$status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
+try {
+    // Insert transaction data into the database
+    $sql = "INSERT INTO mpesa_transactions (CheckoutRequestID, email, phone_number, amount, status) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $CheckoutRequestID, $userEmail, $phone_number, $money_paid, $status);
 
-// Insert data into database
-$sql = "INSERT INTO mpesa_transactions (CheckoutRequestID, email, phone, amount, status) VALUES (?, ?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sssss", $CheckoutRequestID, $userEmail, $phone, $money, $status);
-
-if ($stmt->execute()) {
-    $_SESSION['response'] = [
-        'success' => true,
-        'message' => 'Kindly enter your Mpesa Pin to complete the payment'
-    ];
-} else {
+    if ($stmt->execute()) {
+        $_SESSION['response'] = [
+            'success' => true,
+            'message' => 'Kindly enter your Mpesa Pin to complete the payment'
+        ];
+    } else {
+        throw new Exception('Database error: ' . $stmt->error);
+    }
+} catch (Exception $e) {
     $_SESSION['response'] = [
         'success' => false,
-        'message' => 'Database error: ' . $stmt->error
+        'message' => $e->getMessage()
     ];
 }
 
-// Redirect back to the previous page
+// Redirect to the previous page
 header("Location: " . $_SERVER['HTTP_REFERER']);
 
 // Close connections
