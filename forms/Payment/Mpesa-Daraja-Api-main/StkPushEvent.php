@@ -14,19 +14,19 @@ date_default_timezone_set('Africa/Nairobi');
 $response = ['success' => false, 'message' => '', 'errors' => []];
 
 //  normalizePhoneNumber function
-function normalizePhoneNumber($phone)
+function normalizePhoneNumber($phone_number)
 {
-    $phone = preg_replace('/\s+/', '', $phone);
-    if (strpos($phone, '+') === 0) {
-        $phone = substr($phone, 1);
+    $phone_number = preg_replace('/\s+/', '', $phone_number); 
+    if (strpos($phone_number, '+') === 0) {
+        $phone_number = substr($phone_number, 1); 
     }
-    if (preg_match('/^0[17]/', $phone)) {
-        $phone = '254' . substr($phone, 1);
+    if (preg_match('/^0[17]/', $phone_number)) {
+        $phone_number = '254' . substr($phone_number, 1); 
     }
-    if (preg_match('/^2547/', $phone)) {
-        return $phone;
+    if (preg_match('/^2547/', $phone_number)) {
+        return $phone_number;
     }
-    return $phone;
+    return $phone_number;
 }
 
 // Validate and sanitize input data
@@ -36,11 +36,11 @@ $eventLocation = isset($_POST['event_location']) ? htmlspecialchars($_POST['even
 $eventDate = isset($_POST['event_date']) ? htmlspecialchars($_POST['event_date']) : '';
 $userEmail = isset($_POST['User-email']) ? filter_var($_POST['User-email'], FILTER_SANITIZE_EMAIL) : '';
 $memberName = isset($_POST['memberName']) ? htmlspecialchars($_POST['memberName']) : '';
-$phone = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
-$money = isset($_POST['amount']) ? floatval($_POST['amount']) : '';
+$phone_number = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
+$money_paid = isset($_POST['amount']) ? floatval($_POST['amount']) : '';
 
 // Validate inputs
-if (empty($phone)) {
+if (empty($phone_number)) {
     $response['errors'][] = 'Phone number is required.';
 }
 if (empty($userEmail)) {
@@ -106,7 +106,7 @@ try {
         curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader);
 
-        $curl_post_data = [
+        $curl_post_data = array(
             'BusinessShortCode' => $BusinessShortCode,
             'Password' => $Password,
             'Timestamp' => $Timestamp,
@@ -118,7 +118,8 @@ try {
             'CallBackURL' => $callbackurl,
             'AccountReference' => $AccountReference,
             'TransactionDesc' => $TransactionDesc
-        ];
+        );
+        
 
         $data_string = json_encode($curl_post_data);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
