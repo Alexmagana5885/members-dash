@@ -45,8 +45,9 @@ if (!empty($response['errors'])) {
 // Set M-Pesa API credentials
 $processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
-$passkey = getenv('MPESA_PASSKEY'); // Use environment variables for sensitive data
-$BusinessShortCode = getenv('MPESA_BUSINESS_SHORTCODE'); // Environment variable
+$passkey = getenv('MPESA_PASSKEY'); 
+$BusinessShortCode = getenv('MPESA_BUSINESS_SHORTCODE'); 
+
 $Timestamp = date('YmdHis');
 $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 
