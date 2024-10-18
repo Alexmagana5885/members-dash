@@ -1,200 +1,123 @@
+
 <?php
-session_start(); // Start the session
+// Start the session
+session_start();
 
-// Include the database connection file
-include '../forms/AGLdbconnection.php';
-require('../members/assets/fpdf/fpdf.php');
-require_once('../members/forms/DBconnection.php');
-require('../members/assets/phpqrcode/qrlib.php'); // Include the phpqrcode library
+include 'accessToken.php'; 
+date_default_timezone_set('Africa/Nairobi');
 
-header("Content-Type: application/json");
+$response = ['success' => false, 'message' => '', 'errors' => []];
 
-// Initialize response array
-$response = [
-    'success' => false,
-    'message' => '',           
-    'errors' => []
-];
-
-// Read and log the callback response
-$stkCallbackResponse = file_get_contents('php://input');
-$logFile = "callbackEventR.json";
-$log = fopen($logFile, "a");
-if ($log === false) {
-    $response['errors'][] = "Failed to open log file: $logFile";
-    $_SESSION['response'] = $response;
-    exit;
-} else {
-    fwrite($log, $stkCallbackResponse);
-    fclose($log);
-}
-
-// Decode the JSON response
-$data = json_decode($stkCallbackResponse);
-
-if (json_last_error() !== JSON_ERROR_NONE) {
-    $response['errors'][] = "Failed to decode JSON: " . json_last_error_msg();
-    $_SESSION['response'] = $response;
-    exit;
-}
-
-// Extract relevant data from the response
-$MerchantRequestID = $data->Body->stkCallback->MerchantRequestID ?? null;
-$CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID ?? null;
-$ResultCode = $data->Body->stkCallback->ResultCode ?? null;
-$ResultDesc = $data->Body->stkCallback->ResultDesc ?? null;
-$Amount = $data->Body->stkCallback->CallbackMetadata->Item[0]->Value ?? null;
-$TransactionId = $data->Body->stkCallback->CallbackMetadata->Item[1]->Value ?? null;
-$UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value ?? null;
-
-// Check if the transaction was successful
-if ($ResultCode == 0) {
-
-    // Retrieve the email associated with the CheckoutRequestID from the eventregcheckout table
-    $checkoutQuery = $conn->prepare("SELECT email, member_name, event_id, event_name, event_location, event_date FROM eventregcheckout WHERE CheckoutRequestID = ?");
-    $checkoutQuery->bind_param("s", $CheckoutRequestID);
-    $checkoutQuery->execute();
-    $checkoutResult = $checkoutQuery->get_result();
-
-    if (!$checkoutResult) {
-        $response['errors'][] = "Database query failed: " . $conn->error;
-        $_SESSION['response'] = $response;
-        exit;
+function normalizePhoneNumber($phone_number)
+{
+    $phone_number = preg_replace('/\s+/', '', $phone_number); 
+    if (strpos($phone_number, '+') === 0) {
+        $phone_number = substr($phone_number, 1); 
     }
+    if (preg_match('/^0[17]/', $phone_number)) {
+        $phone_number = '254' . substr($phone_number, 1); 
+    }
+    if (preg_match('/^2547/', $phone_number)) {
+        return $phone_number;
+    }
+    return $phone_number;
+}
 
-    if ($checkoutResult->num_rows > 0) {
-        $checkoutData = $checkoutResult->fetch_assoc();
 
-        // Extract necessary information
-        $email = $checkoutData['email'];
-        $memberName = $checkoutData['member_name'];
-        $eventId = $checkoutData['event_id'];
-        $eventName = $checkoutData['event_name'];
-        $eventLocation = $checkoutData['event_location'];
-        $eventDate = $checkoutData['event_date'];
-        $registrationDate = date('Y-m-d H:i:s');
+$phone_number = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
+$money_paid = isset($_POST['amount']) ? $_POST['amount'] : '1'; 
+$userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
 
-        // Insert the data into event_registrations table
-        $insertQuery = $conn->prepare("INSERT INTO event_registrations (event_id, event_name, event_location, event_date, member_email, member_name, contact, registration_date, payment_code, invitation_card)  
-                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $invitationCardPath = ''; // Initialize invitation card path
-        $insertQuery->bind_param("issssssis", $eventId, $eventName, $eventLocation, $eventDate, $email, $memberName, $UserPhoneNumber, $registrationDate, $TransactionId);
-        
-        if (!$insertQuery->execute()) {
-            $response['errors'][] = "Failed to insert event registration: " . $conn->error;
-            $_SESSION['response'] = $response;
-            exit;
-        }
+if (empty($phone_number)) {
+    $response['errors'][] = 'Phone number is required.';
+}
+if (empty($userEmail)) {
+    $response['errors'][] = 'Email is required.';
+}
+if (!empty($response['errors'])) {
+    $_SESSION['response'] = $response;
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
 
-        // PDF generation
-        // Determine the file path for the PDF
-        $pdfDirectory = '../members/assets/Documents/EventCards/'; // Directory to save PDFs
-        $pdfFilename = $email . '_' . str_replace(' ', '_', $eventName) . '.pdf'; // Name of the PDF file
-        $pdfFilePath = $pdfDirectory . $pdfFilename; // Complete path to save PDF
-        
-        // Create PDF
-        $pdf = new FPDF('P', 'mm', [127, 178]); // Set custom page size
-        $pdf->AddPage();
-        
-        // Set fill color and draw background rectangle
-        $pdf->SetFillColor(195, 198, 214);
-        $pdf->Rect(0, 0, 127, 178, 'F');
-        
-        // Add header image
-        $header_image = '../members/assets/img/logo.png';
-        if (file_exists($header_image)) {
-            $header_image_width = 50;
-            $x_position = ($pdf->GetPageWidth() - $header_image_width) / 2;
-            $pdf->Image($header_image, $x_position, 5, $header_image_width);
-        }
-        $pdf->Ln(12); // Spacing after header image
+$processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+$callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
+$passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
+$Timestamp = date('YmdHis');
+$BusinessShortCode = '6175135';
+$Password = base64_encode($BusinessShortCode . $passkey . $Timestamp); 
 
-        // Add event name
-        $pdf->SetFont('Arial', 'B', 16);
-        $pdf->Cell(0, 10, $eventName, 0, 1, 'C');
-        $pdf->Ln(3); // Spacing
+$phone = $phone_number; 
+$money = $money_paid;
+$PartyA = $phone; 
+$PartyB = '8209382'; 
+$AccountReference = '6175135';
+$TransactionDesc = 'Membership Registration fee payment'; 
+$Amount = $money;
 
-        // Add member name
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(0, 10, 'Name: ' . $memberName, 0, 1, 'C');
-        $pdf->Ln(12); // Spacing
+$stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
 
-        // Add event date and location
-        $pdf->Cell(0, 10, 'Event Date: ' . $eventDate, 0, 1, 'C');
-        $pdf->Ln(3);
-        $pdf->Cell(0, 10, 'Location: ' . $eventLocation, 0, 1, 'C');
-        
-        // Generate QR code with a unique filename
-        $sanitizedEmail = preg_replace('/[^a-zA-Z0-9_]/', '_', $email); // Sanitize email for filename
-        $sanitizedEventName = preg_replace('/[^a-zA-Z0-9_]/', '_', $eventName); // Sanitize event name for filename
-        $qr_filename = $sanitizedEmail . '_' . $sanitizedEventName . '.png'; // Create unique filename
-        $qr_file = '../members/assets/img/qrcodes/' . $qr_filename; // Set the file path for the QR code
-        
-        $qr_content = "Member Name: $memberName\nEvent: $eventName\nDate: $eventDate\nLocation: $eventLocation\nEmail: $email";
-        QRcode::png($qr_content, $qr_file, QR_ECLEVEL_L, 4); // Generate the QR code and save it to the specified path
-        
-        // Add QR code to PDF
-        if (file_exists($qr_file)) {
-            $qr_image_width = 60;
-            $x_position = ($pdf->GetPageWidth() - $qr_image_width) / 2;
-            $pdf->Image($qr_file, $x_position, 60, $qr_image_width);
-        }
- 
-        // Output the PDF to the file
-        $pdf->Output('F', $pdfFilePath); // Save the PDF to the specified file path
+$curl_post_data = array(
+    'BusinessShortCode' => $BusinessShortCode,
+    'Password' => $Password,
+    'Timestamp' => $Timestamp,
+    'TransactionType' => 'CustomerBuyGoodsOnline',
+    'Amount' => $Amount,
+    'PartyA' => $PartyA,
+    'PartyB' => $PartyB,
+    'PhoneNumber' => $PartyA,
+    'CallBackURL' => $callbackurl,
+    'AccountReference' => $AccountReference,
+    'TransactionDesc' => $TransactionDesc
+);
 
-        // Update the invitation_card field with the PDF path
-        $updateQuery = $conn->prepare("UPDATE event_registrations SET invitation_card = ? WHERE member_email = ? AND event_id = ?");
-        $updateQuery->bind_param("ssi", $pdfFilePath, $email, $eventId);
-        
-        if (!$updateQuery->execute()) {
-            $response['errors'][] = "Failed to update invitation card path: " . $conn->error;
-            $_SESSION['response'] = $response;
-            exit;
-        }
+$data_string = json_encode($curl_post_data);
 
-        // Send email with registration confirmation (as already implemented)
-        $to = $email;
-        $subject = "Registration Successful!";
-        $message = "
-            Dear $memberName,
 
-            Thank you for registering for $eventName! We're excited to have you join us on $eventDate.
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, $processrequestUrl);
+curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader); 
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+$curl_response = curl_exec($curl);
 
-            Event Details:
-            
-            Location: $eventLocation
-            Time: 10:00 AM
+if (curl_errno($curl)) {
+    $response['errors'][] = 'cURL error: ' . curl_error($curl);
+    $_SESSION['response'] = $response;
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
 
-            Please check your email for more details and any future updates.
+curl_close($curl);
 
-            We look forward to seeing you there!
 
-            Warm regards,
-            The AGL Team
-        ";
-        $headers = "From: events@agl.or.ke\r\n";
-        $headers .= "Reply-To: events@agl.or.ke\r\n";
-        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+$data = json_decode($curl_response);
+$CheckoutRequestID = isset($data->CheckoutRequestID) ? $data->CheckoutRequestID : null;
+$ResponseCode = isset($data->ResponseCode) ? $data->ResponseCode : '';
 
-        if (!mail($to, $subject, $message, $headers)) {
-            $response['errors'][] = "Failed to send registration confirmation email to $to";
-            $_SESSION['response'] = $response;
-            exit;
-        }
+require_once('../../DBconnection.php');
+$status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
 
+if ($CheckoutRequestID) {
+    $sql = "INSERT INTO mpesa_transactions (CheckoutRequestID, email, phone, amount, status) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $CheckoutRequestID, $userEmail, $phone, $money, $status);
+
+    if ($stmt->execute()) {
         $response['success'] = true;
-        $response['message'] = "Event registration successful, PDF generated, and confirmation email sent.";
+        $response['message'] = "Kindly enter your Mpesa Pin to complete the payment";
     } else {
-        $response['errors'][] = "No records found for CheckoutRequestID: $CheckoutRequestID";
+        $response['errors'][] = "Database error: " . $stmt->error;
     }
+
+    $stmt->close();
 } else {
-    $response['errors'][] = "Transaction failed: $ResultDesc";
+    $response['errors'][] = "Error in transaction processing. Please try again.";
 }
 
-// Save the response to the session
-$_SESSION['response'] = $response;
+$conn->close();
 
-// Return the JSON response
-echo json_encode($response);
-?>
+$_SESSION['response'] = $response;
+header("Location: " . $_SERVER['HTTP_REFERER']);
+exit();
