@@ -43,11 +43,11 @@ if (!empty($response['errors'])) {
 $processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
 
-// $passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
-// $BusinessShortCode = '6175135';
+$passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
+$BusinessShortCode = '6175135';
 
-$passkey = getenv('MPESA_PASSKEY'); 
-$BusinessShortCode = getenv('MPESA_BUSINESS_SHORTCODE');
+// $passkey = getenv('MPESA_PASSKEY'); 
+// $BusinessShortCode = getenv('MPESA_BUSINESS_SHORTCODE');
 
 $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
 $Timestamp = date('YmdHis');
