@@ -1,3 +1,17 @@
+<?php
+// index.php or config.php
+require_once __DIR__ . '/vendor/autoload.php'; // Ensure autoload is loaded
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__); // Specify the root directory
+$dotenv->load(); // Load the .env file
+
+$passkey = getenv('MPESA_PASSKEY');
+$BusinessShortCode = getenv('MPESA_BUSINESS_SHORTCODE');
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
