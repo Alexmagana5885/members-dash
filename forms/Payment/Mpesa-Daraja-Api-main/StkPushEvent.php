@@ -10,18 +10,18 @@ session_start();
 include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
 
-//  response array
+// Response array
 $response = ['success' => false, 'message' => '', 'errors' => []];
 
-//  normalizePhoneNumber function
+// Normalize phone number function
 function normalizePhoneNumber($phone_number)
 {
-    $phone_number = preg_replace('/\s+/', '', $phone_number); 
+    $phone_number = preg_replace('/\s+/', '', $phone_number);
     if (strpos($phone_number, '+') === 0) {
-        $phone_number = substr($phone_number, 1); 
+        $phone_number = substr($phone_number, 1);
     }
     if (preg_match('/^0[17]/', $phone_number)) {
-        $phone_number = '254' . substr($phone_number, 1); 
+        $phone_number = '254' . substr($phone_number, 1);
     }
     if (preg_match('/^2547/', $phone_number)) {
         return $phone_number;
@@ -53,7 +53,7 @@ if (!empty($response['errors'])) {
 }
 
 try {
-    // db connection 
+    // DB connection 
     include 'AGLdbconnection.php';
 
     // Check if the user is already registered for the event
@@ -71,33 +71,33 @@ try {
     }
 
     // If amount is 0, insert into event_registrations and skip STK push
-    if ($money == 0) {
+    if ($money_paid == 0) {
         $insertSql = "INSERT INTO event_registrations (event_id, event_name, event_location, event_date, member_email, member_name, contact, registration_date, payment_code) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), '00')";
         $insertStmt = $conn->prepare($insertSql);
-        $insertStmt->bind_param("sssssss", $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone);
+        $insertStmt->bind_param("sssssss", $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone_number);
 
         if ($insertStmt->execute()) {
             $response['success'] = true;
             $response['message'] = "Registration successful. No payment required.";
         } else {
             $response['errors'][] = "Event Database error: " . $insertStmt->error;
-        } 
+        }
         $insertStmt->close();
     } else {
-        // Proceed with STK push for non 0 amount
+        // Proceed with STK push for non-0 amount
         $processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
         $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
         $passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
         $Timestamp = date('YmdHis');
         $BusinessShortCode = '6175135';
-        $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp); 
-        
-        $phone = $phone_number; 
+        $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
+
+        $phone = $phone_number;
         $money = $money_paid;
-        $PartyA = $phone; 
-        $PartyB = '8209382'; 
+        $PartyA = $phone;
+        $PartyB = '8209382';
         $AccountReference = '6175135';
-        $TransactionDesc = 'Membership Registration fee payment'; 
+        $TransactionDesc = 'Membership Registration fee payment';
         $Amount = $money;
 
         $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
@@ -119,7 +119,6 @@ try {
             'AccountReference' => $AccountReference,
             'TransactionDesc' => $TransactionDesc
         );
-        
 
         $data_string = json_encode($curl_post_data);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -129,33 +128,33 @@ try {
         $curl_response = curl_exec($curl);
         if (curl_errno($curl)) {
             $response['errors'][] = "cURL error: " . curl_error($curl);
+        } else {
+            $data = json_decode($curl_response);
+            error_log("cURL Response: " . print_r($data, true));
+
+            $CheckoutRequestID = isset($data->CheckoutRequestID) ? $data->CheckoutRequestID : null;
+            $ResponseCode = isset($data->ResponseCode) ? $data->ResponseCode : '';
+            $ResponseDescription = isset($data->ResponseDescription) ? $data->ResponseDescription : '';
+
+            if ($CheckoutRequestID) {
+                $status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
+
+                $eventSql = "INSERT INTO eventregcheckout (CheckoutRequestID, event_id, event_name, event_location, event_date, email, member_name, phone, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $eventStmt = $conn->prepare($eventSql);
+                $eventStmt->bind_param("ssssssssss", $CheckoutRequestID, $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone, $money_paid, $status);
+
+                if ($eventStmt->execute()) {
+                    $response['success'] = true;
+                    $response['message'] = "Kindly enter your Mpesa Pin to complete the payment.";
+                } else {
+                    $response['errors'][] = "Event Database error: " . $eventStmt->error;
+                }
+                $eventStmt->close();
+            } else {
+                $response['errors'][] = "Error in transaction processing: " . $ResponseDescription;
+            }
         }
         curl_close($curl);
-
-        $data = json_decode($curl_response);
-        error_log("cURL Response: " . print_r($data, true));
-
-        $CheckoutRequestID = isset($data->CheckoutRequestID) ? $data->CheckoutRequestID : null;
-        $ResponseCode = isset($data->ResponseCode) ? $data->ResponseCode : '';
-        $ResponseDescription = isset($data->ResponseDescription) ? $data->ResponseDescription : '';
-
-        if ($CheckoutRequestID) {
-            $status = ($ResponseCode == "0") ? 'Pending' : 'Failed';
-
-            $eventSql = "INSERT INTO eventregcheckout (CheckoutRequestID, event_id, event_name, event_location, event_date, email, member_name, phone, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $eventStmt = $conn->prepare($eventSql);
-            $eventStmt->bind_param("ssssssssss", $CheckoutRequestID, $eventId, $eventName, $eventLocation, $eventDate, $userEmail, $memberName, $phone, $money, $status);
-
-            if ($eventStmt->execute()) {
-                $response['success'] = true;
-                $response['message'] = "Kindly enter your Mpesa Pin to complete the payment.";
-            } else {
-                $response['errors'][] = "Event Database error: " . $eventStmt->error;
-            }
-            $eventStmt->close();
-        } else {
-            $response['errors'][] = "Error in transaction processing: " . $ResponseDescription;
-        }
     }
 
     $conn->close();

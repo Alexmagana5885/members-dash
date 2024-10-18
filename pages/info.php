@@ -23,10 +23,15 @@ function normalizePhoneNumber($phone_number)
     return $phone_number;
 }
 
-
+// Validate and sanitize input data
+$eventId = isset($_POST['event_id']) ? htmlspecialchars($_POST['event_id']) : '';
+$eventName = isset($_POST['event_name']) ? htmlspecialchars($_POST['event_name']) : '';
+$eventLocation = isset($_POST['event_location']) ? htmlspecialchars($_POST['event_location']) : '';
+$eventDate = isset($_POST['event_date']) ? htmlspecialchars($_POST['event_date']) : '';
+$userEmail = isset($_POST['User-email']) ? filter_var($_POST['User-email'], FILTER_SANITIZE_EMAIL) : '';
+$memberName = isset($_POST['memberName']) ? htmlspecialchars($_POST['memberName']) : '';
 $phone_number = isset($_POST['phone_number']) ? normalizePhoneNumber($_POST['phone_number']) : '';
-$money_paid = isset($_POST['amount']) ? $_POST['amount'] : '1'; 
-$userEmail = isset($_POST['User-email']) ? $_POST['User-email'] : '';
+$money_paid = isset($_POST['amount']) ? floatval($_POST['amount']) : '';
 
 if (empty($phone_number)) {
     $response['errors'][] = 'Phone number is required.';
