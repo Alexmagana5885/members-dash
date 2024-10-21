@@ -12,14 +12,9 @@ $name = sanitize_input($_POST['name']);
 $email = sanitize_input($_POST['email']);
 $phone = sanitize_input($_POST['phone']);
 $gender = sanitize_input($_POST['gender']);
-
-
-// $dob = sanitize_input($_POST['dob']);
 $homeAddress = sanitize_input($_POST['Homeaddress']);
 $highestDegree = sanitize_input($_POST['highestDegree']);
 $institution = sanitize_input($_POST['institution']);
-
-// $startDate = sanitize_input($_POST['startDate']);
 $graduationYear = sanitize_input($_POST['graduationYear']);
 $profession = sanitize_input($_POST['profession']);
 $experience = sanitize_input($_POST['experience']);
@@ -95,12 +90,24 @@ if ($emailCheckStmt->num_rows > 0) {
 $emailCheckStmt->close();
 
 if (empty($response['errors'])) {
-    // SQL query to insert data into the database
-    $sql = "INSERT INTO personalmembership (name, email, phone, gender, home_address, passport_image, highest_degree, institution, graduation_year, completion_letter, profession, experience, current_company, position, work_address, password) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // Fetch the last ID and generate a new ID
+    $lastIdQuery = "SELECT id FROM personalmembership ORDER BY id DESC LIMIT 1";
+    $lastIdResult = $conn->query($lastIdQuery);
+    
+    if ($lastIdResult->num_rows > 0) {
+        $row = $lastIdResult->fetch_assoc();
+        $lastId = intval(substr($row['id'], 3));  // Extract the numeric part of the last ID
+        $newId = 'agl' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);  // Increment and format the new ID
+    } else {
+        $newId = 'agl0001';  // Default to 'agl0001' if no records exist
+    }
+
+    // SQL query to insert data into the database with the new ID
+    $sql = "INSERT INTO personalmembership (id, name, email, phone, gender, home_address, passport_image, highest_degree, institution, graduation_year, completion_letter, profession, experience, current_company, position, work_address, password) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssssssssssss", $name, $email, $phone, $gender, $homeAddress, $passportImagePath, $highestDegree, $institution, $graduationYear, $completionLetterPath, $profession, $experience, $currentCompany, $position, $workAddress, $hashedPassword);
+    $stmt->bind_param("sssssssssssssssss", $newId, $name, $email, $phone, $gender, $homeAddress, $passportImagePath, $highestDegree, $institution, $graduationYear, $completionLetterPath, $profession, $experience, $currentCompany, $position, $workAddress, $hashedPassword);
 
     if ($stmt->execute()) {
         $response['success'] = true;
@@ -117,6 +124,7 @@ if (empty($response['errors'])) {
 
         Name: $name
         Email: $email
+        Membership ID: $newId
 
         You can now log in to your account and explore the various features and resources available to you. If you have any questions or need assistance, please feel free to reach out to our support team at admin@or.ke.
         You can log in from here: https://member.log.agl.or.ke/members
@@ -138,7 +146,7 @@ if (empty($response['errors'])) {
         // Send email
         if (!mail($to, $subject, $message, $headers)) {
             $response['errors'][] = "Registration successful, but failed to send confirmation email.";
-            header('Location: ../index.html');
+            header('Location: ../index.php');
         }
 
     } else {
@@ -153,7 +161,5 @@ $conn->close();
 
 // Set the response in session
 $_SESSION['response'] = $response;
-
-// Redirect to the page with the popup
 
 exit();
