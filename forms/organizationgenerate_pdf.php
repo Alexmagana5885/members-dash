@@ -43,9 +43,9 @@ class PDF extends FPDF {
         // Set column headers
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(20, 10, 'ID', 1);
-        $this->Cell(50, 10, 'Organization Name', 1);
-        $this->Cell(60, 10, 'Email', 1);
-        $this->Cell(40, 10, 'Contact Person', 1);
+        $this->Cell(65, 10, 'Organization Name', 1);
+        $this->Cell(70, 10, 'Email', 1);
+        $this->Cell(50, 10, 'Contact Person', 1);
         $this->Cell(30, 10, 'Phone', 1);
         $this->Cell(30, 10, 'Start Date', 1);
         $this->Ln();
@@ -71,7 +71,7 @@ $pdf->SetFont('Arial', '', 11);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $pdf->Cell(20, 10, htmlspecialchars($row['id']), 1);
-        $pdf->Cell(60, 10, htmlspecialchars($row['organization_name']), 1);
+        $pdf->Cell(65, 10, htmlspecialchars($row['organization_name']), 1);
         $pdf->Cell(70, 10, htmlspecialchars($row['organization_email']), 1);
         $pdf->Cell(50, 10, htmlspecialchars($row['contact_person']), 1);
         $pdf->Cell(30, 10, htmlspecialchars($row['contact_phone_number']), 1);
