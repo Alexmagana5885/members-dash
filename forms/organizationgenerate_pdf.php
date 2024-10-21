@@ -18,7 +18,7 @@ $query = "
         contact_person, 
         contact_phone_number, 
         start_date, 
-        number_of_employees 
+       
     FROM organizationmembership
 ";
 $result = $conn->query($query); // Use $conn here
@@ -49,7 +49,7 @@ class PDF extends FPDF {
         $this->Cell(40, 10, 'Contact Person', 1);
         $this->Cell(30, 10, 'Phone', 1);
         $this->Cell(30, 10, 'Start Date', 1);
-        $this->Cell(30, 10, 'Employees', 1);
+        // $this->Cell(30, 10, 'Employees', 1);
         $this->Ln();
     }
 
@@ -78,7 +78,7 @@ if ($result->num_rows > 0) {
         $pdf->Cell(40, 10, htmlspecialchars($row['contact_person']), 1);
         $pdf->Cell(30, 10, htmlspecialchars($row['contact_phone_number']), 1);
         $pdf->Cell(30, 10, htmlspecialchars($row['start_date']), 1);
-        $pdf->Cell(30, 10, htmlspecialchars($row['number_of_employees']), 1);
+        // $pdf->Cell(30, 10, htmlspecialchars($row['number_of_employees']), 1);
         $pdf->Ln();
     }
 
