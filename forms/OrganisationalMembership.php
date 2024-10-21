@@ -14,6 +14,26 @@ function hashPassword($password)
     return password_hash($password, PASSWORD_BCRYPT);
 }
 
+// Function to generate a unique organization ID
+function generateOrganizationId($conn)
+{
+    $query = "SELECT MAX(id) as max_id FROM organizationmembership";
+    $result = $conn->query($query);
+    $row = $result->fetch_assoc();
+    
+    // Extract the numeric part and increment it
+    $max_id = $row['max_id'];
+    if ($max_id) {
+        $number = (int)substr($max_id, 6); // Get the number part after 'aglorg'
+        $number++;
+    } else {
+        $number = 1; // Start from 1 if no records exist
+    }
+
+    // Return the new ID in the desired format
+    return "aglorg" . str_pad($number, 4, '0', STR_PAD_LEFT);
+}
+
 $response = array(); // Initialize response array
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -30,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $organization_type = sanitize_input($_POST['OrganizationType']);
     $start_date = sanitize_input($_POST['startDate']);
     $what_you_do = sanitize_input($_POST['WhatYouDo']);
-    // $number_of_employees = sanitize_input($_POST['NumberOfEmployees']);
     $password = sanitize_input($_POST['password']);
     $confirm_password = sanitize_input($_POST['confirm-password']);
 
@@ -131,8 +150,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $email_check_stmt->close();
 
+    // Generate a new organization ID
+    $organization_id = generateOrganizationId($conn);
+
     // Insert data into the database
     $sql = "INSERT INTO organizationmembership (
+                id, 
                 organization_name, 
                 organization_email, 
                 contact_person, 
@@ -147,13 +170,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 organization_type, 
                 start_date, 
                 what_you_do, 
-                -- number_of_employees, 
                 password
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param(
-            "sssssssssssssss",
+            "ssssssssssssssss",
+            $organization_id,
             $organization_name,
             $organization_email,
             $contact_person,
@@ -168,7 +191,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $organization_type,
             $start_date,
             $what_you_do,
-            // $number_of_employees,
             $hashed_password
         );
 
@@ -179,17 +201,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $message = "
                 Dear $contact_person,
 
-                Congratulations! Your registration with the Association of Government Librarians has been successfully completed.
-                We are thrilled to have you as part of our community. Here are your registration details:
+                Congratulations! Your registration with the Association of Government Librarians has been successfully completed. We are thrilled to have you as part of our community. Here are your registration details:
+                
                 Name: $organization_name
                 Email: $organization_email
-                You can now log in to your account and explore the various features and resources available to you. If you have any questions or need assistance, please feel free to reach out to our support team at admin@or.ke.
-                You can log in from here: https://member.log.agl.or.ke/members
-                Thank you for joining us, and we look forward to your active participation!
+                Membership Number: $organization_id
+                
+                You can now log in to your account and explore the various features and resources available to you. If you have any questions or need assistance, please feel free to reach out to our support team at admin@or.ke. You can log in from here: https://member.log.agl.or.ke/members Thank you for joining us, and we look forward to your active participation!
 
                 AGL
                 http://agl.or.ke/
-                +254748027123
+                +254 722 605048
                 ";
 
             $headers = "MIME-Version: 1.0" . "\r\n";
@@ -202,28 +224,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $response['success'] = true;
             $response['message'] = "Registration successful. Login to your account";
             $_SESSION['response'] = $response;
-            header("Location: ../index.html");
+            header('Location: ../index.php');
             exit();
         } else {
-            $response['error'] = "Database error: Could not register organization.";
+            $response['error'] = "Error during registration: " . $stmt->error;
             $_SESSION['response'] = $response;
             header("Location: ../pages/Organizationregistration.php");
             exit();
         }
-
         $stmt->close();
     } else {
-        $response['error'] = "Database error: Could not prepare statement.";
+        $response['error'] = "Error preparing the statement: " . $conn->error;
         $_SESSION['response'] = $response;
         header("Location: ../pages/Organizationregistration.php");
         exit();
     }
 
     $conn->close();
-} else {
-    $response['error'] = "Invalid request.";
-    $_SESSION['response'] = $response;
-    header("Location: ../pages/Organizationregistration.php");
-    exit();
 }
 ?>
