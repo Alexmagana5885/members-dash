@@ -207,7 +207,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 Email: $organization_email
                 Membership Number: $organization_id
                 
-                You can now log in to your account and explore the various features and resources available to you. If you have any questions or need assistance, please feel free to reach out to our support team at admin@or.ke. You can log in from here: https://member.log.agl.or.ke/members Thank you for joining us, and we look forward to your active participation!
+                You can now log in to your account and explore the various features and resources available to you. If you have any questions or need assistance, please feel free to reach out to our support team at admin@or.ke. 
+                
+                You can log in from here: https://member.log.agl.or.ke/members . Thank you for joining us, and we look forward to your active participation!
 
                 AGL
                 http://agl.or.ke/
