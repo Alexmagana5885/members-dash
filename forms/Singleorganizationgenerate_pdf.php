@@ -92,8 +92,8 @@ $pdf->Cell(100, 10, htmlspecialchars($row['location_town']), 1, 1);
 
 $pdf->Cell(90, 10, 'What You Do', 1);
 $pdf->Cell(100, 10, htmlspecialchars($row['what_you_do']), 1, 1);
-$pdf->Cell(90, 10, 'Number of Employees', 1);
-$pdf->Cell(100, 10, htmlspecialchars($row['number_of_employees']), 1, 1);
+// $pdf->Cell(90, 10, 'Number of Employees', 1);
+// $pdf->Cell(100, 10, htmlspecialchars($row['number_of_employees']), 1, 1);
 $pdf->Cell(90, 10, 'Organization Type', 1);
 $pdf->Cell(100, 10, htmlspecialchars($row['organization_type']), 1, 1);
 $pdf->Cell(90, 10, 'Date of Registration', 1);
