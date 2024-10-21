@@ -141,7 +141,7 @@ if (empty($response['errors'])) {
 
         // Additional headers
         $headers .= 'From: info@agl.or.ke' . "\r\n";
-        header('Location: ../index.html');
+        header('Location: ../index.php');
 
         // Send email
         if (!mail($to, $subject, $message, $headers)) {
