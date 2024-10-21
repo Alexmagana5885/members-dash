@@ -119,20 +119,19 @@ if (empty($response['errors'])) {
         $message = "
         Dear $name,
 
-        Congratulations! Your registration with Association of Government Librarians has been successfully completed.
-        We are thrilled to have you as part of our community. Here are your registration details:
+        Congratulations! Your registration with Association of Government Librarians has been successfully completed. We are thrilled to have you as part of our community. Here are your registration details:
 
         Name: $name
         Email: $email
-        Membership ID: $newId
+        Membership Number: $newId
 
         You can now log in to your account and explore the various features and resources available to you. If you have any questions or need assistance, please feel free to reach out to our support team at admin@or.ke.
-        You can log in from here: https://member.log.agl.or.ke/members
-        Thank you for joining us, and we look forward to your active participation!
+        
+        You can log in from here: https://member.log.agl.or.ke/members. Thank you for joining us, and we look forward to your active participation!
 
         AGL
         http://agl.or.ke/
-        +254748027123
+        +254 722 605048
         ";
 
         // Set content-type header for plain text email
