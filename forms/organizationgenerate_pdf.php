@@ -71,9 +71,9 @@ $pdf->SetFont('Arial', '', 11);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $pdf->Cell(20, 10, htmlspecialchars($row['id']), 1);
-        $pdf->Cell(50, 10, htmlspecialchars($row['organization_name']), 1);
-        $pdf->Cell(60, 10, htmlspecialchars($row['organization_email']), 1);
-        $pdf->Cell(40, 10, htmlspecialchars($row['contact_person']), 1);
+        $pdf->Cell(60, 10, htmlspecialchars($row['organization_name']), 1);
+        $pdf->Cell(70, 10, htmlspecialchars($row['organization_email']), 1);
+        $pdf->Cell(50, 10, htmlspecialchars($row['contact_person']), 1);
         $pdf->Cell(30, 10, htmlspecialchars($row['contact_phone_number']), 1);
         $pdf->Cell(30, 10, htmlspecialchars($row['start_date']), 1);
         $pdf->Ln();
