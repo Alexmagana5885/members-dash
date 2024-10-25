@@ -4,7 +4,7 @@
 session_start();
 
 include '../../../config/config.php';
-echo $passkey; 
+// echo $passkey;
 echo $BusinessShortCode; 
 
 include 'accessToken.php'; 
