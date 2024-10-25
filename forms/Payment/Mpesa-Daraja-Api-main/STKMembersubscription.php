@@ -5,6 +5,10 @@ session_start();
 
 $config = require __DIR__ . '/../../config.php';
 
+echo $config['passkey']; // Outputs: localhost
+echo $config['business_short_code']; // Outputs: example_db
+
+
 include 'accessToken.php'; 
 date_default_timezone_set('Africa/Nairobi');
 
