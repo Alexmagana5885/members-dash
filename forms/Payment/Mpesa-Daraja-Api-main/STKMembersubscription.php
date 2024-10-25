@@ -3,7 +3,7 @@
 // Start the session
 session_start();
 
-// $config = require __DIR__ . '/../../config.php';
+$config = require __DIR__ . '/../../config.php';
 
 include 'accessToken.php'; 
 date_default_timezone_set('Africa/Nairobi');
