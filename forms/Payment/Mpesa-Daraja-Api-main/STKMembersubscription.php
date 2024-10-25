@@ -3,12 +3,9 @@
 // Start the session
 session_start();
 
-require __DIR__ . '/../../config.php';
-
-echo $db_host; // Outputs: localhost
-echo $db_name; // Outputs: example_db
-
-
+include '../../../config.php';
+echo $passkey; // Outputs: localhost
+echo $BusinessShortCode; // Outputs: example_db
 
 include 'accessToken.php'; 
 date_default_timezone_set('Africa/Nairobi');
