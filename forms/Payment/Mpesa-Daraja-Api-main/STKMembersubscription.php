@@ -3,10 +3,11 @@
 // Start the session
 session_start();
 
-$config = require __DIR__ . '/../../config.php';
+require __DIR__ . '/../../config.php';
 
-echo $config['passkey']; // Outputs: localhost
-echo $config['business_short_code']; // Outputs: example_db
+echo $db_host; // Outputs: localhost
+echo $db_name; // Outputs: example_db
+
 
 
 include 'accessToken.php'; 
