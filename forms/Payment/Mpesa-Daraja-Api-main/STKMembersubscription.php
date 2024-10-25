@@ -4,8 +4,10 @@
 session_start();
 
 include '../../../config/config.php';
-// echo $passkey;
-// echo $BusinessShortCode; 
+
+echo $Passkey . "<br>";
+echo $BusinessShortCode . "<br>";
+
 
 include 'accessToken.php'; 
 date_default_timezone_set('Africa/Nairobi');
@@ -50,11 +52,9 @@ $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-
 // $BusinessShortCode = '6175135';
 $Timestamp = date('YmdHis');
 
-$passkey = $passkey;
-$businessShortCode = $BusinessShortCode;
+$passkey = $mypasskey;
+$businessShortCode = $myBusinessShortCode;
 
-// $passkey = $config['passkey'];
-// $businessShortCode = $config['business_short_code'];
 $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp); 
 
 $phone = $phone_number; 
@@ -129,5 +129,5 @@ if ($CheckoutRequestID) {
 $conn->close();
 
 $_SESSION['response'] = $response;
-header("Location: " . $_SERVER['HTTP_REFERER']);
+// header("Location: " . $_SERVER['HTTP_REFERER']);
 exit();
