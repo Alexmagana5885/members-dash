@@ -4,8 +4,6 @@
 session_start();
 
 include '../../../config/config.php';
-
-
 include 'accessToken.php'; 
 date_default_timezone_set('Africa/Nairobi');
 
@@ -45,12 +43,9 @@ if (!empty($response['errors'])) {
 
 $processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
-// $passkey = "3d0e12c8f86cede36233aaa2f2be5d5c97eea4c2518fcaf01ff5b5e3a92416d0";
-// $BusinessShortCode = '6175135';
-$Timestamp = date('YmdHis');
-
 $passkey = $mypasskey;
 $BusinessShortCode = $mybusiness_short_code;
+$Timestamp = date('YmdHis');
 
 $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp); 
 
