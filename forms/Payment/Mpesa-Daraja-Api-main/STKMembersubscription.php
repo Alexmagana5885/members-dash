@@ -3,9 +3,9 @@
 // Start the session
 session_start();
 
-include '../../../config.php';
-echo $passkey; // Outputs: localhost
-echo $BusinessShortCode; // Outputs: example_db
+include '../../../config/config.php';
+echo $passkey; 
+echo $BusinessShortCode; 
 
 include 'accessToken.php'; 
 date_default_timezone_set('Africa/Nairobi');
@@ -126,5 +126,5 @@ if ($CheckoutRequestID) {
 $conn->close();
 
 $_SESSION['response'] = $response;
-header("Location: " . $_SERVER['HTTP_REFERER']);
+// header("Location: " . $_SERVER['HTTP_REFERER']);
 exit();
