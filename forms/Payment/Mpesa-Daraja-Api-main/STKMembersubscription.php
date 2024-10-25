@@ -3,10 +3,10 @@
 // Start the session
 session_start();
 
-include '../../../config/config.php';
+include '../../config/config.php';
 
-echo $Passkey . "<br>";
-echo $BusinessShortCode . "<br>";
+echo $mypasskey . "<br>";
+echo $mybusiness_short_code . "<br>";
 
 
 include 'accessToken.php'; 
@@ -53,7 +53,7 @@ $callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-
 $Timestamp = date('YmdHis');
 
 $passkey = $mypasskey;
-$businessShortCode = $myBusinessShortCode;
+$businessShortCode = $mybusiness_short_code;
 
 $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp); 
 
