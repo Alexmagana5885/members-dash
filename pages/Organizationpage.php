@@ -627,7 +627,7 @@ LIMIT 1";
                     <p>What You Do: <span
                             id="what-you-do"><?php echo htmlspecialchars($organizationInfo['what_you_do']); ?></span>
                     </p><br>
-                    <p>Start Date: <span
+                    <p>Organization Start Date: <span
                             id="start-date"><?php echo htmlspecialchars($organizationInfo['start_date']); ?></span></p><br>
                 </div>
 

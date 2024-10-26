@@ -6,7 +6,6 @@ header("Content-Type: application/json");
 
 // Read and log the callback response
 $stkCallbackResponse = file_get_contents('php://input');
-// $logFile = "PremiumMpesastkresponse.json";
 $logFile = "MemberReg.json";
 file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
@@ -51,26 +50,40 @@ if ($ResultCode == 0) {
         $insertStmt->execute();
    
         if ($insertStmt->affected_rows > 0) {
-            // Send a confirmation email
-            $to = $email;
-            $subject = "Payment Confirmation";
-            $message = "Dear User,\n\nThank you for your Member payment of Ksh $Amount.\n\nTransaction ID: $TransactionId\n\nBest regards,\nAGL Team";
-            $headers = "From: payments@agl.or.ke\r\n";
-            $headers .= "Reply-To: payments@agl.or.ke\r\n";
-            $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+            // Update the personalmembership table with the payment details
+            $updateStmt = $conn->prepare("UPDATE personalmembership SET payment_Number = ?, payment_code = ?, payment_date = ? WHERE email = ?");
+            $updateStmt->bind_param('ssss', $UserPhoneNumber, $TransactionId, $timestamp, $email);
+            $updateStmt->execute();
 
-            if (mail($to, $subject, $message, $headers)) {
-                $_SESSION['response'] = [
-                    'success' => true,
-                    'message' => 'Payment processed successfully. Confirmation email sent.'
-                ];
+            if ($updateStmt->affected_rows > 0) {
+                // Send a confirmation email
+                $to = $email;
+                $subject = "Payment Confirmation";
+                $message = "Dear User,\n\nThank you for your Member payment of Ksh $Amount.\n\nTransaction ID: $TransactionId\n\nBest regards,\nAGL Team";
+                $headers = "From: payments@agl.or.ke\r\n";
+                $headers .= "Reply-To: payments@agl.or.ke\r\n";
+                $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+
+                if (mail($to, $subject, $message, $headers)) {
+                    $_SESSION['response'] = [
+                        'success' => true,
+                        'message' => 'Payment processed successfully. Confirmation email sent.'
+                    ];
+                } else {
+                    // Handle email sending failure
+                    $_SESSION['response'] = [
+                        'success' => false,
+                        'message' => 'Failed to send confirmation email.'
+                    ];
+                }
             } else {
-                // Handle email sending failure
+                // Handle the case where the update did not succeed
                 $_SESSION['response'] = [
                     'success' => false,
-                    'message' => 'Failed to send confirmation email.'
+                    'message' => 'Failed to update personalmembership with payment details.'
                 ];
             }
+            $updateStmt->close();
         } else {
             // Handle the case where the insert did not succeed
             $_SESSION['response'] = [
