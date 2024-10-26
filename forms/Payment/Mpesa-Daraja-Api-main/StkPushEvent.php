@@ -8,6 +8,8 @@ session_start();
 
 // Include the access token file
 include 'accessToken.php';
+include '../../../config/config.php';
+
 date_default_timezone_set('Africa/Nairobi');
 
 // Response array
@@ -91,7 +93,6 @@ try {
         $BusinessShortCode = $mybusiness_short_code;
         $Timestamp = date('YmdHis');
         $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
-
         $phone = $phone_number;
         $money = $money_paid;
         $PartyA = $phone;
@@ -126,6 +127,8 @@ try {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
 
         $curl_response = curl_exec($curl);
+
+
         if (curl_errno($curl)) {
             $response['errors'][] = "cURL error: " . curl_error($curl);
         } else {

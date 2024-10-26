@@ -24,8 +24,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" /> -->
     <link href="../assets/CSS/quilleditor.css" rel="stylesheet" />
 
 </head>
@@ -978,23 +976,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 });
             </script>
 
-
-
-
-
-            <!-- .............................. -->
-            <!-- $user_email = $_SESSION['user_email']; -->
-            <!-- messages -->
-
             <?php
 
             $session_email = $_SESSION['user_email'];
-            // if (isset($_SESSION['user_email'])) {
 
-            //     echo "Logged in as: " . htmlspecialchars($_SESSION['user_email'], ENT_QUOTES);
-            // } else {
-            //     echo "No email found in session.";
-            // }
 
             $messages = [];
 
