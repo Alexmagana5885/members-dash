@@ -1,28 +1,24 @@
 <?php
-session_start(); // Start the session
+session_start();
 
-include 'AGLdbconnection.php'; // Include your database connection file
+include 'AGLdbconnection.php';
 header("Content-Type: application/json");
 
-// Read and log the callback response
 $stkCallbackResponse = file_get_contents('php://input');
 $logFile = "MemberReg.json";
 file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
-// Decode the JSON response
 $data = json_decode($stkCallbackResponse);
- 
-// Check if decoding was successful
+
 if (json_last_error() !== JSON_ERROR_NONE) {
     $_SESSION['response'] = [
         'success' => false,
         'message' => 'JSON decoding error: ' . json_last_error_msg()
     ];
-    http_response_code(400); // Bad request
+    http_response_code(400);
     exit;
 }
 
-// Extract relevant data from the response
 $MerchantRequestID = $data->Body->stkCallback->MerchantRequestID ?? null;
 $CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID ?? null;
 $ResultCode = $data->Body->stkCallback->ResultCode ?? null;
@@ -31,9 +27,7 @@ $Amount = $data->Body->stkCallback->CallbackMetadata->Item[0]->Value ?? null;
 $TransactionId = $data->Body->stkCallback->CallbackMetadata->Item[1]->Value ?? null;
 $UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value ?? null;
 
-// Check if the transaction was successful
 if ($ResultCode == 0) {
-    // Retrieve the email associated with the CheckoutRequestID
     $stmt = $conn->prepare("SELECT email FROM mpesa_transactions WHERE CheckoutRequestID = ?");
     $stmt->bind_param('s', $CheckoutRequestID);
     $stmt->execute();
@@ -42,24 +36,49 @@ if ($ResultCode == 0) {
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $email = $row['email'];
-
-        // Insert the payment details into the member_payments table
-        $timestamp = date('Y-m-d H:i:s'); // Current timestamp
+        
+        $timestamp = date('Y-m-d H:i:s');
         $insertStmt = $conn->prepare("INSERT INTO member_payments (member_email, phone_number, payment_code, amount, timestamp) VALUES (?, ?, ?, ?, ?)");
         $insertStmt->bind_param('sssss', $email, $UserPhoneNumber, $TransactionId, $Amount, $timestamp);
         $insertStmt->execute();
    
         if ($insertStmt->affected_rows > 0) {
-            // Update the personalmembership table with the payment details
-            $updateStmt = $conn->prepare("UPDATE personalmembership SET payment_Number = ?, payment_code = ?, payment_date = ? WHERE email = ?");
+            // Check which table the email exists in
+            $checkPersonal = $conn->prepare("SELECT email FROM personalmembership WHERE email = ?");
+            $checkPersonal->bind_param('s', $email);
+            $checkPersonal->execute();
+            $personalResult = $checkPersonal->get_result();
+            
+            if ($personalResult->num_rows > 0) {
+                // Email found in personalmembership
+                $updateStmt = $conn->prepare("UPDATE personalmembership SET payment_Number = ?, payment_code = ?, payment_date = ? WHERE email = ?");
+            } else {
+                // Email not found in personalmembership, check organizationmembership
+                $checkOrg = $conn->prepare("SELECT organization_email FROM organizationmembership WHERE organization_email = ?");
+                $checkOrg->bind_param('s', $email);
+                $checkOrg->execute();
+                $orgResult = $checkOrg->get_result();
+
+                if ($orgResult->num_rows > 0) {
+                    // Email found in organizationmembership
+                    $updateStmt = $conn->prepare("UPDATE organizationmembership SET payment_Number = ?, payment_code = ?, payment_date = ? WHERE organization_email = ?");
+                } else {
+                    $_SESSION['response'] = [
+                        'success' => false,
+                        'message' => 'Email not found in either membership table.'
+                    ];
+                    http_response_code(404);
+                    exit;
+                }
+            }
+
             $updateStmt->bind_param('ssss', $UserPhoneNumber, $TransactionId, $timestamp, $email);
             $updateStmt->execute();
 
             if ($updateStmt->affected_rows > 0) {
-                // Send a confirmation email
                 $to = $email;
                 $subject = "Payment Confirmation";
-                $message = "Dear User,\n\nThank you for your Member payment of Ksh $Amount.\n\nTransaction ID: $TransactionId\n\nBest regards,\nAGL Team";
+                $message = "Greetings,\n\nThank you for your Member payment of Ksh $Amount.\n\nTransaction ID: $TransactionId\n\nBest regards,\nAGL Team";
                 $headers = "From: payments@agl.or.ke\r\n";
                 $headers .= "Reply-To: payments@agl.or.ke\r\n";
                 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
@@ -70,22 +89,20 @@ if ($ResultCode == 0) {
                         'message' => 'Payment processed successfully. Confirmation email sent.'
                     ];
                 } else {
-                    // Handle email sending failure
                     $_SESSION['response'] = [
                         'success' => false,
                         'message' => 'Failed to send confirmation email.'
                     ];
                 }
             } else {
-                // Handle the case where the update did not succeed
                 $_SESSION['response'] = [
                     'success' => false,
-                    'message' => 'Failed to update personalmembership with payment details.'
+                    'message' => 'Failed to update membership with payment details.'
                 ];
             }
+
             $updateStmt->close();
         } else {
-            // Handle the case where the insert did not succeed
             $_SESSION['response'] = [
                 'success' => false,
                 'message' => 'Failed to insert payment details.'
@@ -93,7 +110,6 @@ if ($ResultCode == 0) {
         }
         $insertStmt->close();
     } else {
-        // Handle the case where no email was found
         $_SESSION['response'] = [
             'success' => false,
             'message' => 'No email found for CheckoutRequestID.'
@@ -101,7 +117,6 @@ if ($ResultCode == 0) {
     }
     $stmt->close();
 } else {
-    // Handle unsuccessful transaction response
     $_SESSION['response'] = [
         'success' => false,
         'message' => 'Transaction failed: ' . $ResultDesc
