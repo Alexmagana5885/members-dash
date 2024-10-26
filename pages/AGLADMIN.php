@@ -331,12 +331,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 // Get the session email
                 $sessionEmail = $_SESSION['user_email'];
 
+
+
                 // Query to get the latest transaction for the current user
-                $query = "SELECT amount, transaction_date 
-                        FROM mpesa_transactions 
-                        WHERE email = ? 
-                        ORDER BY transaction_date DESC 
-                        LIMIT 1";
+                $query = "SELECT amount, timestamp 
+FROM member_payments 
+WHERE member_email = ? 
+ORDER BY timestamp DESC 
+LIMIT 1";
 
                 $stmt = $conn->prepare($query);
                 $stmt->bind_param("s", $sessionEmail);
@@ -509,7 +511,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             placeholder="Enter your phone number" required>
 
                         <label for="mpesa-amount" class="popup-label">Amount</label>
-                        <input type="text" id="mpesa-amount" name="amount" class="popup-input" value="2000" readonly>
+                        <input type="text" id="mpesa-amount" name="amount" class="popup-input" value="1" readonly>
 
                         <!-- Hidden field to store the referring page URL -->
                         <input type="hidden" id="referringPage" name="referringPage"
@@ -699,9 +701,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
                             // Create a form that will send data to event_card.php
                             echo '<form method="POST" action="../forms/event_card.php">';
-                            echo '<input type="hidden" name="email" value="' . $row['member_email'] . '">'; 
-                            echo '<input type="hidden" name="eventName" value="' . $row['event_id'] . '">'; 
-                            
+                            echo '<input type="hidden" name="email" value="' . $row['member_email'] . '">';
+                            echo '<input type="hidden" name="eventName" value="' . $row['event_id'] . '">';
+
                             // Use the invitation_card path for the download
                             echo '<button style="background-color: #007bff;" class="iventcard" type="submit">Download Invitation Card</button>';
                             echo '</form>';
