@@ -76,12 +76,13 @@ if ($ResultCode == 0) {
         $message = "
             Dear $memberName,
 
-            Thank you for registering for $eventName! We're excited to have you join us on $eventDate.
+            Thank you for registering for $eventName! 
+            We're excited to have you join us on $eventDate.
 
             Event Details:
             
             Location: $eventLocation
-            Time: 10:00 AM
+            Date: $eventDate
 
             Please check your email for more details and any future updates.
 

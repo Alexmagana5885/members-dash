@@ -81,6 +81,37 @@ try {
         if ($insertStmt->execute()) {
             $response['success'] = true;
             $response['message'] = "Registration successful. No payment required.";
+        }
+
+        // Send email with registration confirmation
+        $to = $email;
+        $subject = "Registration Successful!";
+        $message = "
+                    Dear $memberName,
+        
+                    Thank you for registering for $eventName! 
+                    We're excited to have you join us on $eventDate.
+        
+                    Event Details:
+                    
+                    Location: $eventLocation
+                    Date: $eventDate
+        
+                    Please check your email for more details and any future updates.
+        
+                    We look forward to seeing you there!
+        
+                    Warm regards,
+                    The AGL Team
+                ";
+        $headers = "From: events@agl.or.ke\r\n";
+        $headers .= "Reply-To: events@agl.or.ke\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+
+        if (!mail($to, $subject, $message, $headers)) {
+            $response['errors'][] = "Failed to send registration confirmation email to $to";
+            $_SESSION['response'] = $response;
+            exit;
         } else {
             $response['errors'][] = "Event Database error: " . $insertStmt->error;
         }
@@ -168,4 +199,3 @@ try {
 $_SESSION['response'] = $response;
 header("Location: " . $_SERVER['HTTP_REFERER']);
 exit();
-?>
