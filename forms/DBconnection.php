@@ -16,5 +16,3 @@ if ($conn->connect_error) {
 // require_once('DBconnection.php');
 
 ?>
-
-
