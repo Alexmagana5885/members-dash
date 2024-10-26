@@ -1112,7 +1112,24 @@ LIMIT 1";
             ORDER BY event_date DESC";
             $result = $conn->query($sql);
 
+
+            $sql = "SELECT * FROM organizationmembership WHERE organization_email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $userEmail);
+            $stmt->execute();
+            $Mresult = $stmt->get_result();
+
+            // Fetch data
+            if ($row = $Mresult->fetch_assoc()) {
+                $organizationName = $row['organization_name'];
+  
+            } else {
+                echo "No organization found";
+            }
+
             ?>
+
+            
 
             <!-- planned event style -->
 
@@ -1175,7 +1192,7 @@ LIMIT 1";
                             echo '<input type="email" id="memberEmail" name="User-email" value="' . $userEmail . '" readonly>';
 
                             echo '<label for="memberName">Name:</label>';
-                            echo '<input type="text" id="memberName" name="memberName" required>';
+                            echo '<input type="text" id="memberName" name="memberName" value="' . $organizationName . '" readonly>';
 
                             echo '<label for="contact">Contact:</label>';
                             echo '<input type="text" id="contact" name="phone_number" required>';

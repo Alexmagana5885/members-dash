@@ -1114,6 +1114,19 @@ LIMIT 1";
             ORDER BY event_date DESC";
             $result = $conn->query($sql);
 
+            $sql = "SELECT * FROM personalmembership WHERE email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $userEmail);
+            $stmt->execute();
+            $Mresult = $stmt->get_result();
+
+            // Fetch data
+            if ($row = $Mresult->fetch_assoc()) {
+                $name = $row['name'];
+            } else {
+                echo "No user found";
+            }
+
             ?>
 
             <!-- planned event style -->
@@ -1177,7 +1190,7 @@ LIMIT 1";
                             echo '<input type="email" id="memberEmail" name="User-email" value="' . $userEmail . '" readonly>';
 
                             echo '<label for="memberName">Name:</label>';
-                            echo '<input type="text" id="memberName" name="memberName" required>';
+                            echo '<input type="text" id="memberName" name="memberName" value="' . $name . '" readonly>';
 
                             echo '<label for="contact">Contact:</label>';
                             echo '<input type="text" id="contact" name="phone_number" required>';
