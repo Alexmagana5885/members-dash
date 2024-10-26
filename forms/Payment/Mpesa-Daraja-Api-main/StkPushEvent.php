@@ -84,7 +84,7 @@ try {
         }
 
         // Send email with registration confirmation
-        $to = $email;
+        $to = $userEmail;
         $subject = "Registration Successful!";
         $message = "
                     Dear $memberName,
