@@ -58,7 +58,7 @@ if ($result->num_rows > 0) {
     $userDataOrg = $userResultOrg->fetch_assoc();
 
     // Fetch the user data
-    $userData = $userResult->fetch_assoc();
+    // $userData = $userResult->fetch_assoc();
 
     if ($userDataPersonal) {
         // Personal member data found
