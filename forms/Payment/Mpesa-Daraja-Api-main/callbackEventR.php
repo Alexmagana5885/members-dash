@@ -23,13 +23,13 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 // Extract relevant data from the response
-$MerchantRequestID = $data['Body']['stkCallback']['MerchantRequestID'] ?? null;
-$CheckoutRequestID = $data['Body']['stkCallback']['CheckoutRequestID'] ?? null;
-$ResultCode = $data['Body']['stkCallback']['ResultCode'] ?? null;
-$ResultDesc = $data['Body']['stkCallback']['ResultDesc'] ?? null;
-$Amount = $data['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'] ?? null;
-$TransactionId = $data['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'] ?? null;
-$UserPhoneNumber = $data['Body']['stkCallback']['CallbackMetadata']['Item'][4]['Value'] ?? null;
+$MerchantRequestID = $data->Body->stkCallback->MerchantRequestID ?? null;
+$CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID ?? null;
+$ResultCode = $data->Body->stkCallback->ResultCode ?? null;
+$ResultDesc = $data->Body->stkCallback->ResultDesc ?? null;
+$Amount = $data->Body->stkCallback->CallbackMetadata->Item[0]->Value ?? null;
+$TransactionId = $data->Body->stkCallback->CallbackMetadata->Item[1]->Value ?? null;
+$UserPhoneNumber = $data->Body->stkCallback->CallbackMetadata->Item[4]->Value ?? null;
 
 // Check if the transaction was successful
 if ($ResultCode == 0) {
