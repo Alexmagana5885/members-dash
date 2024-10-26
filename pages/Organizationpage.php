@@ -296,9 +296,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 }
 
                 $userEmail = $_SESSION['user_email'];
-
-                // Fetch user details based on the session email
-                $sql = "SELECT * FROM personalmembership WHERE email = ?";
+                // Fetch organization details based on the session email
+                $sql = "SELECT * FROM organizationmembership WHERE organization_email = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("s", $userEmail);
                 $stmt->execute();
@@ -306,23 +305,23 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
                 // Fetch data
                 if ($row = $result->fetch_assoc()) {
-                    $name = $row['name'];
-                    $registrationDate = $row['registration_date'];
-                    $passportImage = $row['passport_image'];
-                    $userEmail = $row['email'];
+                    $organizationName = $row['organization_name'];
+                    $registrationDate = $row['date_of_registration'];
+                    $logoImage = $row['logo_image'];
+                    $organizationEmail = $row['organization_email'];
                 } else {
-                    echo "No user found";
+                    echo "No organization found";
                 }
 
                 $stmt->close();
                 ?>
 
                 <div class="card">
-                    <img class="cardMemberprofile" src="<?php echo htmlspecialchars($passportImage); ?>"
-                        alt="User Image">
-                    <h5><?php echo htmlspecialchars($name); ?></h5>
+                    <img class="cardMemberprofile" src="<?php echo htmlspecialchars($logoImage); ?>"
+                        alt="Organization Logo">
+                    <h5><?php echo htmlspecialchars($organizationName); ?></h5>
                     <hr><br>
-                    <h4><?php echo htmlspecialchars($userEmail); ?></h4>
+                    <h4><?php echo htmlspecialchars($organizationEmail); ?></h4>
                     <p>Registration Date: <?php echo htmlspecialchars($registrationDate); ?></p>
                 </div>
 
@@ -598,40 +597,39 @@ LIMIT 1";
 
                 $sessionEmail = $_SESSION['user_email'];
 
-                // Fetch education information from the database
-                $query = "SELECT highest_degree, institution, graduation_year FROM personalmembership WHERE email = ?";
+                $query = "SELECT location_country, organization_type, what_you_do, start_date FROM organizationmembership WHERE organization_email = ?";
                 $stmt = $conn->prepare($query);
                 $stmt->bind_param("s", $sessionEmail);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    $educationInfo = $result->fetch_assoc();
+                    $organizationInfo = $result->fetch_assoc();
                 } else {
-                    $educationInfo = [
-                        'highest_degree' => 'N/A',
-                        'institution' => 'N/A',
-                        // 'start_date' => 'N/A',
-                        'graduation_year' => 'N/A'
+                    $organizationInfo = [
+                        'location_country' => 'N/A',
+                        'organization_type' => 'N/A',
+                        'what_you_do' => 'N/A',
+                        'start_date' => 'N/A'
                     ];
                 }
                 ?>
 
                 <div class="card">
-                    <h5>Education Information</h5>
+                    <h5>Organization Information</h5>
                     <hr>
-                    <p>Highest Degree: <span
-                            id="highest-degree"><?php echo htmlspecialchars($educationInfo['highest_degree']); ?></span>
+                    <p>Location Country: <span
+                            id="location-country"><?php echo htmlspecialchars($organizationInfo['location_country']); ?></span>
                     </p><br>
-                    <p>Institution: <span
-                            id="institution"><?php echo htmlspecialchars($educationInfo['institution']); ?></span></p>
-                    <br>
-
-                    <p>Graduation Year: <span
-                            id="graduation-year"><?php echo htmlspecialchars($educationInfo['graduation_year']); ?></span>
-                    </p>
+                    <p>Organization Type: <span
+                            id="organization-type"><?php echo htmlspecialchars($organizationInfo['organization_type']); ?></span>
+                    </p><br>
+                    <p>What You Do: <span
+                            id="what-you-do"><?php echo htmlspecialchars($organizationInfo['what_you_do']); ?></span>
+                    </p><br>
+                    <p>Start Date: <span
+                            id="start-date"><?php echo htmlspecialchars($organizationInfo['start_date']); ?></span></p><br>
                 </div>
-
 
                 <?php
                 // session_start();
