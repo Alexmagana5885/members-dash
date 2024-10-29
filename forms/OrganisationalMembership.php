@@ -31,7 +31,7 @@ function generateOrganizationId($conn)
     }
 
     // Return the new ID in the desired format
-    return "aglorg" . str_pad($number, 4, '0', STR_PAD_LEFT);
+    return "AGLORG/" . str_pad($number, 4, '0', STR_PAD_LEFT);
 }
 
 $response = array(); // Initialize response array
