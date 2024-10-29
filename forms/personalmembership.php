@@ -97,9 +97,9 @@ if (empty($response['errors'])) {
     if ($lastIdResult->num_rows > 0) {
         $row = $lastIdResult->fetch_assoc();
         $lastId = intval(substr($row['id'], 3));  // Extract the numeric part of the last ID
-        $newId = 'agl' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);  // Increment and format the new ID
+        $newId = 'AGL/' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);  // Increment and format the new ID
     } else {
-        $newId = 'agl0001';  // Default to 'agl0001' if no records exist
+        $newId = 'AGL/0001';  // Default to 'agl0001' if no records exist
     }
 
     // SQL query to insert data into the database with the new ID
