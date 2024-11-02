@@ -242,13 +242,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contacts</a></li>
+                    <li><a href="userinfo.php">User Information</a></li>
                     <li><a href="mailto:info@agl.or.ke" target="_blank">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
                     <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
                     <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
                     <li><a href="../forms/logout.php">Logout</a></li>
-                    <!-- <li><a href="new2.php">invitation card</a></li> -->
+                    <!-- <li><a href="https://docs.google.com/forms/d/1aN5mL1rYa1JjZbTJduk-jKuVJpIfprRkD_POlN9uW8s/edit">Conference feedbacks</a></li> -->
 
                 <?php elseif ($role == 'admin'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
@@ -358,9 +359,6 @@ LIMIT 1";
                     $nextPaymentDate = "N/A";
                     $currentBalance = "0";
                 }
-
-                // Get the session email
-                // $sessionEmail = $_SESSION['user_email'];
 
                 // Check in personalmembership table
                 $query_personal = "SELECT payment_Number, payment_code FROM personalmembership WHERE email = ?";
@@ -611,7 +609,6 @@ LIMIT 1";
                     $educationInfo = [
                         'highest_degree' => 'N/A',
                         'institution' => 'N/A',
-                        // 'start_date' => 'N/A',
                         'graduation_year' => 'N/A'
                     ];
                 }
@@ -767,7 +764,6 @@ LIMIT 1";
                 }
             </style>
 
-
             <!-- error response-popups-->
             <div>
 
@@ -848,7 +844,6 @@ LIMIT 1";
                     }
                 });
             </script>
-
 
             <style>
                 .blogPoint {
@@ -979,10 +974,6 @@ LIMIT 1";
                     });
                 });
             </script>
-
-
-
-
 
             <!-- .............................. -->
             <!-- $user_email = $_SESSION['user_email']; -->
@@ -1351,11 +1342,6 @@ LIMIT 1";
                             <input type="text" id="pastEventName" name="eventName" required />
                         </div>
 
-                        <!-- <div class="past-event-form-group">
-                            <label for="pastEventLocation">Event Details</label>
-                            <textarea style="height: 200px; padding: 10px; " name="eventDetails"
-                                id="pastEventDetailsEditor" required></textarea>
-                        </div> -->
 
                         <div class="past-event-form-group">
                             <label for="pastEventDetails">Event Details</label>

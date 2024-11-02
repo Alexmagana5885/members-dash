@@ -1,1 +1,12 @@
 config/
+
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.svg
+
+
+*.pdf
