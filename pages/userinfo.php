@@ -30,10 +30,10 @@ session_start();
 
     }
 
-    .userdatadisplayimage{
+    .userdatadisplayimage {
         display: flex;
         flex-direction: column;
-        
+
     }
 
     .imageenditbtn {
@@ -287,17 +287,16 @@ session_start();
             <a class="imageenditbtn" href="#" id="imageenditbtn">Edit</a>
         </div>
         <div class="userdatadisplay">
-            <form id="userDataForm" method="POST" action="../forms/update_user_data.php" enctype="multipart/form-data">
+            <form id="userDataForm" method="POST" action="../forms/imageupdateM.php" enctype="multipart/form-data">
                 <input type="hidden" name="id" id="userId" value="<?php echo htmlspecialchars($userData['id']); ?>">
 
-                <div method="POST" action="../forms/update_user_data.php" enctype="multipart/form-data" class="displayarea">
-
+                <form method="POST" action="../forms/update_user_data.php" enctype="multipart/form-data" class="displayarea">
                     <div id="imageEditSection" class="hidden">
-                        <label for="image">edit image:</label>
-                        <input type="file" id="imageinput" accept="image/*">
-                        <button id="saveimageBtn">Save</button>
+                        <label for="image">Edit Image:</label>
+                        <input name="passport" type="file" id="passport_imageInput" accept="image/*" required>
+                        <button type="submit" class="saveBtn" >Save</button>
                     </div>
-                </div>
+                </form>
 
 
                 <div method="POST" action="../forms/update_user_data.php" enctype="multipart/form-data" class="displayarea">
@@ -382,7 +381,7 @@ session_start();
                     </div>
                 </div>
 
-                <div method="POST" action="../forms/update_user_data.php" enctype="multipart/form-data" class="displayarea">
+                <form method="POST" action="../forms/fileUpdate.php" enctype="multipart/form-data" class="displayarea">
                     <label for="completionLetter">Completion Letter:</label>
                     <p id="completionLetterDisplay">
                         <?php if (!empty($userData['completion_letter']) && file_exists($userData['completion_letter'])): ?>
@@ -394,9 +393,9 @@ session_start();
                     </p>
                     <div id="completionLetterEditSection" class="hidden">
                         <input type="file" id="completion_letterInput" name="completionLetter">
-                        <button type="button" class="saveBtn" data-section="completion_letter">Save</button>
+                        <button type="submit" class="saveBtn" >Save</button>
                     </div>
-                </div>
+                </form>
 
                 <div method="POST" action="../forms/update_user_data.php" enctype="multipart/form-data" class="displayarea">
                     <label for="profession">Profession:</label>
@@ -474,7 +473,7 @@ session_start();
         </div>
     </div>
 
-    <!-- user update  --> 
+    <!-- user update  -->
     <script>
         document.querySelectorAll('.saveBtn').forEach(button => {
             button.addEventListener('click', function() {
@@ -506,7 +505,6 @@ session_start();
             });
         });
     </script>
-
 
     <script>
         const fields = [{
@@ -670,7 +668,7 @@ session_start();
         documentsButton.addEventListener("click", () => {
             const documentPath = documentsButton.getAttribute("data-document-path");
             if (documentPath) {
-                window.location.href = documentPath; 
+                window.location.href = documentPath;
             }
         });
     </script>
