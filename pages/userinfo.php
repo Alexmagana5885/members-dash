@@ -11,7 +11,7 @@ session_start();
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Event Details</title>
+    <title>User Details</title>
     <link href="../assets/img/favicon.png" rel="icon" />
     <link href="../assets/CSS/quilleditor.css" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/CSS/startfile.css" />
@@ -294,7 +294,7 @@ session_start();
                     <div id="imageEditSection" class="hidden">
                         <label for="image">Edit Image:</label>
                         <input name="passport" type="file" id="passport_imageInput" accept="image/*" required>
-                        <button type="submit" class="saveBtn" >Save</button>
+                        <button type="submit" class="saveBtn">Save</button>
                     </div>
                 </form>
 
@@ -303,7 +303,7 @@ session_start();
                     <label for="name">Name:</label>
                     <p id="nameDisplay">
                         <?php echo htmlspecialchars($userData['name']); ?>
-                        <a href="#nameDisplay" id="editNameBtn">Edit</a>
+                        <a href="#" id="editNameBtn">Edit</a>
                     </p>
                     <div id="nameEditSection" class="hidden">
                         <input type="text" id="nameInput" value="<?php echo htmlspecialchars($userData['name']); ?>">
@@ -324,7 +324,7 @@ session_start();
                     <label for="phone">Phone:</label>
                     <p id="phoneDisplay">
                         <?php echo htmlspecialchars($userData['phone']); ?>
-                        <a href="#phoneDisplay" id="editPhoneBtn">Edit</a>
+                        <a href="#" id="editPhoneBtn">Edit</a>
                     </p>
                     <div id="phoneEditSection" class="hidden">
                         <input type="tel" id="phoneInput" value="<?php echo htmlspecialchars($userData['phone']); ?>" required>
@@ -336,7 +336,7 @@ session_start();
                     <label for="homeAddress">Home Address:</label>
                     <p id="addressDisplay">
                         <?php echo htmlspecialchars($userData['home_address']); ?>
-                        <a href="#addressDisplay" id="editAddressBtn">Edit</a>
+                        <a href="#" id="editAddressBtn">Edit</a>
                     </p>
                     <div id="addressEditSection" class="hidden">
                         <input type="text" id="home_addressInput" value="<?php echo htmlspecialchars($userData['home_address']); ?>" required>
@@ -349,7 +349,7 @@ session_start();
                     <label for="highestDegree">Highest Degree:</label>
                     <p id="degreeDisplay">
                         <?php echo htmlspecialchars($userData['highest_degree']); ?>
-                        <a href="#degreeDisplay" id="editDegreeBtn">Edit</a>
+                        <a href="#" id="editDegreeBtn">Edit</a>
                     </p>
                     <div id="degreeEditSection" class="hidden">
                         <input type="text" id="highest_degreeInput" value="<?php echo htmlspecialchars($userData['highest_degree']); ?>" required>
@@ -361,7 +361,7 @@ session_start();
                     <label for="institution">Institution:</label>
                     <p id="institutionDisplay">
                         <?php echo htmlspecialchars($userData['institution']); ?>
-                        <a href="#institutionDisplay" id="editInstitutionBtn">Edit</a>
+                        <a href="#" id="editInstitutionBtn">Edit</a>
                     </p>
                     <div id="institutionEditSection" class="hidden">
                         <input type="text" id="institutionInput" value="<?php echo htmlspecialchars($userData['institution']); ?>" required>
@@ -373,7 +373,7 @@ session_start();
                     <label for="graduationYear">Graduation Year:</label>
                     <p id="graduationYearDisplay">
                         <?php echo htmlspecialchars($userData['graduation_year']); ?>
-                        <a href="#graduationYearDisplay" id="editGraduationYearBtn">Edit</a>
+                        <a href="#" id="editGraduationYearBtn">Edit</a>
                     </p>
                     <div id="graduationYearEditSection" class="hidden">
                         <input type="number" id="graduation_yearInput" value="<?php echo htmlspecialchars($userData['graduation_year']); ?>" required>
@@ -389,11 +389,11 @@ session_start();
                         <?php else: ?>
                             No completion letter uploaded.
                         <?php endif; ?>
-                        <a href="#completionLetterDisplay" id="editCompletionLetterBtn">Edit</a>
+                        <a href="#" id="editCompletionLetterBtn">Edit</a>
                     </p>
                     <div id="completionLetterEditSection" class="hidden">
                         <input type="file" id="completion_letterInput" name="completionLetter">
-                        <button type="submit" class="saveBtn" >Save</button>
+                        <button type="submit" class="saveBtn">Save</button>
                     </div>
                 </form>
 
@@ -401,7 +401,7 @@ session_start();
                     <label for="profession">Profession:</label>
                     <p id="professionDisplay">
                         <?php echo htmlspecialchars($userData['profession']); ?>
-                        <a href="#professionDisplay" id="editProfessionBtn">Edit</a>
+                        <a href="#" id="editProfessionBtn">Edit</a>
                     </p>
                     <div id="professionEditSection" class="hidden">
                         <input type="text" id="professionInput" value="<?php echo htmlspecialchars($userData['profession']); ?>" required>
@@ -413,7 +413,7 @@ session_start();
                     <label for="experience">Experience:</label>
                     <p id="experienceDisplay">
                         <?php echo htmlspecialchars($userData['experience']); ?>
-                        <a href="#experienceDisplay" id="editExperienceBtn">Edit</a>
+                        <a href="#" id="editExperienceBtn">Edit</a>
                     </p>
                     <div id="experienceEditSection" class="hidden">
                         <input type="text" id="experienceInput" value="<?php echo htmlspecialchars($userData['experience']); ?>" required>
@@ -425,7 +425,7 @@ session_start();
                     <label for="currentCompany">Current Company:</label>
                     <p id="currentCompanyDisplay">
                         <?php echo htmlspecialchars($userData['current_company']); ?>
-                        <a href="#currentCompanyDisplay" id="editCurrentCompanyBtn">Edit</a>
+                        <a href="#" id="editCurrentCompanyBtn">Edit</a>
                     </p>
                     <div id="currentCompanyEditSection" class="hidden">
                         <input type="text" id="current_companyInput" value="<?php echo htmlspecialchars($userData['current_company']); ?>" required>
@@ -437,7 +437,7 @@ session_start();
                     <label for="position">Position:</label>
                     <p id="positionDisplay">
                         <?php echo htmlspecialchars($userData['position']); ?>
-                        <a href="#positionDisplay" id="editPositionBtn">Edit</a>
+                        <a href="#" id="editPositionBtn">Edit</a>
                     </p>
                     <div id="positionEditSection" class="hidden">
                         <input type="text" id="positionInput" value="<?php echo htmlspecialchars($userData['position']); ?>" required>
@@ -449,7 +449,7 @@ session_start();
                     <label for="workAddress">Work Address:</label>
                     <p id="workAddressDisplay">
                         <?php echo htmlspecialchars($userData['work_address']); ?>
-                        <a href="#workAddressDisplay" id="editWorkAddressBtn">Edit</a>
+                        <a href="#" id="editWorkAddressBtn">Edit</a>
                     </p>
                     <div id="workAddressEditSection" class="hidden">
                         <input type="text" id="work_addressInput" value="<?php echo htmlspecialchars($userData['work_address']); ?>" required>
@@ -461,7 +461,7 @@ session_start();
                     <label for="gender">Gender:</label>
                     <p id="genderDisplay">
                         <?php echo htmlspecialchars($userData['gender']); ?>
-                        <a href="#genderDisplay" id="editGenderBtn">Edit</a>
+                        <a href="#" id="editGenderBtn">Edit</a>
                     </p>
                     <div id="genderEditSection" class="hidden">
                         <input type="text" id="genderInput" value="<?php echo htmlspecialchars($userData['gender']); ?>" required>

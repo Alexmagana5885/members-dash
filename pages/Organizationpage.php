@@ -24,6 +24,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
+    
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" /> -->
     <link href="../assets/CSS/quilleditor.css" rel="stylesheet" />
@@ -270,7 +271,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 <?php elseif ($role == 'member'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
-
+                    <li><a href="UserDataORG.php">User Information</a></li>
                     <li><a href="mailto:info@agl.or.ke">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
