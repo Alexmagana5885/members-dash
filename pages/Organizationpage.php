@@ -242,6 +242,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="openMessagePopupSend">Send Message</a></li>
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
+                    <li><a href="UserDataORG.php" target="_blank"></a>>User Information</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/">Contacts</a></li>
                     <li><a href="mailto:info@agl.or.ke" target="_blank">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
@@ -259,6 +260,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Payments</a></li>
+                    <li><a href="UserDataORG.php" target="_blank"></a>>User Information</a></li>
 
                     <li><a href="mailto:info@agl.or.ke">Email</a></li>
                     <li><a href="tel:+254748027123">Call</a></li>
@@ -271,7 +273,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 <?php elseif ($role == 'member'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
-                    <li><a href="UserDataORG.php">User Information</a></li>
+                    <li><a href="UserDataORG.php" target="_blank"></a>>User Information</a></li>
                     <li><a href="mailto:info@agl.or.ke">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
