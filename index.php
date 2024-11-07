@@ -158,10 +158,10 @@
             </div>
           </div>
           <!-- OTP input,  hidden -->
-          <div class="input-group" id="otpForm" style="display: none;">
+          <form class="input-group" id="otpForm" style="display: none;">
             <label for="OTP">Enter OTP</label>
             <input class="emailInput" type="text" id="otp" name="otp" placeholder="Enter OTP" required>
-          </div>
+          </form>
           <!-- Button will change from 'Get OTP' to 'Verify OTP' dynamically -->
           <button type="submit" id="loginButton">Get OTP</button>
           <p class="register-link">
