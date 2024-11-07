@@ -15,220 +15,10 @@ session_start();
     <link href="../assets/img/favicon.png" rel="icon" />
     <link href="../assets/CSS/quilleditor.css" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/CSS/startfile.css" />
+    <link rel="stylesheet" href="../assets/CSS/editfiles.css" />
+
 
 </head>
-
-<style>
-    .userdatadisplaypoint {
-        display: flex;
-        width: 80%;
-        max-height: 600px;
-        background: #f2f2f2;
-        border-radius: 10px;
-        margin: 5% auto;
-        padding: 10px;
-
-    }
-
-    .userdatadisplayimage {
-        display: flex;
-        flex-direction: column;
-
-    }
-
-    .imageenditbtn {
-        border: 1px solid blue;
-        padding: 5px;
-        color: blue;
-        text-decoration: none;
-        transition: background-color 0.3s, color 0.3s;
-        border-radius: 5px;
-        font-size: 14px;
-        width: 90%;
-        text-align: center;
-        margin-top: 20px;
-
-    }
-
-    .imageenditbtn:hover {
-        background-color: blue;
-        color: white;
-    }
-
-    .userdatadisplaypoint p {
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .userdatadisplayimage {
-        width: 50%;
-        padding: 5px;
-        margin-top: 5px;
-    }
-
-    .userdatadisplayimage img {
-        max-width: 90%;
-        max-height: 90%;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-
-    .userdatadisplay {
-        width: 50%;
-        padding: 5px;
-        max-height: 600px;
-        overflow: auto;
-        scrollbar-width: thin;
-
-    }
-
-    .userdatadisplay div {
-        font-size: 15px;
-        margin-top: 10px;
-
-    }
-
-    .userdatadisplay input,
-    select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-        transition: border-color 0.3s;
-        margin-bottom: 10px;
-    }
-
-    .userdatadisplay input,
-    select :focus {
-        border-color: #007bff;
-        outline: none;
-    }
-
-    .userdatadisplay label {
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #0056b3;
-    }
-
-
-    .userdatadisplaypoint button {
-        padding: 10px;
-        background-color: #0056b3;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
-
-    }
-
-    .userdatadisplaypoint button :hover {
-        background-color: #007bff;
-    }
-
-    .userdatadisplay a {
-        border: 1px solid blue;
-        padding: 5px;
-        color: blue;
-        text-decoration: none;
-        transition: background-color 0.3s, color 0.3s;
-        border-radius: 5px;
-        font-size: 14px;
-        margin-left: 20px;
-    }
-
-    .userdatadisplay a:hover {
-        background-color: blue;
-        color: white;
-    }
-
-
-    .hidden {
-        display: none;
-    }
-
-    .displayarea {
-        width: 100%;
-        background-color: #fff;
-        border-radius: 8px;
-        padding: 10px;
-        margin-bottom: 10px;
-
-    }
-
-    @media (max-width: 768px) {
-        .userdatadisplaypoint {
-            flex-direction: column;
-            max-height: unset;
-            width: 98%;
-        }
-
-        .userdatadisplayimage,
-        .userdatadisplay {
-            width: 100%;
-            padding: 10px 5px;
-            max-height: unset;
-        }
-
-        .userdatadisplay p {
-            font-size: 16px;
-        }
-
-        .userdatadisplay div {
-            font-size: 14px;
-            margin-top: 8px;
-        }
-
-        .userdatadisplay input,
-        select {
-            width: 100%;
-            padding: 8px;
-            font-size: 14px;
-        }
-
-        .imageenditbtn {
-            font-size: 13px;
-            margin-left: 0;
-            width: 100%;
-            padding: 8px;
-        }
-
-        .userdatadisplaypoint button {
-            font-size: 14px;
-            width: 100%;
-            padding: 8px;
-        }
-
-        .displayarea {
-            padding: 10px;
-        }
-    }
-
-
-    @media (max-width: 480px) {
-        .userdatadisplay p {
-            font-size: 14px;
-        }
-
-        .userdatadisplay div {
-            font-size: 12px;
-        }
-
-        .userdatadisplay input,
-        select {
-            font-size: 13px;
-            padding: 6px;
-        }
-
-        .userdatadisplaypoint button,
-        .imageenditbtn {
-            font-size: 13px;
-            padding: 6px;
-        }
-    }
-</style>
 
 
 <body>
@@ -283,8 +73,9 @@ session_start();
     <div class="userdatadisplaypoint">
 
         <div class="userdatadisplayimage">
-            <img src="<?php echo htmlspecialchars($userData['passport_image']); ?>" alt="Passport Image" id="passportImage" />
-            <a class="imageenditbtn" href="#" id="imageenditbtn">Edit</a>
+            <img style="margin-bottom: 10px;" src="<?php echo htmlspecialchars($userData['passport_image']); ?>" alt="Passport Image" id="passportImage" />
+            <!-- <a class="imageenditbtn" href="#" id="imageenditbtn">Edit</a> -->
+            <button style="width: 90%; align-self: self-start;" class="editbuttons" href="#" id="imageenditbtn">Edit</button>
         </div>
         <div class="userdatadisplay">
             <form id="userDataForm" method="POST" action="../forms/imageupdateM.php" enctype="multipart/form-data">
@@ -303,7 +94,8 @@ session_start();
                     <label for="name">Name:</label>
                     <p id="nameDisplay">
                         <?php echo htmlspecialchars($userData['name']); ?>
-                        <a href="#" id="editNameBtn">Edit</a>
+                        <!-- <a href="#" id="editNameBtn" >Edit</a> -->
+                        <button class="editbuttons" href="#" id="editNameBtn">Edit</button>
                     </p>
                     <div id="nameEditSection" class="hidden">
                         <input type="text" id="nameInput" value="<?php echo htmlspecialchars($userData['name']); ?>">
@@ -324,7 +116,8 @@ session_start();
                     <label for="phone">Phone:</label>
                     <p id="phoneDisplay">
                         <?php echo htmlspecialchars($userData['phone']); ?>
-                        <a href="#" id="editPhoneBtn">Edit</a>
+                        <!-- <a href="#" id="editPhoneBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editPhoneBtn">Edit</button>
                     </p>
                     <div id="phoneEditSection" class="hidden">
                         <input type="tel" id="phoneInput" value="<?php echo htmlspecialchars($userData['phone']); ?>" required>
@@ -336,7 +129,8 @@ session_start();
                     <label for="homeAddress">Home Address:</label>
                     <p id="addressDisplay">
                         <?php echo htmlspecialchars($userData['home_address']); ?>
-                        <a href="#" id="editAddressBtn">Edit</a>
+                        <!-- <a href="#" id="editAddressBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editAddressBtn">Edit</button>
                     </p>
                     <div id="addressEditSection" class="hidden">
                         <input type="text" id="home_addressInput" value="<?php echo htmlspecialchars($userData['home_address']); ?>" required>
@@ -349,7 +143,8 @@ session_start();
                     <label for="highestDegree">Highest Degree:</label>
                     <p id="degreeDisplay">
                         <?php echo htmlspecialchars($userData['highest_degree']); ?>
-                        <a href="#" id="editDegreeBtn">Edit</a>
+                        <!-- <a href="#" id="editDegreeBtn">Edit</a> -->
+                        <button class="editbuttons" id="editDegreeBtn">Edit</button>
                     </p>
                     <div id="degreeEditSection" class="hidden">
                         <input type="text" id="highest_degreeInput" value="<?php echo htmlspecialchars($userData['highest_degree']); ?>" required>
@@ -361,7 +156,8 @@ session_start();
                     <label for="institution">Institution:</label>
                     <p id="institutionDisplay">
                         <?php echo htmlspecialchars($userData['institution']); ?>
-                        <a href="#" id="editInstitutionBtn">Edit</a>
+                        <!-- <a href="#" id="editInstitutionBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editInstitutionBtn">Edit</button>
                     </p>
                     <div id="institutionEditSection" class="hidden">
                         <input type="text" id="institutionInput" value="<?php echo htmlspecialchars($userData['institution']); ?>" required>
@@ -373,7 +169,8 @@ session_start();
                     <label for="graduationYear">Graduation Year:</label>
                     <p id="graduationYearDisplay">
                         <?php echo htmlspecialchars($userData['graduation_year']); ?>
-                        <a href="#" id="editGraduationYearBtn">Edit</a>
+                        <!-- <a href="#" id="editGraduationYearBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editGraduationYearBtn">Edit</button>
                     </p>
                     <div id="graduationYearEditSection" class="hidden">
                         <input type="number" id="graduation_yearInput" value="<?php echo htmlspecialchars($userData['graduation_year']); ?>" required>
@@ -389,7 +186,8 @@ session_start();
                         <?php else: ?>
                             No completion letter uploaded.
                         <?php endif; ?>
-                        <a href="#" id="editCompletionLetterBtn">Edit</a>
+                        <!-- <a href="#" id="editCompletionLetterBtn">Edit</a> -->
+                        <button style="margin-top: 10px;" class="editbuttons" href="#" id="editCompletionLetterBtn">Edit</button>
                     </p>
                     <div id="completionLetterEditSection" class="hidden">
                         <input type="file" id="completion_letterInput" name="completionLetter">
@@ -401,7 +199,8 @@ session_start();
                     <label for="profession">Profession:</label>
                     <p id="professionDisplay">
                         <?php echo htmlspecialchars($userData['profession']); ?>
-                        <a href="#" id="editProfessionBtn">Edit</a>
+                        <!-- <a href="#" id="editProfessionBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editProfessionBtn">Edit</button>
                     </p>
                     <div id="professionEditSection" class="hidden">
                         <input type="text" id="professionInput" value="<?php echo htmlspecialchars($userData['profession']); ?>" required>
@@ -413,7 +212,8 @@ session_start();
                     <label for="experience">Experience:</label>
                     <p id="experienceDisplay">
                         <?php echo htmlspecialchars($userData['experience']); ?>
-                        <a href="#" id="editExperienceBtn">Edit</a>
+                        <!-- <a href="#" id="editExperienceBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editExperienceBtn">Edit</button>
                     </p>
                     <div id="experienceEditSection" class="hidden">
                         <input type="text" id="experienceInput" value="<?php echo htmlspecialchars($userData['experience']); ?>" required>
@@ -425,7 +225,8 @@ session_start();
                     <label for="currentCompany">Current Company:</label>
                     <p id="currentCompanyDisplay">
                         <?php echo htmlspecialchars($userData['current_company']); ?>
-                        <a href="#" id="editCurrentCompanyBtn">Edit</a>
+                        <!-- <a href="#" id="editCurrentCompanyBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editCurrentCompanyBtn">Edit</button>
                     </p>
                     <div id="currentCompanyEditSection" class="hidden">
                         <input type="text" id="current_companyInput" value="<?php echo htmlspecialchars($userData['current_company']); ?>" required>
@@ -437,7 +238,8 @@ session_start();
                     <label for="position">Position:</label>
                     <p id="positionDisplay">
                         <?php echo htmlspecialchars($userData['position']); ?>
-                        <a href="#" id="editPositionBtn">Edit</a>
+                        <!-- <a href="#" id="editPositionBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editPositionBtn">Edit</button>
                     </p>
                     <div id="positionEditSection" class="hidden">
                         <input type="text" id="positionInput" value="<?php echo htmlspecialchars($userData['position']); ?>" required>
@@ -449,7 +251,8 @@ session_start();
                     <label for="workAddress">Work Address:</label>
                     <p id="workAddressDisplay">
                         <?php echo htmlspecialchars($userData['work_address']); ?>
-                        <a href="#" id="editWorkAddressBtn">Edit</a>
+                        <!-- <a href="#" id="editWorkAddressBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editWorkAddressBtn">Edit</button>
                     </p>
                     <div id="workAddressEditSection" class="hidden">
                         <input type="text" id="work_addressInput" value="<?php echo htmlspecialchars($userData['work_address']); ?>" required>
@@ -461,7 +264,8 @@ session_start();
                     <label for="gender">Gender:</label>
                     <p id="genderDisplay">
                         <?php echo htmlspecialchars($userData['gender']); ?>
-                        <a href="#" id="editGenderBtn">Edit</a>
+                        <!-- <a href="#" id="editGenderBtn">Edit</a> -->
+                        <button class="editbuttons" href="#" id="editGenderBtn">Edit</button>
                     </p>
                     <div id="genderEditSection" class="hidden">
                         <input type="text" id="genderInput" value="<?php echo htmlspecialchars($userData['gender']); ?>" required>
@@ -472,6 +276,7 @@ session_start();
 
         </div>
     </div>
+    <!-- window.location.reload(); -->
 
     <!-- user update  -->
     <script>
@@ -497,8 +302,10 @@ session_start();
                             alert("updated successfully!");
                             // Update display value
                             document.getElementById(section + 'Display').innerText = value;
+                            window.location.reload();
                         } else {
                             alert("Failed to update field.");
+                            
                         }
                     })
                     .catch(error => console.error("Error:", error));

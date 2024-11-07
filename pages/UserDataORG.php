@@ -19,6 +19,7 @@ session_start();
 
 </head>
 
+
 <body>
     <!-- Header -->
     <header class="site-header">
@@ -71,8 +72,10 @@ session_start();
     <div class="userdatadisplaypoint">
 
         <div class="userdatadisplayimage">
-            <img src="<?php echo htmlspecialchars($orgData['logo_image']); ?>" alt="Organization Logo" id="passportImage" />
-            <a class="imageenditbtn" href="#" id="imageenditbtn">Edit</a>
+            <img style="margin-bottom: 10px;" src="<?php echo htmlspecialchars($orgData['logo_image']); ?>" alt="Organization Logo" id="passportImage" />
+            <!-- <a class="imageenditbtn" href="#" id="imageenditbtn">Edit</a> -->
+            <button style="width: 90%; align-self: self-start;" class="editbuttons" id="imageenditbtn">Edit</button>
+
         </div>
         <div class="userdatadisplay">
             <div id="organizationDataForm" method="POST" action="../forms/imageupdateO.php" enctype="multipart/form-data">
@@ -90,7 +93,8 @@ session_start();
                     <label for="organizationName">Organization Name:</label>
                     <p id="organizationNameDisplay">
                         <?php echo htmlspecialchars($orgData['organization_name']); ?>
-                        <a href="#" id="editOrganizationNameBtn">Edit</a>
+                        <!-- <a href="#" id="editOrganizationNameBtn">Edit</a> -->
+                        <button class="editbuttons" id="editOrganizationNameBtn">Edit</button>
                     </p>
                     <div id="organizationNameEditSection" class="hidden">
                         <input type="text" id="organization_nameInput" value="<?php echo htmlspecialchars($orgData['organization_name']); ?>" required>
@@ -103,7 +107,8 @@ session_start();
                     <label for="contactPerson">Contact Person:</label>
                     <p id="contactPersonDisplay">
                         <?php echo htmlspecialchars($orgData['contact_person']); ?>
-                        <a href="#" id="editContactPersonBtn">Edit</a>
+                        <!-- <a href="#" id="editContactPersonBtn">Edit</a> -->
+                        <button class="editbuttons" id="editContactPersonBtn">Edit</button>
                     </p>
                     <div id="contactPersonEditSection" class="hidden">
                         <input type="text" id="contact_personInput" value="<?php echo htmlspecialchars($orgData['contact_person']); ?>" required>
@@ -115,7 +120,8 @@ session_start();
                     <label for="contactPhone">Contact Phone Number:</label>
                     <p id="contactPhoneDisplay">
                         <?php echo htmlspecialchars($orgData['contact_phone_number']); ?>
-                        <a href="#" id="editContactPhoneBtn">Edit</a>
+                        <!-- <a href="#" id="editContactPhoneBtn">Edit</a> -->
+                        <button class="editbuttons" id="editContactPhoneBtn">Edit</button>
                     </p>
                     <div id="contactPhoneEditSection" class="hidden">
                         <input type="tel" id="contact_phone_numberInput" value="<?php echo htmlspecialchars($orgData['contact_phone_number']); ?>" required>
@@ -139,7 +145,8 @@ session_start();
                         <?php else: ?>
                             No registration certificate uploaded.
                         <?php endif; ?>
-                        <a href="#" id="editRegistrationCertificateBtn">Edit</a>
+                        <!-- <="#" id="editRegistrationCertificateBtn">Edit</a> -->
+                        <button style="margin-top: 10px;" class="editbuttons" id="editRegistrationCertificateBtn">Edit</button>
                     </p>
                     <div id="registrationCertificateEditSection" class="hidden">
                         <input type="file" id="registration_certificateInput" name="registration_certificate">
@@ -151,7 +158,8 @@ session_start();
                     <label for="organizationAddress">Organization Address:</label>
                     <p id="organizationAddressDisplay">
                         <?php echo htmlspecialchars($orgData['organization_address']); ?>
-                        <a href="#" id="editOrganizationAddressBtn">Edit</a>
+                        <!-- <a href="#" id="editOrganizationAddressBtn">Edit</a> -->
+                        <button class="editbuttons" id="editOrganizationAddressBtn">Edit</button>
                     </p>
                     <div id="organizationAddressEditSection" class="hidden">
                         <input type="text" id="organization_addressInput" value="<?php echo htmlspecialchars($orgData['organization_address']); ?>" required>
@@ -165,7 +173,8 @@ session_start();
                     <label for="locationCountry">Country:</label>
                     <p id="locationCountryDisplay">
                         <?php echo htmlspecialchars($orgData['location_country']); ?>
-                        <a href="#" id="editLocationCountryBtn">Edit</a>
+                        <!-- <a href="#" id="editLocationCountryBtn">Edit</a> -->
+                        <button class="editbuttons" id="editLocationCountryBtn">Edit</button>
                     </p>
                     <div id="locationCountryEditSection" class="hidden">
                         <input type="text" id="location_countryInput" value="<?php echo htmlspecialchars($orgData['location_country']); ?>" required>
@@ -177,7 +186,8 @@ session_start();
                     <label for="locationCounty">County:</label>
                     <p id="locationCountyDisplay">
                         <?php echo htmlspecialchars($orgData['location_county']); ?>
-                        <a href="#" id="editLocationCountyBtn">Edit</a>
+                        <!-- <a href="#" id="editLocationCountyBtn">Edit</a> -->
+                        <button class="editbuttons" id="editLocationCountyBtn">Edit</button>
                     </p>
                     <div id="locationCountyEditSection" class="hidden">
                         <input type="text" id="location_countyInput" value="<?php echo htmlspecialchars($orgData['location_county']); ?>" required>
@@ -189,7 +199,8 @@ session_start();
                     <label for="locationTown">Town:</label>
                     <p id="locationTownDisplay">
                         <?php echo htmlspecialchars($orgData['location_town']); ?>
-                        <a href="#" id="editLocationTownBtn">Edit</a>
+                        <!-- <a href="#" id="editLocationTownBtn">Edit</a> -->
+                        <button class="editbuttons" id="editLocationTownBtn">Edit</button>
                     </p>
                     <div id="locationTownEditSection" class="hidden">
                         <input type="text" id="location_townInput" value="<?php echo htmlspecialchars($orgData['location_town']); ?>" required>
@@ -201,7 +212,8 @@ session_start();
                     <label for="organizationType">Organization Type:</label>
                     <p id="organizationTypeDisplay">
                         <?php echo htmlspecialchars($orgData['organization_type']); ?>
-                        <a href="#" id="editOrganizationTypeBtn">Edit</a>
+                        <!-- <a href="#" id="editOrganizationTypeBtn">Edit</a> -->
+                        <button class="editbuttons" id="editOrganizationTypeBtn">Edit</button>
                     </p>
                     <div id="organizationTypeEditSection" class="hidden">
                         <input type="text" id="organization_typeInput" value="<?php echo htmlspecialchars($orgData['organization_type']); ?>" required>
@@ -215,7 +227,8 @@ session_start();
                     <label for="whatYouDo">What You Do:</label>
                     <p id="whatYouDoDisplay">
                         <?php echo htmlspecialchars($orgData['what_you_do']); ?>
-                        <a href="#" id="editWhatYouDoBtn">Edit</a>
+                        <!-- <a href="#" id="editWhatYouDoBtn">Edit</a> -->
+                        <button class="editbuttons" id="editWhatYouDoBtn">Edit</button>
                     </p>
                     <div id="whatYouDoEditSection" class="hidden">
                         <input type="text" id="what_you_doInput" value="<?php echo htmlspecialchars($orgData['what_you_do']); ?>" required>
@@ -259,6 +272,7 @@ session_start();
                             alert("updated successfully!");
 
                             document.getElementById(section + 'Display').innerText = value;
+                            window.location.reload();
                         } else {
                             alert("Failed to update field.");
                         }

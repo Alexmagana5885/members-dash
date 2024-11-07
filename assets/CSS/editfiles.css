@@ -21,9 +21,18 @@
   transition: background-color 0.3s, color 0.3s;
   border-radius: 5px;
   font-size: 14px;
-  width: 90%;
+  width: 20%;
   text-align: center;
   margin-top: 20px;
+}
+
+
+
+
+
+.editbuttons :hover {
+  background-color: #ccc;
+  color: #fff;
 }
 
 .imageenditbtn:hover {
@@ -40,6 +49,7 @@
   width: 50%;
   padding: 5px;
   margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 .userdatadisplayimage img {
@@ -85,7 +95,7 @@ select :focus {
   color: #0056b3;
 }
 
-.userdatadisplaypoint button {
+.userdatadisplaypoint .saveBtn {
   padding: 10px;
   background-color: #0056b3;
   color: white;
@@ -96,11 +106,35 @@ select :focus {
   transition: background-color 0.3s;
 }
 
-.userdatadisplaypoint button :hover {
+.userdatadisplaypoint .saveBtn :hover {
   background-color: #007bff;
 }
 
-.userdatadisplay a {
+.displayarea p {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+
+.editbuttons {
+  padding: 5px;
+  background-color: #fff;
+  color: #0056b3;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  width: 20%;
+  align-self: flex-end;
+}
+
+.editbuttons :hover{
+  color: #fff;
+}
+
+/* .userdatadisplay a {
   border: 1px solid blue;
   padding: 5px;
   color: blue;
@@ -109,12 +143,12 @@ select :focus {
   border-radius: 5px;
   font-size: 14px;
   margin-left: 20px;
-}
+} */
 
-.userdatadisplay a:hover {
+/* .userdatadisplay a:hover {
   background-color: blue;
   color: white;
-}
+} */
 
 .hidden {
   display: none;
@@ -165,7 +199,7 @@ select :focus {
     padding: 8px;
   }
 
-  .userdatadisplaypoint button {
+  .userdatadisplaypoint .saveBtn {
     font-size: 14px;
     width: 100%;
     padding: 8px;
@@ -191,7 +225,7 @@ select :focus {
     padding: 6px;
   }
 
-  .userdatadisplaypoint button,
+  .userdatadisplaypoint .saveBtn,
   .imageenditbtn {
     font-size: 13px;
     padding: 6px;
