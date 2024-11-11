@@ -21,15 +21,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     switch ($_SESSION['role']) {
                         case 'superadmin':
                             $response['status'] = 'success';
-                            $response['redirect'] = 'pages/AGLADMIN.php';
+                            $response['redirect'] = 'pages/AGLADMIN.php'; // Superadmin page
                             break;
+
                         case 'admin':
                             $response['status'] = 'success';
-                            $response['redirect'] = 'pages/AGLADMIN.php';
+                            $response['redirect'] = 'pages/AGLADMIN.php'; // Admin page
                             break;
+
+                        case 'member':
+                            // Check if the user is an organization member
+                            if (isset($_SESSION['membershipType']) && $_SESSION['membershipType'] == 'OrganizationMember') {
+                                $response['status'] = 'success';
+                                $response['redirect'] = 'pages/Organizationpage.php'; // Organization member page
+                            } else {
+                                $response['status'] = 'success';
+                                $response['redirect'] = 'pages/AGLADMIN.php'; // Regular member page
+                            }
+                            break;
+
                         default:
-                            $response['status'] = 'success';
-                            $response['redirect'] = 'pages/AGLADMIN.php';
+                            $response['status'] = 'error';
+                            $response['message'] = 'Unknown role in session.';
+                            break;
                     }
                     // Clear OTP from session after successful verification
                     unset($_SESSION['otp']);
