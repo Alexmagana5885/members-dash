@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         case 'member':
                             // Check if the user is an organization member
-                            if (isset($_SESSION['membershipType']) && $_SESSION['membershipType'] == 'OrganizationMember') {
+                            if (isset($_SESSION['membership_type']) && $_SESSION['membership_type'] == 'OrganizationMember') {
                                 $response['status'] = 'success';
                                 $response['redirect'] = 'pages/Organizationpage.php'; // Organization member page
                             } else {
