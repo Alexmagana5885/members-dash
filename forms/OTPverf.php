@@ -21,15 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     switch ($_SESSION['role']) {
                         case 'superadmin':
                             $response['status'] = 'success';
-                            $response['redirect'] = 'pages/SuperAdminPage.php';
+                            $response['redirect'] = 'pages/AGLADMIN.php';
                             break;
                         case 'admin':
                             $response['status'] = 'success';
-                            $response['redirect'] = 'pages/AdminDashboard.php';
+                            $response['redirect'] = 'pages/AGLADMIN.php';
                             break;
                         default:
                             $response['status'] = 'success';
-                            $response['redirect'] = 'pages/MemberDashboard.php';
+                            $response['redirect'] = 'pages/AGLADMIN.php';
                     }
                     // Clear OTP from session after successful verification
                     unset($_SESSION['otp']);
