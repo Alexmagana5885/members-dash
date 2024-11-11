@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         session_regenerate_id(true);
                         $_SESSION['loggedin'] = true;
                         $_SESSION['user_email'] = $email;
+                        $_SESSION['membership_type'] = $membershipType;
                         
                         // Set role based on email or membership type
                         if ($email === 'eugeneadmin@agl.or.ke' || $email === 'maganaalex634@gmail.com') {
