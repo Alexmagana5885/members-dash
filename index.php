@@ -181,7 +181,7 @@
 
         <!-- .........OTP.................. -->
 
-        <div class="otpBox">
+        <div id="otpbox" class="otpbox">
           <form id="OTPform" action="forms/OTPverf.php" method="POST">
             <h3>Kindly enter the OTP sent on your Mail</h3><br>
             <hr>
@@ -327,7 +327,7 @@ function showPopup(message) {
             } else if (data.status === "otp_sent") {
               // window.location.href = data.redirect;
               document.getElementById("loginForm").style.display = "none";
-              document.getElementById("otpBox").style.display = "block";
+              document.getElementById("otpbox").style.display = "block";
             }
           })
           .catch(error => {
