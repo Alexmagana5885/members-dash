@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         // Send OTP to email 
                         $subject = "Your OTP Code";
                         $message = "Your OTP code is: $otp. It will expire in 2 minutes.";
-                        $headers = "From: otpresponse@agl.or.ke";
+                        $headers = "From: info@agl.or.ke";
 
                         if (mail($email, $subject, $message, $headers)) {
                             $response['status'] = 'otp_sent';
