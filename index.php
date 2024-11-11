@@ -181,7 +181,7 @@
 
         <!-- .........OTP.................. -->
 
-        <div class="otpbox">
+        <div class="otpBox">
           <form id="OTPform" action="forms/OTPverf.php" method="POST">
             <h3>Kindly enter the OTP sent on your Mail</h3><br>
             <hr>
