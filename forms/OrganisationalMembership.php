@@ -24,7 +24,7 @@ function generateOrganizationId($conn)
     // Extract the numeric part and increment it
     $max_id = $row['max_id'];
     if ($max_id) {
-        $number = (int)substr($max_id, 6); // Get the number part after 'aglorg'
+        $number = (int)substr($max_id, 7); // Get the number part after 'aglorg'
         $number++;
     } else {
         $number = 1; // Start from 1 if no records exist
