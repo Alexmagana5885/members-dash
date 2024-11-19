@@ -66,11 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         // Generate OTP and set expiration
                         $otp = rand(100000, 999999);
                         $_SESSION['otp'] = $otp;
-                        $_SESSION['otp_expiration'] = time() + 120; // 5 minutes from now
+                        $_SESSION['otp_expiration'] = time() + 360; // 6 minutes from now
 
                         // Send OTP to email 
                         $subject = "Your OTP Code";
-                        $message = "Your OTP code is: $otp. It will expire in 2 minutes.";
+                        $message = "Your OTP code is: $otp. It will expire in 6 minutes.";
                         $headers = "From: info@agl.or.ke";
 
                         if (mail($email, $subject, $message, $headers)) {
