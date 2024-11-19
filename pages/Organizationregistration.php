@@ -785,6 +785,18 @@ session_start();
                          -->
                         </div>
 
+                        <label>
+                            Have you read and understood the
+                            <a href="path/to/member-agreement.pdf" target="_blank">member agreement</a>? <br>
+                            Do you agree to submit the above data to AGL? Your data will be protected under AGL regulations.
+                        </label>
+                        <select name="agreemnt" id="gender" required>
+                            <option value="">choose</option>
+                            <option value="agree">Yess I Agree</option>
+
+                        </select>
+                        <hr style="height: 2px; color: blue; "><br>
+
 
                     </div>
 

@@ -174,15 +174,17 @@ session_start();
               <input type="number" id="phone" name="phone" required><br><br>
               <span id="phone-error" style="color: blue;"></span>
 
+              <!-- <div>
+                <label for="tickBox">Do you agree to submit the above data to the AGL?</label>
+                <input style="font-size: 20px;" required id="tickBox" type="checkbox">
+              </div> -->
 
-              <!-- <label for="tickBox">  Confirm that the data is Correct 
-                <input type="checkbox" id="tickBox" name="tickBox" required>
 
-              </label> -->
-            </label>
+
+              </label>
             </div>
 
-            
+
 
             <div class="stepINdivdiv">
 
@@ -298,6 +300,7 @@ session_start();
             </div>
 
             <div class="stepINdivdiv">
+
               <label>Read the information bellow Before Registration</label><br>
               <p>Please ensure the information you provide is accurate and will be kept confidential.</p><br>
               <p>You must create a strong password following our guidelines and remember it for future logins.
@@ -345,10 +348,23 @@ session_start();
 
           </div>
 
+          <label>
+            Have you read and understood the
+            <a href="path/to/member-agreement.pdf" target="_blank">member agreement</a>? <br>
+            Do you agree to submit the above data to AGL? Your data will be protected under AGL regulations.
+          </label>
+          <select name="agreemnt" id="gender" required>
+            <option value="">choose</option>
+            <option value="agree">Yess I Agree</option>
+
+          </select>
+          <hr style="height: 2px; color: blue; " ><br>
+
+
 
         </div>
 
-                    <!-- <style>
+        <!-- <style>
                       input[type="checkbox"] {
                           width: 20px;
                           height: 20px;
@@ -373,7 +389,7 @@ session_start();
                       }
                     </style> -->
 
-                      <!-- <label for="tickBox">  Confirm that the data is Correct 
+        <!-- <label for="tickBox">  Confirm that the data is Correct 
                         <input type="checkbox" id="tickBox" name="tickBox" required>
 
                       </label> -->
@@ -437,6 +453,7 @@ session_start();
                 document.getElementById('review-currentCompany').textContent = document.getElementById('currentCompany').value;
                 document.getElementById('review-position').textContent = document.getElementById('position').value;
                 document.getElementById('review-workAddress').textContent = document.getElementById('workAddress').value;
+
               }
             });
           });
@@ -602,10 +619,10 @@ session_start();
             }
           });
 
-            if (checkboxInput && !checkboxInput.checked) {
-              allFilled = false; // Checkbox is not checked
-            }
-            
+          if (checkboxInput && !checkboxInput.checked) {
+            allFilled = false;
+          }
+
 
           updateButtonState();
         }
