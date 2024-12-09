@@ -66,6 +66,7 @@ if (isset($_POST['resetemail'])) {
 }
 
 $_SESSION['response'] = $response;
-echo json_encode($response);
+header("Location: " . $_SERVER['HTTP_REFERER']);
+// echo json_encode($response);
 $conn->close();
 ?>
