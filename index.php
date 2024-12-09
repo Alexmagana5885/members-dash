@@ -452,29 +452,37 @@
             }
           }
 
+          // .........................................
 
-          function verifyOTP(event) {
-            event.preventDefault(); // Prevent form submission
+          // Function to handle OTP form submission
+          document.getElementById('resetPasswordForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from reloading the page
 
-            var formData = new FormData(document.getElementById('OTPform'));
+            // Simulate a successful server response (Replace this with an actual server request)
+            const isSuccess = true; // Simulate server response
 
-            fetch('forms/OTPverf.php', {
-                method: 'POST',
-                body: formData
-              })
-              .then(response => response.json())
-              .then(data => {
-                if (data.status === 'success') {
-                  // OTP verification successful
-                  document.getElementById('otpbox').style.display = 'none';
-                  document.getElementById('loginForm').style.display = 'none'; 
-                  document.getElementById('resetPasswordFormset').style.display = 'block'; 
-                } else {
-                  alert(data.message); // Display error message if OTP is invalid or expired
-                }
-              })
-              .catch(error => console.error('Error:', error));
-          }
+            if (isSuccess) {
+              // Hide the OTP sending form
+              document.getElementById('resetPasswordForm').style.display = 'none';
+              // Show the form to set the new password
+              document.getElementById('resetPasswordFormset').style.display = 'block';
+            }
+          });
+
+          // Function to handle login form submission
+          document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from reloading the page
+
+            // Simulate a successful server response (Replace this with an actual server request)
+            const isSuccess = true; // Simulate server response
+
+            if (isSuccess) {
+              // Hide the login form
+              document.getElementById('loginForm').style.display = 'none';
+              // Show the form to set the new password (optional if this is the desired flow)
+              document.getElementById('resetPasswordFormset').style.display = 'block';
+            }
+          });
         </script>
 
         <!-- .......................................................................................................... -->
