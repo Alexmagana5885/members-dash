@@ -49,11 +49,11 @@ if (isset($_POST['resetemail'])) {
         if (mail($to, $subject, $message, $headers)) {
             $response['status'] = 'success';
             $response['message'] = 'OTP has been sent to your email address.';
-            header('Location: ../../index.php');
+            header("Location: " . $_SERVER['HTTP_REFERER']);
         } else {
             $response['status'] = 'error';
             $response['message'] = 'Failed to send OTP. Please try again later.';
-            header('Location: ../../index.php');
+            header("Location: " . $_SERVER['HTTP_REFERER']);
         }
     }
 } else {

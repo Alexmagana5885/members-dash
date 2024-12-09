@@ -98,7 +98,6 @@
     }
   </style>
 
-
   <div id="response-popup" class="popup"></div>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -264,7 +263,6 @@
             <button type="submit" id="resetPasswordBtn">Send</button>
           </div>
         </form>
-
 
         <form style="display: none;" id="resetPasswordFormset" action="forms/PasswordReset.php" method="POST">
           <div class="resetPasswordFormDiv">
