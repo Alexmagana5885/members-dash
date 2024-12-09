@@ -150,8 +150,9 @@
           alt="AGL" />
       </div>
       <div class="login-side">
-        <h2>Login</h2>
+
         <form id="loginForm">
+          <h2>Login</h2>
           <div class="input-group">
             <label for="MembershipType">Membership Type</label>
             <select class="optionLogin" id="MembershipType" name="MembershipType" required>
@@ -173,6 +174,10 @@
           </div>
           <button type="submit">Login</button>
           <p class="register-link">
+            <a href="javascript:void(0)" onclick="ForgotPassword()">Forgot Password</a>
+          </p>
+
+          <p class="register-link">
             Not registered?
             <a href="javascript:void(0)" onclick="showRegistration()">Register as a Member</a>
           </p>
@@ -192,49 +197,329 @@
 
         <!-- .................................. -->
 
+        <!-- ...........................password reset................................ -->
+
+        <style>
+          .resetPasswordFormDiv {
+            width: 100%;
+            margin-top: 20px;
+          }
+
+          .resetPasswordFormDiv input {
+            width: 100%;
+            padding: 10px;
+            padding-right: 40px;
+            border: 0;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+          }
+
+          .resetPasswordFormDiv label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+          }
+
+          .resetPasswordFormDiv h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+          }
+
+
+          .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+          }
+
+          .password-container {
+            position: relative;
+          }
+
+
+
+          button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+          }
+        </style>
+
+        <form style="display: none; margin-top:20px;" id="resetPasswordForm" action="forms/OTPpassReset.php" method="POST">
+          <hr />
+          <div class="resetPasswordFormDiv">
+            <h2>Reset Password</h2>
+            <label for="Emailinsertion">Insert Your Registered Email</label>
+            <input
+              placeholder="email..."
+              type="email"
+              id="resetemail"
+              name="resetemail"
+              required />
+            <button type="submit" id="resetPasswordBtn">Send</button>
+          </div>
+        </form>
+
+
+        <form style="display: none;" id="resetPasswordFormset" action="forms/PasswordReset.php" method="POST">
+          <div class="resetPasswordFormDiv">
+            <h2>Set a New Password</h2>
+            <p style="margin-bottom: 10px">
+              Create a strong password with a minimum length of 8 characters,
+              including a mix of upper-case letters, lower-case letters,
+              numbers, and special characters.
+            </p>
+
+            <!-- Reset Code -->
+            <label for="ResetCode">Insert Reset Code Sent In Your Email</label>
+            <input
+              placeholder="Reset Code..."
+              type="text"
+              id="ResetCode"
+              name="ResetCode"
+              required />
+
+            <!-- Membership Type -->
+            <div class="input-group">
+              <label for="MembershipType">Membership Type</label>
+              <select
+                class="optionLogin"
+                id="MembershipTypereset"
+                name="MembershipType"
+                required>
+                <option value="Default">Choose</option>
+                <option value="IndividualMember">Individual Member</option>
+                <option value="OrganizationMember">
+                  Organization Member
+                </option>
+              </select>
+            </div>
+
+            <!-- User Email -->
+            <label for="UserEmail">Insert Your Registered Email</label>
+            <input
+              placeholder="email..."
+              type="email"
+              id="UserEmailReset"
+              name="UserEmailReset"
+              required />
+
+            <!-- New Password -->
+            <div class="password-container">
+              <label for="NewPassWord">New Password</label>
+              <input
+                oninput="validatePasswords()"
+                placeholder="New Password..."
+                type="password"
+                id="NewPassWordReset"
+                name="NewPassWordReset"
+                required />
+              <span
+                id="NewPassWordResetToggle"
+                class="toggle-password"
+                onclick="togglePasswordVisibility('NewPassWordReset')">👁️</span>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="password-container">
+              <label for="NewPassWordConfirm">Confirm the Password</label>
+              <input
+                oninput="validatePasswords()"
+                placeholder="Confirm the Password..."
+                type="password"
+                id="NewPassWordConfirm"
+                name="NewPassWordConfirm"
+                required />
+              <span
+                id="NewPassWordConfirmToggle"
+                class="toggle-password"
+                onclick="togglePasswordVisibility('NewPassWordConfirm')">👁️</span>
+            </div>
+
+            <!-- Error Messages -->
+            <div
+              class="error-message"
+              id="error-message1"
+              style="display: none">
+              Passwords do not match!
+            </div>
+            <div
+              class="error-message"
+              id="error-message2"
+              style="display: none">
+              Password does not meet policy requirements!
+            </div>
+
+            <!-- Submit Button -->
+            <button id="resetPasswordBtnset" type="submit" disabled>Set</button>
+
+          </div>
+        </form>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('resetPasswordFormset');
+            const resetCodeInput = document.getElementById('ResetCode');
+            const membershipTypeInput = document.getElementById('MembershipTypereset');
+            const emailInput = document.getElementById('UserEmailReset');
+            const newPasswordInput = document.getElementById('NewPassWordReset');
+            const confirmPasswordInput = document.getElementById('NewPassWordConfirm');
+            const submitButtonreset = document.getElementById('resetPasswordBtnset');
+
+            const errorMessage1 = document.getElementById('error-message1'); // Passwords do not match
+            const errorMessage2 = document.getElementById('error-message2'); // Password policy error
+
+            // Password validation regex (8+ chars, upper, lower, number, special char)
+            const passwordPolicyRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,}$/;
+
+            // Function to check if all fields are filled and valid
+            function checkFormValidity() {
+              const isResetCodeFilled = resetCodeInput.value.trim() !== '';
+              const isMembershipTypeSelected = membershipTypeInput.value !== 'Default';
+              const isEmailFilled = emailInput.value.trim() !== '';
+              const isNewPasswordFilled = newPasswordInput.value.trim() !== '';
+              const isConfirmPasswordFilled = confirmPasswordInput.value.trim() !== '';
+              const doPasswordsMatch = newPasswordInput.value === confirmPasswordInput.value;
+              const isPasswordValid = passwordPolicyRegex.test(newPasswordInput.value);
+
+              // Handle password matching alert
+              if (!doPasswordsMatch && isNewPasswordFilled && isConfirmPasswordFilled) {
+                errorMessage1.style.display = 'block';
+              } else {
+                errorMessage1.style.display = 'none';
+              }
+
+              // Handle password policy alert
+              if (!isPasswordValid && isNewPasswordFilled) {
+                errorMessage2.style.display = 'block';
+              } else {
+                errorMessage2.style.display = 'none';
+              }
+
+              // Enable button if all conditions are met
+              if (
+                isResetCodeFilled &&
+                isMembershipTypeSelected &&
+                isEmailFilled &&
+                isNewPasswordFilled &&
+                isConfirmPasswordFilled &&
+                doPasswordsMatch &&
+                isPasswordValid
+              ) {
+                submitButtonreset.disabled = false;
+              } else {
+                submitButtonreset.disabled = true;
+              }
+            }
+
+            // Function to toggle password visibility
+            function togglePasswordVisibility(inputId) {
+              const passwordInput = document.getElementById(inputId);
+              if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+              } else {
+                passwordInput.type = 'password';
+              }
+            }
+
+            // Attach event listeners to inputs
+            resetCodeInput.addEventListener('input', checkFormValidity);
+            membershipTypeInput.addEventListener('change', checkFormValidity);
+            emailInput.addEventListener('input', checkFormValidity);
+            newPasswordInput.addEventListener('input', checkFormValidity);
+            confirmPasswordInput.addEventListener('input', checkFormValidity);
+
+            // Attach toggle visibility for password fields
+            document.getElementById('NewPassWordResetToggle').addEventListener('click', () => togglePasswordVisibility('NewPassWordReset'));
+            document.getElementById('NewPassWordConfirmToggle').addEventListener('click', () => togglePasswordVisibility('NewPassWordConfirm'));
+          });
+
+          // Attach onClick event to the submit button
+          submitButton.addEventListener('click', handleFormSubmit);
+
+          function ForgotPassword() {
+            var resetForm = document.getElementById('resetPasswordForm');
+            loginForm
+
+            if (resetForm.style.display === 'none' || resetForm.style.display === '') {
+              resetForm.style.display = 'block';
+              loginForm.style.display = 'none';
+            } else {
+              resetForm.style.display = 'none';
+            }
+          }
+
+
+          function verifyOTP(event) {
+            event.preventDefault(); // Prevent form submission
+
+            var formData = new FormData(document.getElementById('OTPform'));
+
+            fetch('forms/OTPverf.php', {
+                method: 'POST',
+                body: formData
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'success') {
+                  // OTP verification successful
+                  document.getElementById('otpbox').style.display = 'none';
+                  document.getElementById('loginForm').style.display = 'none'; 
+                  document.getElementById('resetPasswordFormset').style.display = 'block'; 
+                } else {
+                  alert(data.message); // Display error message if OTP is invalid or expired
+                }
+              })
+              .catch(error => console.error('Error:', error));
+          }
+        </script>
+
+        <!-- .......................................................................................................... -->
+
       </div>
     </div>
 
-<script>
-  document.getElementById("OTPform").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent default form submission
+    <script>
+      document.getElementById("OTPform").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-    const formData = new FormData(this);
+        const formData = new FormData(this);
 
-    fetch("forms/OTPverf.php", {
-        method: "POST",
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "success") {
-            
-            window.location.href = data.redirect;
-        } else if (data.status === "error") {
-            
-            showPopup(data.message);
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        showPopup("An error occurred. Please try again.");
-    });
-});
+        fetch("forms/OTPverf.php", {
+            method: "POST",
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
 
-function showPopup(message) {
-    const popup = document.getElementById("popup");
-    popup.textContent = message;
-    popup.style.display = "block";
+              window.location.href = data.redirect;
+            } else if (data.status === "error") {
 
-    setTimeout(() => {
-        popup.style.display = "none";
-    }, 3000); // Hide popup after 3 seconds
-}
+              showPopup(data.message);
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            showPopup("An error occurred. Please try again.");
+          });
+      });
 
-</script>
+      function showPopup(message) {
+        const popup = document.getElementById("popup");
+        popup.textContent = message;
+        popup.style.display = "block";
 
-
-
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 3000); // Hide popup after 3 seconds
+      }
+    </script>
     <!-- Registration Information Section (Initially Hidden) -->
     <div class="form-step form-stepINdiv">
       <!-- General Information Step -->
@@ -312,11 +597,11 @@ function showPopup(message) {
       }
 
       document.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
         const formData = new FormData(this);
 
-        fetch("forms/startT.php", { 
+        fetch("forms/startT.php", {
             method: "POST",
             body: formData,
           })
