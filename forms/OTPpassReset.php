@@ -55,6 +55,10 @@ if (isset($_POST['resetemail'])) {
                 $response['status'] = 'success';
                 $response['message'] = 'OTP has been sent to your email address.';
                 $response['action'] = 'show_new_password_form';
+
+                // Redirect to passwordreset.php
+                header("Location: ../pages/PasswordReset.php");
+                exit; // Ensure no further code is executed
             } else {
                 $response['status'] = 'error';
                 $response['message'] = 'Failed to send OTP. Please try again later.';
@@ -68,9 +72,9 @@ if (isset($_POST['resetemail'])) {
 
 $_SESSION['response'] = $response;
 
-// header("Location: " . $_SERVER['HTTP_REFERER']);
-exit;
-
+// Close the database connection
 $conn->close();
+
+// Flush output buffer
 ob_end_flush();
 ?>

@@ -49,7 +49,7 @@ if (isset($_POST['ResetCode'], $_POST['UserEmailReset'], $_POST['NewPassWordRese
 
                 $response['status'] = 'success';
                 $response['message'] = 'Password updated successfully.';
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                header("Location: ../index.php");
             } else {
                 $response['status'] = 'error';
                 $response['message'] = 'Failed to update password. Please try again later.';
