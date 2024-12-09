@@ -68,7 +68,7 @@ if (isset($_POST['resetemail'])) {
 
 $_SESSION['response'] = $response;
 
-header("Location: " . $_SERVER['HTTP_REFERER']);
+// header("Location: " . $_SERVER['HTTP_REFERER']);
 exit;
 
 $conn->close();
