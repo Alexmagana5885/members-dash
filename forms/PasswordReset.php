@@ -1,30 +1,28 @@
 <?php
 session_start();
-require_once 'DBconnection.php'; // Include the database connection
+require_once 'DBconnection.php';
 
 // Initialize response array
-$response = array();
+$response = [
+    'success' => false,
+    'message' => '',
+    'errors' => []
+];
 
-// Check if all required POST data is available
 if (isset($_POST['ResetCode'], $_POST['UserEmailReset'], $_POST['NewPassWordReset'], $_POST['MembershipType'])) {
-    $resetCode = $_POST['ResetCode'];
+    $resetCode = $_POST['ResetCode']; // The OTP entered by the user
     $userEmail = $_POST['UserEmailReset'];
     $newPassword = $_POST['NewPassWordReset'];
     $membershipType = $_POST['MembershipType'];
 
     // Check if OTP is stored in the session
-    if (isset($_SESSION['otp']) && $_SESSION['otp'] == $resetCode) {
-        // Check if OTP has expired
-        if (time() > $_SESSION['otp_expiry']) {
-            $response['status'] = 'error';
-            $response['message'] = 'OTP has expired.';
-        } else {
-            // OTP is valid and not expired, proceed with updating password
-
-            // Prepare password for updating (hash it before storing)
+    if (isset($_SESSION['otp']) && isset($_SESSION['otp_expiry']) && time() <= $_SESSION['otp_expiry']) {
+        // Verify the entered OTP against the hashed OTP in the session
+        if (password_verify($resetCode, $_SESSION['otp'])) {
+            // OTP is valid and not expired, proceed with password reset
             $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-            // Update password in the appropriate table based on membership type
+            // Update the password based on the membership type
             if ($membershipType == 'IndividualMember') {
                 $query = "UPDATE personalmembership SET password = ? WHERE email = ?";
                 $stmt = $conn->prepare($query);
@@ -55,19 +53,17 @@ if (isset($_POST['ResetCode'], $_POST['UserEmailReset'], $_POST['NewPassWordRese
                 $response['message'] = 'Failed to update password. Please try again later.';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
             }
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Invalid or expired OTP code.';
         }
     } else {
         $response['status'] = 'error';
-        $response['message'] = 'Invalid or expired reset code.';
+        $response['message'] = 'OTP has expired or is not set.';
     }
 } else {
     $response['status'] = 'error';
     $response['message'] = 'Missing required fields.';
 }
 
-// Return response in JSON format
 echo json_encode($response);
-
-// Close the database connection
-$conn->close();
-?>

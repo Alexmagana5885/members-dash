@@ -11,17 +11,21 @@ ob_start();
 
 require_once 'DBconnection.php';
 
-$response = array();
+// Initialize response array
+$response = [
+    'success' => false,
+    'message' => '',
+    'errors' => []
+];
 
 if (isset($_POST['resetemail'])) {
     $email = trim($_POST['resetemail']);
 
+    // Validate the email address
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $response['status'] = 'error';
-        $response['message'] = 'Invalid email address.';
+        $response['errors'][] = 'Invalid email address.';
     } else if (isset($_SESSION['otp_last_sent']) && (time() - $_SESSION['otp_last_sent']) < 60) {
-        $response['status'] = 'error';
-        $response['message'] = 'Please wait before requesting a new OTP.';
+        $response['errors'][] = 'Please wait before requesting a new OTP.';
     } else {
         $_SESSION['otp_last_sent'] = time();
 
@@ -36,14 +40,15 @@ if (isset($_POST['resetemail'])) {
         $user = $stmt->get_result()->fetch_assoc();
 
         if (!$user) {
-            $response['status'] = 'error';
-            $response['message'] = 'The email is not registered.';
+            $response['errors'][] = 'The email is not registered.';
         } else {
+            // Generate OTP and store it in session
             $otp = rand(100000, 999999);
             $_SESSION['otp'] = password_hash($otp, PASSWORD_DEFAULT);
-            $_SESSION['otp_expiry'] = time() + 900; 
+            $_SESSION['otp_expiry'] = time() + 900; // OTP expiry time (15 minutes)
             $_SESSION['otp_email'] = $email;
 
+            // Email setup
             $to = $email;
             $subject = "Password Reset OTP";
             $message = "Your OTP code is: $otp. It will expire in 15 minutes.";
@@ -52,7 +57,7 @@ if (isset($_POST['resetemail'])) {
             $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
             if (mail($to, $subject, $message, $headers)) {
-                $response['status'] = 'success';
+                $response['success'] = true;
                 $response['message'] = 'OTP has been sent to your email address.';
                 $response['action'] = 'show_new_password_form';
 
@@ -60,16 +65,15 @@ if (isset($_POST['resetemail'])) {
                 header("Location: ../pages/PasswordReset.php");
                 exit; // Ensure no further code is executed
             } else {
-                $response['status'] = 'error';
-                $response['message'] = 'Failed to send OTP. Please try again later.';
+                $response['errors'][] = 'Failed to send OTP. Please try again later.';
             }
         }
     }
 } else {
-    $response['status'] = 'error';
-    $response['message'] = 'Email is required.';
+    $response['errors'][] = 'Email is required.';
 }
 
+// Store the response in session for later use
 $_SESSION['response'] = $response;
 
 // Close the database connection
@@ -77,4 +81,3 @@ $conn->close();
 
 // Flush output buffer
 ob_end_flush();
-?>
