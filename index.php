@@ -453,35 +453,59 @@
           }
 
           // .........................................
+          document.getElementById("resetPasswordForm").addEventListener("submit", function(event) {
+            event.preventDefault();
 
-          // Function to handle OTP form submission
-          document.getElementById('resetPasswordForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from reloading the page
-
-            // Simulate a successful server response (Replace this with an actual server request)
-            const isSuccess = true; // Simulate server response
-
-            if (isSuccess) {
-              // Hide the OTP sending form
-              document.getElementById('resetPasswordForm').style.display = 'none';
-              // Show the form to set the new password
-              document.getElementById('resetPasswordFormset').style.display = 'block';
+            const emailInput = document.getElementById("resetemail").value.trim();
+            if (!emailInput) {
+              showPopup("Please enter an email address.");
+              return;
             }
-          });
 
-          // Function to handle login form submission
-          document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from reloading the page
-
-            // Simulate a successful server response (Replace this with an actual server request)
-            const isSuccess = true; // Simulate server response
-
-            if (isSuccess) {
-              // Hide the login form
-              document.getElementById('loginForm').style.display = 'none';
-              // Show the form to set the new password (optional if this is the desired flow)
-              document.getElementById('resetPasswordFormset').style.display = 'block';
+            if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput)) {
+              showPopup("Please enter a valid email address.");
+              return;
             }
+
+            const submitButton = document.getElementById("resetButton");
+            submitButton.disabled = true;
+            submitButton.textContent = "Sending...";
+
+            const formData = new FormData(this);
+
+            fetch("forms/OTPpassReset.php", {
+                method: "POST",
+                body: formData,
+              })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+              })
+              .then(data => {
+                submitButton.disabled = false;
+                submitButton.textContent = "Send OTP";
+
+                if (!data) {
+                  showPopup("No response from the server.");
+                  return;
+                }
+
+                if (data.status === "error") {
+                  showPopup(data.message);
+                } else if (data.status === "success") {
+                  document.getElementById("loginForm").style.display = "none";
+                  document.getElementById("resetPasswordForm").style.display = "none";
+                  document.getElementById("resetPasswordFormset").style.display = "block";
+                }
+              })
+              .catch(error => {
+                submitButton.disabled = false;
+                submitButton.textContent = "Send OTP";
+                console.error("Error:", error);
+                showPopup("An error occurred. Please try again.");
+              });
           });
         </script>
 
