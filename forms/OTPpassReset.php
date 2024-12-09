@@ -49,17 +49,18 @@ if (isset($_POST['resetemail'])) {
         if (mail($to, $subject, $message, $headers)) {
             $response['status'] = 'success';
             $response['message'] = 'OTP has been sent to your email address.';
-       
         } else {
             $response['status'] = 'error';
             $response['message'] = 'Failed to send OTP. Please try again later.';
-    
         }
     }
 } else {
     $response['status'] = 'error';
     $response['message'] = 'Email is required.';
 }
+
+// Store the response array in the session
+$_SESSION['response'] = $response;
 
 // Return response in JSON format
 echo json_encode($response);
