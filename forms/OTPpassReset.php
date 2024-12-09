@@ -25,9 +25,11 @@ if (isset($_POST['resetemail'])) {
     } else {
         $_SESSION['otp_last_sent'] = time();
 
-        $query = "SELECT * FROM personalmembership WHERE email = ? 
+        // Select only the email from both tables
+        $query = "SELECT email FROM personalmembership WHERE email = ? 
                   UNION 
-                  SELECT * FROM organizationmembership WHERE organization_email = ?";
+                  SELECT organization_email FROM organizationmembership WHERE organization_email = ?";
+        
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ss", $email, $email);
         $stmt->execute();
@@ -42,12 +44,20 @@ if (isset($_POST['resetemail'])) {
             $_SESSION['otp_expiry'] = time() + 900; 
             $_SESSION['otp_email'] = $email;
 
-            if (!mail($email, "OTP", "Your OTP is $otp", "From: info@agl.or.ke")) {
-                $response['status'] = 'error';
-                $response['message'] = 'Failed to send OTP.';
-            } else {
+            $to = $email;
+            $subject = "Password Reset OTP";
+            $message = "Your OTP code is: $otp. It will expire in 15 minutes.";
+            $headers = "From: info@agl.or.ke\r\n";
+            $headers .= "MIME-Version: 1.0\r\n";
+            $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+
+            if (mail($to, $subject, $message, $headers)) {
                 $response['status'] = 'success';
-                $response['message'] = 'OTP sent to your email.';
+                $response['message'] = 'OTP has been sent to your email address.';
+                $response['action'] = 'show_new_password_form';
+            } else {
+                $response['status'] = 'error';
+                $response['message'] = 'Failed to send OTP. Please try again later.';
             }
         }
     }
