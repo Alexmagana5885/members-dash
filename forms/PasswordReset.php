@@ -2,6 +2,9 @@
 session_start();
 require_once 'DBconnection.php';
 
+// Set the response headers to return JSON
+header('Content-Type: application/json');
+
 // Initialize response array
 $response = [
     'success' => false,
@@ -9,82 +12,81 @@ $response = [
     'errors' => []
 ];
 
-if (isset($_POST['ResetCode'], $_POST['UserEmailReset'], $_POST['NewPassWordReset'], $_POST['MembershipType'])) {
-    $resetCode = $_POST['ResetCode']; // The OTP entered by the user
-    $userEmail = $_POST['UserEmailReset'];
-    $newPassword = $_POST['NewPassWordReset'];
-    $membershipType = $_POST['MembershipType'];
+try {
+    if (isset($_POST['ResetCode'], $_POST['UserEmailReset'], $_POST['NewPassWordReset'], $_POST['MembershipType'])) {
+        $resetCode = trim($_POST['ResetCode']); 
+        $userEmail = trim($_POST['UserEmailReset']);
+        $newPassword = trim($_POST['NewPassWordReset']);
+        $membershipType = trim($_POST['MembershipType']);
 
-    // Check if OTP is stored in the session and not expired
-    if (isset($_SESSION['otp']) && isset($_SESSION['otp_expiry']) && time() <= $_SESSION['otp_expiry']) {
-        
-        // Verify the entered OTP against the hashed OTP in the session
-        if (password_verify($resetCode, $_SESSION['otp'])) {
-            
-            // OTP is valid and not expired, proceed with password reset
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
-            if ($membershipType == 'IndividualMember') {
-                $query = "SELECT email FROM personalmembership WHERE email = ?";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("s", $userEmail);
-            } elseif ($membershipType == 'OrganizationMember') {
-                $query = "SELECT organization_email FROM organizationmembership WHERE organization_email = ?";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("s", $userEmail);
-            } else {
-                $_SESSION['errors'][] = 'Invalid membership type.';
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
-
-            // Check if the email exists in the database
-            $stmt->execute();
-            $stmt->store_result();
-            
-            if ($stmt->num_rows > 0) {
-                // Update the password
-                if ($membershipType == 'IndividualMember') {
-                    $query = "UPDATE personalmembership SET password = ? WHERE email = ?";
-                } else {
-                    $query = "UPDATE organizationmembership SET password = ? WHERE organization_email = ?";
-                }
-                
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("ss", $hashedPassword, $userEmail);
-
-                if ($stmt->execute()) {
-                    // Clear OTP from session after successful password update
-                    unset($_SESSION['otp']);
-                    unset($_SESSION['otp_expiry']);
-                    unset($_SESSION['otp_email']);
-                    
-                    $_SESSION['success'] = 'Password updated successfully.';
-                    header("Location: ../index.php");
-                    exit;
-                } else {
-                    $_SESSION['errors'][] = 'Failed to update password. Please try again later.';
-                    header("Location: " . $_SERVER['HTTP_REFERER']);
-                    exit;
-                }
-            } else {
-                $_SESSION['errors'][] = 'The email provided is not registered.';
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
-        } else {
-            $_SESSION['errors'][] = 'Invalid or expired OTP code.';
-            header("Location: " . $_SERVER['HTTP_REFERER']);
-            exit;
+        if (empty($resetCode) || empty($userEmail) || empty($newPassword) || empty($membershipType)) {
+            throw new Exception('All fields are required.');
         }
+
+        if (!isset($_SESSION['otp']) || !isset($_SESSION['otp_expiry']) || time() > $_SESSION['otp_expiry']) {
+            throw new Exception('OTP has expired or is not set.');
+        }
+
+        if (!password_verify($resetCode, $_SESSION['otp'])) {
+            throw new Exception('Invalid or expired OTP code.');
+        }
+
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        if ($membershipType === 'IndividualMember') {
+            $query = "SELECT email FROM personalmembership WHERE email = ?";
+            $emailColumn = 'email';
+        } elseif ($membershipType === 'OrganizationMember') {
+            $query = "SELECT organization_email FROM organizationmembership WHERE organization_email = ?";
+            $emailColumn = 'organization_email';
+        } else {
+            throw new Exception('Invalid membership type.');
+        }
+
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            throw new Exception('Database query preparation failed: ' . $conn->error);
+        }
+
+        $stmt->bind_param("s", $userEmail);
+        $stmt->execute();
+        $stmt->store_result();
+        
+        if ($stmt->num_rows === 0) {
+            throw new Exception('The email provided is not registered.');
+        }
+
+        if ($membershipType === 'IndividualMember') {
+            $updateQuery = "UPDATE personalmembership SET password = ? WHERE email = ?";
+        } else {
+            $updateQuery = "UPDATE organizationmembership SET password = ? WHERE organization_email = ?";
+        }
+
+        $stmt = $conn->prepare($updateQuery);
+        if (!$stmt) {
+            throw new Exception('Database query preparation failed: ' . $conn->error);
+        }
+
+        $stmt->bind_param("ss", $hashedPassword, $userEmail);
+
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to update password. Please try again later.');
+        }
+
+        unset($_SESSION['otp'], $_SESSION['otp_expiry'], $_SESSION['otp_email']);
+        
+        $response['success'] = true;
+        $response['message'] = 'Password updated successfully.';
     } else {
-        $_SESSION['errors'][] = 'OTP has expired or is not set.';
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit;
+        throw new Exception('Missing required fields.');
     }
-} else {
-    $_SESSION['errors'][] = 'Missing required fields.';
-    header("Location: " . $_SERVER['HTTP_REFERER']);
+} catch (Exception $e) {
+    $errorMessage = $e->getMessage();
+    error_log("Error: " . $errorMessage, 3, 'error_log.txt');
+    $response['errors'][] = $errorMessage;
+    $response['message'] = 'An error occurred while processing your request.';
+} finally {
+    echo json_encode($response);
     exit;
 }
 ?>

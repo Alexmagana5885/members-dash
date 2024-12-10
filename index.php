@@ -182,7 +182,6 @@
         </form>
 
         <!-- .........OTP.................. -->
-
         <div id="otpbox" class="otpbox">
           <form id="OTPform" action="forms/OTPverf.php" method="POST">
             <h3>Kindly enter the OTP sent on your Mail</h3><br>
@@ -261,102 +260,6 @@
             <button type="submit" id="resetPasswordBtn">Send</button>
           </div>
         </form>
-
-        <form style="display: none;" id="resetPasswordFormset" action="forms/PasswordReset.php" method="POST">
-          <div class="resetPasswordFormDiv">
-            <h2>Set a New Password</h2>
-            <p style="margin-bottom: 10px">
-              Create a strong password with a minimum length of 8 characters,
-              including a mix of upper-case letters, lower-case letters,
-              numbers, and special characters.
-            </p>
-
-            <!-- Reset Code -->
-            <label for="ResetCode">Insert Reset Code Sent In Your Email</label>
-            <input
-              placeholder="Reset Code..."
-              type="text"
-              id="ResetCode"
-              name="ResetCode"
-              required />
-
-            <!-- Membership Type -->
-            <div class="input-group">
-              <label for="MembershipType">Membership Type</label>
-              <select
-                class="optionLogin"
-                id="MembershipTypereset"
-                name="MembershipType"
-                required>
-                <option value="Default">Choose</option>
-                <option value="IndividualMember">Individual Member</option>
-                <option value="OrganizationMember">
-                  Organization Member
-                </option>
-              </select>
-            </div>
-
-            <!-- User Email -->
-            <label for="UserEmail">Insert Your Registered Email</label>
-            <input
-              placeholder="email..."
-              type="email"
-              id="UserEmailReset"
-              name="UserEmailReset"
-              required />
-
-            <!-- New Password -->
-            <div class="password-container">
-              <label for="NewPassWord">New Password</label>
-              <input
-                oninput="validatePasswords()"
-                placeholder="New Password..."
-                type="password"
-                id="NewPassWordReset"
-                name="NewPassWordReset"
-                required />
-              <span
-                id="NewPassWordResetToggle"
-                class="toggle-password"
-                onclick="togglePasswordVisibility('NewPassWordReset')">👁️</span>
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="password-container">
-              <label for="NewPassWordConfirm">Confirm the Password</label>
-              <input
-                oninput="validatePasswords()"
-                placeholder="Confirm the Password..."
-                type="password"
-                id="NewPassWordConfirm"
-                name="NewPassWordConfirm"
-                required />
-              <span
-                id="NewPassWordConfirmToggle"
-                class="toggle-password"
-                onclick="togglePasswordVisibility('NewPassWordConfirm')">👁️</span>
-            </div>
-
-            <!-- Error Messages -->
-            <div
-              class="error-message"
-              id="error-message1"
-              style="display: none">
-              Passwords do not match!
-            </div>
-            <div
-              class="error-message"
-              id="error-message2"
-              style="display: none">
-              Password does not meet policy requirements!
-            </div>
-
-            <!-- Submit Button -->
-            <button id="resetPasswordBtnset" type="submit" disabled>Set</button>
-
-          </div>
-        </form>
-
         <script>
           document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('resetPasswordFormset');

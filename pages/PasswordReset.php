@@ -99,42 +99,54 @@
   </style>
 
   <div id="response-popup" class="popup"></div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      fetch('forms/RegResponse.php')
-        .then(response => response.json())
-        .then(data => {
-          var popup = document.getElementById('response-popup');
-          if (popup) {
-            var alertClass = data.success ? 'alert-success' : 'alert-danger';
-            var message = '';
+      // Send form data to the backend and handle the response
+      document.getElementById('your-form-id').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form from submitting normally
 
-            if (data.success) {
-              message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
-            } else {
-              if (data.errors && data.errors.length > 0) {
-                message += '<div class="alert ' + alertClass + '">';
-                data.errors.forEach(function(error) {
-                  message += '<p>' + error + '</p>';
-                });
-                message += '</div>';
-              } else {
+        const formData = new FormData(this);
+
+        fetch('forms/RegResponse.php', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            const popup = document.getElementById('response-popup');
+            if (popup) {
+              const alertClass = data.success ? 'alert-success' : 'alert-danger';
+              let message = '';
+
+              if (data.success) {
                 message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
+              } else {
+                if (data.errors && data.errors.length > 0) {
+                  message += '<div class="alert ' + alertClass + '">';
+                  data.errors.forEach(function(error) {
+                    message += '<p>' + error + '</p>';
+                  });
+                  message += '</div>';
+                } else {
+                  message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
+                }
               }
+
+              popup.innerHTML = message;
+              popup.classList.add('show');
+
+              // Hide the popup after 10 seconds
+              setTimeout(function() {
+                popup.classList.remove('show');
+              }, 10000);
             }
-
-            popup.innerHTML = message;
-            popup.classList.add('show');
-
-            // Hide the popup after 10 seconds
-            setTimeout(function() {
-              popup.classList.remove('show');
-            }, 10000); // 10000ms = 10 seconds
-          }
-        })
-        .catch(error => console.error('Error fetching response:', error));
+          })
+          .catch(error => console.error('Error fetching response:', error));
+      });
     });
   </script>
+
 
 
 
@@ -391,8 +403,6 @@
               resetForm.style.display = 'none';
             }
           }
-
-          
         </script>
 
         <!-- .......................................................................................................... -->
