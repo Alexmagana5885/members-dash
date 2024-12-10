@@ -151,7 +151,6 @@
       <div class="login-side">
 
 
-
         <!-- ...........................password reset................................ -->
 
         <style>
@@ -401,128 +400,6 @@
       </div>
     </div>
 
-    <script>
-      document.getElementById("OTPform").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        const formData = new FormData(this);
-
-        fetch("forms/OTPverf.php", {
-            method: "POST",
-            body: formData,
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === "success") {
-
-              window.location.href = data.redirect;
-            } else if (data.status === "error") {
-
-              showPopup(data.message);
-            }
-          })
-          .catch(error => {
-            console.error("Error:", error);
-            showPopup("An error occurred. Please try again.");
-          });
-      });
-
-      function showPopup(message) {
-        const popup = document.getElementById("popup");
-        popup.textContent = message;
-        popup.style.display = "block";
-
-        setTimeout(() => {
-          popup.style.display = "none";
-        }, 3000); // Hide popup after 3 seconds
-      }
-    </script>
-    <!-- Registration Information Section (Initially Hidden) -->
-    <div class="form-step form-stepINdiv">
-      <!-- General Information Step -->
-
-
-    </div>
-
-    <script>
-      function togglePasswordVisibility() {
-        const passwordInput = document.getElementById("password");
-        const toggleButton = document.querySelector(".toggle-password");
-
-        if (passwordInput.type === "password") {
-          passwordInput.type = "text";
-          toggleButton.textContent = "🙈"; // Hide icon
-        } else {
-          passwordInput.type = "password";
-          toggleButton.textContent = "👁️"; // Show icon
-        }
-      }
-
-      function showRegistration() {
-        const registrationSection = document.querySelector(".form-stepINdiv");
-        registrationSection.style.display = "flex";
-        registrationSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-
-      function redirectTo(url) {
-        window.location.href = url;
-      }
-
-      document.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        const formData = new FormData(this);
-
-        fetch("forms/startT.php", {
-            method: "POST",
-            body: formData,
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === "error") {
-              showPopup(data.message);
-            } else if (data.status === "otp_sent") {
-              // window.location.href = data.redirect;
-              document.getElementById("loginForm").style.display = "none";
-              document.getElementById("otpbox").style.display = "block";
-            }
-          })
-          .catch(error => {
-            console.error("Error:", error);
-            showPopup("An error occurred. Please try again.");
-          });
-      });
-
-      function showPopup(message) {
-        const popup = document.getElementById("popup");
-        popup.textContent = message;
-        popup.style.display = "block";
-
-        setTimeout(() => {
-          popup.style.display = "none";
-        }, 3000); // Hide popup after 3 seconds
-      }
-    </script>
-
-    <!-- HTML for the popup -->
-    <div
-      id="popup"
-      style="
-          display: none;
-          position: fixed;
-          top: 20%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          padding: 20px;
-          background-color: #b5cae4;
-          color: #2f4b65;
-          border: 1px solid #f5c6cb;
-          border-radius: 5px;
-          z-index: 1000;
-        "></div>
   </main>
 
   <!-- Footer -->
