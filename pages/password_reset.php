@@ -121,12 +121,13 @@
 
               if (data.success) {
                 message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
-                window.location.href = data.redirect;
+               
 
               
-                // setTimeout(function() {
-                //   window.location.href = '../index.php'; 
-                // }, 3000); 
+                setTimeout(function() {
+                  // window.location.href = '../index.php'; 
+                  window.location.href = data.redirect;
+                }, 3000); 
               } else {
                 if (data.errors && data.errors.length > 0) {
                   message += '<div class="alert ' + alertClass + '">';
