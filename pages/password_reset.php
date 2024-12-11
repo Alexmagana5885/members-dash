@@ -121,11 +121,12 @@
 
               if (data.success) {
                 message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
+                window.location.href = data.redirect;
 
-                // Redirect after 3 seconds if successful
-                setTimeout(function() {
-                  window.location.href = '../index.php'; // Change to your desired URL
-                }, 3000); // 3-second delay before redirecting
+              
+                // setTimeout(function() {
+                //   window.location.href = '../index.php'; 
+                // }, 3000); 
               } else {
                 if (data.errors && data.errors.length > 0) {
                   message += '<div class="alert ' + alertClass + '">';
