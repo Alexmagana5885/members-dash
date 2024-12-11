@@ -38,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resetemail'])) {
                             $response['status'] = 'success';
                             $response['message'] = 'OTP has been sent to your email.';
                             $response['redirect'] = 'pages/password_reset.php';
-                            // header('Location: ../pages/PasswordReset.php');
                         } else {
                             $response['status'] = 'error';
                             $response['message'] = 'Failed to send OTP. Please try again.';

@@ -388,42 +388,42 @@
           }
         </script>
 
-<script>
-      document.getElementById("resetPasswordFormset").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent default form submission
+        <script>
+          document.getElementById("resetPasswordFormset").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-        const formData = new FormData(this);
+            const formData = new FormData(this);
 
-        fetch("../forms/PasswordReset.php", {
-            method: "POST",
-            body: formData,
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === "success") {
+            fetch("forms/PasswordReset.php", {
+                method: "POST",
+                body: formData,
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === "success") {
 
-              window.location.href = data.redirect;
-            } else if (data.status === "error") {
+                  window.location.href = data.redirect;
+                } else if (data.status === "error") {
 
-              showPopup(data.message);
-            }
-          })
-          .catch(error => {
-            console.error("Error:", error);
-            showPopup("An error occurred. Please try again.");
+                  showPopup(data.message);
+                }
+              })
+              .catch(error => {
+                console.error("Error:", error);
+                showPopup("An error occurred. Please try again.");
+              });
           });
-      });
 
-      function showPopup(message) {
-        const popup = document.getElementById("popup");
-        popup.textContent = message;
-        popup.style.display = "block";
+          function showPopup(message) {
+            const popup = document.getElementById("popup");
+            popup.textContent = message;
+            popup.style.display = "block";
 
-        setTimeout(() => {
-          popup.style.display = "none";
-        }, 3000);
-      }
-    </script>
+            setTimeout(() => {
+              popup.style.display = "none";
+            }, 3000);
+          }
+        </script>
 
         <!-- .......................................................................................................... -->
 

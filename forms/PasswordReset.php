@@ -12,16 +12,25 @@ try {
         $membershipType = trim($_POST['MembershipType']);
 
         if (empty($resetCode) || empty($newPassword) || empty($membershipType)) {
-            throw new Exception('Please fill in all fields.');
+            $response['status'] = 'error';
+            $response['message'] = 'Please fill in all fields.';
+            echo json_encode($response);
+            exit;
         }
 
         // Check if OTP exists and is valid
         if (!isset($_SESSION['otp']) || !isset($_SESSION['otp_expiry']) || time() > $_SESSION['otp_expiry']) {
-            throw new Exception('OTP has expired or is not set.');
+            $response['status'] = 'error';
+            $response['message'] = 'OTP has expired or is not set.';
+            echo json_encode($response);
+            exit;
         }
 
         if (!password_verify($resetCode, $_SESSION['otp'])) {
-            throw new Exception('Invalid or expired OTP code.');
+            $response['status'] = 'error';
+            $response['message'] = 'Invalid or expired OTP code.';
+            echo json_encode($response);
+            exit;
         }
 
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
@@ -30,7 +39,10 @@ try {
         $userEmail = $_SESSION['user_email'] ?? null;
 
         if (!$userEmail) {
-            throw new Exception('User email is not available in the session.');
+            $response['status'] = 'error';
+            $response['message'] = 'User email is not available in the session.';
+            echo json_encode($response);
+            exit;
         }
 
         // Determine table and email column based on membership type
@@ -41,12 +53,18 @@ try {
             $query = "SELECT organization_email FROM organizationmembership WHERE organization_email = ?";
             $emailColumn = 'organization_email';
         } else {
-            throw new Exception('Invalid membership type.');
+            $response['status'] = 'error';
+            $response['message'] = 'Invalid membership type.';
+            echo json_encode($response);
+            exit;
         }
 
         $stmt = $conn->prepare($query);
         if (!$stmt) {
-            throw new Exception('Database query preparation failed: ' . $conn->error);
+            $response['status'] = 'error';
+            $response['message'] = 'Database query preparation failed.';
+            echo json_encode($response);
+            exit;
         }
 
         $stmt->bind_param("s", $userEmail);
@@ -54,7 +72,10 @@ try {
         $stmt->store_result();
         
         if ($stmt->num_rows === 0) {
-            throw new Exception('The email provided is not registered.');
+            $response['status'] = 'error';
+            $response['message'] = 'The email provided is not registered.';
+            echo json_encode($response);
+            exit;
         }
 
         // Update password based on membership type
@@ -66,13 +87,19 @@ try {
 
         $stmt = $conn->prepare($updateQuery);
         if (!$stmt) {
-            throw new Exception('Database query preparation failed: ' . $conn->error);
+            $response['status'] = 'error';
+            $response['message'] = 'Database query preparation failed.';
+            echo json_encode($response);
+            exit;
         }
 
         $stmt->bind_param("ss", $hashedPassword, $userEmail);
 
         if (!$stmt->execute()) {
-            throw new Exception('Failed to update password. Please try again later.');
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to update password. Please try again later.';
+            echo json_encode($response);
+            exit;
         }
 
         // Clear OTP and session variables
@@ -81,18 +108,21 @@ try {
         // Set response for success
         $response['status'] = 'success';
         $response['message'] = 'Password updated successfully.';
+        $response['redirect'] = 'index.php'
+
+
     } else {
-        throw new Exception('Missing required fields.');
+        $response['status'] = 'error';
+        $response['message'] = 'Missing required fields.';
     }
 } catch (Exception $e) {
     // Handle exceptions and log error
-    $errorMessage = $e->getMessage();
     $response['status'] = 'error';
     $response['message'] = 'An error occurred while processing your request.';
-    $response['errors'][] = $errorMessage;
+    $response['errors'][] = $e->getMessage();
 
     // Log detailed error for internal tracking
-    error_log("Error: " . $errorMessage, 3, 'error_log.txt');
+    error_log("Error: " . $e->getMessage(), 3, 'error_log.txt');
 } finally {
     // Return the JSON response
     echo json_encode($response);
