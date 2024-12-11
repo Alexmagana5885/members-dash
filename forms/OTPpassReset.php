@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resetemail'])) {
                         // OTP generation and session setup
                         $otp = rand(100000, 999999);
                         $_SESSION['otp'] = $otp;
-                        $_SESSION['otp_expiry'] = time() + 900; // 15 minutes expiry
+                        $_SESSION['otp_expiry'] = time() + 900;
                         $_SESSION['otp_email'] = $email;
                         $_SESSION['user_email'] = $email;
 

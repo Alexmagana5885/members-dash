@@ -6,11 +6,13 @@ require_once 'DBconnection.php';
 $response = array();
 
 try {
+    // Check if all necessary POST fields are present
     if (isset($_POST['ResetCode'], $_POST['NewPassWordReset'], $_POST['MembershipType'])) {
-        $resetCode = trim($_POST['ResetCode']); 
+        $resetCode = trim($_POST['ResetCode']);
         $newPassword = trim($_POST['NewPassWordReset']);
         $membershipType = trim($_POST['MembershipType']);
 
+        // Validate fields
         if (empty($resetCode) || empty($newPassword) || empty($membershipType)) {
             $response['status'] = 'error';
             $response['message'] = 'Please fill in all fields.';
@@ -18,7 +20,7 @@ try {
             exit;
         }
 
-        // Check if OTP exists and is valid
+        // Check if OTP exists and is valid (expiry check)
         if (!isset($_SESSION['otp']) || !isset($_SESSION['otp_expiry']) || time() > $_SESSION['otp_expiry']) {
             $response['status'] = 'error';
             $response['message'] = 'OTP has expired or is not set.';
@@ -26,13 +28,15 @@ try {
             exit;
         }
 
-        if (!password_verify($resetCode, $_SESSION['otp'])) {
+        // Validate the OTP entered by the user
+        if ($resetCode != $_SESSION['otp']) {
             $response['status'] = 'error';
             $response['message'] = 'Invalid or expired OTP code.';
             echo json_encode($response);
             exit;
         }
 
+        // Hash the new password
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
         // Get user email from session
@@ -59,6 +63,7 @@ try {
             exit;
         }
 
+        // Check if the email exists in the appropriate table
         $stmt = $conn->prepare($query);
         if (!$stmt) {
             $response['status'] = 'error';
@@ -70,7 +75,7 @@ try {
         $stmt->bind_param("s", $userEmail);
         $stmt->execute();
         $stmt->store_result();
-        
+
         if ($stmt->num_rows === 0) {
             $response['status'] = 'error';
             $response['message'] = 'The email provided is not registered.';
@@ -78,13 +83,14 @@ try {
             exit;
         }
 
-        // Update password based on membership type
+        // Update the password in the database based on membership type
         if ($membershipType === 'IndividualMember') {
             $updateQuery = "UPDATE personalmembership SET password = ? WHERE email = ?";
         } else {
             $updateQuery = "UPDATE organizationmembership SET password = ? WHERE organization_email = ?";
         }
 
+        // Prepare and execute the update query
         $stmt = $conn->prepare($updateQuery);
         if (!$stmt) {
             $response['status'] = 'error';
@@ -102,14 +108,13 @@ try {
             exit;
         }
 
-        // Clear OTP and session variables
+        // Clear OTP and session variables after password update
         unset($_SESSION['otp'], $_SESSION['otp_expiry'], $_SESSION['otp_email'], $_SESSION['user_email']);
 
-        // Set response for success
+        // Return success response
         $response['status'] = 'success';
         $response['message'] = 'Password updated successfully.';
         $response['redirect'] = 'index.php';
-
     } else {
         $response['status'] = 'error';
         $response['message'] = 'Missing required fields.';
