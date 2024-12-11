@@ -114,7 +114,7 @@ try {
         // Return success response
         $response['status'] = 'success';
         $response['message'] = 'Password updated successfully.';
-        $response['redirect'] = 'index.php';
+        // $response['redirect'] = 'index.php';
     } else {
         $response['status'] = 'error';
         $response['message'] = 'Missing required fields.';
