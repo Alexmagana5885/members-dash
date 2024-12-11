@@ -23,18 +23,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resetemail'])) {
                     $result = $stmt->get_result();
 
                     if ($result->num_rows > 0) {
+                        // OTP generation and session setup
                         $otp = rand(100000, 999999);
                         $_SESSION['otp'] = $otp;
                         $_SESSION['otp_expiry'] = time() + 900; // 15 minutes expiry
                         $_SESSION['otp_email'] = $email;
                         $_SESSION['user_email'] = $email;
+
                         $subject = "Password Reset OTP";
                         $message = "Your OTP code is: $otp. It will expire in 15 minutes.";
                         $headers = "From: info@agl.or.ke";
 
                         if (mail($email, $subject, $message, $headers)) {
-                            $response['status'] = 'otp_sent';
+                            $response['status'] = 'success';
                             $response['message'] = 'OTP has been sent to your email.';
+                            header('Location: ../pages/PasswordReset.php');
                         } else {
                             $response['status'] = 'error';
                             $response['message'] = 'Failed to send OTP. Please try again.';
@@ -61,5 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resetemail'])) {
     }
 }
 
+// Return the response as JSON
 echo json_encode($response);
 ?>
