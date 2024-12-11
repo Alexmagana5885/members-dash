@@ -170,9 +170,9 @@
             </div>
           </div>
           <button type="submit">Login</button>
-          <p class="register-link">
+          <!-- <p class="register-link">
             <a href="javascript:void(0)" onclick="ForgotPassword()">Forgot Password</a>
-          </p>
+          </p> -->
 
           <p class="register-link">
             Not registered?
@@ -182,13 +182,12 @@
         </form>
 
         <!-- .........OTP.................. -->
-        <div id="otpbox">
-          <form id="OTPform" method="POST">
+        <div id="otpbox" class="otpbox">
+          <form id="OTPform" action="forms/OTPverf.php" method="POST">
             <h3>Kindly enter the OTP sent on your Mail</h3><br>
             <hr>
             <input name="otp" placeholder="OTP..." type="text" required>
             <button id="submitOTP" type="submit">Submit</button>
-            <a href="pages/ResetPassword.php"></a>
           </form>
         </div>
 
