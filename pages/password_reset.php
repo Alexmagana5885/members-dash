@@ -103,7 +103,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Send form data to the backend and handle the response
-      document.getElementById('your-form-id').addEventListener('submit', function(event) {
+      document.getElementById('resetPasswordFormset').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent form from submitting normally
 
         const formData = new FormData(this);
