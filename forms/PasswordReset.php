@@ -108,8 +108,7 @@ try {
         // Set response for success
         $response['status'] = 'success';
         $response['message'] = 'Password updated successfully.';
-        $response['redirect'] = 'index.php'
-
+        $response['redirect'] = 'index.php';
 
     } else {
         $response['status'] = 'error';
