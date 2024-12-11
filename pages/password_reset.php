@@ -125,8 +125,8 @@
 
               
                 setTimeout(function() {
-                  // window.location.href = '../index.php'; 
-                  window.location.href = data.redirect;
+                  window.location.href = 'https://member.log.agl.or.ke/members/'; 
+                  // window.location.href = data.redirect;
                 }, 3000); 
               } else {
                 if (data.errors && data.errors.length > 0) {
