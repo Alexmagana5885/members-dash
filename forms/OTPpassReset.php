@@ -30,14 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resetemail'])) {
                         $_SESSION['otp_email'] = $email;
                         $_SESSION['user_email'] = $email;
 
-                        $subject = "Password Reset OTP";
-                        $message = "Your OTP code is: $otp. It will expire in 15 minutes.";
+                        $subject = "Password Reset Code";
+                        $message = "Your Password reset Code is: $otp. It will expire in 15 minutes.";
                         $headers = "From: info@agl.or.ke";
 
                         if (mail($email, $subject, $message, $headers)) {
                             $response['status'] = 'success';
                             $response['message'] = 'OTP has been sent to your email.';
-                            header('Location: ../pages/PasswordReset.php');
+                            $response['redirect'] = '../pages/PasswordReset.php';
+                            // header('Location: ../pages/PasswordReset.php');
                         } else {
                             $response['status'] = 'error';
                             $response['message'] = 'Failed to send OTP. Please try again.';
