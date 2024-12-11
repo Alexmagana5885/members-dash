@@ -106,7 +106,7 @@
 
         const formData = new FormData(this);
 
-        fetch("forms/PasswordReset.php", {
+        fetch("../forms/PasswordReset.php", {
             method: "POST",
             body: formData,
           })
