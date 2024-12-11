@@ -101,11 +101,46 @@
   <div id="response-popup" class="popup"></div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Send form data to the backend and handle the response
-      document.getElementById('resetPasswordFormset').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form from submitting normally
+      document.getElementById("resetPasswordFormset").addEventListener("submit", function(event) {
+        event.preventDefault(); 
 
+        const formData = new FormData(this);
+
+        fetch("forms/PasswordReset.php", {
+            method: "POST",
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
+
+              window.location.href = data.redirect;
+            } else if (data.status === "error") {
+
+              showPopup(data.message);
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            showPopup("An error occurred. Please try again.");
+          });
+      });
+
+      function showPopup(message) {
+        const popup = document.getElementById("popup");
+        popup.textContent = message;
+        popup.style.display = "block";
+
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 3000);
+      }
+    </script>
+
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('resetPasswordFormset').addEventListener('submit', function(event) {
+        event.preventDefault(); 
         const formData = new FormData(this);
 
         fetch('../forms/PasswordReset.php', {
@@ -126,7 +161,7 @@
               
                 setTimeout(function() {
                   window.location.href = 'https://member.log.agl.or.ke/members/'; 
-                  // window.location.href = data.redirect;
+                  window.location.href = data.redirect;
                 }, 3000); 
               } else {
                 if (data.errors && data.errors.length > 0) {
@@ -143,7 +178,6 @@
               popup.innerHTML = message;
               popup.classList.add('show');
 
-              // Hide the popup after 10 seconds
               setTimeout(function() {
                 popup.classList.remove('show');
               }, 10000);
@@ -152,7 +186,7 @@
           .catch(error => console.error('Error fetching response:', error));
       });
     });
-  </script>
+  </script> -->
 
   <!-- Main Content -->
   <main>
