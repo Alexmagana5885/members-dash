@@ -170,9 +170,9 @@
             </div>
           </div>
           <button type="submit">Login</button>
-          <!-- <p class="register-link">
+          <p class="register-link">
             <a href="javascript:void(0)" onclick="ForgotPassword()">Forgot Password</a>
-          </p> -->
+          </p>
 
           <p class="register-link">
             Not registered?
@@ -261,85 +261,7 @@
           </div>
         </form>
         <script>
-          document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('resetPasswordFormset');
-            const resetCodeInput = document.getElementById('ResetCode');
-            const membershipTypeInput = document.getElementById('MembershipTypereset');
-            const emailInput = document.getElementById('UserEmailReset');
-            const newPasswordInput = document.getElementById('NewPassWordReset');
-            const confirmPasswordInput = document.getElementById('NewPassWordConfirm');
-            const submitButtonreset = document.getElementById('resetPasswordBtnset');
 
-            const errorMessage1 = document.getElementById('error-message1'); // Passwords do not match
-            const errorMessage2 = document.getElementById('error-message2'); // Password policy error
-
-            // Password validation regex (8+ chars, upper, lower, number, special char)
-            const passwordPolicyRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,}$/;
-
-            // Function to check if all fields are filled and valid
-            function checkFormValidity() {
-              const isResetCodeFilled = resetCodeInput.value.trim() !== '';
-              const isMembershipTypeSelected = membershipTypeInput.value !== 'Default';
-              const isEmailFilled = emailInput.value.trim() !== '';
-              const isNewPasswordFilled = newPasswordInput.value.trim() !== '';
-              const isConfirmPasswordFilled = confirmPasswordInput.value.trim() !== '';
-              const doPasswordsMatch = newPasswordInput.value === confirmPasswordInput.value;
-              const isPasswordValid = passwordPolicyRegex.test(newPasswordInput.value);
-
-              // Handle password matching alert
-              if (!doPasswordsMatch && isNewPasswordFilled && isConfirmPasswordFilled) {
-                errorMessage1.style.display = 'block';
-              } else {
-                errorMessage1.style.display = 'none';
-              }
-
-              // Handle password policy alert
-              if (!isPasswordValid && isNewPasswordFilled) {
-                errorMessage2.style.display = 'block';
-              } else {
-                errorMessage2.style.display = 'none';
-              }
-
-              // Enable button if all conditions are met
-              if (
-                isResetCodeFilled &&
-                isMembershipTypeSelected &&
-                isEmailFilled &&
-                isNewPasswordFilled &&
-                isConfirmPasswordFilled &&
-                doPasswordsMatch &&
-                isPasswordValid
-              ) {
-                submitButtonreset.disabled = false;
-              } else {
-                submitButtonreset.disabled = true;
-              }
-            }
-
-            // Function to toggle password visibility
-            function togglePasswordVisibility(inputId) {
-              const passwordInput = document.getElementById(inputId);
-              if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-              } else {
-                passwordInput.type = 'password';
-              }
-            }
-
-            // Attach event listeners to inputs
-            resetCodeInput.addEventListener('input', checkFormValidity);
-            membershipTypeInput.addEventListener('change', checkFormValidity);
-            emailInput.addEventListener('input', checkFormValidity);
-            newPasswordInput.addEventListener('input', checkFormValidity);
-            confirmPasswordInput.addEventListener('input', checkFormValidity);
-
-            // Attach toggle visibility for password fields
-            document.getElementById('NewPassWordResetToggle').addEventListener('click', () => togglePasswordVisibility('NewPassWordReset'));
-            document.getElementById('NewPassWordConfirmToggle').addEventListener('click', () => togglePasswordVisibility('NewPassWordConfirm'));
-          });
-
-          // Attach onClick event to the submit button
-          submitButton.addEventListener('click', handleFormSubmit);
 
           function ForgotPassword() {
             var resetForm = document.getElementById('resetPasswordForm');
@@ -353,61 +275,7 @@
             }
           }
 
-          // .........................................
-          document.getElementById("resetPasswordForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            const emailInput = document.getElementById("resetemail").value.trim();
-            if (!emailInput) {
-              showPopup("Please enter an email address.");
-              return;
-            }
-
-            if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput)) {
-              showPopup("Please enter a valid email address.");
-              return;
-            }
-
-            const submitButton = document.getElementById("resetButton");
-            submitButton.disabled = true;
-            submitButton.textContent = "Sending...";
-
-            const formData = new FormData(this);
-
-            fetch("forms/OTPpassReset.php", {
-                method: "POST",
-                body: formData,
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-              })
-              .then(data => {
-                submitButton.disabled = false;
-                submitButton.textContent = "Send OTP";
-
-                if (!data) {
-                  showPopup("No response from the server.");
-                  return;
-                }
-
-                if (data.status === "error") {
-                  showPopup(data.message);
-                } else if (data.status === "success") {
-                  document.getElementById("loginForm").style.display = "none";
-                  document.getElementById("resetPasswordForm").style.display = "none";
-                  document.getElementById("resetPasswordFormset").style.display = "block";
-                }
-              })
-              .catch(error => {
-                submitButton.disabled = false;
-                submitButton.textContent = "Send OTP";
-                console.error("Error:", error);
-                showPopup("An error occurred. Please try again.");
-              });
-          });
+          
         </script>
 
         <!-- .......................................................................................................... -->
@@ -415,6 +283,7 @@
       </div>
     </div>
 
+    <!-- login Otp verification -->
     <script>
       document.getElementById("OTPform").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent default form submission
@@ -448,9 +317,49 @@
 
         setTimeout(() => {
           popup.style.display = "none";
-        }, 3000); // Hide popup after 3 seconds
+        }, 3000);
       }
     </script>
+
+    <!-- password reset Code Check -->
+    <script>
+      document.getElementById("resetPasswordForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const formData = new FormData(this);
+
+        fetch("forms/OTPpassReset.php", {
+            method: "POST",
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
+
+              window.location.href = data.redirect;
+            } else if (data.status === "error") {
+
+              showPopup(data.message);
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            showPopup("An error occurred. Please try again.");
+          });
+      });
+
+      function showPopup(message) {
+        const popup = document.getElementById("popup");
+        popup.textContent = message;
+        popup.style.display = "block";
+
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 3000);
+      }
+    </script>
+
+
     <!-- Registration Information Section (Initially Hidden) -->
     <div class="form-step form-stepINdiv">
       <!-- General Information Step -->
