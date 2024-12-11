@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resetemail'])) {
 
     if (!empty($email)) {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            if (!isset($_SESSION['otp_last_sent']) || (time() - $_SESSION['otp_last_sent']) >= 60) {
+            if (!isset($_SESSION['otp_last_sent']) || (time() - $_SESSION['otp_last_sent']) >= 10) {
                 $_SESSION['otp_last_sent'] = time();
 
                 $query = "SELECT email FROM personalmembership WHERE email = ? 
