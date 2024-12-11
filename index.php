@@ -182,12 +182,13 @@
         </form>
 
         <!-- .........OTP.................. -->
-        <div id="otpbox" class="otpbox">
-          <form id="OTPform" action="forms/OTPverf.php" method="POST">
+        <div id="otpbox">
+          <form id="OTPform" method="POST">
             <h3>Kindly enter the OTP sent on your Mail</h3><br>
             <hr>
             <input name="otp" placeholder="OTP..." type="text" required>
             <button id="submitOTP" type="submit">Submit</button>
+            <a href="pages/ResetPassword.php"></a>
           </form>
         </div>
 
