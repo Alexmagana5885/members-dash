@@ -108,7 +108,7 @@
 
         const formData = new FormData(this);
 
-        fetch('forms/RegResponse.php', {
+        fetch('forms/PasswordReset.php', {
             method: 'POST',
             body: formData
           })
@@ -146,10 +146,6 @@
       });
     });
   </script>
-
-
-
-
   <!-- Main Content -->
   <main>
     <div class="container">
@@ -250,15 +246,6 @@
               </select>
             </div>
 
-            <!-- User Email -->
-            <label for="UserEmail">Insert Your Registered Email</label>
-            <input
-              placeholder="email..."
-              type="email"
-              id="UserEmailReset"
-              name="UserEmailReset"
-              required />
-
             <!-- New Password -->
             <div class="password-container">
               <label for="NewPassWord">New Password</label>
@@ -316,7 +303,6 @@
             const form = document.getElementById('resetPasswordFormset');
             const resetCodeInput = document.getElementById('ResetCode');
             const membershipTypeInput = document.getElementById('MembershipTypereset');
-            const emailInput = document.getElementById('UserEmailReset');
             const newPasswordInput = document.getElementById('NewPassWordReset');
             const confirmPasswordInput = document.getElementById('NewPassWordConfirm');
             const submitButtonreset = document.getElementById('resetPasswordBtnset');
@@ -331,7 +317,6 @@
             function checkFormValidity() {
               const isResetCodeFilled = resetCodeInput.value.trim() !== '';
               const isMembershipTypeSelected = membershipTypeInput.value !== 'Default';
-              const isEmailFilled = emailInput.value.trim() !== '';
               const isNewPasswordFilled = newPasswordInput.value.trim() !== '';
               const isConfirmPasswordFilled = confirmPasswordInput.value.trim() !== '';
               const doPasswordsMatch = newPasswordInput.value === confirmPasswordInput.value;
@@ -355,7 +340,6 @@
               if (
                 isResetCodeFilled &&
                 isMembershipTypeSelected &&
-                isEmailFilled &&
                 isNewPasswordFilled &&
                 isConfirmPasswordFilled &&
                 doPasswordsMatch &&
@@ -380,7 +364,6 @@
             // Attach event listeners to inputs
             resetCodeInput.addEventListener('input', checkFormValidity);
             membershipTypeInput.addEventListener('change', checkFormValidity);
-            emailInput.addEventListener('input', checkFormValidity);
             newPasswordInput.addEventListener('input', checkFormValidity);
             confirmPasswordInput.addEventListener('input', checkFormValidity);
 
