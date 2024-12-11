@@ -100,49 +100,58 @@
 
   <div id="response-popup" class="popup"></div>
 
- 
   <script>
-        // Handle form submission
-        document.getElementById('password-reset-form').addEventListener('submit', function (event) {
-            event.preventDefault();
+  document.addEventListener('DOMContentLoaded', function() {
+    // Send form data to the backend and handle the response
+    document.getElementById('resetPasswordFormset').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form from submitting normally
 
-            const formData = new FormData(this);
+      const formData = new FormData(this);
 
-            fetch('reset_password.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    // Show the popup message
-                    showPopup(data.message, 'success');
-                    // Redirect to the specified page
-                    setTimeout(() => {
-                        window.location.href = data.redirect; // Redirect after success
-                    }, 2000); // Adjust delay as needed
-                } else {
-                    // Show error message
-                    showPopup(data.message, 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
+      fetch('../forms/PasswordReset.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          const popup = document.getElementById('response-popup');
+          if (popup) {
+            const alertClass = data.success ? 'alert-success' : 'alert-danger';
+            let message = '';
 
-        // Function to show popup messages
-        function showPopup(message, type) {
-            const popup = document.getElementById('popupMessage');
-            popup.classList.add('popup', `alert-${type}`, 'show');
-            popup.innerHTML = `<div class="alert">${message}</div>`;
+            if (data.success) {
+              message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
 
-            // Hide the popup after a certain time
-            setTimeout(() => {
-                popup.classList.remove('show');
-            }, 3000);
-        }
- </script>
+              // Redirect after 3 seconds if successful
+              setTimeout(function() {
+                window.location.href = 'your_redirect_url_here'; // Change to your desired URL
+              }, 3000); // 3-second delay before redirecting
+            } else {
+              if (data.errors && data.errors.length > 0) {
+                message += '<div class="alert ' + alertClass + '">';
+                data.errors.forEach(function(error) {
+                  message += '<p>' + error + '</p>';
+                });
+                message += '</div>';
+              } else {
+                message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
+              }
+            }
+
+            popup.innerHTML = message;
+            popup.classList.add('show');
+
+            // Hide the popup after 10 seconds
+            setTimeout(function() {
+              popup.classList.remove('show');
+            }, 10000);
+          }
+        })
+        .catch(error => console.error('Error fetching response:', error));
+    });
+  });
+</script>
+
   <!-- Main Content -->
   <main>
     <div class="container">
