@@ -100,7 +100,7 @@
 
   <div id="response-popup" class="popup"></div>
 
-  <script>
+  <!-- <script>
       document.getElementById("resetPasswordFormset").addEventListener("submit", function(event) {
         event.preventDefault(); 
 
@@ -135,9 +135,9 @@
           popup.style.display = "none";
         }, 3000);
       }
-    </script>
+    </script> -->
 
-  <!-- <script>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('resetPasswordFormset').addEventListener('submit', function(event) {
         event.preventDefault(); 
@@ -156,6 +156,7 @@
 
               if (data.success) {
                 message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
+                window.location.href = data.redirect;
                
 
               
@@ -186,7 +187,7 @@
           .catch(error => console.error('Error fetching response:', error));
       });
     });
-  </script> -->
+  </script>
 
   <!-- Main Content -->
   <main>

@@ -170,9 +170,9 @@
             </div>
           </div>
           <button type="submit">Login</button>
-          <p class="register-link">
+          <!-- <p class="register-link">
             <a href="javascript:void(0)" onclick="ForgotPassword()">Forgot Password</a>
-          </p>
+          </p> -->
 
           <p class="register-link">
             Not registered?
