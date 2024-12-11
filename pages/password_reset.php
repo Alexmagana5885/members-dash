@@ -372,25 +372,11 @@
             document.getElementById('NewPassWordConfirmToggle').addEventListener('click', () => togglePasswordVisibility('NewPassWordConfirm'));
           });
 
-          // Attach onClick event to the submit button
-          submitButton.addEventListener('click', handleFormSubmit);
-
-          function ForgotPassword() {
-            var resetForm = document.getElementById('resetPasswordForm');
-            loginForm
-
-            if (resetForm.style.display === 'none' || resetForm.style.display === '') {
-              resetForm.style.display = 'block';
-              loginForm.style.display = 'none';
-            } else {
-              resetForm.style.display = 'none';
-            }
-          }
         </script>
 
-        <script>
+        <!-- <script>
           document.getElementById("resetPasswordFormset").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault();
 
             const formData = new FormData(this);
 
@@ -423,7 +409,7 @@
               popup.style.display = "none";
             }, 3000);
           }
-        </script>
+        </script> -->
 
         <!-- .......................................................................................................... -->
 
