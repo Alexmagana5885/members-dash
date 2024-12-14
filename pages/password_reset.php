@@ -161,13 +161,11 @@
               message = `<div class="alert ${alertClass}">${data.message}</div>`;
               popup.innerHTML = message;
               popup.classList.add('show');
-
-              // Check if redirect URL is available
               if (data.redirect) {
                 setTimeout(function() {
                   popup.classList.remove('show');
-                  window.location.href = data.redirect; // Redirect after 5 seconds
-                }, 5000);
+                  window.location.href = data.redirect; // Redirect after 3 seconds
+                }, 3000);
               } else {
                 console.error('Redirect URL not provided in the response.');
               }
@@ -188,7 +186,6 @@
             popup.innerHTML = message;
             popup.classList.add('show');
 
-            // Hide the popup after 10 seconds
             setTimeout(function() {
               popup.classList.remove('show');
             }, 10000);
