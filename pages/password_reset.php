@@ -164,8 +164,8 @@
               if (data.redirect) {
                 setTimeout(function() {
                   popup.classList.remove('show');
-                  window.location.href = data.redirect; // Redirect after 3 seconds
-                }, 3000);
+                  window.location.href = data.redirect; // Redirect after 1 seconds
+                }, 1000);
               } else {
                 console.error('Redirect URL not provided in the response.');
               }
