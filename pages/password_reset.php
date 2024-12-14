@@ -141,6 +141,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('resetPasswordFormset').addEventListener('submit', function(event) {
         event.preventDefault();
+
         const formData = new FormData(this);
 
         fetch('../forms/PasswordReset.php', {
@@ -150,23 +151,29 @@
           .then(response => response.json())
           .then(data => {
             const popup = document.getElementById('response-popup');
+
             if (popup) {
               const alertClass = data.success ? 'alert-success' : 'alert-danger';
               let message = '';
 
               if (data.success) {
+                // Show success message
                 message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
-                // window.location.href = data.redirect;
-
-
                 popup.innerHTML = message;
                 popup.classList.add('show');
-                setTimeout(function() {
-                  popup.classList.remove('show');
-                  window.location.href = data.redirect;
-                }, 5000);
+
+                // Check if redirect URL is available
+                if (data.redirect) {
+                  setTimeout(function() {
+                    popup.classList.remove('show');
+                    window.location.href = data.redirect; // Redirect after 5 seconds
+                  }, 5000);
+                } else {
+                  console.error('Redirect URL not provided in the response.');
+                }
 
               } else {
+                // Show error messages
                 if (data.errors && data.errors.length > 0) {
                   message += '<div class="alert ' + alertClass + '">';
                   data.errors.forEach(function(error) {
@@ -181,9 +188,12 @@
               popup.innerHTML = message;
               popup.classList.add('show');
 
+              // Hide the popup after 10 seconds
               setTimeout(function() {
                 popup.classList.remove('show');
               }, 10000);
+            } else {
+              console.error('Popup element with id "response-popup" not found.');
             }
           })
           .catch(error => console.error('Error fetching response:', error));
