@@ -82,11 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         }
                     } else {
                         $response['status'] = 'error';
-                        $response['message'] = 'Invalid password.';
+                        $response['message'] = 'Wrong Email or password.';
                     }
                 } else {
                     $response['status'] = 'error';
-                    $response['message'] = 'Email not found.';
+                    $response['message'] = 'Wrong Email or password.';
                 }
             } else {
                 $response['status'] = 'error';

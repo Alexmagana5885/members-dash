@@ -140,7 +140,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('resetPasswordFormset').addEventListener('submit', function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
         const formData = new FormData(this);
 
         fetch('../forms/PasswordReset.php', {
@@ -156,14 +156,16 @@
 
               if (data.success) {
                 message = '<div class="alert ' + alertClass + '">' + data.message + '</div>';
-                window.location.href = data.redirect;
-               
+                // window.location.href = data.redirect;
 
-              
+
+                popup.innerHTML = message;
+                popup.classList.add('show');
                 setTimeout(function() {
-                  window.location.href = 'https://member.log.agl.or.ke/members/'; 
+                  popup.classList.remove('show');
                   window.location.href = data.redirect;
-                }, 3000); 
+                }, 5000);
+
               } else {
                 if (data.errors && data.errors.length > 0) {
                   message += '<div class="alert ' + alertClass + '">';
