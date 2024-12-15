@@ -189,11 +189,6 @@
             <input name="otp" placeholder="OTP..." type="text" required>
             <button id="submitOTP" type="submit">Submit</button><br>
 
-            <p class="register-link">
-              <a href="https://member.log.agl.or.ke/members/">Back to Login</a>
-            </p>
-
-
           </form>
         </div>
 
@@ -263,7 +258,11 @@
               id="resetemail"
               name="resetemail"
               required />
-            <button type="submit" id="resetPasswordBtn">Send</button>
+            <button type="submit" id="resetPasswordBtn">Send</button><br>
+            
+            <p class="register-link">
+              <a href="https://member.log.agl.or.ke/members/">Back to Login</a>
+            </p></script>
           </div>
         </form>
         <script>
