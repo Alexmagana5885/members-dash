@@ -187,7 +187,13 @@
             <h3>Kindly enter the OTP sent on your Mail</h3><br>
             <hr>
             <input name="otp" placeholder="OTP..." type="text" required>
-            <button id="submitOTP" type="submit">Submit</button>
+            <button id="submitOTP" type="submit">Submit</button><br>
+
+            <p class="register-link">
+              <a href="https://member.log.agl.or.ke/members/">Back to Login</a>
+            </p>
+
+
           </form>
         </div>
 
@@ -261,8 +267,6 @@
           </div>
         </form>
         <script>
-
-
           function ForgotPassword() {
             var resetForm = document.getElementById('resetPasswordForm');
             loginForm
@@ -274,8 +278,6 @@
               resetForm.style.display = 'none';
             }
           }
-
-          
         </script>
 
         <!-- .......................................................................................................... -->
