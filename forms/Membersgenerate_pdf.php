@@ -10,7 +10,7 @@ require('../assets/fpdf/fpdf.php');
 require_once('DBconnection.php');
 
 // Change $mysqli to $conn
-$query = "SELECT id, name, phone, email, position, current_company FROM personalmembership";
+$query = "SELECT id, name, phone, email, current_company FROM personalmembership";
 $result = $conn->query($query); // Use $conn here
 
 // Check if the query execution was successful
@@ -37,7 +37,6 @@ class PDF extends FPDF {
         $this->Cell(75, 10, 'Name', 1);
         $this->Cell(30, 10, 'Phone', 1);
         $this->Cell(65, 10, 'Email', 1);
-        $this->Cell(70, 10, 'Position', 1);
         $this->Ln();
     }
 
@@ -61,7 +60,6 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $pdf->Cell(20, 10, htmlspecialchars($row['id']), 1);
 
-    
         $xPos = $pdf->GetX(); // Save the current X position
         $yPos = $pdf->GetY(); // Save the current Y position
         $pdf->MultiCell(75, 10, htmlspecialchars($row['name']), 1); // Name
@@ -73,11 +71,6 @@ if ($result->num_rows > 0) {
         $yPos = $pdf->GetY(); // Save the current Y position
         $pdf->MultiCell(65, 10, htmlspecialchars($row['email']), 1); // Email
         $pdf->SetXY($xPos + 65, $yPos); // Move to the right after MultiCell
-
-        $xPos = $pdf->GetX(); // Save the current X position
-        $yPos = $pdf->GetY(); // Save the current Y position
-        $pdf->MultiCell(70, 10, htmlspecialchars($row['position']), 1); // Position
-        $pdf->SetXY($xPos + 70, $yPos); // Move to the right after MultiCell
 
         $pdf->Ln();
     }
@@ -91,6 +84,4 @@ if ($result->num_rows > 0) {
 
 // Close the database connection
 $conn->close(); // Use $conn here
-
-
 ?>
