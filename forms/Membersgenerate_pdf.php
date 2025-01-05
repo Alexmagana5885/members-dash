@@ -33,10 +33,10 @@ class PDF extends FPDF {
 
         // Set column headers
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(20, 10, 'ID', 1);
-        $this->Cell(75, 10, 'Name', 1);
-        $this->Cell(30, 10, 'Phone', 1);
-        $this->Cell(65, 10, 'Email', 1);
+        $this->Cell(30, 10, 'ID', 1); // Width increased by 10
+        $this->Cell(85, 10, 'Name', 1); // Width increased by 10
+        $this->Cell(40, 10, 'Phone', 1); // Width increased by 10
+        $this->Cell(75, 10, 'Email', 1); // Width increased by 10
         $this->Ln();
     }
 
@@ -58,19 +58,19 @@ $pdf->SetFont('Arial', '', 11);
 // Loop through the result and output each row in the PDF
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $pdf->Cell(20, 10, htmlspecialchars($row['id']), 1);
+        $pdf->Cell(30, 10, htmlspecialchars($row['id']), 1); // Width increased by 10
 
         $xPos = $pdf->GetX(); // Save the current X position
         $yPos = $pdf->GetY(); // Save the current Y position
-        $pdf->MultiCell(75, 10, htmlspecialchars($row['name']), 1); // Name
+        $pdf->MultiCell(85, 10, htmlspecialchars($row['name']), 1); // Width increased by 10
+        $pdf->SetXY($xPos + 85, $yPos); // Move to the right after MultiCell
+
+        $pdf->Cell(40, 10, htmlspecialchars($row['phone']), 1); // Width increased by 10
+
+        $xPos = $pdf->GetX(); // Save the current X position
+        $yPos = $pdf->GetY(); // Save the current Y position
+        $pdf->MultiCell(75, 10, htmlspecialchars($row['email']), 1); // Width increased by 10
         $pdf->SetXY($xPos + 75, $yPos); // Move to the right after MultiCell
-
-        $pdf->Cell(30, 10, htmlspecialchars($row['phone']), 1); // Phone
-
-        $xPos = $pdf->GetX(); // Save the current X position
-        $yPos = $pdf->GetY(); // Save the current Y position
-        $pdf->MultiCell(65, 10, htmlspecialchars($row['email']), 1); // Email
-        $pdf->SetXY($xPos + 65, $yPos); // Move to the right after MultiCell
 
         $pdf->Ln();
     }
