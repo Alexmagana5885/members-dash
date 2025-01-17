@@ -36,7 +36,7 @@ class PDF extends FPDF
 
         // logo
         $this->SetXY(10, 15);
-        $this->Image('../logo.png', 10, 15, 50);
+        $this->Image('../assets/img/logo.png', 10, 15, 50);
 
         // Invoice details
         $this->SetFont('Arial', '', 10);
