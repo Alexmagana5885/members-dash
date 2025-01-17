@@ -240,12 +240,47 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Member Payments</a></li>
 
-                    <li>
+                    <!-- <li>
                         <a href="#" id="togglePayments">My Payments</a>
                         <ul style="display: none;" class="dropdown" id="paymentsDropdown">
                             <li><a href="payment1.php">20-10-2024</a></li>
                             <li><a href="payment2.php">20-10-2022</a></li>
                             <li><a href="payment3.php">20-10-2021</a></li>
+                        </ul>
+                    </li> -->
+
+                    <?php
+
+                    $sessionEmail = $_SESSION['user_email'];
+                    $query = "SELECT * FROM invoices WHERE user_email = ?";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bind_param("s", $sessionEmail);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $invoices = [];
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $invoices[] = $row;
+                        }
+                    }
+                    echo '<pre>';
+                    print_r($invoices);
+                    echo '</pre>';
+                    ?>
+
+
+                    <li>
+                        <a href="#" id="togglePayments">My Payments</a>
+                        <ul style="display: none;" class="dropdown" id="paymentsDropdown">
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<li><a href="payment.php?id=' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['invoice_date']) . '</a></li>';
+                                }
+                            } else {
+                                echo '<li>No payments found</li>';
+                            }
+                            ?>
                         </ul>
                     </li>
 
