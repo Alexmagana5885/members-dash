@@ -223,6 +223,25 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     </style>
 
+    <?php
+
+    $sessionEmail = $_SESSION['user_email'];
+    $query = "SELECT * FROM invoices WHERE user_email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $sessionEmail);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $invoices = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $invoices[] = $row;
+        }
+    }
+    echo '<pre>';
+    print_r($invoices);
+    echo '</pre>';
+    ?>
+
     <div class="main-content">
 
         <nav style="cursor: pointer;" id="sidebar" class="sidebar">
@@ -248,25 +267,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             <li><a href="payment3.php">20-10-2021</a></li>
                         </ul>
                     </li> -->
-
-                    <?php
-
-                    $sessionEmail = $_SESSION['user_email'];
-                    $query = "SELECT * FROM invoices WHERE user_email = ?";
-                    $stmt = $conn->prepare($query);
-                    $stmt->bind_param("s", $sessionEmail);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $invoices = [];
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            $invoices[] = $row;
-                        }
-                    }
-                    echo '<pre>';
-                    print_r($invoices);
-                    echo '</pre>';
-                    ?>
 
 
                     <li>
