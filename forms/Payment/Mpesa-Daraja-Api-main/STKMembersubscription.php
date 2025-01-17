@@ -42,7 +42,7 @@ if (!empty($response['errors'])) {
 }
 
 $processrequestUrl = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-$callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/callback.php';
+$callbackurl = 'https://member.log.agl.or.ke/members/forms/Payment/Mpesa-Daraja-Api-main/Premiumcallback.php';
 $passkey = $mypasskey;
 $BusinessShortCode = $mybusiness_short_code;
 $Timestamp = date('YmdHis');
