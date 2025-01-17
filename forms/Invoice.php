@@ -1,7 +1,7 @@
 <?php
 require('../assets/fpdf/fpdf.php');
 
-require_once('DBconnection.php');
+require_once('AGLDBconnect.php');
 ob_start();
 class PDF extends FPDF
 {
