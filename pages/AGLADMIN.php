@@ -223,6 +223,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     </style>
 
+
+<!-- for the invoice dropdown -->
     <?php
 
     require_once('../forms/DBconnection.php');
@@ -233,15 +235,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     $stmt->bind_param("s", $sessionEmail);
     $stmt->execute();
     $result = $stmt->get_result();
-    $invoices = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $invoices[] = $row;
-        }
-    }
-    echo '<pre>';
-    print_r($invoices);
-    echo '</pre>';
+
     ?>
 
     <div class="main-content">
@@ -277,6 +271,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             <?php
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
+                                    // Display only the invoice date in the dropdown
                                     echo '<li><a href="payment.php?id=' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['invoice_date']) . '</a></li>';
                                 }
                             } else {
