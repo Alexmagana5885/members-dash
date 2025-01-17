@@ -241,7 +241,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="adminP.php">Member Payments</a></li>
 
                     <li>
-                        <a href="#" id="togglePayments">Payments</a>
+                        <a href="#" id="togglePayments">My Payments</a>
                         <ul style="display: none;" class="dropdown" id="paymentsDropdown">
                             <li><a href="payment1.php">20-10-2024</a></li>
                             <li><a href="payment2.php">20-10-2022</a></li>
@@ -570,7 +570,7 @@ LIMIT 1";
                         <input type="text" id="phone_number" name="phone_number" class="popup-input" placeholder="Enter your phone number" required>
 
                         <label for="amount" class="popup-label">Amount</label>
-                        <input type="text" id="amount" name="amount" class="popup-input" value="3600" readonly>
+                        <input type="text" id="amount" name="amount" class="popup-input" value="1" readonly>
 
                         <div class="popup-buttons">
                             <button class="popup-btn" type="submit">Make Payment</button>
