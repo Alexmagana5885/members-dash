@@ -241,14 +241,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="adminP.php">Member Payments</a></li>
 
                     <li>
-                        <a href="adminP.php">Payments</a>
-                        <ul class="dropdown">
+                        <a href="#" id="togglePayments">Payments</a>
+                        <ul style="display: none;" class="dropdown" id="paymentsDropdown">
                             <li><a href="payment1.php">20-10-2024</a></li>
                             <li><a href="payment2.php">20-10-2022</a></li>
                             <li><a href="payment3.php">20-10-2021</a></li>
                         </ul>
                     </li>
-                    
+
                     <li><a href="userinfo.php" target="_blank">User Information</a></li>
 
                     <li><a href="https://www.agl.or.ke/contact-us/">Contacts</a></li>
@@ -295,6 +295,17 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
+
+
+        <!-- show payment dropdown -->
+
+        <script>
+            document.getElementById('togglePayments').addEventListener('click', function(event) {
+                event.preventDefault();
+                const dropdown = document.getElementById('paymentsDropdown');
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+        </script>
 
         <section class="dashboard">
             <div class="cards">
