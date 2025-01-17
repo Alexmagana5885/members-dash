@@ -257,7 +257,7 @@ class PDF extends FPDF
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_email = $_POST['user_email'] ?? '';
-    $user_type = $_POST['user_type'] ?? '';
+    $user_type = $_POST['membership_type'] ?? '';
     $date = $_POST['date'] ?? '';
     if (!empty($user_email) && !empty($user_type) && !empty($date)) {
         $pdf = new PDF();
