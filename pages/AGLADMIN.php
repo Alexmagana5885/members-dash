@@ -224,18 +224,18 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     </style>
 
 
-<!-- for the invoice dropdown -->
+    <!-- for the invoice dropdown -->
     <?php
-
     require_once('../forms/DBconnection.php');
 
     $sessionEmail = $_SESSION['user_email'];
+    $membershipType = $_SESSION['membership_type'];
+
     $query = "SELECT * FROM invoices WHERE user_email = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $sessionEmail);
     $stmt->execute();
     $result = $stmt->get_result();
-
     ?>
 
     <div class="main-content">
@@ -255,24 +255,19 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
                     <li><a href="adminP.php">Member Payments</a></li>
 
-                    <!-- <li>
-                        <a href="#" id="togglePayments">My Payments</a>
-                        <ul style="display: none;" class="dropdown" id="paymentsDropdown">
-                            <li><a href="payment1.php">20-10-2024</a></li>
-                            <li><a href="payment2.php">20-10-2022</a></li>
-                            <li><a href="payment3.php">20-10-2021</a></li>
-                        </ul>
-                    </li> -->
-
-
                     <li>
                         <a href="#" id="togglePayments">My Payments</a>
                         <ul style="display: none;" class="dropdown" id="paymentsDropdown">
                             <?php
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
-                                    // Display only the invoice date in the dropdown
-                                    echo '<li><a href="payment.php?id=' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['invoice_date']) . '</a></li>';
+                                    echo '<li>
+                        <a href="#" class="invoice-link" 
+                           data-id="' . htmlspecialchars($row['id']) . '" 
+                           data-date="' . htmlspecialchars($row['invoice_date']) . '">
+                            Invoice on ' . htmlspecialchars($row['invoice_date']) . '
+                        </a>
+                      </li>';
                                 }
                             } else {
                                 echo '<li>No payments found</li>';
@@ -331,11 +326,41 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
         <!-- show payment dropdown -->
 
+        <form id="invoiceForm" action="../forms/Invoice.php" method="POST">
+            <input type="hidden" name="user_email" id="user_email">
+            <input type="hidden" name="membership_type" id="membership_type">
+            <input type="hidden" name="date" id="date">
+            <input type="hidden" name="invoice_id" id="invoice_id">
+        </form>
+
         <script>
             document.getElementById('togglePayments').addEventListener('click', function(event) {
                 event.preventDefault();
                 const dropdown = document.getElementById('paymentsDropdown');
                 dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+        </script>
+
+        <script>
+            document.getElementById('togglePayments').addEventListener('click', function() {
+                const dropdown = document.getElementById('paymentsDropdown');
+                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            });
+            const sessionEmail = '<?php echo $_SESSION['user_email']; ?>';
+            const membershipType = '<?php echo $_SESSION['membership_type']; ?>';
+            const invoiceLinks = document.querySelectorAll('.invoice-link');
+            invoiceLinks.forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); 
+
+                    const invoiceId = link.getAttribute('data-id');
+                    const invoiceDate = link.getAttribute('data-date');
+                    document.getElementById('user_email').value = sessionEmail;
+                    document.getElementById('membership_type').value = membershipType;
+                    document.getElementById('date').value = invoiceDate;
+                    document.getElementById('invoice_id').value = invoiceId;
+                    document.getElementById('invoiceForm').submit();
+                });
             });
         </script>
 
