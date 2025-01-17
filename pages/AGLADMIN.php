@@ -225,6 +225,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     <?php
 
+    require_once('../forms/DBconnection.php');
+
     $sessionEmail = $_SESSION['user_email'];
     $query = "SELECT * FROM invoices WHERE user_email = ?";
     $stmt = $conn->prepare($query);
