@@ -334,31 +334,33 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         </form>
 
         <script>
+            // Toggle the payments dropdown
             document.getElementById('togglePayments').addEventListener('click', function(event) {
                 event.preventDefault();
                 const dropdown = document.getElementById('paymentsDropdown');
                 dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
             });
-        </script>
 
-        <script>
-            document.getElementById('togglePayments').addEventListener('click', function() {
-                const dropdown = document.getElementById('paymentsDropdown');
-                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-            });
+            // Set session data
             const sessionEmail = '<?php echo $_SESSION['user_email']; ?>';
             const membershipType = '<?php echo $_SESSION['membership_type']; ?>';
+
+            // Listen for clicks on invoice links
             const invoiceLinks = document.querySelectorAll('.invoice-link');
             invoiceLinks.forEach(function(link) {
                 link.addEventListener('click', function(event) {
-                    event.preventDefault(); 
+                    event.preventDefault(); // Prevent the default anchor behavior
 
                     const invoiceId = link.getAttribute('data-id');
                     const invoiceDate = link.getAttribute('data-date');
+
+                    // Set form values
                     document.getElementById('user_email').value = sessionEmail;
                     document.getElementById('membership_type').value = membershipType;
                     document.getElementById('date').value = invoiceDate;
                     document.getElementById('invoice_id').value = invoiceId;
+
+                    // Submit the form
                     document.getElementById('invoiceForm').submit();
                 });
             });
