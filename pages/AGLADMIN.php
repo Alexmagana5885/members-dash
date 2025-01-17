@@ -238,11 +238,21 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                    <li><a href="adminP.php">Payments</a></li>
+                    <li><a href="adminP.php">Member Payments</a></li>
+
+                    <li>
+                        <a href="adminP.php">Payments</a>
+                        <ul class="dropdown">
+                            <li><a href="payment1.php">20-10-2024</a></li>
+                            <li><a href="payment2.php">20-10-2022</a></li>
+                            <li><a href="payment3.php">20-10-2021</a></li>
+                        </ul>
+                    </li>
+                    
                     <li><a href="userinfo.php" target="_blank">User Information</a></li>
 
                     <li><a href="https://www.agl.or.ke/contact-us/">Contacts</a></li>
-                    
+
                     <li><a href="mailto:info@agl.or.ke" target="_blank">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
