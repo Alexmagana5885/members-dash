@@ -121,7 +121,7 @@ class PDF extends FPDF
             }
         }
 
-        $stmt->close();
+        // $stmt->close();
         $this->SetXY(10, 55);
         $this->SetFont('Arial', 'B', 12);
         $this->SetTextColor(24, 49, 90);
