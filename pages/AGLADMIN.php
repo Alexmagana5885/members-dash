@@ -486,12 +486,12 @@ LIMIT 1";
                 $disablePaymentButton = false;
 
                 // Check which table the email belongs to and if fields are filled
-                if (!empty($paymentNumberPersonal) || !empty($paymentCodePersonal)) {
-                    $disablePaymentButton = true; // personalmembership
-                } elseif (!empty($paymentNumberOrganization) || !empty($paymentCodeOrganization)) {
-                    $disablePaymentButton = true; // organizationmembership
-                }
-                ?>
+                // if (!empty($paymentNumberPersonal) || !empty($paymentCodePersonal)) {
+                //     $disablePaymentButton = true; 
+                // } elseif (!empty($paymentNumberOrganization) || !empty($paymentCodeOrganization)) {
+                //     $disablePaymentButton = true; 
+                // }
+                // ?>
 
                 <!-- HTML Section -->
                 <div class="card">

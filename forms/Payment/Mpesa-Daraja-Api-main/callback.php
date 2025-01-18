@@ -32,35 +32,49 @@ if ($ResultCode == 0) {
     $stmt->bind_param('s', $CheckoutRequestID);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $email = $row['email'];
-        
+
         $timestamp = date('Y-m-d H:i:s');
         $insertStmt = $conn->prepare("INSERT INTO member_payments (member_email, phone_number, payment_code, amount, timestamp) VALUES (?, ?, ?, ?, ?)");
         $insertStmt->bind_param('sssss', $email, $UserPhoneNumber, $TransactionId, $Amount, $timestamp);
         $insertStmt->execute();
-   
+
         if ($insertStmt->affected_rows > 0) {
+            // Generate a custom invoice ID
+            $stmtInvoice = $conn->prepare("SELECT MAX(id) as max_id FROM invoices");
+            $stmtInvoice->execute();
+            $resultInvoice = $stmtInvoice->get_result();
+            $rowInvoice = $resultInvoice->fetch_assoc();
+
+            $lastId = (int)($rowInvoice['max_id'] ?? 0);
+            $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
+
+            // Insert data into the invoices table
+            $paymentDescription = "Membership Payment";
+            $amountBilled = 2000.00;
+
+            $insertInvoice = $conn->prepare("INSERT INTO invoices (id, payment_description, amount_billed, amount_paid, user_email, invoice_date) VALUES (?, ?, ?, ?, ?, ?)");
+            $insertInvoice->bind_param('ssddss', $customId, $paymentDescription, $amountBilled, $Amount, $email, $timestamp);
+            $insertInvoice->execute();
+
             // Check which table the email exists in
             $checkPersonal = $conn->prepare("SELECT email FROM personalmembership WHERE email = ?");
             $checkPersonal->bind_param('s', $email);
             $checkPersonal->execute();
             $personalResult = $checkPersonal->get_result();
-            
+
             if ($personalResult->num_rows > 0) {
-                // Email found in personalmembership
                 $updateStmt = $conn->prepare("UPDATE personalmembership SET payment_Number = ?, payment_code = ?, payment_date = ? WHERE email = ?");
             } else {
-                // Email not found in personalmembership, check organizationmembership
                 $checkOrg = $conn->prepare("SELECT organization_email FROM organizationmembership WHERE organization_email = ?");
                 $checkOrg->bind_param('s', $email);
                 $checkOrg->execute();
                 $orgResult = $checkOrg->get_result();
 
                 if ($orgResult->num_rows > 0) {
-                    // Email found in organizationmembership
                     $updateStmt = $conn->prepare("UPDATE organizationmembership SET payment_Number = ?, payment_code = ?, payment_date = ? WHERE organization_email = ?");
                 } else {
                     $_SESSION['response'] = [

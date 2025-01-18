@@ -52,11 +52,9 @@ if ($ResultCode == 0) {
             $resultInvoice = $stmtInvoice->get_result();
             $rowInvoice = $resultInvoice->fetch_assoc();
 
-            $lastId = (int)($rowInvoice['max_id'] ?? 0); // Default to 0 if no invoices exist
+            $lastId = (int)($rowInvoice['max_id'] ?? 0);
             $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
 
-            // $lastId = $rowInvoice['max_id'] ?? 0; 
-            // $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
 
             // Insert data into the invoices table
             $paymentDescription = "Membership Premium Payment";
