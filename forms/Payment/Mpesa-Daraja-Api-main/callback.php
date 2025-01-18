@@ -49,11 +49,18 @@ if ($ResultCode == 0) {
             $resultInvoice = $stmtInvoice->get_result();
             $rowInvoice = $resultInvoice->fetch_assoc();
 
+            // $lastId = (int)($rowInvoice['max_id'] ?? 0);
+            // $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
+
+            $query = "SELECT MAX(CAST(SUBSTRING_INDEX(id, 'AGLP', -1) AS UNSIGNED)) AS max_id FROM invoices";
+            $result = mysqli_query($connection, $query);
+            $rowInvoice = mysqli_fetch_assoc($result);
             $lastId = (int)($rowInvoice['max_id'] ?? 0);
             $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
 
+
             // Insert data into the invoices table
-            $paymentDescription = "Membership Payment";
+            $paymentDescription = "Membership Registration Payment";
             $amountBilled = 2000.00;
 
             $insertInvoice = $conn->prepare("INSERT INTO invoices (id, payment_description, amount_billed, amount_paid, user_email, invoice_date) VALUES (?, ?, ?, ?, ?, ?)");
@@ -138,4 +145,3 @@ if ($ResultCode == 0) {
 }
 
 $conn->close();
-?>
