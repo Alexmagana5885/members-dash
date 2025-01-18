@@ -29,7 +29,6 @@ class PDF extends FPDF
 
 
         $formatted_date = date('d/m/Y', strtotime($invoice_date));
-        // $invoice_number = sprintf('AGL%06d', $invoice_id);
         $invoice_number = $invoice_id;
         $this->SetFillColor(230, 234, 240);
         $this->Rect(0, 10, $this->w, 40, 'F');
@@ -73,61 +72,15 @@ class PDF extends FPDF
         $this->Cell(70, 5, $invoice_number, 0, 1, 'R');
     }
 
-    function BillAndPayTo($user_email, $user_type)
+    function BillAndPayTo($user_email, $user_type, $name, $user_id, $address, $phone)
     {
-        global $conn;
-        $name = $user_id = $address = $phone = $email = '';
-        if ($user_type == 'personal') {
-            $query = "SELECT * FROM personalmembership WHERE email = ?";
-            $stmt = $conn->prepare($query);
-            if ($stmt === false) {
-                die("Error preparing the query: " . $conn->error);
-            }
-            $stmt->bind_param('s', $user_email);
-            if (!$stmt->execute()) {
-                die("Error executing the query: " . $stmt->error);
-            }
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                $user_data = $result->fetch_assoc();
-                $name = $user_data['name'];
-                $user_id = $user_data['id'];
-                $address = $user_data['home_address'];
-                $phone = $user_data['phone'];
-                $email = $user_data['email'];
-            } else {
-                echo "No personal user found.";
-            }
-        } else if ($user_type == 'organization') {
-            $query = "SELECT * FROM officialsmembers WHERE personalmembership_email = ?";
-            $stmt = $conn->prepare($query);
-            if ($stmt === false) {
-                die("Error preparing the query: " . $conn->error);
-            }
-            $stmt->bind_param('s', $user_email);
-            if (!$stmt->execute()) {
-                die("Error executing the query: " . $stmt->error);
-            }
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                $org_data = $result->fetch_assoc();
-                $name = $org_data['organization_name'];
-                $user_id = $org_data['id'];
-                $address = 'Organization Address';
-                $phone = 'Organization Phone';
-                $email = $user_email;
-            } else {
-                echo "No organization user found.";
-            }
-        }
-
-        // $stmt->close();
+        // Bill To Section
         $this->SetXY(10, 55);
         $this->SetFont('Arial', 'B', 12);
         $this->SetTextColor(24, 49, 90);
         $this->Cell(90, 10, 'BILL TO', 0, 1);
         $this->Line(10, 65, 100, 65);
-
+    
         $this->SetFont('Arial', '', 10);
         $this->SetTextColor(85, 85, 85);
         $this->SetXY(10, 68);
@@ -135,14 +88,15 @@ class PDF extends FPDF
         $this->Cell(90, 5, $user_id, 0, 1);
         $this->Cell(90, 5, $address, 0, 1);
         $this->Cell(90, 5, $phone, 0, 1);
-        $this->Cell(90, 5, $email, 0, 1);
-
+        $this->Cell(90, 5, $user_email, 0, 1);
+    
+        // Pay To Section
         $this->SetXY(110, 55);
         $this->SetFont('Arial', 'B', 12);
         $this->SetTextColor(24, 49, 90);
         $this->Cell(90, 10, 'PAY TO', 0, 1, 'R');
         $this->Line(110, 65, 200, 65);
-
+    
         $this->SetFont('Arial', '', 10);
         $this->SetTextColor(85, 85, 85);
         $this->SetXY(110, 68);
@@ -150,6 +104,7 @@ class PDF extends FPDF
         $this->Cell(190, 5, 'info@agl.or.ke', 0, 1, 'R');
         $this->Cell(190, 5, '254-722-605-048', 0, 1, 'R');
     }
+    
 
     function ItemsTable($user_email, $date)
     {
@@ -257,13 +212,18 @@ class PDF extends FPDF
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_email = $_POST['user_email'] ?? '';
-    $user_type = $_POST['membership_type'] ?? '';
+    $user_type = $_POST['user_type'] ?? '';
     $date = $_POST['date'] ?? '';
-    if (!empty($user_email) && !empty($user_type) && !empty($date)) {
+    $name = $_POST['name'] ?? '';
+    $user_id = $_POST['user_id'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+
+    if (!empty($user_email) && !empty($user_type) && !empty($date) && !empty($name) && !empty($user_id) && !empty($address) && !empty($phone)) {
         $pdf = new PDF();
         $pdf->AddPage();
-        $pdf->InvoiceHeader($date,);
-        $pdf->BillAndPayTo($user_email, $user_type);
+        $pdf->InvoiceHeader($date);
+        $pdf->BillAndPayTo($user_email, $user_type, $name, $user_id, $address, $phone);
         list($total_billed, $total_paid) = $pdf->ItemsTable($user_email, $date);
         $pdf->RemarksSection($total_billed, $total_paid);
         $pdf->NoteSection();

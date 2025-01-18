@@ -326,11 +326,52 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
         <!-- show payment Invoice dropdown -->
 
-        <form id="invoiceForm" action="../forms/Invoice.php" method="POST">
-            <input type="hidden" name="user_email" id="user_email">
-            <input type="hidden" name="membership_type" id="membership_type">
+        <?php
+        
+
+        // Ensure the user is authenticated and session variables are set
+        if (!isset($_SESSION['user_email'])) {
+            header('Location: login.php'); // Redirect to login if session is not set
+            exit();
+        }
+
+        // Include the database connection file
+        require_once('../forms/DBconnection.php');
+
+        $userEmail = $_SESSION['user_email'];
+
+        // Fetch user data
+        $sql = "SELECT id, name, phone, home_address FROM personalmembership WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $userEmail);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            $userId = $user['id'];
+            $userName = $user['name'];
+            $userPhone = $user['phone'];
+            $userAddress = $user['home_address'];
+        } else {
+            // Handle case where user data is not found
+            echo "User data not found!";
+            exit();
+        }
+
+        $stmt->close();
+        $conn->close();
+        ?>
+
+        <form id="invoiceForm" action="Invoice.php" method="POST">
+            <input type="hidden" name="user_email" id="user_email" value="<?php echo htmlspecialchars($userEmail); ?>">
+            <input type="hidden" name="user_type" id="user_type" value="<?php echo htmlspecialchars($_SESSION['membership_type'] ?? ''); ?>">
             <input type="hidden" name="date" id="date">
-            <input type="hidden" name="invoice_id" id="invoice_id">
+
+            <input type="hidden" name="name" id="name" value="<?php echo htmlspecialchars($userName); ?>">
+            <input type="hidden" name="user_id" id="user_id" value="<?php echo htmlspecialchars($userId); ?>">
+            <input type="hidden" name="address" id="address" value="<?php echo htmlspecialchars($userAddress); ?>">
+            <input type="hidden" name="phone" id="phone" value="<?php echo htmlspecialchars($userPhone); ?>">
         </form>
 
         <script>
@@ -339,8 +380,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 const dropdown = document.getElementById('paymentsDropdown');
                 dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
             });
-            const sessionEmail = '<?php echo $_SESSION['user_email']; ?>';
-            const membershipType = '<?php echo $_SESSION['membership_type']; ?>';
 
             const invoiceLinks = document.querySelectorAll('.invoice-link');
             invoiceLinks.forEach(function(link) {
@@ -350,15 +389,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     const invoiceId = link.getAttribute('data-id');
                     const invoiceDate = link.getAttribute('data-date');
 
-                    document.getElementById('user_email').value = sessionEmail;
-                    document.getElementById('membership_type').value = membershipType;
                     document.getElementById('date').value = invoiceDate;
-                    document.getElementById('invoice_id').value = invoiceId;
 
                     document.getElementById('invoiceForm').submit();
                 });
             });
         </script>
+
 
         <section class="dashboard">
             <div class="cards">
