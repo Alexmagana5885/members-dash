@@ -262,7 +262,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     echo '<li>
-                        <a href="#" class="invoice-link" 
+                        <a href="#" class="invoice-link" target="_blank"
                            data-id="' . htmlspecialchars($row['id']) . '" 
                            data-date="' . htmlspecialchars($row['invoice_date']) . '">
                             ' . htmlspecialchars($row['invoice_date']) . '
