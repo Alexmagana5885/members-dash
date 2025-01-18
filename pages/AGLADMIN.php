@@ -363,7 +363,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         $conn->close();
         ?>
 
-        <form id="invoiceForm" action="Invoice.php" method="POST">
+        <form id="invoiceForm" action="../forms/Invoice.php" method="POST">
             <input type="hidden" name="user_email" id="user_email" value="<?php echo htmlspecialchars($userEmail); ?>">
             <input type="hidden" name="user_type" id="user_type" value="<?php echo htmlspecialchars($_SESSION['membership_type'] ?? ''); ?>">
             <input type="hidden" name="date" id="date">
