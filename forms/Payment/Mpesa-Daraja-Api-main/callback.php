@@ -44,24 +44,6 @@ if ($ResultCode == 0) {
 
         if ($insertStmt->affected_rows > 0) {
 
-            // $lastIdQuery = "SELECT id FROM invoices ORDER BY id DESC LIMIT 1";
-            // $lastIdResult = $conn->query($lastIdQuery);
-
-            // if ($lastIdResult->num_rows > 0) {
-            //     $row = $lastIdResult->fetch_assoc();
-            //     $lastId = intval(substr($row['id'], strrpos($row['id'], '/') + 1));
-            //     $customId = 'AGLP/' . str_pad($lastId + 1, 6, '0', STR_PAD_LEFT);
-            // } else {
-            //     $customId = 'AGLP/000001'; 
-            // }
-
-            // $paymentDescription = "Membership Registration Payment";
-            // $amountBilled = 2000.00;
-
-            // $insertInvoice = $conn->prepare("INSERT INTO invoices (id, payment_description, amount_billed, amount_paid, user_email, invoice_date) VALUES (?, ?, ?, ?, ?, ?)");
-            // $insertInvoice->bind_param('ssddss', $customId, $paymentDescription, $amountBilled, $Amount, $email, $timestamp);
-            // $insertInvoice->execute();
-
             // Insert data into the invoices table
             $paymentDescription = "Membership Registration Payment";
             $amountBilled = 2000.00;
@@ -104,8 +86,8 @@ if ($ResultCode == 0) {
 
             if ($updateStmt->affected_rows > 0) {
                 $to = $email;
-                $subject = "Payment Confirmation";
-                $message = "Greetings,\n\nThank you for your Member payment of Ksh $Amount.\n\nTransaction ID: $TransactionId\n\nBest regards,\nAGL Team";
+                $subject = "Membership Registration Payment";
+                $message = "Dear User,\n\nThank you for your Member payment of Ksh $Amount.\n\nTransaction ID: $TransactionId\n\nKindly Download your invoice from the portal\n\nBest regards,\nAGL Team";
                 $headers = "From: payments@agl.or.ke\r\n";
                 $headers .= "Reply-To: payments@agl.or.ke\r\n";
                 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
