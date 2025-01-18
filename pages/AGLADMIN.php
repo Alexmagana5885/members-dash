@@ -365,7 +365,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             <input type="hidden" name="phone" id="phone" value="<?php echo htmlspecialchars($userPhone); ?>">
         </form>
 
-        <script>
+        <!-- <script>
             document.getElementById('togglePayments').addEventListener('click', function(event) {
                 event.preventDefault();
                 const dropdown = document.getElementById('paymentsDropdown');
@@ -385,7 +385,30 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     document.getElementById('invoiceForm').submit();
                 });
             });
+        </script> -->
+
+        <script>
+            document.getElementById('togglePayments').addEventListener('click', function(event) {
+                event.preventDefault();
+                const dropdown = document.getElementById('paymentsDropdown');
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            const invoiceLinks = document.querySelectorAll('.invoice-link');
+            invoiceLinks.forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const invoiceId = link.getAttribute('data-id');
+                    const invoiceDate = link.getAttribute('data-date');
+                    const linkHref = link.getAttribute('href');
+                    window.open(linkHref, '_blank');
+                    document.getElementById('date').value = invoiceDate;
+                    document.getElementById('invoiceForm').submit();
+                });
+            });
         </script>
+
 
 
         <section class="dashboard">
@@ -487,12 +510,12 @@ LIMIT 1";
 
                 // Check which table the email belongs to and if fields are filled
 
-                // if (!empty($paymentNumberPersonal) || !empty($paymentCodePersonal)) {
-                //     $disablePaymentButton = true; 
-                // } elseif (!empty($paymentNumberOrganization) || !empty($paymentCodeOrganization)) {
-                //     $disablePaymentButton = true; 
-                // }
-                // 
+                if (!empty($paymentNumberPersonal) || !empty($paymentCodePersonal)) {
+                    $disablePaymentButton = true;
+                } elseif (!empty($paymentNumberOrganization) || !empty($paymentCodeOrganization)) {
+                    $disablePaymentButton = true;
+                }
+
                 ?>
 
                 <!-- HTML Section -->
