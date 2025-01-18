@@ -46,22 +46,13 @@ if ($ResultCode == 0) {
         $insertStmt->execute();
 
         if ($insertStmt->affected_rows > 0) {
-            // Generate a custom invoice ID
-            $stmtInvoice = $conn->prepare("SELECT MAX(id) as max_id FROM invoices");
-            $stmtInvoice->execute();
-            $resultInvoice = $stmtInvoice->get_result();
-            $rowInvoice = $resultInvoice->fetch_assoc();
-
-            $lastId = (int)($rowInvoice['max_id'] ?? 0);
-            $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
-
 
             // Insert data into the invoices table
             $paymentDescription = "Membership Premium Payment";
             $amountBilled = 3600.00;
 
-            $insertInvoice = $conn->prepare("INSERT INTO invoices (id, payment_description, amount_billed, amount_paid, user_email, invoice_date) VALUES (?, ?, ?, ?, ?, ?)");
-            $insertInvoice->bind_param('ssddss', $customId, $paymentDescription, $amountBilled, $Amount, $email, $timestamp);
+            $insertInvoice = $conn->prepare("INSERT INTO invoices (payment_description, amount_billed, amount_paid, user_email, invoice_date) VALUES (?, ?, ?, ?, ?)");
+            $insertInvoice->bind_param('sddss', $paymentDescription, $amountBilled, $Amount, $email, $timestamp);
             $insertInvoice->execute();
 
             if ($insertInvoice->affected_rows > 0) {
