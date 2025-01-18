@@ -44,19 +44,35 @@ if ($ResultCode == 0) {
 
         if ($insertStmt->affected_rows > 0) {
             // Generate a custom invoice ID
-            $stmtInvoice = $conn->prepare("SELECT MAX(id) as max_id FROM invoices");
-            $stmtInvoice->execute();
-            $resultInvoice = $stmtInvoice->get_result();
-            $rowInvoice = $resultInvoice->fetch_assoc();
+            // $stmtInvoice = $conn->prepare("SELECT MAX(id) as max_id FROM invoices");
+            // $stmtInvoice->execute();
+            // $resultInvoice = $stmtInvoice->get_result();
+            // $rowInvoice = $resultInvoice->fetch_assoc();
 
             // $lastId = (int)($rowInvoice['max_id'] ?? 0);
             // $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
 
-            $query = "SELECT MAX(CAST(SUBSTRING_INDEX(id, 'AGLP', -1) AS UNSIGNED)) AS max_id FROM invoices";
-            $result = mysqli_query($connection, $query);
-            $rowInvoice = mysqli_fetch_assoc($result);
+            // Prepare the query
+            $stmtInvoice = $conn->prepare("SELECT MAX(id) as max_id FROM invoices");
+            if (!$stmtInvoice) {
+                die("Query preparation failed: " . $conn->error);
+            }
+
+            // Execute the query
+            $stmtInvoice->execute();
+            $resultInvoice = $stmtInvoice->get_result();
+            if (!$resultInvoice) {
+                die("Query execution failed: " . $conn->error);
+            }
+
+            // Fetch the result
+            $rowInvoice = $resultInvoice->fetch_assoc();
             $lastId = (int)($rowInvoice['max_id'] ?? 0);
+
+            // Generate the custom ID
             $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
+            
+
 
 
             // Insert data into the invoices table
