@@ -231,7 +231,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     $sessionEmail = $_SESSION['user_email'];
     $membershipType = $_SESSION['membership_type'];
 
-    $query = "SELECT * FROM invoices WHERE user_email = ?";
+    $query = "SELECT * FROM invoices WHERE user_email = ? ORDER BY id DESC";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $sessionEmail);
     $stmt->execute();
@@ -327,7 +327,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <!-- show payment Invoice dropdown -->
 
         <?php
-        
+
         if (!isset($_SESSION['user_email'])) {
             header('Location: login.php');
             exit();
@@ -486,12 +486,14 @@ LIMIT 1";
                 $disablePaymentButton = false;
 
                 // Check which table the email belongs to and if fields are filled
+
                 // if (!empty($paymentNumberPersonal) || !empty($paymentCodePersonal)) {
                 //     $disablePaymentButton = true; 
                 // } elseif (!empty($paymentNumberOrganization) || !empty($paymentCodeOrganization)) {
                 //     $disablePaymentButton = true; 
                 // }
-                // ?>
+                // 
+                ?>
 
                 <!-- HTML Section -->
                 <div class="card">

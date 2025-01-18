@@ -105,7 +105,7 @@ if ($ResultCode == 0) {
                 if ($updateStmt->affected_rows > 0) {
                     $to = $email;
                     $subject = "Membership Registration Payment";
-                    $message = "Dear User,\n\nThank you for your Member payment of Ksh $Amount.\n\nTransaction ID: $TransactionId\n\nKindly Download your invoice from the portal\n\nBest regards,\nAGL Team";
+                    $message = "Dear User,\n\nThank you for your Registration payment of Ksh $Amount.\n\nTransaction ID: $TransactionId\n\nKindly Download your invoice from the portal\n\nBest regards,\nAGL Team";
                     $headers = "From: payments@agl.or.ke\r\n";
                     $headers .= "Reply-To: payments@agl.or.ke\r\n";
                     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
