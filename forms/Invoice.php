@@ -213,27 +213,41 @@ class PDF extends FPDF
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_email = $_POST['user_email'] ?? '';
-    $user_type = $_POST['user_type'] ?? '';
-    $date = $_POST['date'] ?? '';
-    $name = $_POST['name'] ?? '';
-    $user_id = $_POST['user_id'] ?? '';
-    $address = $_POST['address'] ?? '';
-    $phone = $_POST['phone'] ?? '';
+    // Collect data from the POST request
+    $date = $_POST['invoice_date'];
+    $user_email = $_POST['user_email'];
+    $user_type = $_POST['user_type'];
+    $name = $_POST['name'];
+    $user_id = $_POST['user_id'];
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
 
-    if (!empty($user_email) && !empty($user_type) && !empty($date) && !empty($name) && !empty($user_id) && !empty($address) && !empty($phone)) {
-        $pdf = new PDF();
-        $pdf->AddPage();
-        $pdf->InvoiceHeader($date, $user_email);
-        $pdf->BillAndPayTo($user_email, $user_type, $name, $user_id, $address, $phone);
-        list($total_billed, $total_paid) = $pdf->ItemsTable($user_email, $date);
-        $pdf->RemarksSection($total_billed, $total_paid);
-        $pdf->NoteSection();
-        $pdf->FooterLineSection();
-        $pdf->Output();
-    } else {
-        echo "Error: Missing required input data.";
-    }
-} else {
-    echo "Invalid request method.";
+    // Create the PDF instance
+    $pdf = new PDF();
+
+    // Add a page
+    $pdf->AddPage();
+
+    // Generate Invoice Header
+    $pdf->InvoiceHeader($date, $user_email);
+
+    // Add Bill and Pay To sections
+    $pdf->BillAndPayTo($user_email, $user_type, $name, $user_id, $address, $phone);
+
+    // Add Items Table
+    [$total_billed, $total_paid] = $pdf->ItemsTable($user_email, $date);
+
+    // Add Remarks Section
+    $pdf->RemarksSection($total_billed, $total_paid);
+
+    // Add Note Section
+    $pdf->NoteSection();
+
+    // Add Footer Line
+    $pdf->FooterLineSection();
+
+    // Generate the PDF output
+    ob_end_clean(); // Clean any output buffer to avoid corrupt PDF output
+    $pdf->Output('D', 'Invoice_' . $user_id . '.pdf'); // Download the file
 }
+
