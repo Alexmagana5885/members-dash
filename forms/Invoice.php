@@ -11,66 +11,68 @@ class PDF extends FPDF
         $this->Rect(0, 0, $this->w, 10, 'F');
     }
 
-    function InvoiceHeader($date)
-
+    function InvoiceHeader($date, $user_email)
     {
         global $conn;
         $invoice_date = date('Y-m-d', strtotime($date));
-
-        $query = "SELECT id, invoice_date FROM invoices WHERE DATE(invoice_date) = '$invoice_date' ORDER BY id DESC LIMIT 1";
+    
+        // Modify the query to include both email and date for filtering
+        $query = "SELECT id, invoice_date FROM invoices WHERE DATE(invoice_date) = '$invoice_date' AND user_email = '$user_email' ORDER BY id DESC LIMIT 1";
         $result = $conn->query($query);
+    
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $invoice_id = $row['id'];
+            $invoice_id = $row['id']; // The ID from the database
             $invoice_date = $row['invoice_date'];
         } else {
-            die("No invoice data found for the specified date.");
+            die("No invoice data found for the specified email and date.");
         }
-
-
+    
         $formatted_date = date('d/m/Y', strtotime($invoice_date));
-        $invoice_number = $invoice_id;
+        $invoice_number = 'AGLP' . str_pad($invoice_id, 6, '0', STR_PAD_LEFT); 
         $this->SetFillColor(230, 234, 240);
         $this->Rect(0, 10, $this->w, 40, 'F');
-
+    
         // logo
         $this->SetXY(10, 15);
         $this->Image('../assets/img/logo.png', 10, 15, 50);
-
+    
         // Invoice details
         $this->SetFont('Arial', '', 10);
         $this->SetTextColor(85, 85, 85);
         $this->SetXY(10, 40);
         $this->Cell(50, 5, 'info@agl.or.ke', 0, 1);
         $this->Cell(50, 5, '253-722-605-048', 0, 1);
-
+    
         // Title
         $this->SetXY(120, 15);
         $this->SetFont('Arial', 'B', 14);
         $this->SetTextColor(24, 49, 90);
         $this->Cell(70, 10, 'INVOICE', 0, 1, 'R');
-
+    
         // Date
         $this->SetFont('Arial', '', 10);
         $this->SetTextColor(0, 0, 0);
         $this->SetXY(120, 25);
         $this->Cell(70, 5, $formatted_date, 0, 1, 'R');
-
+    
         $this->Line(120, 30, 200, 30);
-
+    
         // Invoice number
         $this->SetFont('Arial', 'B', 10);
         $this->SetTextColor(24, 49, 90);
         $this->SetXY(120, 32);
         $this->Cell(70, 5, 'INVOICE NO.', 0, 1, 'R');
-
+    
         $this->Line(120, 37, 200, 37);
-
+    
         $this->SetFont('Arial', '', 10);
         $this->SetTextColor(0, 0, 0);
         $this->SetXY(120, 40);
         $this->Cell(70, 5, $invoice_number, 0, 1, 'R');
     }
+    
+    
 
     function BillAndPayTo($user_email, $user_type, $name, $user_id, $address, $phone)
     {
@@ -222,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($user_email) && !empty($user_type) && !empty($date) && !empty($name) && !empty($user_id) && !empty($address) && !empty($phone)) {
         $pdf = new PDF();
         $pdf->AddPage();
-        $pdf->InvoiceHeader($date);
+        $pdf->InvoiceHeader($date, $user_email);
         $pdf->BillAndPayTo($user_email, $user_type, $name, $user_id, $address, $phone);
         list($total_billed, $total_paid) = $pdf->ItemsTable($user_email, $date);
         $pdf->RemarksSection($total_billed, $total_paid);
