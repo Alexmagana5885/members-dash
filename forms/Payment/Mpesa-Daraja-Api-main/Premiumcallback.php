@@ -18,6 +18,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     http_response_code(400);
     exit;
 }
+
 // Extract relevant data from the response
 $MerchantRequestID = $data->Body->stkCallback->MerchantRequestID ?? null;
 $CheckoutRequestID = $data->Body->stkCallback->CheckoutRequestID ?? null;
@@ -39,18 +40,40 @@ if ($ResultCode == 0) {
         $row = $result->fetch_assoc();
         $email = $row['email'];
 
+        // Get the total payments made within the last year
+        $oneYearAgo = date('Y-m-d H:i:s', strtotime('-1 year'));
+        $paymentQuery = $conn->prepare("SELECT SUM(amount) AS total_paid FROM member_premium_payments WHERE member_email = ? AND timestamp > ?");
+        $paymentQuery->bind_param('ss', $email, $oneYearAgo);
+        $paymentQuery->execute();
+        $paymentResult = $paymentQuery->get_result();
+
+        $totalPaid = 0;
+        if ($paymentResult && $paymentResult->num_rows > 0) {
+            $paymentRow = $paymentResult->fetch_assoc();
+            $totalPaid = $paymentRow['total_paid'] ?? 0;
+        }
+
+        // Calculate the amount billed
+        $amountBilled = 3600.00 - $totalPaid; // Reduce by the total paid within the last year
+        if ($amountBilled < 0) {
+            $amountBilled = 0; // Ensure the amount billed is never negative
+        }
+
         // Insert the payment details into the member_payments table
         $timestamp = date('Y-m-d H:i:s'); // Current timestamp
         $insertStmt = $conn->prepare("INSERT INTO member_payments (member_email, phone_number, payment_code, amount, timestamp) VALUES (?, ?, ?, ?, ?)");
         $insertStmt->bind_param('sssss', $email, $UserPhoneNumber, $TransactionId, $Amount, $timestamp);
         $insertStmt->execute();
 
-        if ($insertStmt->affected_rows > 0) {
+        // Insert into member_premium_payments table as well
+        $premiumInsertStmt = $conn->prepare("INSERT INTO member_premium_payments (member_email, phone_number, payment_code, amount, timestamp) VALUES (?, ?, ?, ?, ?)");
+        $premiumInsertStmt->bind_param('sssss', $email, $UserPhoneNumber, $TransactionId, $Amount, $timestamp);
+        $premiumInsertStmt->execute();
 
-            // Insert data into the invoices table
+        if ($premiumInsertStmt->affected_rows > 0) {
+
+            // Insert data into the invoices table with the dynamically calculated amountBilled
             $paymentDescription = "Membership Premium Payment";
-            $amountBilled = 3600.00;
-
             $insertInvoice = $conn->prepare("INSERT INTO invoices (payment_description, amount_billed, amount_paid, user_email, invoice_date) VALUES (?, ?, ?, ?, ?)");
             $insertInvoice->bind_param('sddss', $paymentDescription, $amountBilled, $Amount, $email, $timestamp);
             $insertInvoice->execute();
@@ -88,9 +111,10 @@ if ($ResultCode == 0) {
             // Handle the case where the payment insert did not succeed
             $_SESSION['response'] = [
                 'success' => false,
-                'message' => 'Failed to insert payment details.'
+                'message' => 'Failed to insert payment details into member_premium_payments.'
             ];
         }
+        $premiumInsertStmt->close();
         $insertStmt->close();
     } else {
         // Handle the case where no email was found
@@ -108,5 +132,5 @@ if ($ResultCode == 0) {
     ];
 }
 
-
 $conn->close();
+?>
