@@ -52,27 +52,16 @@ if ($ResultCode == 0) {
             // $lastId = (int)($rowInvoice['max_id'] ?? 0);
             // $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
 
-            // Prepare the query
-            $stmtInvoice = $conn->prepare("SELECT MAX(id) as max_id FROM invoices");
-            if (!$stmtInvoice) {
-                die("Query preparation failed: " . $conn->error);
-            }
-
-            // Execute the query
-            $stmtInvoice->execute();
-            $resultInvoice = $stmtInvoice->get_result();
-            if (!$resultInvoice) {
-                die("Query execution failed: " . $conn->error);
-            }
-
-            // Fetch the result
-            $rowInvoice = $resultInvoice->fetch_assoc();
-            $lastId = (int)($rowInvoice['max_id'] ?? 0);
-
-            // Generate the custom ID
-            $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
+            $lastIdQuery = "SELECT id FROM invoices ORDER BY id DESC LIMIT 1";
+            $lastIdResult = $conn->query($lastIdQuery);
             
-
+            if ($lastIdResult->num_rows > 0) {
+                $row = $lastIdResult->fetch_assoc();
+                $lastId = intval(substr($row['id'], strrpos($row['id'], '/') + 1));
+                $customId = 'AGLP' . str_pad($lastId + 1, 6, '0', STR_PAD_LEFT); 
+            } else {
+                $customId = 'AGLP000001';  
+            }
 
 
             // Insert data into the invoices table
