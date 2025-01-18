@@ -43,29 +43,33 @@ if ($ResultCode == 0) {
         $insertStmt->execute();
 
         if ($insertStmt->affected_rows > 0) {
-            // Generate a custom invoice ID
-            // $stmtInvoice = $conn->prepare("SELECT MAX(id) as max_id FROM invoices");
-            // $stmtInvoice->execute();
-            // $resultInvoice = $stmtInvoice->get_result();
-            // $rowInvoice = $resultInvoice->fetch_assoc();
-
-            // $lastId = (int)($rowInvoice['max_id'] ?? 0);
-            // $customId = "AGLP" . str_pad($lastId + 1, 6, "0", STR_PAD_LEFT);
 
             $lastIdQuery = "SELECT id FROM invoices ORDER BY id DESC LIMIT 1";
             $lastIdResult = $conn->query($lastIdQuery);
             
             if ($lastIdResult->num_rows > 0) {
                 $row = $lastIdResult->fetch_assoc();
-                if (preg_match('/AGLP\/(\d+)$/', $row['id'], $matches)) {
-                    $lastId = intval($matches[1]);
-                    $customId = 'AGLP/' . str_pad($lastId + 1, 6, '0', STR_PAD_LEFT);
-                } else {
-                    $customId = 'AGLP/000001'; 
-                }
+                $lastId = intval(substr($row['id'], strrpos($row['id'], '/') + 1));
+                $customId = 'AGLP/' . str_pad($lastId + 1, 6, '0', STR_PAD_LEFT);
             } else {
-                $customId = 'AGLP/000001';  
+                $customId = 'AGLP/000001'; 
             }
+
+            /////////////////////////////
+            // $lastIdQuery = "SELECT id FROM invoices ORDER BY id DESC LIMIT 1";
+            // $lastIdResult = $conn->query($lastIdQuery);
+            
+            // if ($lastIdResult->num_rows > 0) {
+            //     $row = $lastIdResult->fetch_assoc();
+            //     if (preg_match('/AGLP\/(\d+)$/', $row['id'], $matches)) {
+            //         $lastId = intval($matches[1]);
+            //         $customId = 'AGLP/' . str_pad($lastId + 1, 6, '0', STR_PAD_LEFT);
+            //     } else {
+            //         $customId = 'AGLP/000001'; 
+            //     }
+            // } else {
+            //     $customId = 'AGLP/000001';  
+            // }
 
 
             // Insert data into the invoices table
