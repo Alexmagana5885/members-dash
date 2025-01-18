@@ -67,7 +67,7 @@ if ($ResultCode == 0) {
             $amountBilled = 2000.00;
 
             $insertInvoice = $conn->prepare("INSERT INTO invoices (payment_description, amount_billed, amount_paid, user_email, invoice_date) VALUES (?, ?, ?, ?, ?)");
-            $insertInvoice->bind_param('ssddss', $paymentDescription, $amountBilled, $Amount, $email, $timestamp);
+            $insertInvoice->bind_param('sddss', $paymentDescription, $amountBilled, $Amount, $email, $timestamp);
             $insertInvoice->execute();
 
 
