@@ -365,7 +365,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             <input type="hidden" name="phone" id="phone" value="<?php echo htmlspecialchars($userPhone); ?>">
         </form>
 
-        <!-- <script>
+        <script>
             document.getElementById('togglePayments').addEventListener('click', function(event) {
                 event.preventDefault();
                 const dropdown = document.getElementById('paymentsDropdown');
@@ -385,9 +385,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     document.getElementById('invoiceForm').submit();
                 });
             });
-        </script> -->
+        </script>
 
-        <script>
+        <!-- <script>
             document.getElementById('togglePayments').addEventListener('click', function(event) {
                 event.preventDefault();
                 const dropdown = document.getElementById('paymentsDropdown');
@@ -407,7 +407,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     document.getElementById('invoiceForm').submit();
                 });
             });
-        </script>
+        </script> -->
 
 
 
