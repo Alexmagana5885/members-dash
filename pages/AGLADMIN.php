@@ -359,8 +359,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             exit();
         }
 
-        $stmt->close();
-        $conn->close();
         ?>
 
         <form id="invoiceForm" action="../forms/Invoice.php" method="POST">
