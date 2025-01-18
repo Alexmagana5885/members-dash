@@ -328,19 +328,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
         <?php
         
-
-        // Ensure the user is authenticated and session variables are set
         if (!isset($_SESSION['user_email'])) {
-            header('Location: login.php'); // Redirect to login if session is not set
+            header('Location: login.php');
             exit();
         }
-
-        // Include the database connection file
         require_once('../forms/DBconnection.php');
 
         $userEmail = $_SESSION['user_email'];
-
-        // Fetch user data
         $sql = "SELECT id, name, phone, home_address FROM personalmembership WHERE email = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $userEmail);
@@ -354,7 +348,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             $userPhone = $user['phone'];
             $userAddress = $user['home_address'];
         } else {
-            // Handle case where user data is not found
             echo "User data not found!";
             exit();
         }

@@ -2,15 +2,22 @@
 session_start(); // Start the session
 
 include 'AGLdbconnection.php';
+header("Content-Type: application/json");
 
+$stkCallbackResponse = file_get_contents('php://input');
+$logFile = "PremiumMpesastkresponse.json";
+file_put_contents($logFile, $stkCallbackResponse . PHP_EOL, FILE_APPEND);
 
+$data = json_decode($stkCallbackResponse);
 
-// Log the callback response for debugging
-file_put_contents('mpesa_callback_response.log', file_get_contents('php://input'), FILE_APPEND);
-
-// Read the incoming callback data
-$data = json_decode(file_get_contents('php://input'), true);
-
+if (json_last_error() !== JSON_ERROR_NONE) {
+    $_SESSION['response'] = [
+        'success' => false,
+        'message' => 'JSON decoding error: ' . json_last_error_msg()
+    ];
+    http_response_code(400);
+    exit;
+}
 // Extract relevant data from the response
 $MerchantRequestID = $data['Body']['stkCallback']['MerchantRequestID'] ?? null;
 $CheckoutRequestID = $data['Body']['stkCallback']['CheckoutRequestID'] ?? null;
