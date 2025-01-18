@@ -60,7 +60,7 @@ if ($ResultCode == 0) {
                 $lastId = intval(substr($row['id'], strrpos($row['id'], '/') + 1));
                 $customId = 'AGLP/' . str_pad($lastId + 1, 6, '0', STR_PAD_LEFT); 
             } else {
-                $customId = 'AGLP000001';  
+                $customId = 'AGLP/000001';  
             }
 
 
