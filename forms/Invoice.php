@@ -230,9 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdf->RemarksSection($total_billed, $total_paid);
         $pdf->NoteSection();
         $pdf->FooterLineSection();
-        // $pdf->Output('D', 'Invoice_' . $user_id . '.pdf');
-        $pdf->Output('I', 'Invoice_' . $user_id . '.pdf');
-
+        $pdf->Output('D', 'Invoice_' . $user_id . '.pdf');
     } else {
         echo "Error: Missing required input data.";
     }
