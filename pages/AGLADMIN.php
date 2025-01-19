@@ -265,7 +265,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <a href="#" class="invoice-link" target="_blank"
                        data-id="' . htmlspecialchars($row['id']) . '" 
                        data-date="' . htmlspecialchars($row['invoice_date']) . '" 
-                       style="font-size: 11px;">
+                       style="font-size: 11px; text-align: right;">
                         ' . htmlspecialchars($row['invoice_date']) . '
                     </a>
                   </li>';
