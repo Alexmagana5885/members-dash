@@ -262,12 +262,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     echo '<li>
-                        <a href="#" class="invoice-link" target="_blank"
-                           data-id="' . htmlspecialchars($row['id']) . '" 
-                           data-date="' . htmlspecialchars($row['invoice_date']) . '">
-                            ' . htmlspecialchars($row['invoice_date']) . '
-                        </a>
-                      </li>';
+                    <a href="#" class="invoice-link" target="_blank"
+                       data-id="' . htmlspecialchars($row['id']) . '" 
+                       data-date="' . htmlspecialchars($row['invoice_date']) . '" 
+                       style="font-size: 11px;">
+                        ' . htmlspecialchars($row['invoice_date']) . '
+                    </a>
+                  </li>';
                                 }
                             } else {
                                 echo '<li>No payments found</li>';
@@ -275,6 +276,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             ?>
                         </ul>
                     </li>
+
 
                     <li><a href="userinfo.php" target="_blank">User Information</a></li>
 
@@ -386,30 +388,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 });
             });
         </script>
-
-        <!-- <script>
-            document.getElementById('togglePayments').addEventListener('click', function(event) {
-                event.preventDefault();
-                const dropdown = document.getElementById('paymentsDropdown');
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-            });
-
-            const invoiceLinks = document.querySelectorAll('.invoice-link');
-            invoiceLinks.forEach(function(link) {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault();
-
-                    const invoiceId = link.getAttribute('data-id');
-                    const invoiceDate = link.getAttribute('data-date');
-                    const linkHref = link.getAttribute('href');
-                    window.open(linkHref, '_blank');
-                    document.getElementById('date').value = invoiceDate;
-                    document.getElementById('invoiceForm').submit();
-                });
-            });
-        </script> -->
-
-
 
         <section class="dashboard">
             <div class="cards">
