@@ -41,6 +41,25 @@ if ($ResultCode == 0) {
         $email = $row['email'];
 
         // Get the total payments made within the last year
+
+        // $oneYearAgo = date('Y-m-d H:i:s', strtotime('-1 year'));
+        // $paymentQuery = $conn->prepare("SELECT SUM(amount) AS total_paid FROM member_premium_payments WHERE member_email = ? AND timestamp > ?");
+        // $paymentQuery->bind_param('ss', $email, $oneYearAgo);
+        // $paymentQuery->execute();
+        // $paymentResult = $paymentQuery->get_result();
+
+        // $totalPaid = 0;
+        // if ($paymentResult && $paymentResult->num_rows > 0) {
+        //     $paymentRow = $paymentResult->fetch_assoc();
+        //     $totalPaid = $paymentRow['total_paid'] ?? 0;
+        // }
+
+        // $amountBilled = 3600.00 - $totalPaid;
+        // if ($amountBilled < 0) {
+        //     $amountBilled = 0; 
+        // }
+
+        // Get the total payments made within the last year
         $oneYearAgo = date('Y-m-d H:i:s', strtotime('-1 year'));
         $paymentQuery = $conn->prepare("SELECT SUM(amount) AS total_paid FROM member_premium_payments WHERE member_email = ? AND timestamp > ?");
         $paymentQuery->bind_param('ss', $email, $oneYearAgo);
@@ -53,11 +72,22 @@ if ($ResultCode == 0) {
             $totalPaid = $paymentRow['total_paid'] ?? 0;
         }
 
-        // Calculate the amount billed
-        $amountBilled = 3600.00 - $totalPaid;
-        if ($amountBilled < 0) {
-            $amountBilled = 0; 
+        // Set the standard billed amount based on membership type
+        if ($_SESSION['membership_type'] == 'IndividualMember') {
+            $amountBilled = 3600.00;
+        } elseif ($_SESSION['membership_type'] == 'OrganizationMember') {
+            $amountBilled = 15000.00;
+        } else {
+            $amountBilled = 0; // Handle unexpected membership types
         }
+
+        // Calculate the remaining amount to be billed
+        $amountBilled -= $totalPaid;
+        if ($amountBilled < 0) {
+            $amountBilled = 0;
+        }
+
+
 
         // Insert the payment details into the member_payments table
         $timestamp = date('Y-m-d H:i:s'); // Current timestamp
@@ -133,4 +163,3 @@ if ($ResultCode == 0) {
 }
 
 $conn->close();
-?>
