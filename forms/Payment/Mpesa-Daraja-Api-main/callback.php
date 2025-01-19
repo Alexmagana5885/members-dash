@@ -38,22 +38,72 @@ if ($ResultCode == 0) {
         $email = $row['email'];
 
         // Calculate total payments made in the last 1 year
-        $oneYearAgo = date('Y-m-d H:i:s', strtotime('-1 year'));
-        $totalPaymentsQuery = $conn->prepare("SELECT SUM(amount) AS total_paid FROM member_registration_payments WHERE member_email = ? AND timestamp >= ?");
-        $totalPaymentsQuery->bind_param('ss', $email, $oneYearAgo);
-        $totalPaymentsQuery->execute();
-        $paymentResult = $totalPaymentsQuery->get_result();
-        $totalPaid = 0;
+        $base_payment = 0;
+        $query_personal = "SELECT * FROM personalmembership WHERE email = '$email'";
+        $result_personal = mysqli_query($conn, $query_personal);
 
-        if ($paymentResult && $paymentRow = $paymentResult->fetch_assoc()) {
+        if (mysqli_num_rows($result_personal) > 0) {
+            $base_payment = 3600;
+        }
+        $query_organization = "SELECT * FROM organizationmembership WHERE organization_email = '$email'";
+        $result_organization = mysqli_query($conn, $query_organization);
+
+        if (mysqli_num_rows($result_organization) > 0) {
+            $base_payment = 15000;
+        }
+        $oneYearAgo = date('Y-m-d H:i:s', strtotime('-1 year'));
+        $paymentQuery = $conn->prepare("SELECT SUM(amount) AS total_paid FROM member_premium_payments WHERE member_email = ? AND timestamp > ?");
+        $paymentQuery->bind_param('ss', $email, $oneYearAgo);
+        $paymentQuery->execute();
+        $paymentResult = $paymentQuery->get_result();
+
+        $totalPaid = 0;
+        if ($paymentResult && $paymentResult->num_rows > 0) {
+            $paymentRow = $paymentResult->fetch_assoc();
             $totalPaid = $paymentRow['total_paid'] ?? 0;
         }
 
-        $amountBilled = 2000.00 - $totalPaid;
+        // Calculate amountBilled based on base_payment
+        $amountBilled = $base_payment - $totalPaid;
 
-        if ($amountBilled <= 0) {
-            $amountBilled = 0.00; // No further billing required
+        if ($amountBilled < 0) {
+            $amountBilled = 0;
         }
+
+
+        $base_payment = 0;
+        $query_personal = "SELECT * FROM personalmembership WHERE email = '$email'";
+        $result_personal = mysqli_query($conn, $query_personal);
+
+        if (mysqli_num_rows($result_personal) > 0) {
+            $base_payment = 3600;
+        }
+        $query_organization = "SELECT * FROM organizationmembership WHERE organization_email = '$email'";
+        $result_organization = mysqli_query($conn, $query_organization);
+
+        if (mysqli_num_rows($result_organization) > 0) {
+            $base_payment = 15000;
+        }
+        $oneYearAgo = date('Y-m-d H:i:s', strtotime('-1 year'));
+        $paymentQuery = $conn->prepare("SELECT SUM(amount) AS total_paid FROM member_premium_payments WHERE member_email = ? AND timestamp > ?");
+        $paymentQuery->bind_param('ss', $email, $oneYearAgo);
+        $paymentQuery->execute();
+        $paymentResult = $paymentQuery->get_result();
+
+        $totalPaid = 0;
+        if ($paymentResult && $paymentResult->num_rows > 0) {
+            $paymentRow = $paymentResult->fetch_assoc();
+            $totalPaid = $paymentRow['total_paid'] ?? 0;
+        }
+
+        // Calculate amountBilled based on base_payment
+        $amountBilled = $base_payment - $totalPaid;
+
+        if ($amountBilled < 0) {
+            $amountBilled = 0;
+        }
+
+
 
         $timestamp = date('Y-m-d H:i:s');
         $insertStmt = $conn->prepare("INSERT INTO member_payments (member_email, phone_number, payment_code, amount, timestamp) VALUES (?, ?, ?, ?, ?)");
