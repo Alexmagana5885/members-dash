@@ -334,7 +334,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         require_once('../forms/DBconnection.php');
 
         $userEmail = $_SESSION['user_email'];
-        $sql = "SELECT id, name, phone, home_address FROM personalmembership WHERE email = ?";
+        $sql = "SELECT id, organization_name, contact_phone_number, organization_address FROM organizationmembership WHERE email = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $userEmail);
         $stmt->execute();
@@ -343,11 +343,11 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
             $userId = $user['id'];
-            $userName = $user['name'];
-            $userPhone = $user['phone'];
-            $userAddress = $user['home_address'];
+            $userName = $user['organization_name'];
+            $userPhone = $user['contact_phone_number'];
+            $userAddress = $user['organization_address'];
         } else {
-            echo "User data not found!";
+            echo "organization data not found!";
             exit();
         }
 
