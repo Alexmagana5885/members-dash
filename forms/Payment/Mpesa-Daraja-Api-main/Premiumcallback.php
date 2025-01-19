@@ -60,6 +60,33 @@ if ($ResultCode == 0) {
         // }
 
         // Get the total payments made within the last year
+
+
+
+        // Initialize the base payment variable
+        $base_payment = 0;
+
+        // Check if the email is in personalmembership table
+        $query_personal = "SELECT * FROM personalmembership WHERE email = '$email'";
+        $result_personal = mysqli_query($conn, $query_personal);
+
+        if (mysqli_num_rows($result_personal) > 0) {
+            // If email found in personalmembership, set base payment to 3600
+            $base_payment = 3600;
+        }
+
+        // Check if the email is in organizationmembership table
+        $query_organization = "SELECT * FROM organizationmembership WHERE organization_email = '$email'";
+        $result_organization = mysqli_query($conn, $query_organization);
+
+        if (mysqli_num_rows($result_organization) > 0) {
+            // If email found in organizationmembership, set base payment to 15000
+            $base_payment = 15000;
+        }
+
+        // If email exists in both tables, the base payment will already be set to 15000 from the organizationmembership check
+
+        // Calculate the amount billed
         $oneYearAgo = date('Y-m-d H:i:s', strtotime('-1 year'));
         $paymentQuery = $conn->prepare("SELECT SUM(amount) AS total_paid FROM member_premium_payments WHERE member_email = ? AND timestamp > ?");
         $paymentQuery->bind_param('ss', $email, $oneYearAgo);
@@ -72,20 +99,16 @@ if ($ResultCode == 0) {
             $totalPaid = $paymentRow['total_paid'] ?? 0;
         }
 
-        // Set the standard billed amount based on membership type
-        if ($_SESSION['membership_type'] == 'IndividualMember') {
-            $amountBilled = 3600.00;
-        } elseif ($_SESSION['membership_type'] == 'OrganizationMember') {
-            $amountBilled = 15000.00;
-        } else {
-            $amountBilled = 0; // Handle unexpected membership types
-        }
+        // Calculate amountBilled based on base_payment
+        $amountBilled = $base_payment - $totalPaid;
 
-        // Calculate the remaining amount to be billed
-        $amountBilled -= $totalPaid;
         if ($amountBilled < 0) {
             $amountBilled = 0;
         }
+
+        // Output the result
+
+
 
 
 
