@@ -334,7 +334,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         require_once('../forms/DBconnection.php');
 
         $userEmail = $_SESSION['user_email'];
-        $sql = "SELECT id, organization_name, contact_phone_number, organization_address FROM organizationmembership WHERE email = ?";
+        $sql = "SELECT id, organization_name, contact_phone_number, organization_address FROM organizationmembership WHERE organization_email = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $userEmail);
         $stmt->execute();
