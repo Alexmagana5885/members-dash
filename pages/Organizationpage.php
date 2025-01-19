@@ -24,7 +24,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
-    
+
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" /> -->
     <link href="../assets/CSS/quilleditor.css" rel="stylesheet" />
@@ -226,6 +226,19 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     </style>
 
+    <?php
+    require_once('../forms/DBconnection.php');
+
+    $sessionEmail = $_SESSION['user_email'];
+    $membershipType = $_SESSION['membership_type'];
+
+    $query = "SELECT * FROM invoices WHERE user_email = ? ORDER BY id DESC";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $sessionEmail);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    ?>
+
     <div class="main-content">
 
         <nav style="cursor: pointer;" id="sidebar" class="sidebar">
@@ -274,6 +287,27 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
                     <li><a href="UserDataORG.php" target="_blank">User Information</a></li>
+                    <li>
+                        <a href="#" id="togglePayments">My Payments Invoices</a>
+                        <ul style="display: none;" class="dropdown" id="paymentsDropdown">
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<li>
+                    <a href="#" class="invoice-link" target="_blank"
+                       data-id="' . htmlspecialchars($row['id']) . '" 
+                       data-date="' . htmlspecialchars($row['invoice_date']) . '" 
+                       style="font-size: 12px; text-align: right;">
+                        ' . htmlspecialchars($row['invoice_date']) . '
+                    </a>
+                  </li>';
+                                }
+                            } else {
+                                echo '<li>No payments found</li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
                     <!-- <li><a href="UserDataORG.php" ></a>User Information</a></li>
                     <li><a href="UserDataORG.php" target="_blank"></a>User Information</a></li> -->
                     <li><a href="mailto:info@agl.or.ke">Email Us</a></li>
@@ -287,6 +321,70 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
+
+
+        <!-- show payment Invoice dropdown -->
+
+        <?php
+
+        if (!isset($_SESSION['user_email'])) {
+            header('Location: login.php');
+            exit();
+        }
+        require_once('../forms/DBconnection.php');
+
+        $userEmail = $_SESSION['user_email'];
+        $sql = "SELECT id, name, phone, home_address FROM personalmembership WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $userEmail);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            $userId = $user['id'];
+            $userName = $user['name'];
+            $userPhone = $user['phone'];
+            $userAddress = $user['home_address'];
+        } else {
+            echo "User data not found!";
+            exit();
+        }
+
+        ?>
+
+        <form id="invoiceForm" action="../forms/Invoice.php" method="POST">
+            <input type="hidden" name="user_email" id="user_email" value="<?php echo htmlspecialchars($userEmail); ?>">
+            <input type="hidden" name="user_type" id="user_type" value="<?php echo htmlspecialchars($_SESSION['membership_type'] ?? ''); ?>">
+            <input type="hidden" name="date" id="date">
+
+            <input type="hidden" name="name" id="name" value="<?php echo htmlspecialchars($userName); ?>">
+            <input type="hidden" name="user_id" id="user_id" value="<?php echo htmlspecialchars($userId); ?>">
+            <input type="hidden" name="address" id="address" value="<?php echo htmlspecialchars($userAddress); ?>">
+            <input type="hidden" name="phone" id="phone" value="<?php echo htmlspecialchars($userPhone); ?>">
+        </form>
+
+        <script>
+            document.getElementById('togglePayments').addEventListener('click', function(event) {
+                event.preventDefault();
+                const dropdown = document.getElementById('paymentsDropdown');
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            const invoiceLinks = document.querySelectorAll('.invoice-link');
+            invoiceLinks.forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const invoiceId = link.getAttribute('data-id');
+                    const invoiceDate = link.getAttribute('data-date');
+
+                    document.getElementById('date').value = invoiceDate;
+
+                    document.getElementById('invoiceForm').submit();
+                });
+            });
+        </script>
 
         <section class="dashboard">
             <div class="cards">
@@ -1127,14 +1225,13 @@ LIMIT 1";
             // Fetch data
             if ($row = $Mresult->fetch_assoc()) {
                 $organizationName = $row['organization_name'];
-  
             } else {
                 echo "No organization found";
             }
 
             ?>
 
-            
+
 
             <!-- planned event style -->
 

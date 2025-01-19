@@ -54,9 +54,9 @@ if ($ResultCode == 0) {
         }
 
         // Calculate the amount billed
-        $amountBilled = 3600.00 - $totalPaid; // Reduce by the total paid within the last year
+        $amountBilled = 3600.00 - $totalPaid;
         if ($amountBilled < 0) {
-            $amountBilled = 0; // Ensure the amount billed is never negative
+            $amountBilled = 0; 
         }
 
         // Insert the payment details into the member_payments table

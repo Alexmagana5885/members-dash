@@ -297,10 +297,29 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a id="openMessagePopupSend">Send Message</a></li>
 
                     <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                    <li><a href="adminP.php">Payments</a></li>
+                    <li><a href="adminP.php">Member Payments</a></li>
+                    <li>
+                        <a href="#" id="togglePayments">My Payments Invoices</a>
+                        <ul style="display: none;" class="dropdown" id="paymentsDropdown">
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<li>
+                    <a href="#" class="invoice-link" target="_blank"
+                       data-id="' . htmlspecialchars($row['id']) . '" 
+                       data-date="' . htmlspecialchars($row['invoice_date']) . '" 
+                       style="font-size: 12px; text-align: right;">
+                        ' . htmlspecialchars($row['invoice_date']) . '
+                    </a>
+                  </li>';
+                                }
+                            } else {
+                                echo '<li>No payments found</li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
                     <li><a href="userinfo.php" target="_blank">User Information</a></li>
-
-
                     <li><a href="mailto:info@agl.or.ke">Email</a></li>
                     <li><a href="tel:+254748027123">Call</a></li>
                     <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
@@ -312,6 +331,27 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 <?php elseif ($role == 'member'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
                     <li><a href="userinfo.php" target="_blank">User Information</a></li>
+                    <li>
+                        <a href="#" id="togglePayments">My Payments Invoices</a>
+                        <ul style="display: none;" class="dropdown" id="paymentsDropdown">
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<li>
+                    <a href="#" class="invoice-link" target="_blank"
+                       data-id="' . htmlspecialchars($row['id']) . '" 
+                       data-date="' . htmlspecialchars($row['invoice_date']) . '" 
+                       style="font-size: 12px; text-align: right;">
+                        ' . htmlspecialchars($row['invoice_date']) . '
+                    </a>
+                  </li>';
+                                }
+                            } else {
+                                echo '<li>No payments found</li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
                     <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
                     <li><a href="mailto:info@agl.or.ke">Email Us</a></li>
                     <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
