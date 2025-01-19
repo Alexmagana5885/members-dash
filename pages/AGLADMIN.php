@@ -694,7 +694,7 @@ LIMIT 1";
                         <input type="text" id="phone_number" name="phone_number" class="popup-input" placeholder="Enter your phone number" required>
 
                         <label for="amount" class="popup-label">Amount</label>
-                        <input type="text" id="amount" name="amount" class="popup-input" value="1" readonly>
+                        <input type="text" id="amount" name="amount" class="popup-input" value="3600" readonly>
 
                         <div class="popup-buttons">
                             <button class="popup-btn" type="submit">Make Payment</button>

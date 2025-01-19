@@ -641,7 +641,7 @@ LIMIT 1";
                     <form action="../forms/Payment/Mpesa-Daraja-Api-main/STKMembersubscription.php" method="post" id="memberpayments-popup-content" class="popup-content">
                         <span class="popup-close" onclick="togglePopup('memberpayments-popup')">X</span>
                         <img src="../assets/img/mpesa.png" alt="M-Pesa" class="popup-logo">
-                        <p class="popup-description">Confirm that you are making a payment of 3,600 Ksh as annual
+                        <p class="popup-description">Confirm that you are making a payment of 15,000 Ksh as annual
                             membership fees to the Association of Government Librarians.</p>
 
                         <label for="User-email" class="popup-label">User Email</label>
@@ -651,7 +651,7 @@ LIMIT 1";
                         <input type="text" id="phone_number" name="phone_number" class="popup-input" placeholder="Enter your phone number" required>
 
                         <label for="amount" class="popup-label">Amount</label>
-                        <input type="text" id="amount" name="amount" class="popup-input" value="1" readonly>
+                        <input type="text" id="amount" name="amount" class="popup-input" value="15000" readonly>
 
                         <div class="popup-buttons">
                             <button class="popup-btn" type="submit">Make Payment</button>
