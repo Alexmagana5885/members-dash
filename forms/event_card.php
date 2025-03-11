@@ -14,8 +14,6 @@ $event_id = $_POST['eventName'];
 // echo "Member Email: " . $member_email . "<br>";
 // echo "Event ID: " . $event_id;
 
-
-
 $qrDir = '../assets/img/qrcodes/';
 if (!is_dir($qrDir)) {
     mkdir($qrDir, 0755, true); // Create the directory with proper permissions
@@ -126,9 +124,28 @@ if ($result->num_rows > 0) {
     $pdf->Ln(10);
 
     // Set font for event name and center it
-    $pdf->SetFont('Arial', 'B', 10); // Bold for emphasis
-    $pdf->Cell(0, 2, $event_name, 0, 2, 'C'); // Center text
-    $pdf->Ln(1); // Reduced space
+
+    // $pdf->SetFont('Arial', 'B', 10); 
+    // $pdf->Cell(0, 2, $event_name, 0, 2, 'C');
+    // $pdf->Ln(1); 
+
+
+    $maxWidth = 0.8 * $pdf->GetPageWidth(); // 80% of the page width
+    $textWidth = $pdf->GetStringWidth($event_name);
+
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Ln(2); // Add space before
+
+    if ($textWidth > $maxWidth) {
+        // Use MultiCell if text exceeds 80% of the width
+        $pdf->MultiCell(0, 6, $event_name, 0, 'C');
+    } else {
+        // Use Cell if text fits
+        $pdf->Cell(0, 6, $event_name, 0, 2, 'C');
+    }
+
+    $pdf->Ln(2); // Add space after
+
 
     // Add member name and center it
     $pdf->SetFont('Arial', '', 10);
