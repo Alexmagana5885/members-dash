@@ -130,21 +130,21 @@ if ($result->num_rows > 0) {
     // $pdf->Ln(1); 
 
 
-    $maxWidth = 0.8 * $pdf->GetPageWidth(); // 80% of the page width
+    $maxWidth = 0.9 * $pdf->GetPageWidth(); // 80% of the page width
     $textWidth = $pdf->GetStringWidth($event_name);
 
-    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->SetFont('Arial', 'B', 7);
     $pdf->Ln(2); // Add space before
 
     if ($textWidth > $maxWidth) {
         // Use MultiCell if text exceeds 80% of the width
-        $pdf->MultiCell(0, 6, $event_name, 0, 'C');
+        $pdf->MultiCell(0, 4, $event_name, 0, 'C');
     } else {
         // Use Cell if text fits
         $pdf->Cell(0, 6, $event_name, 0, 2, 'C');
     }
 
-    $pdf->Ln(2); // Add space after
+    $pdf->Ln(1); // Add space after
 
 
     // Add member name and center it
