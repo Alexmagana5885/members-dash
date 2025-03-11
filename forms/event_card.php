@@ -125,27 +125,9 @@ if ($result->num_rows > 0) {
 
     // Set font for event name and center it
 
-    // $pdf->SetFont('Arial', 'B', 10); 
-    // $pdf->Cell(0, 2, $event_name, 0, 2, 'C');
-    // $pdf->Ln(1); 
-
-
-    $maxWidth = 0.9 * $pdf->GetPageWidth(); // 80% of the page width
-    $textWidth = $pdf->GetStringWidth($event_name);
-
-    $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Ln(2); // Add space before
-
-    if ($textWidth > $maxWidth) {
-        // Use MultiCell if text exceeds 80% of the width
-        $pdf->MultiCell(0, 4, $event_name, 0, 'C');
-    } else {
-        // Use Cell if text fits
-        $pdf->Cell(0, 6, $event_name, 0, 2, 'C');
-    }
-
-    $pdf->Ln(1); // Add space after
-
+    $pdf->SetFont('Arial', 'B', 8); 
+    $pdf->Cell(0, 1, $event_name, 0, 2, 'C');
+    $pdf->Ln(1); 
 
     // Add member name and center it
     $pdf->SetFont('Arial', '', 10);
