@@ -64,16 +64,20 @@ if ($_FILES['completionLetter']['error'] === UPLOAD_ERR_OK) {
     $completionTmpName = $_FILES['completionLetter']['tmp_name'];
     $completionExtension = strtolower(pathinfo($_FILES['completionLetter']['name'], PATHINFO_EXTENSION));
 
-    if ($completionExtension === 'pdf') {
+    // Allow PDF and image file types
+    $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
+
+    if (in_array($completionExtension, $allowedExtensions)) {
         $completionLetterName = $email . '_' . $timestamp . '.' . $completionExtension;
         $completionLetterPath = $documentDir . $completionLetterName;
         move_uploaded_file($completionTmpName, $completionLetterPath);
     } else {
-        $response['errors'][] = "Only PDF files are allowed for the completion letter.";
+        $response['errors'][] = "Only PDF, JPG, JPEG, and PNG files are allowed for the completion letter.";
     }
 } else {
     $response['errors'][] = "Error uploading completion letter.";
 }
+
 
 // Check if the email is already registered
 $emailCheckQuery = "SELECT id FROM personalmembership WHERE email = ?";
