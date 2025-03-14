@@ -235,7 +235,7 @@ session_start();
               <span id="graduationYear-error" style="color: red;"></span>
 
               <label for="completionLetter">Completion Letter:</label>
-              <input style="height: 35px ; padding: 10px" type="file" id="completionLetter" name="completionLetter" accept=".pdf"
+              <input style="height: 35px ; padding: 10px" type="file" id="completionLetter" name="completionLetter"
                 required><br><br>
             </div>
           </div>
