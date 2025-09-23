@@ -259,10 +259,11 @@
               name="resetemail"
               required />
             <button type="submit" id="resetPasswordBtn">Send</button><br>
-            
+
             <p class="register-link">
               <a href="https://member.log.agl.or.ke/members/">Back to Login</a>
-            </p></script>
+            </p>
+            </script>
           </div>
         </form>
         <script>
@@ -285,7 +286,7 @@
     </div>
 
     <!-- login Otp verification -->
-    <script>
+    <!-- <script>
       document.getElementById("OTPform").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent default form submission
 
@@ -320,7 +321,46 @@
           popup.style.display = "none";
         }, 3000);
       }
+    </script> -->
+
+    <script>
+      document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch("forms/startT.php", { // <-- your updated PHP login file
+            method: "POST",
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
+              // Redirect user to the correct page
+              window.location.href = data.redirect;
+            } else if (data.status === "error") {
+              // Show error popup
+              showPopup(data.message);
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            showPopup("An error occurred. Please try again.");
+          });
+      });
+
+      function showPopup(message) {
+        const popup = document.getElementById("popup");
+        popup.textContent = message;
+        popup.style.display = "block";
+
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 3000); // Hide popup after 3 seconds
+      }
     </script>
+
+
 
     <!-- password reset Code Check -->
     <script>
