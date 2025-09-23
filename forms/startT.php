@@ -37,10 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $_SESSION['loggedin'] = true;
                         $_SESSION['user_email'] = $email;
                         $_SESSION['membership_type'] = $membershipType;
-                        
+
                         // Set role based on email or membership type
                         if ($email === 'eugeneadmin@agl.or.ke' || $email === 'maganaalex634@gmail.com') {
                             $_SESSION['role'] = 'superadmin';
+                            $response['status'] = 'success';
+                            $response['redirect'] = 'pages/AGLADMIN.php';
                         } else {
                             // Check for admin role in officialsmembers table
                             if ($membershipType == 'IndividualMember') {
@@ -51,34 +53,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     $stmtCheck->execute();
                                     $resultCheck = $stmtCheck->get_result();
 
-                                    $_SESSION['role'] = $resultCheck->num_rows > 0 ? 'admin' : 'member';
+                                    if ($resultCheck->num_rows > 0) {
+                                        $_SESSION['role'] = 'admin';
+                                        $response['status'] = 'success';
+                                        $response['redirect'] = 'pages/AGLADMIN.php';
+                                    } else {
+                                        $_SESSION['role'] = 'member';
+                                        $response['status'] = 'success';
+                                        $response['redirect'] = 'pages/AGLADMIN.php';
+                                    }
                                 } else {
                                     $response['status'] = 'error';
                                     $response['message'] = 'Database query error (role check).';
-                                    echo json_encode($response);
-                                    exit();
                                 }
                             } else {
                                 $_SESSION['role'] = 'member';
+                                $response['status'] = 'success';
+                                $response['redirect'] = 'pages/Organizationpage.php';
                             }
-                        }
-
-                        // Generate OTP and set expiration
-                        $otp = rand(100000, 999999);
-                        $_SESSION['otp'] = $otp;
-                        $_SESSION['otp_expiration'] = time() + 360; // 6 minutes from now
-
-                        // Send OTP to email 
-                        $subject = "Your OTP Code";
-                        $message = "Your OTP code is: $otp. It will expire in 6 minutes.";
-                        $headers = "From: info@agl.or.ke";
-
-                        if (mail($email, $subject, $message, $headers)) {
-                            $response['status'] = 'otp_sent';
-                            $response['message'] = 'OTP has been sent to your email.';
-                        } else {
-                            $response['status'] = 'error';
-                            $response['message'] = 'Failed to send OTP. Please try again.';
                         }
                     } else {
                         $response['status'] = 'error';
