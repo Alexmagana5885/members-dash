@@ -88,6 +88,15 @@ header .menu-button {
   opacity: 0.8;
 }
 
+.sidebar-heading {
+  font-weight: bold;
+  font-size: 14px;
+  color: #34495e;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
 .dashboard {
   flex: 1;
   padding: 20px;
