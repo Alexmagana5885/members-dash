@@ -95,6 +95,23 @@ header .menu-button {
   text-transform: uppercase;
   margin-bottom: 5px;
   margin-top: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.sidebar-heading i {
+  margin-right: 8px;
+}
+
+.sidebar-group-content {
+  display: none;
+  padding-left: 20px;
+}
+
+.sidebar-group-content.show {
+  display: block;
 }
 
 .dashboard {
