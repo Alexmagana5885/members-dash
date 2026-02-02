@@ -24,7 +24,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/AGLADMIN.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" /> -->
     <link href="../assets/CSS/quilleditor.css" rel="stylesheet" />
 
@@ -300,11 +300,11 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 <?php elseif ($role == 'admin'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank"><i class="fas fa-info-circle"></i> About</a></li>
                     <li><a id="openPostEventModal"><i class="fas fa-calendar-plus"></i> Add a Planned Event</a></li>
-                    <li><a id="openBlogPostModal">Post a Blog</a></li>
-                    <li><a id="openMessagePopupSend">Send Message</a></li>
+                    <li><a id="openBlogPostModal"><i class="fas fa-blog"></i> Post a Blog</a></li>
+                    <li><a id="openMessagePopupSend"><i class="fas fa-envelope"></i> Send Message</a></li>
 
-                    <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                    <li><a href="adminP.php">Member Payments</a></li>
+                    <li><a id="MembersTable-link" href="Members.php"><i class="fas fa-users"></i> Members</a></li>
+                    <li><a href="adminP.php"><i class="fas fa-credit-card"></i> Member Payments</a></li>
                     <li>
                         <a href="#" id="togglePayments">My Payments Invoices</a>
                         <ul style="display: none;" class="dropdown" id="paymentsDropdown">
@@ -326,14 +326,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             ?>
                         </ul>
                     </li>
-                    <li><a href="userinfo.php" target="_blank">User Information</a></li>
-                    <li><a href="mailto:info@agl.or.ke">Email</a></li>
-                    <li><a href="tel:+254748027123">Call</a></li>
-                    <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
+                    <li><a href="userinfo.php" target="_blank"><i class="fas fa-user"></i> User Information</a></li>
+                    <li><a href="mailto:info@agl.or.ke"><i class="fas fa-envelope"></i> Email</a></li>
+                    <li><a href="tel:+254748027123"><i class="fas fa-phone"></i> Call</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a></li>
 
-                    <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
-                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
-                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="https://x.com/OfLibraria37902" target="_blank"><i class="fab fa-twitter"></i> Tweeter</a></li>
+                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank"><i class="fab fa-facebook"></i> FaceBook</a></li>
+                    <li><a href="../forms/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 
                 <?php elseif ($role == 'member'): ?>
                     <li><a href="https://www.agl.or.ke/about-us/" target="_blank"><i class="fas fa-info-circle"></i> About</a></li>
