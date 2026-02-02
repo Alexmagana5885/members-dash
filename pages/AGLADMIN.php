@@ -89,6 +89,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         margin: 0 auto;
         /* Center images */
     }
+
+    /* Sidebar icons */
+    .sidebar ul li a i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+    }
 </style>
 
 <body>
@@ -247,16 +254,16 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 </li>
 
                 <?php if ($role == 'superadmin'): ?>
-                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
-                    <li><a id="openPostEventModal">Add a Planned Event</a></li>
-                    <li><a id="openPastEventModal">Add a Past Event</a></li>
-                    <li><a id="openBlogPostModal">Post a Blog</a></li>
-                    <li><a id="openMessagePopupSend">Send Message</a></li>
-                    <li><a id="MembersTable-link" href="Members.php">Members</a></li>
-                    <li><a href="adminP.php">Member Payments</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a id="openPostEventModal"><i class="fas fa-calendar-plus"></i> Add a Planned Event</a></li>
+                    <li><a id="openPastEventModal"><i class="fas fa-calendar-check"></i> Add a Past Event</a></li>
+                    <li><a id="openBlogPostModal"><i class="fas fa-blog"></i> Post a Blog</a></li>
+                    <li><a id="openMessagePopupSend"><i class="fas fa-envelope"></i> Send Message</a></li>
+                    <li><a id="MembersTable-link" href="Members.php"><i class="fas fa-users"></i> Members</a></li>
+                    <li><a href="adminP.php"><i class="fas fa-credit-card"></i> Member Payments</a></li>
 
                     <li>
-                        <a href="#" id="togglePayments">My Payments Invoices</a>
+                        <a href="#" id="togglePayments"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
                         <ul style="display: none;" class="dropdown" id="paymentsDropdown">
                             <?php
                             if ($result->num_rows > 0) {
@@ -278,21 +285,21 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     </li>
 
 
-                    <li><a href="userinfo.php" target="_blank">User Information</a></li>
+                    <li><a href="userinfo.php" target="_blank"><i class="fas fa-user"></i> User Information</a></li>
 
-                    <li><a href="https://www.agl.or.ke/contact-us/">Contacts</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/"><i class="fas fa-address-book"></i> Contacts</a></li>
 
-                    <li><a href="mailto:info@agl.or.ke" target="_blank">Email Us</a></li>
-                    <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
-                    <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
-                    <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
-                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
-                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="mailto:info@agl.or.ke" target="_blank"><i class="fas fa-envelope"></i> Email Us</a></li>
+                    <li><a href="tel:+254748027123" target="_blank"><i class="fas fa-phone"></i> Call Us</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a></li>
+                    <li><a href="https://x.com/OfLibraria37902" target="_blank"><i class="fab fa-twitter"></i> Tweeter</a></li>
+                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank"><i class="fab fa-facebook"></i> FaceBook</a></li>
+                    <li><a href="../forms/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                     <!-- <li><a href="https://docs.google.com/forms/d/1aN5mL1rYa1JjZbTJduk-jKuVJpIfprRkD_POlN9uW8s/edit">Conference feedbacks</a></li> -->
 
                 <?php elseif ($role == 'admin'): ?>
-                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
-                    <li><a id="openPostEventModal">Add a Planned Event</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a id="openPostEventModal"><i class="fas fa-calendar-plus"></i> Add a Planned Event</a></li>
                     <li><a id="openBlogPostModal">Post a Blog</a></li>
                     <li><a id="openMessagePopupSend">Send Message</a></li>
 
@@ -329,10 +336,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="../forms/logout.php">Logout</a></li>
 
                 <?php elseif ($role == 'member'): ?>
-                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank">About</a></li>
-                    <li><a href="userinfo.php" target="_blank">User Information</a></li>
+                    <li><a href="https://www.agl.or.ke/about-us/" target="_blank"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="userinfo.php" target="_blank"><i class="fas fa-user"></i> User Information</a></li>
                     <li>
-                        <a href="#" id="togglePayments">My Payments Invoices</a>
+                        <a href="#" id="togglePayments"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
                         <ul style="display: none;" class="dropdown" id="paymentsDropdown">
                             <?php
                             if ($result->num_rows > 0) {
@@ -352,13 +359,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                             ?>
                         </ul>
                     </li>
-                    <li><a href="https://www.agl.or.ke/contact-us/" target="_blank">Contacts</a></li>
-                    <li><a href="mailto:info@agl.or.ke">Email Us</a></li>
-                    <li><a href="tel:+254748027123" target="_blank">Call Us</a></li>
-                    <li><a href="https://wa.me/254722605048" target="_blank">Chat on WhatsApp</a></li>
-                    <li><a href="https://x.com/OfLibraria37902" target="_blank">Tweeter</a></li>
-                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank">FaceBook</a></li>
-                    <li><a href="../forms/logout.php">Logout</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/" target="_blank"><i class="fas fa-address-book"></i> Contacts</a></li>
+                    <li><a href="mailto:info@agl.or.ke"><i class="fas fa-envelope"></i> Email Us</a></li>
+                    <li><a href="tel:+254748027123" target="_blank"><i class="fas fa-phone"></i> Call Us</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a></li>
+                    <li><a href="https://x.com/OfLibraria37902" target="_blank"><i class="fab fa-twitter"></i> Tweeter</a></li>
+                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank"><i class="fab fa-facebook"></i> FaceBook</a></li>
+                    <li><a href="../forms/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 
                 <?php endif; ?>
             </ul>
@@ -656,7 +663,7 @@ LIMIT 1";
                             placeholder="Enter your phone number" required>
 
                         <label for="mpesa-amount" class="popup-label">Amount</label>
-                        <input type="text" id="mpesa-amount" name="amount" class="popup-input" value="1" readonly>
+                        <input type="text" id="mpesa-amount" name="amount" class="popup-input" value="2000" readonly>
 
                         <!-- Hidden field to store the referring page URL -->
                         <input type="hidden" id="referringPage" name="referringPage"
@@ -790,7 +797,7 @@ LIMIT 1";
 
 
                 // Prepare the SQL query
-                $sql = "SELECT event_name, event_location, member_email,event_id, event_id, invitation_card FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
+                $sql = "SELECT event_name, event_location, member_email,event_id, invitation_card, event_date FROM event_registrations WHERE member_email = ? ORDER BY event_date ASC";
                 $stmt = $conn->prepare($sql);
 
 
