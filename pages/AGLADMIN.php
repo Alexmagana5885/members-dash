@@ -106,6 +106,11 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
 
         <!-- <button id="toggleMessages">View Messages</button> -->
+             <div class="innerlinksNav" style="margin-bottom: 3px;" >
+        <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
+        <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
+        <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
+    </div>
 
         <div style="text-align: center;" id="toggleMessagesReceivedMessages" class="notification">
             <img src="../assets/img/bell.png" alt="Notification">
@@ -174,11 +179,11 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     </style>
 
-    <div class="innerlinksNav" style="margin-bottom: 3px;" >
+    <!-- <div class="innerlinksNav" style="margin-bottom: 3px;" >
         <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
         <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
         <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
-    </div>
+    </div> -->
     <div class="Aligner"></div>
 
     <style>
