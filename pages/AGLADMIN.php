@@ -1430,7 +1430,7 @@ LIMIT 1";
                         font-weight: 700;
                         margin-bottom: 10px;
                         position: relative;
-                        padding-bottom: 5px;
+                        padding-bottom: 2;
                     }
 
                     .card h5::after {
@@ -1446,17 +1446,17 @@ LIMIT 1";
 
                     .card h4 {
                         color: #2C3E50;
-                        font-size: 13px;
+                        font-size: 14px;
                         font-weight: 600;
-                        margin: 5px 0;
+                        margin: 3px 0;
                     }
 
                     /* Card Content */
                     .card p {
                         color: #5D7BA3;
-                        font-size: 12px;
+                        font-size: 13px;
                         line-height: 1.6;
-                        margin: 5px 0;
+                        margin: 3px 0;
                     }
 
                     .card p span {
