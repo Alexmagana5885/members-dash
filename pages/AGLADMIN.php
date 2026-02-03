@@ -99,14 +99,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 </style>
 
 <body>
-    <header style="background-color: #FFFFFF;" >
+    <header style="background-color: #FFFFFF;">
         <div class="logo">
             <img src="../assets/img/logo.png" alt="AGL">
         </div>
         <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
 
         <!-- <button id="toggleMessages">View Messages</button> -->
-                 <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
+        <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
         <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
         <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
 
@@ -270,7 +270,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <a href="https://www.agl.or.ke/" class="active core-link"><i class="fas fa-home"></i> Home</a>
                 </li>
 
-        <?php if ($role == 'superadmin'): ?>
+                <?php if ($role == 'superadmin'): ?>
                     <li><a id="openPostEventModal" class="core-link"><i class="fas fa-calendar-plus"></i> Planned Event</a></li>
                     <li><a id="openPastEventModal" class="core-link"><i class="fas fa-calendar-check"></i> Past Event</a></li>
                     <li><a id="openBlogPostModal" class="secondary-link"><i class="fas fa-blog"></i> New Blog</a></li>
