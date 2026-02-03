@@ -17,6 +17,13 @@ body {
   flex: 1;
   padding: 20px;
   background-color: #ecf0f1;
+  margin-left: 260px;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    margin-left: 0;
+  }
 }
 
 
