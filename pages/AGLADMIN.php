@@ -121,6 +121,22 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <div class="Aligner"></div>
 
     <style>
+        :root {
+            --header-height: 83px;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --header-height: 60px;
+            }
+        }
+
         /* Header Container */
         header {
             background-color: #FFFFFF;
@@ -559,20 +575,22 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             .sidebar {
                 background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
                 width: 240px;
-                height: calc(100vh - 83px);
+                height: auto;
+                /* height: calc(100vh - 83px); */
                 position: fixed;
-                top: 83px;
+                top: var(--header-height);
+                bottom: 0;
+                /* top: 83px; */
                 left: 0;
                 overflow-y: auto;
                 overflow-x: hidden;
                 box-shadow: 2px 0 15px rgba(30, 91, 198, 0.08);
-                /* border-right: 3px solid #1E5BC6; */
                 box-shadow: 3px 0 6px rgba(30, 91, 198, 0.25);
-
                 font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
                 z-index: 1000;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
+
 
             /* Sidebar Scrollbar Styling */
             .sidebar::-webkit-scrollbar {
