@@ -103,148 +103,85 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <div class="logo">
             <img src="../assets/img/logo.png" alt="AGL">
         </div>
-        <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
-
-        <div style="text-align: center;" id="toggleMessagesReceivedMessages" class="notification">
-            <img src="../assets/img/bell.png" alt="Notification">
-            <h5 style="color: black; cursor: pointer;">Messages</h5>
-        </div>
+    <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
 
     </header>
 
-    <!-- <style>
+  
+    <style>
         .innerlinksNav {
             width: 100%;
             display: flex;
             justify-content: flex-end;
-            background-color: white;
-            height: 40px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            gap: 10px;
-            padding-right: 20px;
+            align-items: center;
+            background-color: #ffffff;
+            min-height: 52px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            gap: 12px;
+            padding: 0 20px;
         }
 
         .innerlinksNav-a {
-            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             color: #1E3A8A;
-            font-size: 20px;
+            font-size: 15px;
             text-decoration: none;
             font-weight: 500;
             background-color: #F1F5FF;
-            border: none;
             border-radius: 999px;
-            padding: 10px 18px;
-            font-family: 'Arial', sans-serif;
-            /* Set a clean, modern font */
-            transition: all 0.3s ease;
-            /* Smooth transition for resizing */
+            padding: 8px 18px;
+            font-family: "Inter", "Segoe UI", Arial, sans-serif;
+            transition:
+                background-color 0.25s ease,
+                color 0.25s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .innerlinksNav-a:hover {
             background-color: #E0E7FF;
-            transform: translateY(-2px);
-            cursor: pointer;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
         }
 
         .innerlinksNav-a:active,
         .innerlinksNav-a.selected {
             background-color: #2563EB;
-            color: #FFFFFF;
+            color: #ffffff;
             font-weight: 600;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
         }
 
+        /* Optional underline indicator */
         .Aligner {
-            height: 5px;
-            background-color: #6ec1e4;
+            height: 4px;
+            background: linear-gradient(to right, #2563EB, #6ec1e4);
         }
 
-        /* Responsive design for small screens */
+        /* Mobile adjustments */
         @media (max-width: 600px) {
+            .innerlinksNav {
+                justify-content: center;
+                gap: 8px;
+            }
+
             .innerlinksNav-a {
-                font-size: 14px;
-                /* Smaller font size */
-                padding: 8px 12px;
-                /* Reduced padding for smaller buttons */
+                font-size: 13px;
+                padding: 6px 12px;
             }
         }
-    </style> -->
-
-    <style>
-    .innerlinksNav {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        background-color: #ffffff;
-        min-height: 52px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        gap: 12px;
-        padding: 0 20px;
-    }
-
-    .innerlinksNav-a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: #1E3A8A;
-        font-size: 15px;
-        text-decoration: none;
-        font-weight: 500;
-        background-color: #F1F5FF;
-        border-radius: 999px;
-        padding: 8px 18px;
-        font-family: "Inter", "Segoe UI", Arial, sans-serif;
-        transition: 
-            background-color 0.25s ease,
-            color 0.25s ease,
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-        cursor: pointer;
-        white-space: nowrap;
-    }
-
-    .innerlinksNav-a:hover {
-        background-color: #E0E7FF;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
-    }
-
-    .innerlinksNav-a:active,
-    .innerlinksNav-a.selected {
-        background-color: #2563EB;
-        color: #ffffff;
-        font-weight: 600;
-        box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
-    }
-
-    /* Optional underline indicator */
-    .Aligner {
-        height: 4px;
-        background: linear-gradient(to right, #2563EB, #6ec1e4);
-    }
-
-    /* Mobile adjustments */
-    @media (max-width: 600px) {
-        .innerlinksNav {
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .innerlinksNav-a {
-            font-size: 13px;
-            padding: 6px 12px;
-        }
-    }
-</style>
+    </style>
 
 
-    <div class="innerlinksNav" style="margin-bottom: 3px;" >
+    <div class="innerlinksNav" style="margin-bottom: 3px;">
         <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
         <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
         <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
+        <a class="innerlinksNav-a" id="toggleMessagesReceivedMessages" href="#">Messages</a>
     </div>
     <div class="Aligner"></div>
 
