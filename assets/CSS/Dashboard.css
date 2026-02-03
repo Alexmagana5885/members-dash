@@ -8,13 +8,10 @@ body {
   font-family: Arial, sans-serif;
 }
 
-
-
 .main-content {
   display: flex;
   min-height: calc(100vh - 120px);
 }
-
 
 .dashboard {
   flex: 1;
@@ -22,29 +19,8 @@ body {
   background-color: #ecf0f1;
 }
 
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
-}
 
-.card {
-  flex: 1;
-  min-width: 200px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-height: 300px;
-  scrollbar-width: thin;
-  overflow: auto;
-}
 
-.cardMemberprofile {
-  width: 50%;
-  border-radius: 10px;
-}
 
 .table-card {
   background-color: #fff;
@@ -124,7 +100,7 @@ footer {
   .footer-section .map iframe {
     width: 100%;
   }
-} 
+}
 
 @media (max-width: 968px) {
   .main-content {
@@ -137,9 +113,6 @@ footer {
     padding: 5px;
     grid-template-columns: repeat(1, 1fr);
   }
-
-
-
 
   .cards {
     flex-direction: column;

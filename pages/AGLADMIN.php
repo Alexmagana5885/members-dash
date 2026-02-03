@@ -982,6 +982,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 $stmt->close();
                 ?>
 
+<!-- Memberprofile -->
                 <div class="card">
                     <img class="cardMemberprofile" src="<?php echo htmlspecialchars($passportImage); ?>"
                         alt="User Image">
@@ -1055,7 +1056,7 @@ LIMIT 1";
 
                 ?>
 
-                <!-- HTML Section -->
+                <!-- Member Payments  -->
                 <div class="card">
                     <h5>Member Payments</h5>
                     <hr>
@@ -1279,7 +1280,7 @@ LIMIT 1";
                     ];
                 }
                 ?>
-
+                <!-- Education Information -->
                 <div class="card">
                     <h5>Education Information</h5>
                     <hr>
@@ -1346,6 +1347,8 @@ LIMIT 1";
                         background-color: #0056b3;
                     }
                 </style>
+                
+                <!-- Registered Events -->
                 <div class="card">
                     <h4>Registered Events</h4>
 
@@ -1381,7 +1384,353 @@ LIMIT 1";
 
 
                 </div>
+
+                <style>
+    /* Dashboard Container */
+    .dashboard {
+        width: 100%;
+        padding: 20px;
+        margin-left: 280px; /* Adjust based on sidebar width */
+        transition: margin-left 0.3s ease;
+    }
+
+    /* Cards Grid Container */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    /* Individual Card Styling */
+    .card {
+        background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFF 100%);
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(30, 91, 198, 0.08);
+        border: 1px solid #E3EFFF;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(30, 91, 198, 0.15);
+        border-color: #1E5BC6;
+    }
+
+    /* Card Header */
+    .card h5 {
+        color: #1E5BC6;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .card h5::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(90deg, #1E5BC6, #2E7BFF);
+        border-radius: 2px;
+    }
+
+    .card h4 {
+        color: #2C3E50;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 10px 0;
+    }
+
+    /* Card Content */
+    .card p {
+        color: #5D7BA3;
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 8px 0;
+    }
+
+    .card p span {
+        color: #2C3E50;
+        font-weight: 600;
+    }
+
+    /* Horizontal Rule */
+    .card hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, #E3EFFF, #FFFFFF);
+        margin: 15px 0;
+        width: 100%;
+    }
+
+    /* Profile Image */
+    .cardMemberprofile {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #FFFFFF;
+        box-shadow: 0 4px 15px rgba(30, 91, 198, 0.2);
+        margin: 0 auto 20px auto;
+        display: block;
+        transition: all 0.3s ease;
+    }
+
+    .cardMemberprofile:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(30, 91, 198, 0.3);
+    }
+
+    /* Payment Buttons */
+    .MemberPaymentBtn {
+        background: linear-gradient(135deg, #1E5BC6 0%, #2E7BFF 100%);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 15px;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .MemberPaymentBtn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .MemberPaymentBtn:hover::before {
+        left: 100%;
+    }
+
+    .MemberPaymentBtn:hover {
+        background: linear-gradient(135deg, #174a9e 0%, #1E5BC6 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(30, 91, 198, 0.3);
+    }
+
+    .MemberPaymentBtn:disabled {
+        background: linear-gradient(135deg, #A0C1F1 0%, #B5D0FF 100%);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .MemberPaymentBtn:disabled:hover {
+        background: linear-gradient(135deg, #A0C1F1 0%, #B5D0FF 100%);
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* Event Card Specific Styles */
+    .card .iventcard {
+        background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .card .iventcard:hover {
+        background: linear-gradient(135deg, #218838 0%, #28a745 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    /* Responsive Breakpoints */
+
+    /* Large Tablets (769px - 1024px) */
+    @media (max-width: 1024px) {
+        .dashboard {
+            margin-left: 0;
+            padding: 15px;
+        }
+        
+        .cards {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .card {
+            padding: 20px;
+        }
+    }
+
+    /* Tablets (601px - 768px) */
+    @media (max-width: 768px) {
+        .dashboard {
+            padding: 15px;
+        }
+        
+        .cards {
+            grid-template-columns: 1fr;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto 30px auto;
+        }
+        
+        .card {
+            padding: 20px;
+        }
+        
+        .cardMemberprofile {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    /* Mobile (≤600px) */
+    @media (max-width: 600px) {
+        .dashboard {
+            padding: 10px;
+        }
+        
+        .cards {
+            gap: 12px;
+        }
+        
+        .card {
+            padding: 15px;
+            border-radius: 12px;
+        }
+        
+        .card h5 {
+            font-size: 18px;
+        }
+        
+        .card h4 {
+            font-size: 16px;
+        }
+        
+        .card p {
+            font-size: 13px;
+        }
+        
+        .cardMemberprofile {
+            width: 90px;
+            height: 90px;
+        }
+        
+        .MemberPaymentBtn {
+            padding: 10px 15px;
+            font-size: 13px;
+        }
+    }
+
+    /* Small Mobile (≤480px) */
+    @media (max-width: 480px) {
+        .cards {
+            gap: 10px;
+        }
+        
+        .card {
+            padding: 12px;
+        }
+        
+        .card h5 {
+            font-size: 16px;
+        }
+        
+        .cardMemberprofile {
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    /* Animation for card entrance */
+    @keyframes cardEntrance {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card {
+        animation: cardEntrance 0.5s ease-out;
+    }
+
+    /* Stagger the card animations */
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+
+    /* Scrollbar for cards with overflow */
+    .card {
+        scrollbar-width: thin;
+        scrollbar-color: #1E5BC6 #F8FAFF;
+    }
+
+    .card::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .card::-webkit-scrollbar-track {
+        background: #F8FAFF;
+        border-radius: 3px;
+    }
+
+    .card::-webkit-scrollbar-thumb {
+        background: #1E5BC6;
+        border-radius: 3px;
+    }
+
+    /* Status indicators for payment information */
+    #memberpayments-current-lastPay span,
+    #memberpayments-current-nextP span,
+    #memberpayments-current-balance span {
+        padding: 2px 8px;
+        background: #F0F7FF;
+        border-radius: 4px;
+        border-left: 3px solid #1E5BC6;
+    }
+
+    /* Education info specific styling */
+    #highest-degree,
+    #institution,
+    #graduation-year {
+        display: block;
+        margin-top: 5px;
+        padding: 3px 10px;
+        background: #F8FAFF;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+</style>
+            
             </div>
+
+
             <!-- ................................... -->
 
             <!-- ellert -->
