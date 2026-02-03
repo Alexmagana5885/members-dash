@@ -155,7 +155,7 @@
 .sidebar {
   overflow: auto;
   scrollbar-width: thin;
-  height: 100vh;
+  height: calc(100vh - 115px);
 }
 
 .dashboard {
