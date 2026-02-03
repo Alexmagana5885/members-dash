@@ -181,12 +181,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     </style>
 
 
-    <div class="innerlinksNav" style="margin-bottom: 3px;">
+    <!-- <div class="innerlinksNav" style="margin-bottom: 3px;">
         <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
         <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
         <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
         <a class="innerlinksNav-a" id="toggleMessagesReceivedMessages" href="#">Messages</a>
-    </div>
+    </div> -->
     <div class="Aligner"></div>
 
     <style>
