@@ -112,30 +112,44 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         .innerlinksNav {
             width: 100%;
             display: flex;
-            justify-content: space-around;
-            background-color: #6ec1e4;
+            justify-content: flex-end;
+            background-color: white;
             height: 40px;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            gap: 10px;
+            padding-right: 20px;
         }
 
         .innerlinksNav-a {
             margin-top: 10px;
-            color: #f2f2f2;
+            color: #1E3A8A;
             font-size: 20px;
             text-decoration: none;
-            font-weight: bold;
-            background-color: #007BFF;
-            border-radius: 5px;
-            padding: 7px 15px;
+            font-weight: 500;
+            background-color: #F1F5FF;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 18px;
             font-family: 'Arial', sans-serif;
             /* Set a clean, modern font */
             transition: all 0.3s ease;
             /* Smooth transition for resizing */
+            cursor: pointer;
         }
 
         .innerlinksNav-a:hover {
-            background-color: #0056b3;
-            /* Darker blue on hover */
+            background-color: #E0E7FF;
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
+
+        .innerlinksNav-a:active,
+        .innerlinksNav-a.selected {
+            background-color: #2563EB;
+            color: #FFFFFF;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .Aligner {
@@ -148,7 +162,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             .innerlinksNav-a {
                 font-size: 14px;
                 /* Smaller font size */
-                padding: 5px 10px;
+                padding: 8px 12px;
                 /* Reduced padding for smaller buttons */
             }
         }
@@ -156,7 +170,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     <div class="innerlinksNav">
         <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
-        <a class="innerlinksNav-a" href="#PlannedEvents">Comming Events</a>
+        <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
         <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
     </div>
     <div class="Aligner"></div>
