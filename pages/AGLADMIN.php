@@ -431,7 +431,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     <div class="main-content">
 
-    <!-- navigation sidebar -->
+        <!-- navigation sidebar -->
 
         <nav style="cursor: pointer;" id="sidebar" class="sidebar">
             <ul>
@@ -884,6 +884,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 background: white;
             }
         </style>
+
+        <!-- navigation sidebar -->
 
         <!-- show payment Invoice dropdown -->
 
