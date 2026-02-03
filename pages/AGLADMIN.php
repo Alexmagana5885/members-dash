@@ -105,11 +105,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         </div>
         <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
 
-        <!-- <button id="toggleMessages">View Messages</button> -->
-        <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
-        <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
-        <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
-
         <div style="text-align: center;" id="toggleMessagesReceivedMessages" class="notification">
             <img src="../assets/img/bell.png" alt="Notification">
             <h5 style="color: black; cursor: pointer;">Messages</h5>
@@ -117,7 +112,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     </header>
 
-    <style>
+    <!-- <style>
         .innerlinksNav {
             width: 100%;
             display: flex;
@@ -175,14 +170,83 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 /* Reduced padding for smaller buttons */
             }
         }
-    </style>
+    </style> -->
 
-    <!-- <div class="innerlinksNav" style="margin-bottom: 3px;" >
+    <style>
+    .innerlinksNav {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background-color: #ffffff;
+        min-height: 52px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        gap: 12px;
+        padding: 0 20px;
+    }
+
+    .innerlinksNav-a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #1E3A8A;
+        font-size: 15px;
+        text-decoration: none;
+        font-weight: 500;
+        background-color: #F1F5FF;
+        border-radius: 999px;
+        padding: 8px 18px;
+        font-family: "Inter", "Segoe UI", Arial, sans-serif;
+        transition: 
+            background-color 0.25s ease,
+            color 0.25s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .innerlinksNav-a:hover {
+        background-color: #E0E7FF;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+
+    .innerlinksNav-a:active,
+    .innerlinksNav-a.selected {
+        background-color: #2563EB;
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+    }
+
+    /* Optional underline indicator */
+    .Aligner {
+        height: 4px;
+        background: linear-gradient(to right, #2563EB, #6ec1e4);
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+        .innerlinksNav {
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .innerlinksNav-a {
+            font-size: 13px;
+            padding: 6px 12px;
+        }
+    }
+</style>
+
+
+    <div class="innerlinksNav" style="margin-bottom: 3px;" >
         <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
         <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
         <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
     </div>
-    <div class="Aligner"></div> -->
+    <div class="Aligner"></div>
 
     <style>
         .blogPoint {
