@@ -1,31 +1,30 @@
-b* {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
-  color: #2d3748;
+  font-family: Arial, sans-serif;
 }
+
 
 
 .main-content {
   display: flex;
   min-height: calc(100vh - 120px);
-  margin-left: 250px;
 }
+
 
 .dashboard {
   flex: 1;
-  padding: 30px;
-  background-color: #f0f4f8;
+  padding: 20px;
+  background-color: #ecf0f1;
 }
 
 .cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 20px;
 }
@@ -33,14 +32,13 @@ body {
 .card {
   flex: 1;
   min-width: 200px;
-  padding: 16px;
+  padding: 20px;
   background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-height: 300px;
   scrollbar-width: thin;
   overflow: auto;
-  margin-bottom: 20px;
 }
 
 .cardMemberprofile {
@@ -140,18 +138,7 @@ footer {
     grid-template-columns: repeat(1, 1fr);
   }
 
-  .sidebar {
-    position: absolute;
-    width: 250px;
-    height: 100%;
-    top: 0;
-    display: none;
-    transition: transform 0.3s ease;
-  }
 
-  .sidebar.active {
-    transform: translateX(0);
-  }
 
 
   .cards {
@@ -162,7 +149,6 @@ footer {
     margin-bottom: 20px;
   }
 }
-
 
 .card h5 {
   font-size: 18px;
@@ -186,10 +172,10 @@ footer {
   background-color: #007bff;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
-  padding: 12px 20px;
+  border-radius: 4px;
+  padding: 10px 16px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   transition: background-color 0.3s;
 }
 
