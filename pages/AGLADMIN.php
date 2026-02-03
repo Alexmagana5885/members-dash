@@ -100,6 +100,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 <body>
 
+    <!-- header -->
     <header style="background-color: #FFFFFF;">
         <div class="header-top">
             <div class="logo">
@@ -110,8 +111,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
         <div class="innerlinksNav">
             <a style="text-decoration: none;" class="innerlinksNav-a" href="#blogPoint">Blogs</a>
-            <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
-            <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
+            <a style="text-decoration: none;" class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
+            <a style="text-decoration: none;" class="innerlinksNav-a" href="#PastEvents">Past Events</a>
             <a class="innerlinksNav-a" id="toggleMessagesReceivedMessages" href="#">Messages</a>
         </div>
 
@@ -348,6 +349,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     </style>
 
+    <!-- header -->
+
     <style>
         .blogPoint {
             width: 100%;
@@ -548,6 +551,378 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
+
+        <style>
+            /* Sidebar Container */
+            .sidebar {
+                background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+                width: 280px;
+                height: calc(100vh - 83px);
+                /* Adjust based on header height */
+                position: fixed;
+                top: 83px;
+                /* Header height */
+                left: 0;
+                overflow-y: auto;
+                overflow-x: hidden;
+                box-shadow: 2px 0 15px rgba(30, 91, 198, 0.08);
+                border-right: 3px solid #1E5BC6;
+                font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+                z-index: 1000;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            /* Sidebar Scrollbar Styling */
+            .sidebar::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .sidebar::-webkit-scrollbar-track {
+                background: #f1f5ff;
+                border-radius: 3px;
+            }
+
+            .sidebar::-webkit-scrollbar-thumb {
+                background: #1E5BC6;
+                border-radius: 3px;
+            }
+
+            .sidebar::-webkit-scrollbar-thumb:hover {
+                background: #174a9e;
+            }
+
+            /* Main List */
+            .sidebar ul {
+                list-style: none;
+                padding: 20px 0;
+                margin: 0;
+            }
+
+            .sidebar>ul>li {
+                position: relative;
+                margin: 4px 15px;
+            }
+
+            /* Main Links */
+            .sidebar a {
+                display: flex;
+                align-items: center;
+                padding: 14px 20px;
+                color: #2C3E50;
+                text-decoration: none;
+                font-size: 15px;
+                font-weight: 500;
+                border-radius: 8px;
+                transition: all 0.25s ease;
+                gap: 12px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            /* Icon Styling */
+            .sidebar a i {
+                width: 20px;
+                text-align: center;
+                font-size: 16px;
+                color: #5D7BA3;
+                transition: all 0.25s ease;
+            }
+
+            /* Link Hover Effects */
+            .sidebar a:hover {
+                background-color: #F0F7FF;
+                color: #1E5BC6;
+                transform: translateX(5px);
+                box-shadow: 0 4px 12px rgba(30, 91, 198, 0.1);
+            }
+
+            .sidebar a:hover i {
+                color: #1E5BC6;
+                transform: scale(1.1);
+            }
+
+            /* Active State */
+            .sidebar a.active {
+                background: linear-gradient(135deg, #1E5BC6 0%, #2E7BFF 100%);
+                color: white;
+                font-weight: 600;
+                box-shadow: 0 4px 12px rgba(30, 91, 198, 0.2);
+            }
+
+            .sidebar a.active i {
+                color: white;
+            }
+
+            /* Core vs Secondary Links */
+            .core-link {
+                border-left: 3px solid #1E5BC6;
+                margin-left: 5px;
+            }
+
+            .secondary-link {
+                border-left: 3px solid #E3EFFF;
+                margin-left: 5px;
+                opacity: 0.9;
+            }
+
+            .secondary-link:hover {
+                border-left-color: #1E5BC6;
+                opacity: 1;
+            }
+
+            /* Dropdown Styling */
+            .dropdown {
+                background: #F8FAFF;
+                border-radius: 6px;
+                margin: 8px 15px 8px 35px;
+                padding: 0;
+                border: 1px solid #E3EFFF;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                overflow: hidden;
+                animation: slideDown 0.3s ease-out;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .dropdown li {
+                margin: 0;
+                border-bottom: 1px solid #f0f4ff;
+            }
+
+            .dropdown li:last-child {
+                border-bottom: none;
+            }
+
+            .dropdown a {
+                padding: 10px 15px;
+                font-size: 13px;
+                color: #4A657C;
+                border-left: none;
+                margin-left: 0;
+                border-radius: 0;
+            }
+
+            .dropdown a:hover {
+                background-color: #E8F1FF;
+                transform: translateX(3px);
+            }
+
+            /* Toggle Payments Link */
+            #togglePayments {
+                position: relative;
+                padding-right: 40px;
+            }
+
+            #togglePayments::after {
+                content: '▼';
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 11px;
+                color: #5D7BA3;
+                transition: all 0.3s ease;
+            }
+
+            #togglePayments.active::after {
+                transform: translateY(-50%) rotate(180deg);
+                color: #1E5BC6;
+            }
+
+            /* Invoice Links Special */
+            .invoice-link {
+                font-size: 12px !important;
+                color: #666 !important;
+                justify-content: flex-end;
+                padding-right: 20px !important;
+            }
+
+            .invoice-link:hover {
+                color: #1E5BC6 !important;
+                background-color: #E8F1FF;
+            }
+
+            /* Section Separator Effect */
+            .sidebar>ul>li:nth-child(6) {
+                margin-top: 20px;
+                position: relative;
+            }
+
+            .sidebar>ul>li:nth-child(6)::before {
+                content: '';
+                position: absolute;
+                top: -12px;
+                left: 20px;
+                right: 20px;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, #E3EFFF 20%, #E3EFFF 80%, transparent);
+            }
+
+            /* Logout Link Special Styling */
+            .sidebar a[href*="logout.php"] {
+                margin-top: 20px;
+                background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E8 100%);
+                color: #D32F2F;
+                border-left: 3px solid #FF6B6B;
+            }
+
+            .sidebar a[href*="logout.php"]:hover {
+                background: linear-gradient(135deg, #FFE8E8 0%, #FFD6D6 100%);
+                color: #B71C1C;
+                box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
+            }
+
+            .sidebar a[href*="logout.php"] i {
+                color: #FF6B6B;
+            }
+
+            /* Mobile Navigation Toggle */
+            .mobile-nav-toggle {
+                display: none;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1001;
+                font-size: 24px;
+                color: #1E5BC6;
+                background: white;
+                padding: 10px;
+                border-radius: 6px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+            }
+
+            /* Mobile Responsiveness */
+            @media (max-width: 768px) {
+                .sidebar {
+                    width: 100%;
+                    height: calc(100vh - 70px);
+                    top: 70px;
+                    left: -100%;
+                    transition: left 0.3s ease;
+                    border-right: none;
+                    box-shadow: none;
+                }
+
+                .sidebar.active {
+                    left: 0;
+                }
+
+                .sidebar>ul>li {
+                    margin: 3px 10px;
+                }
+
+                .sidebar a {
+                    padding: 12px 15px;
+                    font-size: 14px;
+                }
+
+                .mobile-nav-toggle {
+                    display: block;
+                }
+
+                /* Adjust dropdown for mobile */
+                .dropdown {
+                    margin: 6px 10px 6px 30px;
+                }
+
+                .dropdown a {
+                    padding: 8px 12px;
+                }
+            }
+
+            /* Small Mobile */
+            @media (max-width: 480px) {
+                .sidebar {
+                    height: calc(100vh - 60px);
+                    top: 60px;
+                }
+
+                .sidebar a {
+                    padding: 10px 15px;
+                    font-size: 13px;
+                    gap: 10px;
+                }
+
+                .sidebar a i {
+                    font-size: 15px;
+                }
+            }
+
+            /* Animation for link ripple effect */
+            .sidebar a::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 4px;
+                height: 0;
+                background: #1E5BC6;
+                border-radius: 0 2px 2px 0;
+                transform: translateY(-50%);
+                transition: height 0.3s ease;
+            }
+
+            .sidebar a:hover::before {
+                height: 70%;
+            }
+
+            .sidebar a.active::before {
+                height: 70%;
+                background: white;
+            }
+        </style>
+
+        <!-- Add this JavaScript for dropdown and mobile toggle functionality -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Toggle Payments Dropdown
+                const togglePayments = document.getElementById('togglePayments');
+                if (togglePayments) {
+                    togglePayments.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const dropdown = document.getElementById('paymentsDropdown');
+                        const isHidden = dropdown.style.display === 'none';
+
+                        dropdown.style.display = isHidden ? 'block' : 'none';
+                        togglePayments.classList.toggle('active', isHidden);
+                    });
+                }
+
+                // Mobile Navigation Toggle
+                const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+                const sidebar = document.querySelector('.sidebar');
+
+                if (mobileNavToggle && sidebar) {
+                    mobileNavToggle.addEventListener('click', function() {
+                        sidebar.classList.toggle('active');
+                        this.classList.toggle('bi-list');
+                        this.classList.toggle('bi-x');
+                    });
+                }
+
+                // Close sidebar when clicking outside on mobile
+                document.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768 && sidebar && mobileNavToggle) {
+                        if (!sidebar.contains(e.target) && !mobileNavToggle.contains(e.target)) {
+                            sidebar.classList.remove('active');
+                            mobileNavToggle.classList.add('bi-list');
+                            mobileNavToggle.classList.remove('bi-x');
+                        }
+                    }
+                });
+            });
+        </script>
 
 
         <!-- show payment Invoice dropdown -->
