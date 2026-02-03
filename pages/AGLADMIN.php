@@ -103,14 +103,18 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <div class="logo">
             <img src="../assets/img/logo.png" alt="AGL">
         </div>
-    <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
-
+        <div class="innerlinksNav">
+            <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
+            <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
+            <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
+            <a class="innerlinksNav-a" id="toggleMessagesReceivedMessages" href="#">Messages</a>
+        </div>
+        <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
     </header>
 
   
     <style>
         .innerlinksNav {
-            width: 100%;
             display: flex;
             justify-content: flex-end;
             align-items: center;
