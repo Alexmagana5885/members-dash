@@ -99,17 +99,21 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 </style>
 
 <body>
-    <header style="background-color: #FFFFFF;">
-        <div class="logo">
-            <img src="../assets/img/logo.png" alt="AGL">
+    <!-- <header style="background-color: #FFFFFF;">
+        <div>
+            <div class="logo">
+                <img src="../assets/img/logo.png" alt="AGL">
+            </div>
+            <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
         </div>
+
         <div class="innerlinksNav">
             <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
             <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
             <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
             <a class="innerlinksNav-a" id="toggleMessagesReceivedMessages" href="#">Messages</a>
         </div>
-        <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
+
     </header>
 
 
@@ -287,6 +291,256 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
             .innerlinksNav-a {
                 font-size: 15px !important;
+            }
+        }
+    </style> -->
+
+
+
+    <header style="background-color: #FFFFFF;">
+        <div class="header-top">
+            <div class="logo">
+                <img src="../assets/img/logo.png" alt="AGL">
+            </div>
+            <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
+        </div>
+
+        <div class="innerlinksNav">
+            <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
+            <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
+            <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
+            <a class="innerlinksNav-a" id="toggleMessagesReceivedMessages" href="#">Messages</a>
+        </div>
+
+    </header>
+
+    <div class="Aligner"></div>
+
+    <style>
+        /* Header Container */
+        header {
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            padding: 15px 30px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #1E5BC6;
+            position: relative;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            gap: 20px;
+        }
+
+        /* Header top row - logo and menu button */
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            flex: 0 0 auto;
+        }
+
+        /* Logo Container */
+        .logo {
+            display: flex;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        /* Logo Image */
+        .logo img {
+            height: 45px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+        }
+
+        /* Navigation Links Container */
+        .innerlinksNav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 35px;
+            align-items: center;
+            transition: all 0.3s ease;
+            flex: 1 0 100%;
+            order: 2;
+        }
+
+        /* Navigation Links (Regular) */
+        .innerlinksNav-a {
+            color: #2C3E50;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 8px 0;
+            position: relative;
+            transition: color 0.2s ease;
+            white-space: nowrap;
+        }
+
+        /* Messages Button Special Styling */
+        #toggleMessagesReceivedMessages {
+            color: #1E5BC6;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 8px 16px;
+            background-color: #F0F7FF;
+            border-radius: 6px;
+            border: 1px solid #D1E3FF;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        /* Mobile Menu Button */
+        .menu-button {
+            display: none;
+            cursor: pointer;
+            font-size: 28px;
+            color: #1E5BC6;
+            padding: 5px 10px;
+            background: #F8FAFF;
+            border-radius: 4px;
+            border: 1px solid #E3EFFF;
+            transition: all 0.2s ease;
+            order: 2;
+        }
+
+        /* Hover effect for regular navigation links */
+        .innerlinksNav-a:not(:last-child):hover {
+            color: #1E5BC6;
+        }
+
+        /* Underline animation on hover */
+        .innerlinksNav-a:not(:last-child):hover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #1E5BC6;
+            border-radius: 2px;
+        }
+
+        /* Messages button hover effect */
+        #toggleMessagesReceivedMessages:hover {
+            background-color: #1E5BC6;
+            color: #FFFFFF;
+            border-color: #1E5BC6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 91, 198, 0.2);
+        }
+
+        /* Desktop (≥993px) - Links aligned to the right */
+        @media (min-width: 993px) {
+            header {
+                flex-wrap: nowrap;
+                gap: 0;
+            }
+
+            .header-top {
+                width: auto;
+                flex: 0 0 auto;
+            }
+
+            .innerlinksNav {
+                flex: 1;
+                justify-content: flex-end;
+                order: 2;
+                flex-basis: auto;
+            }
+
+            .menu-button {
+                display: none !important;
+            }
+        }
+
+        /* Tablet (769px - 992px) */
+        @media (min-width: 769px) and (max-width: 992px) {
+            .innerlinksNav {
+                gap: 20px;
+            }
+
+            .innerlinksNav-a {
+                font-size: 15px !important;
+            }
+        }
+
+        /* Mobile (≤768px) */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+
+            .header-top {
+                width: 100%;
+                flex-wrap: nowrap;
+            }
+
+            .logo {
+                flex: 1;
+                margin-right: 15px;
+            }
+
+            .menu-button {
+                display: block !important;
+                order: 2;
+                flex: 0 0 auto;
+            }
+
+            .innerlinksNav {
+                flex-basis: auto;
+                order: 2;
+                display: flex !important;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                width: 100%;
+                margin-top: 0;
+                padding: 0;
+                background-color: transparent;
+                box-shadow: none;
+                border: none;
+                gap: 15px;
+            }
+
+            .innerlinksNav-a {
+                width: auto;
+                padding: 10px 0 !important;
+                text-align: left;
+                border-bottom: none;
+                font-size: 15px !important;
+            }
+
+            .innerlinksNav-a:last-child {
+                margin-top: 0;
+                padding: 10px 15px !important;
+            }
+
+            /* Remove hover underline on mobile */
+            .innerlinksNav-a:not(:last-child):hover::after {
+                display: none;
+            }
+        }
+
+        /* Small Mobile (≤480px) */
+        @media (max-width: 480px) {
+            .innerlinksNav {
+                gap: 12px;
+            }
+
+            .innerlinksNav-a {
+                font-size: 14px !important;
+            }
+
+            #toggleMessagesReceivedMessages {
+                padding: 6px 12px;
+                font-size: 14px;
             }
         }
     </style>
