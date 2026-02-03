@@ -359,7 +359,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             padding: 10px;
             border-radius: 10px;
             display: flex;
-            gap: 10px;
+            /* gap: 10px; */
             overflow-x: auto;
             overflow-y: hidden;
             scrollbar-width: thin;
@@ -1385,6 +1385,7 @@ LIMIT 1";
 
                 </div>
 
+                <!-- styling for 1st 4 cards -->
                 <style>
                     /* Dashboard Container */
                     .dashboard {
@@ -1414,7 +1415,7 @@ LIMIT 1";
                         flex-direction: column;
                         height: 100%;
                         position: relative;
-                        overflow:auto;
+                        overflow: auto;
                     }
 
                     .card:hover {
@@ -1743,10 +1744,7 @@ LIMIT 1";
             </div>
 
 
-            <!-- ................................... -->
 
-            <!-- ellert -->
-            <!-- delete the stylesheet -->
             <style>
                 /* Popup container */
                 .popup {

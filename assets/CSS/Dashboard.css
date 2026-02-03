@@ -114,47 +114,8 @@ footer {
     grid-template-columns: repeat(1, 1fr);
   }
 
-  .cards {
-    flex-direction: column;
-  }
-
-  .card {
-    margin-bottom: 20px;
-  }
 }
 
-.card h5 {
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: #333333;
-}
-
-.card hr {
-  border: none;
-  border-top: 1px solid #dddddd;
-  margin: 8px 0;
-}
-
-.card p {
-  font-size: 14px;
-  color: #555555;
-  margin: 4px 0;
-}
-
-.card button {
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-}
-
-.card button:hover {
-  background-color: #0056b3;
-}
 
 .eventDiv {
   width: 33%;
