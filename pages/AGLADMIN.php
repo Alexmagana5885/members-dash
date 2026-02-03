@@ -99,7 +99,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 </style>
 
 <body>
-    <header>
+    <header style="background-color: #FFFFFF;" >
         <div class="logo">
             <img src="../assets/img/logo.png" alt="AGL">
         </div>
@@ -174,7 +174,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     </style>
 
-    <div class="innerlinksNav">
+    <div class="innerlinksNav" style="margin-bottom: 3px;" >
         <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
         <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
         <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
