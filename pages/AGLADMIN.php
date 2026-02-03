@@ -170,23 +170,17 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         @media (max-width: 600px) {
             .innerlinksNav {
                 justify-content: center;
-                gap: 8px;
+                gap: 4px;
+                flex-wrap: wrap;
             }
 
             .innerlinksNav-a {
-                font-size: 13px;
-                padding: 6px 12px;
+                font-size: 10px;
+                padding: 4px 8px;
             }
         }
     </style>
 
-
-    <!-- <div class="innerlinksNav" style="margin-bottom: 3px;">
-        <a class="innerlinksNav-a" href="#blogPoint">Blogs</a>
-        <a class="innerlinksNav-a" href="#PlannedEvents">Upcoming Events</a>
-        <a class="innerlinksNav-a" href="#PastEvents">Past Events</a>
-        <a class="innerlinksNav-a" id="toggleMessagesReceivedMessages" href="#">Messages</a>
-    </div> -->
     <div class="Aligner"></div>
 
     <style>
