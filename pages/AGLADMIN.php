@@ -431,6 +431,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     <div class="main-content">
 
+    <!-- navigation sidebar -->
+
         <nav style="cursor: pointer;" id="sidebar" class="sidebar">
             <ul>
                 <li>
@@ -884,7 +886,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         </style>
 
         <!-- Add this JavaScript for dropdown and mobile toggle functionality -->
-        <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Toggle Payments Dropdown
                 const togglePayments = document.getElementById('togglePayments');
@@ -922,7 +924,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     }
                 });
             });
-        </script>
+        </script> -->
+
+            <!-- navigation sidebar -->
 
 
         <!-- show payment Invoice dropdown -->
