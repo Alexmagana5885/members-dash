@@ -124,8 +124,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         /* Header Container */
         header {
             background-color: #FFFFFF;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
-            padding: 15px 30px;
+            /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08); */
+            /* padding: 15px 30px; */
             display: flex;
             flex-wrap: wrap;
             align-items: center;
@@ -133,7 +133,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             border-bottom: 3px solid #1E5BC6;
             position: relative;
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            gap: 20px;
+            /* gap: 20px; */
         }
 
         /* Header top row - logo and menu button */
@@ -359,7 +359,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             padding: 10px;
             border-radius: 10px;
             display: flex;
-            /* gap: 10px; */
+            gap: 10px;
             overflow-x: auto;
             overflow-y: hidden;
             scrollbar-width: thin;
