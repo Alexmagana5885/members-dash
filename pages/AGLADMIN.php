@@ -558,12 +558,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             /* Sidebar Container */
             .sidebar {
                 background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
-                width: 280px;
+                width: 250px;
                 height: calc(100vh - 83px);
-                /* Adjust based on header height */
                 position: fixed;
                 top: 83px;
-                /* Header height */
                 left: 0;
                 overflow-y: auto;
                 overflow-x: hidden;
