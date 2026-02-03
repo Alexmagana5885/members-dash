@@ -640,7 +640,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
             .sidebar a:hover i {
                 color: #1E5BC6;
-                transform: scale(1.1);
+                /* transform: scale(1.1); */
             }
 
             /* Active State */
@@ -884,50 +884,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 background: white;
             }
         </style>
-
-        <!-- Add this JavaScript for dropdown and mobile toggle functionality -->
-        <!-- <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Toggle Payments Dropdown
-                const togglePayments = document.getElementById('togglePayments');
-                if (togglePayments) {
-                    togglePayments.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const dropdown = document.getElementById('paymentsDropdown');
-                        const isHidden = dropdown.style.display === 'none';
-
-                        dropdown.style.display = isHidden ? 'block' : 'none';
-                        togglePayments.classList.toggle('active', isHidden);
-                    });
-                }
-
-                // Mobile Navigation Toggle
-                const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-                const sidebar = document.querySelector('.sidebar');
-
-                if (mobileNavToggle && sidebar) {
-                    mobileNavToggle.addEventListener('click', function() {
-                        sidebar.classList.toggle('active');
-                        this.classList.toggle('bi-list');
-                        this.classList.toggle('bi-x');
-                    });
-                }
-
-                // Close sidebar when clicking outside on mobile
-                document.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 768 && sidebar && mobileNavToggle) {
-                        if (!sidebar.contains(e.target) && !mobileNavToggle.contains(e.target)) {
-                            sidebar.classList.remove('active');
-                            mobileNavToggle.classList.add('bi-list');
-                            mobileNavToggle.classList.remove('bi-x');
-                        }
-                    }
-                });
-            });
-        </script> -->
-
-            <!-- navigation sidebar -->
-
 
         <!-- show payment Invoice dropdown -->
 
