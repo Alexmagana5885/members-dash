@@ -1390,8 +1390,7 @@ LIMIT 1";
                     .dashboard {
                         width: 100%;
                         padding: 20px;
-                        /* margin-left: 280px; */
-                    
+                        margin-left: 20px;
                         transition: margin-left 0.3s ease;
                     }
 
@@ -1399,15 +1398,15 @@ LIMIT 1";
                     .cards {
                         display: grid;
                         grid-template-columns: repeat(4, 1fr);
-                        gap: 25px;
-                        margin-bottom: 40px;
+                        gap: 10px;
+                        margin-bottom: 15px;
                     }
 
                     /* Individual Card Styling */
                     .card {
                         background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFF 100%);
                         border-radius: 16px;
-                        padding: 25px;
+                        padding: 10px;
                         box-shadow: 0 8px 25px rgba(30, 91, 198, 0.08);
                         border: 1px solid #E3EFFF;
                         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1415,7 +1414,7 @@ LIMIT 1";
                         flex-direction: column;
                         height: 100%;
                         position: relative;
-                        overflow: hidden;
+                        overflow:auto;
                     }
 
                     .card:hover {
