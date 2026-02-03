@@ -1,4 +1,4 @@
-* {
+b* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -46,15 +46,16 @@ header .menu-button {
 
 .sidebar {
   width: 250px;
-  background-color: #1a252f;
+  background-color: #fff;
   padding: 20px;
-  color: #fff;
+  color: #333;
   position: fixed;
   left: 0;
   top: 70px;
   height: calc(100vh - 70px);
   overflow: auto;
   scrollbar-width: thin;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
 .sidebar ul {
@@ -66,7 +67,7 @@ header .menu-button {
 }
 
 .sidebar ul li a {
-  color: #fff;
+  color: #333;
   text-decoration: none;
   display: block;
   padding: 10px;
@@ -75,7 +76,7 @@ header .menu-button {
 }
 
 .sidebar ul li a:hover {
-  background-color: #34495e;
+  background-color: #f0f0f0;
 }
 
 .sidebar-group {

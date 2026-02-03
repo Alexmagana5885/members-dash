@@ -253,36 +253,20 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <a href="https://www.agl.or.ke/" class="active core-link"><i class="fas fa-home"></i> Home</a>
                 </li>
 
-                <?php if ($role == 'superadmin'): ?>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading"><a href="https://www.agl.or.ke/" class="active core-link"><i class="fas fa-home"></i> Home</a></div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-calendar-alt"></i> Events Management</div>
-                        <div class="sidebar-group-content">
-                            <li><a id="openPostEventModal" class="core-link"><i class="fas fa-calendar-plus"></i> Add Planned Event</a></li>
-                            <li><a id="openPastEventModal" class="core-link"><i class="fas fa-calendar-check"></i> Add Past Event</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-edit"></i> Content & Messaging</div>
-                        <div class="sidebar-group-content">
-                            <li><a id="openBlogPostModal" class="secondary-link"><i class="fas fa-blog"></i> Post a Blog</a></li>
-                            <li><a id="openMessagePopupSend" class="secondary-link"><i class="fas fa-envelope"></i> Send Message</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-users-cog"></i> Members & Payments</div>
-                        <div class="sidebar-group-content">
-                            <li><a id="MembersTable-link" href="Members.php" class="core-link"><i class="fas fa-users"></i> Members</a></li>
-                            <li><a href="adminP.php" class="core-link"><i class="fas fa-credit-card"></i> Member Payments</a></li>
-                            <li>
-                                <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
-                                <ul style="display: none;" class="dropdown" id="paymentsDropdown">
-                                    <?php
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo '<li>
+        <?php if ($role == 'superadmin'): ?>
+                    <li><a id="openPostEventModal" class="core-link"><i class="fas fa-calendar-plus"></i> Add Planned Event</a></li>
+                    <li><a id="openPastEventModal" class="core-link"><i class="fas fa-calendar-check"></i> Add Past Event</a></li>
+                    <li><a id="openBlogPostModal" class="secondary-link"><i class="fas fa-blog"></i> Post a Blog</a></li>
+                    <li><a id="openMessagePopupSend" class="secondary-link"><i class="fas fa-envelope"></i> Send Message</a></li>
+                    <li><a id="MembersTable-link" href="Members.php" class="core-link"><i class="fas fa-users"></i> Members</a></li>
+                    <li><a href="adminP.php" class="core-link"><i class="fas fa-credit-card"></i> Member Payments</a></li>
+                    <li>
+                        <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
+                        <ul style="display: none;" class="dropdown" id="paymentsDropdown">
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<li>
                             <a href="#" class="invoice-link" target="_blank"
                                data-id="' . htmlspecialchars($row['id']) . '" 
                                data-date="' . htmlspecialchars($row['invoice_date']) . '" 
@@ -290,74 +274,35 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                                 ' . htmlspecialchars($row['invoice_date']) . '
                             </a>
                           </li>';
-                                        }
-                                    } else {
-                                        echo '<li>No payments found</li>';
-                                    }
-                                    ?>
-                                </ul>
-                            </li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-user-cog"></i> Account Settings</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="userinfo.php" target="_blank" class="secondary-link"><i class="fas fa-user"></i> User Information</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-headset"></i> Contacts & Support</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="https://www.agl.or.ke/contact-us/" class="secondary-link"><i class="fas fa-address-book"></i> Contacts</a></li>
-                            <li><a href="mailto:info@agl.or.ke" target="_blank" class="secondary-link"><i class="fas fa-envelope"></i> Email Us</a></li>
-                            <li><a href="tel:+254748027123" target="_blank" class="secondary-link"><i class="fas fa-phone"></i> Call Us</a></li>
-                            <li><a href="https://wa.me/254722605048" target="_blank" class="secondary-link"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-share-alt"></i> Social Media</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="https://x.com/OfLibraria37902" target="_blank" class="secondary-link"><i class="fab fa-twitter"></i> Twitter</a></li>
-                            <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank" class="secondary-link"><i class="fab fa-facebook"></i> Facebook</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-sign-out-alt"></i> Session</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="../forms/logout.php" class="secondary-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                        </div>
-                    </div>
-                    <!-- <li><a href="https://docs.google.com/forms/d/1aN5mL1rYa1JjZbTJduk-jKuVJpIfprRkD_POlN9uW8s/edit">Conference feedbacks</a></li> -->
+                                }
+                            } else {
+                                echo '<li>No payments found</li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
+                    <li><a href="userinfo.php" target="_blank" class="secondary-link"><i class="fas fa-user"></i> User Information</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/" class="secondary-link"><i class="fas fa-address-book"></i> Contacts</a></li>
+                    <li><a href="mailto:info@agl.or.ke" target="_blank" class="secondary-link"><i class="fas fa-envelope"></i> Email Us</a></li>
+                    <li><a href="tel:+254748027123" target="_blank" class="secondary-link"><i class="fas fa-phone"></i> Call Us</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank" class="secondary-link"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a></li>
+                    <li><a href="https://x.com/OfLibraria37902" target="_blank" class="secondary-link"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank" class="secondary-link"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="../forms/logout.php" class="secondary-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 
                 <?php elseif ($role == 'admin'): ?>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading"><a href="https://www.agl.or.ke/" class="active core-link"><i class="fas fa-home"></i> Home</a></div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-calendar-alt"></i> Events Management</div>
-                        <div class="sidebar-group-content">
-                            <li><a id="openPostEventModal" class="core-link"><i class="fas fa-calendar-plus"></i> Add Planned Event</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-edit"></i> Content & Messaging</div>
-                        <div class="sidebar-group-content">
-                            <li><a id="openBlogPostModal" class="secondary-link"><i class="fas fa-blog"></i> Post a Blog</a></li>
-                            <li><a id="openMessagePopupSend" class="secondary-link"><i class="fas fa-envelope"></i> Send Message</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-users-cog"></i> Members & Payments</div>
-                        <div class="sidebar-group-content">
-                            <li><a id="MembersTable-link" href="Members.php" class="core-link"><i class="fas fa-users"></i> Members</a></li>
-                            <li><a href="adminP.php" class="core-link"><i class="fas fa-credit-card"></i> Member Payments</a></li>
-                            <li>
-                                <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
-                                <ul style="display: none;" class="dropdown" id="paymentsDropdown">
-                                    <?php
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo '<li>
+                    <li><a id="openPostEventModal" class="core-link"><i class="fas fa-calendar-plus"></i> Add Planned Event</a></li>
+                    <li><a id="openBlogPostModal" class="secondary-link"><i class="fas fa-blog"></i> Post a Blog</a></li>
+                    <li><a id="openMessagePopupSend" class="secondary-link"><i class="fas fa-envelope"></i> Send Message</a></li>
+                    <li><a id="MembersTable-link" href="Members.php" class="core-link"><i class="fas fa-users"></i> Members</a></li>
+                    <li><a href="adminP.php" class="core-link"><i class="fas fa-credit-card"></i> Member Payments</a></li>
+                    <li>
+                        <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
+                        <ul style="display: none;" class="dropdown" id="paymentsDropdown">
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<li>
                             <a href="#" class="invoice-link" target="_blank"
                                data-id="' . htmlspecialchars($row['id']) . '" 
                                data-date="' . htmlspecialchars($row['invoice_date']) . '" 
@@ -365,56 +310,27 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                                 ' . htmlspecialchars($row['invoice_date']) . '
                             </a>
                           </li>';
-                                        }
-                                    } else {
-                                        echo '<li>No payments found</li>';
-                                    }
-                                    ?>
-                                </ul>
-                            </li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-user-cog"></i> Account Settings</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="userinfo.php" target="_blank" class="secondary-link"><i class="fas fa-user"></i> User Information</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-headset"></i> Contacts & Support</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="mailto:info@agl.or.ke" class="secondary-link"><i class="fas fa-envelope"></i> Email Us</a></li>
-                            <li><a href="tel:+254748027123" class="secondary-link"><i class="fas fa-phone"></i> Call Us</a></li>
-                            <li><a href="https://wa.me/254722605048" target="_blank" class="secondary-link"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-sign-out-alt"></i> Session</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="../forms/logout.php" class="secondary-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                        </div>
-                    </div>
+                                }
+                            } else {
+                                echo '<li>No payments found</li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
+                    <li><a href="userinfo.php" target="_blank" class="secondary-link"><i class="fas fa-user"></i> User Information</a></li>
+                    <li><a href="mailto:info@agl.or.ke" class="secondary-link"><i class="fas fa-envelope"></i> Email Us</a></li>
+                    <li><a href="tel:+254748027123" class="secondary-link"><i class="fas fa-phone"></i> Call Us</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank" class="secondary-link"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a></li>
+                    <li><a href="../forms/logout.php" class="secondary-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 
                 <?php elseif ($role == 'member'): ?>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading"><a href="https://www.agl.or.ke/" class="active core-link"><i class="fas fa-home"></i> Home</a></div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading"><i class="fas fa-calendar-alt"></i> Events Management</div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading"><i class="fas fa-edit"></i> Content & Messaging</div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-users-cog"></i> Members & Payments</div>
-                        <div class="sidebar-group-content">
-                            <li>
-                                <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
-                                <ul style="display: none;" class="dropdown" id="paymentsDropdown">
-                                    <?php
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo '<li>
+                    <li>
+                        <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
+                        <ul style="display: none;" class="dropdown" id="paymentsDropdown">
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<li>
                             <a href="#" class="invoice-link" target="_blank"
                                data-id="' . htmlspecialchars($row['id']) . '" 
                                data-date="' . htmlspecialchars($row['invoice_date']) . '" 
@@ -422,43 +338,21 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                                 ' . htmlspecialchars($row['invoice_date']) . '
                             </a>
                           </li>';
-                                        }
-                                    } else {
-                                        echo '<li>No payments found</li>';
-                                    }
-                                    ?>
-                                </ul>
-                            </li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-user-cog"></i> Account Settings</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="userinfo.php" target="_blank" class="secondary-link"><i class="fas fa-user"></i> User Information</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-headset"></i> Contacts & Support</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="https://www.agl.or.ke/contact-us/" target="_blank" class="secondary-link"><i class="fas fa-address-book"></i> Contacts</a></li>
-                            <li><a href="mailto:info@agl.or.ke" class="secondary-link"><i class="fas fa-envelope"></i> Email Us</a></li>
-                            <li><a href="tel:+254748027123" target="_blank" class="secondary-link"><i class="fas fa-phone"></i> Call Us</a></li>
-                            <li><a href="https://wa.me/254722605048" target="_blank" class="secondary-link"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-share-alt"></i> Social Media</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="https://x.com/OfLibraria37902" target="_blank" class="secondary-link"><i class="fab fa-twitter"></i> Twitter</a></li>
-                            <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank" class="secondary-link"><i class="fab fa-facebook"></i> Facebook</a></li>
-                        </div>
-                    </div>
-                    <div class="sidebar-group">
-                        <div class="sidebar-heading" onclick="toggleDropdown(this)"><i class="fas fa-sign-out-alt"></i> Session</div>
-                        <div class="sidebar-group-content">
-                            <li><a href="../forms/logout.php" class="secondary-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                        </div>
-                    </div>
+                                }
+                            } else {
+                                echo '<li>No payments found</li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
+                    <li><a href="userinfo.php" target="_blank" class="secondary-link"><i class="fas fa-user"></i> User Information</a></li>
+                    <li><a href="https://www.agl.or.ke/contact-us/" target="_blank" class="secondary-link"><i class="fas fa-address-book"></i> Contacts</a></li>
+                    <li><a href="mailto:info@agl.or.ke" class="secondary-link"><i class="fas fa-envelope"></i> Email Us</a></li>
+                    <li><a href="tel:+254748027123" target="_blank" class="secondary-link"><i class="fas fa-phone"></i> Call Us</a></li>
+                    <li><a href="https://wa.me/254722605048" target="_blank" class="secondary-link"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a></li>
+                    <li><a href="https://x.com/OfLibraria37902" target="_blank" class="secondary-link"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="https://www.facebook.com/share/zQ8rdvgozvNsZY8J/?mibextid=qi2Omg" target="_blank" class="secondary-link"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="../forms/logout.php" class="secondary-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 
                 <?php endif; ?>
             </ul>
