@@ -112,76 +112,184 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
     </header>
 
-  
-    <!-- <style>
-        .innerlinksNav {
+
+    <div class="Aligner"></div>
+
+    <style>
+        /* Header Container */
+        header {
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            padding: 15px 30px;
             display: flex;
-            justify-content: flex-end;
+            flex-wrap: wrap;
             align-items: center;
-            background-color: #ffffff;
-            min-height: 52px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            gap: 12px;
-            padding: 0 20px;
+            justify-content: space-between;
+            border-bottom: 3px solid #1E5BC6;
+            position: relative;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
         }
 
-        .innerlinksNav-a {
-            display: inline-flex;
+        /* Logo Container */
+        .logo {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            color: #1E3A8A;
-            font-size: 15px;
+            flex: 0 0 auto;
+            margin-right: 30px;
+        }
+
+        /* Logo Image */
+        .logo img {
+            height: 45px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+        }
+
+        /* Navigation Links Container */
+        .innerlinksNav {
+            display: flex;
+            flex: 1;
+            justify-content: flex-start;
+            gap: 35px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        /* Navigation Links (Regular) */
+        .innerlinksNav-a {
+            color: #2C3E50;
             text-decoration: none;
-            font-weight: 500;
-            background-color: #F1F5FF;
-            border-radius: 999px;
-            padding: 8px 18px;
-            font-family: "Inter", "Segoe UI", Arial, sans-serif;
-            transition:
-                background-color 0.25s ease,
-                color 0.25s ease,
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
-            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 8px 0;
+            position: relative;
+            transition: color 0.2s ease;
             white-space: nowrap;
         }
 
-        .innerlinksNav-a:hover {
-            background-color: #E0E7FF;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        /* Messages Button Special Styling */
+        #toggleMessagesReceivedMessages {
+            color: #1E5BC6;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 8px 16px;
+            background-color: #F0F7FF;
+            border-radius: 6px;
+            border: 1px solid #D1E3FF;
+            transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
-        .innerlinksNav-a:active,
-        .innerlinksNav-a.selected {
-            background-color: #2563EB;
-            color: #ffffff;
-            font-weight: 600;
-            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+        /* Mobile Menu Button */
+        .menu-button {
+            display: none;
+            cursor: pointer;
+            font-size: 28px;
+            color: #1E5BC6;
+            padding: 5px 10px;
+            background: #F8FAFF;
+            border-radius: 4px;
+            border: 1px solid #E3EFFF;
+            transition: all 0.2s ease;
+            margin-left: 15px;
         }
 
-        /* Optional underline indicator */
-        .Aligner {
-            height: 4px;
-            background: linear-gradient(to right, #2563EB, #6ec1e4);
+        /* Hover effect for regular navigation links */
+        .innerlinksNav-a:not(:last-child):hover {
+            color: #1E5BC6;
         }
 
-        /* Mobile adjustments */
-        @media (max-width: 600px) {
+        /* Underline animation on hover */
+        .innerlinksNav-a:not(:last-child):hover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #1E5BC6;
+            border-radius: 2px;
+        }
+
+        /* Messages button hover effect */
+        #toggleMessagesReceivedMessages:hover {
+            background-color: #1E5BC6;
+            color: #FFFFFF;
+            border-color: #1E5BC6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 91, 198, 0.2);
+        }
+
+        /* Mobile (≤768px) */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-wrap: nowrap;
+            }
+
+            .logo {
+                margin-right: 15px;
+                flex: 0 0 auto;
+            }
+
+            .menu-button {
+                display: block !important;
+                order: 2;
+                flex: 0 0 auto;
+            }
+
             .innerlinksNav {
-                justify-content: center;
-                gap: 4px;
-                flex-wrap: wrap;
+                flex-basis: 100%;
+                order: 3;
+                display: none !important;
+                flex-direction: column;
+                width: 100%;
+                margin-top: 20px;
+                padding: 20px;
+                background-color: #FFFFFF;
+                border-radius: 8px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                border: 1px solid #EAF2FF;
+                gap: 0;
+            }
+
+            .innerlinksNav.active {
+                display: flex !important;
             }
 
             .innerlinksNav-a {
-                font-size: 10px;
-                padding: 4px 8px;
+                width: 100%;
+                padding: 15px !important;
+                text-align: center;
+                border-bottom: 1px solid #F0F7FF;
+                font-size: 17px !important;
+            }
+
+            .innerlinksNav-a:last-child {
+                border-bottom: none;
+                margin-top: 10px;
+                padding: 18px !important;
+            }
+
+            /* Remove hover underline on mobile */
+            .innerlinksNav-a:not(:last-child):hover::after {
+                display: none;
             }
         }
-    </style> -->
 
-    <div class="Aligner"></div>
+        /* Tablet (769px - 992px) */
+        @media (min-width: 769px) and (max-width: 992px) {
+            .innerlinksNav {
+                gap: 20px;
+            }
+
+            .innerlinksNav-a {
+                font-size: 15px !important;
+            }
+        }
+    </style>
 
     <style>
         .blogPoint {
