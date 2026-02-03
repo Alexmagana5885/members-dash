@@ -2738,17 +2738,27 @@ LIMIT 1";
             const sidebar = document.getElementById('sidebar');
 
             toggleButton.addEventListener('click', function() {
-
-                if (sidebar.style.display === 'block') {
-                    sidebar.style.display = 'none';
-                    toggleButton.innerHTML = '☰';
-
+                if (window.innerWidth <= 768) {
+                    // Mobile: toggle active class
+                    sidebar.classList.toggle('active');
+                    if (sidebar.classList.contains('active')) {
+                        toggleButton.innerHTML = 'X';
+                        toggleButton.style.fontWeight = 'bold';
+                        toggleButton.style.color = 'black';
+                    } else {
+                        toggleButton.innerHTML = '☰';
+                    }
                 } else {
-                    sidebar.style.display = 'block';
-                    toggleButton.innerHTML = 'X';
-                    toggleButton.style.fontWeight = 'bold';
-                    toggleButton.style.color = 'black';
-
+                    // Desktop: toggle display
+                    if (sidebar.style.display === 'block') {
+                        sidebar.style.display = 'none';
+                        toggleButton.innerHTML = '☰';
+                    } else {
+                        sidebar.style.display = 'block';
+                        toggleButton.innerHTML = 'X';
+                        toggleButton.style.fontWeight = 'bold';
+                        toggleButton.style.color = 'black';
+                    }
                 }
             });
         });
