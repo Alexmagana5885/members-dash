@@ -1426,11 +1426,11 @@ LIMIT 1";
                     /* Card Header */
                     .card h5 {
                         color: #1E5BC6;
-                        font-size: 20px;
+                        font-size: 15px;
                         font-weight: 700;
-                        margin-bottom: 15px;
+                        margin-bottom: 10px;
                         position: relative;
-                        padding-bottom: 10px;
+                        padding-bottom: 5px;
                     }
 
                     .card h5::after {
@@ -1446,17 +1446,17 @@ LIMIT 1";
 
                     .card h4 {
                         color: #2C3E50;
-                        font-size: 18px;
+                        font-size: 13px;
                         font-weight: 600;
-                        margin: 10px 0;
+                        margin: 5px 0;
                     }
 
                     /* Card Content */
                     .card p {
                         color: #5D7BA3;
-                        font-size: 14px;
+                        font-size: 12px;
                         line-height: 1.6;
-                        margin: 8px 0;
+                        margin: 5px 0;
                     }
 
                     .card p span {
@@ -1469,7 +1469,7 @@ LIMIT 1";
                         border: none;
                         height: 1px;
                         background: linear-gradient(90deg, #E3EFFF, #FFFFFF);
-                        margin: 15px 0;
+                        margin: 10px 0;
                         width: 100%;
                     }
 
