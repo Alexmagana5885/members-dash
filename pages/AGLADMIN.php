@@ -254,14 +254,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 </li>
 
         <?php if ($role == 'superadmin'): ?>
-                    <li><a id="openPostEventModal" class="core-link"><i class="fas fa-calendar-plus"></i> Add Planned Event</a></li>
-                    <li><a id="openPastEventModal" class="core-link"><i class="fas fa-calendar-check"></i> Add Past Event</a></li>
-                    <li><a id="openBlogPostModal" class="secondary-link"><i class="fas fa-blog"></i> Post a Blog</a></li>
-                    <li><a id="openMessagePopupSend" class="secondary-link"><i class="fas fa-envelope"></i> Send Message</a></li>
+                    <li><a id="openPostEventModal" class="core-link"><i class="fas fa-calendar-plus"></i> Planned Event</a></li>
+                    <li><a id="openPastEventModal" class="core-link"><i class="fas fa-calendar-check"></i> Past Event</a></li>
+                    <li><a id="openBlogPostModal" class="secondary-link"><i class="fas fa-blog"></i> New Blog</a></li>
+                    <li><a id="openMessagePopupSend" class="secondary-link"><i class="fas fa-envelope"></i> Message</a></li>
                     <li><a id="MembersTable-link" href="Members.php" class="core-link"><i class="fas fa-users"></i> Members</a></li>
                     <li><a href="adminP.php" class="core-link"><i class="fas fa-credit-card"></i> Member Payments</a></li>
                     <li>
-                        <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
+                        <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> Payments Invoices</a>
                         <ul style="display: none;" class="dropdown" id="paymentsDropdown">
                             <?php
                             if ($result->num_rows > 0) {
@@ -291,13 +291,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     <li><a href="../forms/logout.php" class="secondary-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 
                 <?php elseif ($role == 'admin'): ?>
-                    <li><a id="openPostEventModal" class="core-link"><i class="fas fa-calendar-plus"></i> Add Planned Event</a></li>
-                    <li><a id="openBlogPostModal" class="secondary-link"><i class="fas fa-blog"></i> Post a Blog</a></li>
-                    <li><a id="openMessagePopupSend" class="secondary-link"><i class="fas fa-envelope"></i> Send Message</a></li>
+                    <li><a id="openPostEventModal" class="core-link"><i class="fas fa-calendar-plus"></i> Planned Event</a></li>
+                    <li><a id="openBlogPostModal" class="secondary-link"><i class="fas fa-blog"></i> New Blog</a></li>
+                    <li><a id="openMessagePopupSend" class="secondary-link"><i class="fas fa-envelope"></i> Message</a></li>
                     <li><a id="MembersTable-link" href="Members.php" class="core-link"><i class="fas fa-users"></i> Members</a></li>
                     <li><a href="adminP.php" class="core-link"><i class="fas fa-credit-card"></i> Member Payments</a></li>
                     <li>
-                        <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
+                        <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> Payments Invoices</a>
                         <ul style="display: none;" class="dropdown" id="paymentsDropdown">
                             <?php
                             if ($result->num_rows > 0) {
@@ -325,7 +325,16 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
                 <?php elseif ($role == 'member'): ?>
                     <li>
-                        <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> My Payments Invoices</a>
+                        <a href="https://www.agl.or.ke/" class="active core-link"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li><a class="core-link"><i class="fas fa-calendar-plus"></i> Planned Event</a></li>
+                    <li><a class="core-link"><i class="fas fa-calendar-check"></i> Past Event</a></li>
+                    <li><a class="secondary-link"><i class="fas fa-blog"></i> New Blog</a></li>
+                    <li><a class="secondary-link"><i class="fas fa-envelope"></i> Message</a></li>
+                    <li><a href="Members.php" class="core-link"><i class="fas fa-users"></i> Members</a></li>
+                    <li><a href="adminP.php" class="core-link"><i class="fas fa-credit-card"></i> Member Payments</a></li>
+                    <li>
+                        <a href="#" id="togglePayments" class="core-link"><i class="fas fa-file-invoice-dollar"></i> Payments Invoices</a>
                         <ul style="display: none;" class="dropdown" id="paymentsDropdown">
                             <?php
                             if ($result->num_rows > 0) {
