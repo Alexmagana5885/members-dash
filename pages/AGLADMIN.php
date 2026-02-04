@@ -1376,14 +1376,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                     width: 100%;
                     height: calc(100vh - 70px);
                     top: 70px;
-                    left: -100%;
-                    transition: left 0.3s ease;
+                    right: -100%;
+                    transition: right 0.3s ease;
                     border-right: none;
                     box-shadow: none;
                 }
 
                 .sidebar.active {
-                    left: 0;
+                    right: 0;
                 }
 
                 .sidebar>ul>li {
