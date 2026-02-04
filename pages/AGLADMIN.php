@@ -451,6 +451,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
         <nav style="cursor: pointer;" id="sidebar" class="sidebar">
             <ul>
+                            <div class="logo">
+                <img src="../assets/img/logo.png" alt="AGL">
+            </div>
                 <li>
                     <a href="https://www.agl.or.ke/" class="active core-link"><i class="fas fa-home"></i> Home</a>
                 </li>
