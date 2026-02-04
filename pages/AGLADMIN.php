@@ -1366,7 +1366,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             }
 
             /* Mobile Responsiveness */
-            @media (max-width: 668px) {
+            @media (max-width: 468px) {
                 .sidebar {
                     width: 100%;
                     height: calc(100vh - 70px);
