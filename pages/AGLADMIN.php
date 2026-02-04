@@ -2306,8 +2306,6 @@ LIMIT 1";
 
             </div>
 
-
-
             <style>
                 /* Popup container */
                 .popup {
@@ -3771,7 +3769,7 @@ LIMIT 1";
             const dashboard = document.querySelector('.dashboard');
 
             toggleButton.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 668) {
                     // Mobile: toggle display as overlay
                     if (sidebar.style.display === 'block') {
                         sidebar.style.display = 'none';
