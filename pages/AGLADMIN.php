@@ -151,8 +151,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-box-shadow: 
-  0 6px 15px -3px rgba(30, 91, 198, 0.8);
+            box-shadow:
+                0 6px 15px -3px rgba(30, 91, 198, 0.8);
 
 
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
@@ -384,7 +384,7 @@ box-shadow:
 
     <!-- header -->
 
-    <style>
+    <!-- <style>
         .blogPoint {
             width: 100%;
             background-color: #fff;
@@ -445,7 +445,7 @@ box-shadow:
                 margin-bottom: 10px;
             }
         }
-    </style>
+    </style> -->
 
 
     <!-- for the invoice dropdown -->
