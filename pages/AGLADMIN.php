@@ -102,6 +102,11 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 <!-- popups styles -->
 
 <style>
+    /* popups.css - Unified Popup Styling */
+
+    /* ===========================
+   BASE POPUP OVERLAY
+=========================== */
     .popup-container,
     .modal,
     .past-event-modal,
@@ -133,6 +138,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
+    /* ===========================
+   POPUP CONTENT CONTAINER
+=========================== */
     .popup-content,
     .modal-content,
     .past-event-modal-content,
@@ -165,6 +173,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
+    /* ===========================
+   POPUP HEADERS
+=========================== */
     .popup-content h2,
     .modal-content h2,
     .past-event-modal-content h2,
@@ -178,6 +189,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     }
 
+    /* ===========================
+   CLOSE BUTTONS
+=========================== */
     .popup-close,
     .close,
     .close-past-event,
@@ -215,6 +229,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35);
     }
 
+    /* ===========================
+   FORM GROUPS
+=========================== */
     .form-group,
     .past-event-form-group,
     .blog-post-form-group,
@@ -223,6 +240,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         position: relative;
     }
 
+    /* ===========================
+   LABELS
+=========================== */
     label {
         display: block;
         margin-bottom: 10px;
@@ -241,6 +261,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     }
 
+    /* ===========================
+   INPUT FIELDS & TEXTAREAS
+=========================== */
     input[type="text"],
     input[type="email"],
     input[type="number"],
@@ -277,6 +300,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         background: #FFFFFF;
     }
 
+    /* ===========================
+   BUTTONS
+=========================== */
     button[type="submit"],
     .message-submit-btn-sendMessage,
     .popup-btn,
@@ -326,6 +352,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         box-shadow: 0 12px 24px rgba(30, 91, 198, 0.3);
     }
 
+    /* ===========================
+   SPECIFIC POPUP STYLES
+=========================== */
 
     /* MPESA Payment Popup */
     #mpesa-popup-content,
@@ -485,6 +514,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         min-height: 150px;
     }
 
+    /* ===========================
+   RESPONSIVE DESIGN
+=========================== */
     @media (max-width: 768px) {
 
         .popup-content,
@@ -573,6 +605,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
+    /* ===========================
+   SCROLLBAR STYLING
+=========================== */
     .popup-content::-webkit-scrollbar,
     .message-container::-webkit-scrollbar,
     .full-message-content::-webkit-scrollbar {
@@ -599,6 +634,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         background: #174a9e;
     }
 
+    /* ===========================
+   ANIMATION ENHANCEMENTS
+=========================== */
     .popup-content {
         animation: popupAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -615,7 +653,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-
+    /* ===========================
+   FORM VALIDATION STYLES
+=========================== */
     input:invalid,
     select:invalid,
     textarea:invalid {
@@ -635,6 +675,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         display: none;
     }
 
+    /* ===========================
+   LOADING STATE
+=========================== */
     button.loading {
         position: relative;
         color: transparent;
@@ -681,10 +724,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     </header>
 
-
+    <!-- <div class="Aligner"></div> -->
 
     <style>
- 
+        /* body {
+            padding-top: var(--header-height);
+        } */
+
         :root {
             --header-height: 83px;
         }
@@ -1612,7 +1658,7 @@ LIMIT 1";
                     </button>
                 </div>
 
-                <!-- <style>
+                <style>
                     .popup-container {
                         display: none;
                         position: fixed;
@@ -1691,7 +1737,7 @@ LIMIT 1";
                         bottom: 5px;
                         margin: 10px auto;
                     }
-                </style> -->
+                </style>
 
                 <!--  Payment Popup Structure registration -->
                 <div id="mpesa-popup" class="popup-container">
@@ -1867,7 +1913,7 @@ LIMIT 1";
 
                 ?>
 
-                <!-- <style>
+                <style>
                     .iventcard {
                         background-color: #007bff;
                         color: white;
@@ -1881,7 +1927,7 @@ LIMIT 1";
                     .iventcard:hover {
                         background-color: #0056b3;
                     }
-                </style> -->
+                </style>
 
                 <!-- Registered Events -->
                 <div class="card">
@@ -1921,7 +1967,7 @@ LIMIT 1";
                 </div>
 
                 <!-- styling for 1st 4 cards -->
-                <!-- <style>
+                <style>
                     /* Dashboard Container */
                     .dashboard {
                         width: 100%;
@@ -2274,13 +2320,13 @@ LIMIT 1";
                         border-radius: 6px;
                         font-weight: 500;
                     }
-                </style> -->
+                </style>
 
             </div>
 
 
 
-            <!-- <style>
+            <style>
                 /* Popup container */
                 .popup {
                     position: fixed;
@@ -2322,7 +2368,7 @@ LIMIT 1";
                     background-color: #f8d7da;
                     color: #721c24;
                 }
-            </style> -->
+            </style>
 
             <!-- error response-popups-->
             <div>
@@ -2404,8 +2450,6 @@ LIMIT 1";
                     }
                 });
             </script>
-
-<!-- styling for blogs -->
 
             <style>
                 .blogPoint {
@@ -2733,7 +2777,21 @@ LIMIT 1";
             }
             ?>
 
+            <style>
+                @media (max-width: 600px) {
+                    .message-popup {
+                        width: 70%;
+                        right: 0;
+                        top: 20px;
+                        height: 80%;
+                        max-height: 100%;
+                        border-radius: 8px;
+                        overflow: auto;
+                        scrollbar-width: thin;
 
+                    }
+                }
+            </style>
 
             <div class="message-popup" id="messagePopupReceivedMessages">
                 <div class="message-popup-header">
@@ -2812,6 +2870,23 @@ LIMIT 1";
 
             ?>
 
+            <!-- planned event style -->
+
+            <style>
+                .plannedEventimg {
+                    width: 100%;
+                    height: 250px;
+                    margin-bottom: 5px;
+                    object-fit: cover;
+                }
+
+                .quill-content {
+                    max-height: 290px;
+                    overflow: auto;
+                    scrollbar-width: thin;
+                    text-align: start;
+                }
+            </style>
 
             <!-- PlannedEvents -->
 
@@ -2879,7 +2954,6 @@ LIMIT 1";
                 </div>
             </div>
 
-            <!-- styling for planned events -->
             <style>
                 #PlannedEvents {
                     padding: 10px 0 30px;
@@ -3552,7 +3626,6 @@ LIMIT 1";
             $conn->close();
             ?>
 
-<!-- styling for past events -->
             <style>
                 #PastEvents {
                     display: grid;
