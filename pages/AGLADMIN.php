@@ -30,6 +30,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 </head>
 
+<!-- quill style -->
 <style>
     /* General styles for Quill content */
     .quill-content {
@@ -95,6 +96,611 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         margin-right: 10px;
         width: 20px;
         text-align: center;
+    }
+</style>
+
+<!-- popups styles -->
+
+<style>
+    /* popups.css - Unified Popup Styling */
+
+    /* ===========================
+   BASE POPUP OVERLAY
+=========================== */
+    .popup-container,
+    .modal,
+    .past-event-modal,
+    .blog-post-modal,
+    .message-popup-sendMessage,
+    .popup-form {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.75);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        padding: 20px;
+        backdrop-filter: blur(4px);
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* ===========================
+   POPUP CONTENT CONTAINER
+=========================== */
+    .popup-content,
+    .modal-content,
+    .past-event-modal-content,
+    .blog-post-modal-content,
+    .message-popup-content-sendMessage,
+    .form-container {
+        background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFF 100%);
+        border-radius: 20px;
+        padding: 32px;
+        width: 90%;
+        max-width: 520px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 60px rgba(30, 91, 198, 0.25);
+        border: 1px solid rgba(30, 91, 198, 0.15);
+        position: relative;
+        animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10000;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* ===========================
+   POPUP HEADERS
+=========================== */
+    .popup-content h2,
+    .modal-content h2,
+    .past-event-modal-content h2,
+    .blog-post-modal-content h2,
+    .message-popup-content-sendMessage h2 {
+        color: #1E5BC6;
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-align: center;
+        font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* ===========================
+   CLOSE BUTTONS
+=========================== */
+    .popup-close,
+    .close,
+    .close-past-event,
+    .close-blog-post,
+    .message-close-btn-sendMessage,
+    .closeBtn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 22px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10001;
+        box-shadow: 0 6px 16px rgba(255, 107, 107, 0.25);
+    }
+
+    .popup-close:hover,
+    .close:hover,
+    .close-past-event:hover,
+    .close-blog-post:hover,
+    .message-close-btn-sendMessage:hover,
+    .closeBtn:hover {
+        background: linear-gradient(135deg, #FF5252 0%, #FF6B6B 100%);
+        transform: rotate(90deg) scale(1.1);
+        box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35);
+    }
+
+    /* ===========================
+   FORM GROUPS
+=========================== */
+    .form-group,
+    .past-event-form-group,
+    .blog-post-form-group,
+    .message-form-group-sendMessage {
+        margin-bottom: 24px;
+        position: relative;
+    }
+
+    /* ===========================
+   LABELS
+=========================== */
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #2C3E50;
+        font-weight: 600;
+        font-size: 15px;
+        font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .popup-label {
+        display: block;
+        margin-bottom: 10px;
+        color: #2C3E50;
+        font-weight: 600;
+        font-size: 15px;
+        font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* ===========================
+   INPUT FIELDS & TEXTAREAS
+=========================== */
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="date"],
+    input[type="file"],
+    input[type="password"],
+    select,
+    textarea,
+    .popup-input {
+        width: 100%;
+        padding: 16px 18px;
+        border: 2px solid #E3EFFF;
+        border-radius: 12px;
+        font-size: 15px;
+        color: #2C3E50;
+        background: #FFFFFF;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .popup-input {
+        background: #F8FAFF;
+        border: 2px solid #D1E3FF;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus,
+    .popup-input:focus {
+        outline: none;
+        border-color: #1E5BC6;
+        box-shadow: 0 0 0 4px rgba(30, 91, 198, 0.15);
+        background: #FFFFFF;
+    }
+
+    /* ===========================
+   BUTTONS
+=========================== */
+    button[type="submit"],
+    .message-submit-btn-sendMessage,
+    .popup-btn,
+    .popup-content button,
+    .form-container button[type="submit"] {
+        background: linear-gradient(135deg, #1E5BC6 0%, #2E7BFF 100%);
+        color: white;
+        border: none;
+        padding: 18px 32px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        letter-spacing: 0.5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    button[type="submit"]::before,
+    .message-submit-btn-sendMessage::before,
+    .popup-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.7s ease;
+    }
+
+    button[type="submit"]:hover::before,
+    .message-submit-btn-sendMessage:hover::before,
+    .popup-btn:hover::before {
+        left: 100%;
+    }
+
+    button[type="submit"]:hover,
+    .message-submit-btn-sendMessage:hover,
+    .popup-btn:hover {
+        background: linear-gradient(135deg, #174a9e 0%, #1E5BC6 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(30, 91, 198, 0.3);
+    }
+
+    /* ===========================
+   SPECIFIC POPUP STYLES
+=========================== */
+
+    /* MPESA Payment Popup */
+    #mpesa-popup-content,
+    #memberpayments-popup-content {
+        text-align: center;
+    }
+
+    .popup-logo {
+        max-width: 180px;
+        margin: 0 auto 25px;
+        display: block;
+        filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.1));
+    }
+
+    .popup-confirmation,
+    .popup-description {
+        color: #4A657C;
+        line-height: 1.7;
+        margin-bottom: 25px;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .popup-buttons {
+        margin-top: 30px;
+    }
+
+    /* Message Popup Received Messages */
+    .message-popup {
+        position: fixed;
+        top: 120px;
+        right: 30px;
+        width: 350px;
+        background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFF 100%);
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(30, 91, 198, 0.25);
+        display: none;
+        flex-direction: column;
+        z-index: 9998;
+        border: 1px solid rgba(30, 91, 198, 0.15);
+        max-height: 500px;
+        overflow: hidden;
+    }
+
+    .message-popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #1E5BC6 0%, #2E7BFF 100%);
+        color: white;
+    }
+
+    .message-popup-header h4 {
+        margin: 0;
+        font-size: 18px;
+        color: white;
+    }
+
+    .message-container {
+        padding: 20px;
+        overflow-y: auto;
+        max-height: 400px;
+    }
+
+    .message {
+        background: #F0F7FF;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-left: 4px solid #1E5BC6;
+    }
+
+    .message:hover {
+        background: #E8F1FF;
+        transform: translateX(5px);
+        box-shadow: 0 6px 16px rgba(30, 91, 198, 0.15);
+    }
+
+    .message-content {
+        margin: 0;
+        color: #2C3E50;
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .message-time {
+        font-size: 12px;
+        color: #7A8CA5;
+        display: block;
+        margin-top: 8px;
+    }
+
+    /* Full Message Popup */
+    .full-message-popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.75);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(4px);
+    }
+
+    .full-message-content {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 25px 60px rgba(30, 91, 198, 0.25);
+    }
+
+    .full-message-content button {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #FF6B6B;
+        color: white;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Quill Editor in Popups */
+    #quillEditor,
+    #pastEventDetailsEditor,
+    #editor {
+        border-radius: 12px;
+        border: 2px solid #E3EFFF;
+        overflow: hidden;
+    }
+
+    .ql-toolbar {
+        border-radius: 12px 12px 0 0 !important;
+        border-color: #E3EFFF !important;
+        background: #F8FAFF !important;
+    }
+
+    .ql-container {
+        border-radius: 0 0 12px 12px !important;
+        border-color: #E3EFFF !important;
+        min-height: 150px;
+    }
+
+    /* ===========================
+   RESPONSIVE DESIGN
+=========================== */
+    @media (max-width: 768px) {
+
+        .popup-content,
+        .modal-content,
+        .past-event-modal-content,
+        .blog-post-modal-content,
+        .message-popup-content-sendMessage,
+        .form-container {
+            padding: 24px;
+            width: 95%;
+            max-width: 95%;
+            margin: 10px;
+            border-radius: 16px;
+        }
+
+        .popup-container,
+        .modal,
+        .past-event-modal,
+        .blog-post-modal,
+        .message-popup-sendMessage,
+        .popup-form {
+            padding: 10px;
+        }
+
+        .message-popup {
+            width: 90%;
+            right: 5%;
+            top: 100px;
+            max-height: 70vh;
+        }
+
+        button[type="submit"],
+        .message-submit-btn-sendMessage,
+        .popup-btn {
+            padding: 16px 24px;
+            font-size: 15px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="date"],
+        input[type="file"],
+        select,
+        textarea,
+        .popup-input {
+            padding: 14px 16px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .popup-content,
+        .modal-content,
+        .past-event-modal-content,
+        .blog-post-modal-content,
+        .message-popup-content-sendMessage,
+        .form-container {
+            padding: 20px;
+            border-radius: 14px;
+        }
+
+        .popup-content h2,
+        .modal-content h2,
+        .past-event-modal-content h2,
+        .blog-post-modal-content h2,
+        .message-popup-content-sendMessage h2 {
+            font-size: 22px;
+        }
+
+        .popup-logo {
+            max-width: 140px;
+        }
+
+        .popup-close,
+        .close,
+        .close-past-event,
+        .close-blog-post,
+        .message-close-btn-sendMessage {
+            width: 36px;
+            height: 36px;
+            font-size: 20px;
+            top: 15px;
+            right: 15px;
+        }
+    }
+
+    /* ===========================
+   SCROLLBAR STYLING
+=========================== */
+    .popup-content::-webkit-scrollbar,
+    .message-container::-webkit-scrollbar,
+    .full-message-content::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .popup-content::-webkit-scrollbar-track,
+    .message-container::-webkit-scrollbar-track,
+    .full-message-content::-webkit-scrollbar-track {
+        background: #F8FAFF;
+        border-radius: 4px;
+    }
+
+    .popup-content::-webkit-scrollbar-thumb,
+    .message-container::-webkit-scrollbar-thumb,
+    .full-message-content::-webkit-scrollbar-thumb {
+        background: #1E5BC6;
+        border-radius: 4px;
+    }
+
+    .popup-content::-webkit-scrollbar-thumb:hover,
+    .message-container::-webkit-scrollbar-thumb:hover,
+    .full-message-content::-webkit-scrollbar-thumb:hover {
+        background: #174a9e;
+    }
+
+    /* ===========================
+   ANIMATION ENHANCEMENTS
+=========================== */
+    .popup-content {
+        animation: popupAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popupAppear {
+        0% {
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* ===========================
+   FORM VALIDATION STYLES
+=========================== */
+    input:invalid,
+    select:invalid,
+    textarea:invalid {
+        border-color: #FF6B6B;
+    }
+
+    input:valid,
+    select:valid,
+    textarea:valid {
+        border-color: #4CAF50;
+    }
+
+    .error-message {
+        color: #FF6B6B;
+        font-size: 13px;
+        margin-top: 5px;
+        display: none;
+    }
+
+    /* ===========================
+   LOADING STATE
+=========================== */
+    button.loading {
+        position: relative;
+        color: transparent;
+    }
+
+    button.loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        transform: translate(-50%, -50%);
+    }
+
+    @keyframes spin {
+        to {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
     }
 </style>
 
@@ -383,69 +989,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     </style>
 
     <!-- header -->
-
-    <!-- <style>
-        .blogPoint {
-            width: 100%;
-            background-color: #fff;
-            min-height: 200px;
-            padding: 10px;
-            border-radius: 10px;
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            overflow-y: hidden;
-            scrollbar-width: thin;
-            max-height: 600px;
-        }
-
-        .Singleblog {
-            flex: 0 0 auto;
-            width: 300px;
-            /* Fixed width for horizontal scrolling */
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .blogImage {
-            width: 100%;
-            height: 200px;
-            margin-bottom: 10px;
-            border-radius: 20px 0 50px 0;
-            overflow: hidden;
-        }
-
-        .blogImage img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .blogcontent {
-            width: 100%;
-            text-align: left;
-        }
-
-        .blogcontent p {
-            overflow: auto;
-            scrollbar-width: thin;
-            max-height: 200px;
-            padding: 5px;
-            margin: 10px 0;
-        }
-
-        @media screen and (max-width: 600px) {
-            .Singleblog {
-                width: 90%;
-                /* Take most of the screen width on small screens */
-                margin-bottom: 10px;
-            }
-        }
-    </style> -->
 
 
     <!-- for the invoice dropdown -->
