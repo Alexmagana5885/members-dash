@@ -198,7 +198,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         right: 20px;
         width: 40px;
         height: 40px;
-        background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+        background: linear-gradient(135deg, #2c238e 0%, #2c238e 100%);
         color: white;
         border: none;
         border-radius: 50%;
@@ -210,7 +210,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         justify-content: center;
         transition: all 0.3s ease;
         z-index: 10001;
-        box-shadow: 0 6px 16px rgba(255, 107, 107, 0.25);
+        box-shadow: 0 6px 16px rgba(26, 16, 103, 0.25);
     }
 
     .popup-close:hover,
@@ -219,9 +219,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     .close-blog-post:hover,
     .message-close-btn-sendMessage:hover,
     .closeBtn:hover {
-        background: linear-gradient(135deg, #FF5252 0%, #FF6B6B 100%);
+        background: linear-gradient(135deg, #464be0 0%, #4954ba 100%);
         transform: rotate(90deg) scale(1.1);
-        box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35);
+        box-shadow: 0 8px 20px rgba(21, 29, 88, 0.35);
     }
 
     /* ===========================
@@ -256,9 +256,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     }
 
-    /* ===========================
-   INPUT FIELDS & TEXTAREAS
-=========================== */
     input[type="text"],
     input[type="email"],
     input[type="number"],
@@ -295,9 +292,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         background: #FFFFFF;
     }
 
-    /* ===========================
-   BUTTONS
-=========================== */
+
     button[type="submit"],
     .message-submit-btn-sendMessage,
     .popup-btn,
@@ -347,9 +342,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         box-shadow: 0 12px 24px rgba(30, 91, 198, 0.3);
     }
 
-    /* ===========================
-   SPECIFIC POPUP STYLES
-=========================== */
 
     /* MPESA Payment Popup */
     #mpesa-popup-content,
@@ -475,7 +467,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         position: absolute;
         top: 15px;
         right: 15px;
-        background: #FF6B6B;
+        background: #2626f1;
         color: white;
         border: none;
         width: 36px;
