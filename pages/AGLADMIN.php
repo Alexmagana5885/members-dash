@@ -147,7 +147,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         padding: 32px;
         width: 90%;
         max-width: 520px;
-        max-height: 50vh;
+        max-height: 70vh;
         overflow-y: auto;
         box-shadow: 0 25px 60px rgba(30, 91, 198, 0.25);
         border: 1px solid rgba(30, 91, 198, 0.15);
@@ -177,7 +177,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     .blog-post-modal-content h2,
     .message-popup-content-sendMessage h2 {
         color: #1E5BC6;
-        font-size: 26px;
+        font-size: 20px;
         font-weight: 700;
         margin-bottom: 10px;
         text-align: center;
@@ -269,10 +269,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     textarea,
     .popup-input {
         width: 100%;
-        padding: 16px 18px;
+        padding: 10px 12px;
         border: 2px solid #E3EFFF;
         border-radius: 12px;
-        font-size: 15px;
+        font-size: 13px;
         color: #2C3E50;
         background: #FFFFFF;
         transition: all 0.3s ease;
@@ -306,9 +306,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         background: linear-gradient(135deg, #1E5BC6 0%, #2E7BFF 100%);
         color: white;
         border: none;
-        padding: 18px 32px;
+        padding: 12px 24px;
         border-radius: 12px;
-        font-size: 16px;
+        font-size: 13px;
         font-weight: 600;
         cursor: pointer;
         width: 100%;
