@@ -104,9 +104,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 <style>
     /* popups.css - Unified Popup Styling */
 
-    /* ===========================
-   BASE POPUP OVERLAY
-=========================== */
     .popup-container,
     .modal,
     .past-event-modal,
@@ -138,9 +135,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ===========================
-   POPUP CONTENT CONTAINER
-=========================== */
+
     .popup-content,
     .modal-content,
     .past-event-modal-content,
@@ -152,7 +147,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         padding: 32px;
         width: 90%;
         max-width: 520px;
-        max-height: 90vh;
+        max-height: 50vh;
         overflow-y: auto;
         box-shadow: 0 25px 60px rgba(30, 91, 198, 0.25);
         border: 1px solid rgba(30, 91, 198, 0.15);
