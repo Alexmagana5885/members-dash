@@ -2149,6 +2149,7 @@ LIMIT 1";
                 }
             </style>
 
+
             <!-- blogs -->
 
             <script>
@@ -2253,7 +2254,6 @@ LIMIT 1";
 
 
 
-
             <!-- Full message pop-up -->
             <div class="full-message-popup" id="fullMessagePopupReceivedMessages">
                 <div class="full-message-content">
@@ -2327,6 +2327,8 @@ LIMIT 1";
                 }
             </style>
 
+            <!-- PlannedEvents -->
+
             <div id="PlannedEvents" class="MinPrtSecSpace">
                 <h3 style="padding:20px;">Planned Events</h3>
                 <div class="table-card">
@@ -2390,6 +2392,243 @@ LIMIT 1";
                     ?>
                 </div>
             </div>
+
+            <style>
+                #PlannedEvents {
+                    padding: 10px 0 30px;
+                    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+                }
+
+                #PlannedEvents>h3 {
+                    font-size: 22px;
+                    font-weight: 700;
+                    color: #1E5BC6;
+                    margin: 0 0 10px;
+                    padding: 20px;
+                    position: relative;
+                }
+
+                #PlannedEvents>h3::after {
+                    content: '';
+                    display: block;
+                    width: 55px;
+                    height: 4px;
+                    background: #1E5BC6;
+                    border-radius: 2px;
+                    margin-top: 8px;
+                }
+
+                /* Events Grid Container */
+                .table-card {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                    gap: 26px;
+                    padding: 10px 20px;
+                }
+
+                /* Single Event Card */
+                .eventDiv {
+                    background: #FFFFFF;
+                    border-radius: 16px;
+                    padding: 18px;
+                    box-shadow: 0 10px 24px rgba(30, 91, 198, 0.08);
+                    transition: all 0.3s ease;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+
+                .eventDiv:hover {
+                    transform: translateY(-6px);
+                    box-shadow: 0 18px 36px rgba(30, 91, 198, 0.16);
+                }
+
+                /* Event Title */
+                .eventDiv>h3 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #2C3E50;
+                    margin: 0;
+                }
+
+                /* Event Image */
+                .plannedEventimg {
+                    width: 100%;
+                    height: 180px;
+                    object-fit: cover;
+                    border-radius: 12px;
+                    background: #f0f4ff;
+                }
+
+                /* Event Description (Quill Content) */
+                .quill-content {
+                    font-size: 14px;
+                    color: #4A657C;
+                    line-height: 1.6;
+                    max-height: 120px;
+                    overflow: hidden;
+                    position: relative;
+                }
+
+                .quill-content::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    height: 40px;
+                    background: linear-gradient(to top, #FFFFFF, rgba(255, 255, 255, 0));
+                }
+
+                /* Location & Date */
+                .eventDivindiv {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 13px;
+                    color: #6B7F99;
+                    font-weight: 500;
+                }
+
+                .eventDivindiv p {
+                    margin: 0;
+                }
+
+                /* Register Button */
+                .plannedEventsBTN {
+                    margin-top: auto;
+                    align-self: flex-start;
+                    padding: 10px 20px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #FFFFFF;
+                    background: linear-gradient(135deg, #1E5BC6 0%, #2E7BFF 100%);
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.25s ease;
+                    box-shadow: 0 6px 14px rgba(30, 91, 198, 0.25);
+                }
+
+                .plannedEventsBTN:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 10px 22px rgba(30, 91, 198, 0.35);
+                }
+
+                .popup-form {
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0, 0, 0, 0.45);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 2000;
+                }
+
+                .form-container {
+                    background: #FFFFFF;
+                    padding: 24px;
+                    width: 100%;
+                    max-width: 420px;
+                    border-radius: 14px;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                    animation: scaleIn 0.3s ease;
+                }
+
+                @keyframes scaleIn {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.9);
+                    }
+
+                    to {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                }
+
+                .form-container h4 {
+                    margin-bottom: 16px;
+                    font-size: 18px;
+                    color: #1E5BC6;
+                }
+
+                .form-container label {
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: #2C3E50;
+                    display: block;
+                    margin-top: 12px;
+                }
+
+                .form-container input {
+                    width: 100%;
+                    padding: 10px 12px;
+                    margin-top: 6px;
+                    border-radius: 6px;
+                    border: 1px solid #D1E3FF;
+                    font-size: 14px;
+                }
+
+                .form-container input:focus {
+                    outline: none;
+                    border-color: #1E5BC6;
+                    box-shadow: 0 0 0 3px rgba(30, 91, 198, 0.15);
+                }
+
+                .form-container button[type="submit"] {
+                    margin-top: 18px;
+                    width: 100%;
+                    padding: 12px;
+                    background: linear-gradient(135deg, #1E5BC6 0%, #2E7BFF 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+
+                .form-container .closeBtn {
+                    margin-top: 10px;
+                    width: 100%;
+                    padding: 10px;
+                    background: #F5F7FB;
+                    color: #2C3E50;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                }
+
+
+
+                @media (max-width: 768px) {
+                    .table-card {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+
+                    .plannedEventimg {
+                        height: 160px;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    #PlannedEvents>h3 {
+                        font-size: 20px;
+                    }
+
+                    .eventDiv>h3 {
+                        font-size: 16px;
+                    }
+
+                    .plannedEventsBTN {
+                        width: 100%;
+                        text-align: center;
+                    }
+                }
+            </style>
+
+
+            <!-- PlannedEvents -->
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
