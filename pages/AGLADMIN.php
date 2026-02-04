@@ -168,9 +168,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ===========================
-   POPUP HEADERS
-=========================== */
+
     .popup-content h2,
     .modal-content h2,
     .past-event-modal-content h2,
@@ -184,9 +182,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     }
 
-    /* ===========================
-   CLOSE BUTTONS
-=========================== */
     .popup-close,
     .close,
     .close-past-event,
@@ -1371,7 +1366,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             }
 
             /* Mobile Responsiveness */
-            @media (max-width: 768px) {
+            @media (max-width: 668px) {
                 .sidebar {
                     width: 100%;
                     height: calc(100vh - 70px);
