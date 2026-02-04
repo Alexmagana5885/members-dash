@@ -146,7 +146,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 3px solid #1E5BC6;
+            /* border-bottom: 3px solid #1E5BC6; */
             position: relative;
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
             gap: 20px;
@@ -451,9 +451,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
         <nav style="cursor: pointer;" id="sidebar" class="sidebar">
             <ul>
-                            <div class="logo">
-                <img src="../assets/img/logo.png" alt="AGL">
-            </div>
+                
                 <li>
                     <a href="https://www.agl.or.ke/" class="active core-link"><i class="fas fa-home"></i> Home</a>
                 </li>
