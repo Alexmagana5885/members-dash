@@ -101,7 +101,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 <body>
 
     <!-- header -->
-    <header style="background-color: #FFFFFF;">
+    <header style="background-color: #a2daf4;">
         <div class="header-top">
             <div class="logo">
                 <img src="../assets/img/logo.png" alt="AGL">
@@ -118,7 +118,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     </header>
 
-    <div class="Aligner"></div>
+    <!-- <div class="Aligner"></div> -->
 
     <style>
         :root {
