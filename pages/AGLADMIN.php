@@ -118,7 +118,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     </header>
 
-    <!-- <div class="Aligner"></div> -->
+    <div class="Aligner"></div>
 
     <style>
         body {
@@ -143,7 +143,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 
         /* Header Container */
-        header {
+        /* header {
             background-color: #FFFFFF;
             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
             padding: 15px 30px;
@@ -152,7 +152,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             align-items: center;
             justify-content: space-between;
             border-bottom: 3px solid #1E5BC6;
-
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
             gap: 20px;
             position: fixed;
@@ -161,7 +160,35 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             width: 100%;
             z-index: 1100;
 
-        }
+        } */
+
+
+            .header {
+    background-color: #FFFFFF;
+    padding: 15px 30px;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1100;
+
+    box-sizing: border-box;
+
+    /* Soft elevation + dark blue bottom shadow */
+    box-shadow:
+        0 2px 15px rgba(0, 0, 0, 0.08),
+        0 4px 0 rgba(30, 91, 198, 0.6);
+}
+
 
         /* Header top row - logo and menu button */
         .header-top {
@@ -375,229 +402,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             }
         }
     </style>
-
-    <!-- <style>
-        /* ===========================
-   GLOBAL VARIABLES
-=========================== */
-        :root {
-            --header-height: 83px;
-        }
-
-        /* Tablet */
-        @media (max-width: 768px) {
-            :root {
-                --header-height: 70px;
-            }
-        }
-
-        /* Small Mobile */
-        @media (max-width: 480px) {
-            :root {
-                --header-height: 60px;
-            }
-        }
-
-        /* ===========================
-   BODY OFFSET (CRITICAL)
-=========================== */
-        body {
-            margin: 0;
-            padding-top: var(--header-height);
-            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background-color: #F8FAFF;
-        }
-
-        /* ===========================
-   HEADER (ALWAYS VISIBLE)
-=========================== */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: var(--header-height);
-            background-color: #FFFFFF;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
-            border-bottom: 3px solid #1E5BC6;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 30px;
-            z-index: 1100;
-        }
-
-        /* Header top row */
-        .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        /* Logo */
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
-            height: 45px;
-            max-width: 180px;
-            object-fit: contain;
-        }
-
-        /* ===========================
-   HEADER NAV LINKS
-=========================== */
-        .innerlinksNav {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 35px;
-            width: 100%;
-        }
-
-        .innerlinksNav-a {
-            color: #2C3E50;
-            font-weight: 600;
-            font-size: 16px;
-            text-decoration: none;
-            position: relative;
-            padding: 8px 0;
-            transition: color 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .innerlinksNav-a:hover {
-            color: #1E5BC6;
-        }
-
-        .innerlinksNav-a:not(:last-child):hover::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 3px;
-            background: #1E5BC6;
-            border-radius: 2px;
-        }
-
-        /* Messages Button */
-        #toggleMessagesReceivedMessages {
-            padding: 8px 16px;
-            background: #F0F7FF;
-            color: #1E5BC6;
-            border: 1px solid #D1E3FF;
-            border-radius: 6px;
-            font-weight: 700;
-            transition: all 0.25s ease;
-        }
-
-        #toggleMessagesReceivedMessages:hover {
-            background: #1E5BC6;
-            color: #FFFFFF;
-            box-shadow: 0 4px 12px rgba(30, 91, 198, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* ===========================
-   MOBILE MENU BUTTON
-=========================== */
-        .menu-button {
-            display: none;
-            font-size: 28px;
-            color: #1E5BC6;
-            cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 6px;
-            background: #F8FAFF;
-            border: 1px solid #E3EFFF;
-        }
-
-        /* ===========================
-   SIDEBAR (HEADER-AWARE)
-=========================== */
-        .sidebar {
-            position: fixed;
-            top: var(--header-height);
-            left: 0;
-            bottom: 0;
-            width: 240px;
-            background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
-            overflow-y: auto;
-            box-shadow: 3px 0 10px rgba(30, 91, 198, 0.15);
-            z-index: 1000;
-        }
-
-        /* ===========================
-   TABLET
-=========================== */
-        @media (max-width: 992px) {
-            .innerlinksNav {
-                gap: 18px;
-            }
-
-            .innerlinksNav-a {
-                font-size: 14px;
-            }
-        }
-
-        /* ===========================
-   MOBILE
-=========================== */
-        @media (max-width: 768px) {
-            header {
-                padding: 12px 20px;
-                height: var(--header-height);
-            }
-
-            .menu-button {
-                display: block;
-            }
-
-            .innerlinksNav {
-                justify-content: flex-start;
-                flex-wrap: wrap;
-                gap: 12px;
-            }
-
-            .innerlinksNav-a {
-                font-size: 12px;
-            }
-
-            .innerlinksNav-a:not(:last-child):hover::after {
-                display: none;
-            }
-
-            .sidebar {
-                width: 100%;
-                left: -100%;
-                transition: left 0.3s ease;
-            }
-
-            .sidebar.active {
-                left: 0;
-            }
-        }
-
-        /* ===========================
-   SMALL MOBILE
-=========================== */
-        @media (max-width: 480px) {
-            .logo img {
-                height: 40px;
-            }
-
-            #toggleMessagesReceivedMessages {
-                padding: 6px 10px;
-                font-size: 12px;
-            }
-        }
-    </style> -->
-
 
     <!-- header -->
 
