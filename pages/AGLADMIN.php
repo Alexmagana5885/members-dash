@@ -3769,7 +3769,7 @@ LIMIT 1";
             const dashboard = document.querySelector('.dashboard');
 
             toggleButton.addEventListener('click', function() {
-                if (window.innerWidth <= 668) {
+                if (window.innerWidth <= 468) {
                     // Mobile: toggle display as overlay
                     if (sidebar.style.display === 'block') {
                         sidebar.style.display = 'none';
