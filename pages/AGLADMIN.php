@@ -1981,8 +1981,10 @@ LIMIT 1";
                 }
             </style>
 
+            <!-- blogs -->
+
             <h4 id="blogPoint" style="padding: 20px;">Blogs</h4>
-            <div style="background-color: red;" class="blogPoint">
+            <div class="blogPoint">
                 <?php
                 // Query to get blog posts
                 $sql = "SELECT * FROM blog_posts";
@@ -2006,6 +2008,148 @@ LIMIT 1";
                 // $conn->close();
                 ?>
             </div>
+
+            <style>
+                #blogPoint {
+                    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+                    font-size: 22px;
+                    font-weight: 700;
+                    color: #1E5BC6;
+                    margin: 20px 0 10px;
+                    padding: 20px;
+                    position: relative;
+                }
+
+                #blogPoint::after {
+                    content: '';
+                    display: block;
+                    width: 50px;
+                    height: 4px;
+                    background: #1E5BC6;
+                    border-radius: 2px;
+                    margin-top: 8px;
+                }
+
+
+                .blogPoint {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                    gap: 24px;
+                    padding: 10px 20px 30px;
+                }
+
+
+                .blogSingle {
+                    background: #FFFFFF;
+                    border-radius: 14px;
+                    overflow: hidden;
+                    box-shadow: 0 8px 20px rgba(30, 91, 198, 0.08);
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .blogSingle:hover {
+                    transform: translateY(-6px);
+                    box-shadow: 0 14px 28px rgba(30, 91, 198, 0.15);
+                }
+
+
+
+                .blogImage {
+                    width: 100%;
+                    height: 160px;
+                    overflow: hidden;
+                    background: #f0f4ff;
+                }
+
+                .blogImage img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.4s ease;
+                }
+
+                .blogSingle:hover .blogImage img {
+                    transform: scale(1.05);
+                }
+
+
+                .blogContent {
+                    padding: 16px 18px 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    flex: 1;
+                }
+
+                .blogContent h4 {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #2C3E50;
+                    margin: 0;
+                    line-height: 1.3;
+                }
+
+                .blogContent h6 {
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #7A8CA5;
+                    margin: 0;
+                }
+
+
+                .moreButton {
+                    margin-top: auto;
+                    align-self: flex-start;
+                    padding: 8px 16px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: #1E5BC6;
+                    background: #F0F7FF;
+                    border: 1px solid #D1E3FF;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: all 0.25s ease;
+                }
+
+                .moreButton:hover {
+                    background: #1E5BC6;
+                    color: #FFFFFF;
+                    border-color: #1E5BC6;
+                    box-shadow: 0 6px 14px rgba(30, 91, 198, 0.2);
+                }
+
+
+                @media (max-width: 768px) {
+                    .blogPoint {
+                        gap: 16px;
+                        padding: 10px 15px 25px;
+                    }
+
+                    .blogImage {
+                        height: 140px;
+                    }
+
+                    .blogContent h4 {
+                        font-size: 15px;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    .blogImage {
+                        height: 120px;
+                    }
+
+                    .moreButton {
+                        font-size: 12px;
+                        padding: 7px 14px;
+                    }
+                }
+            </style>
+
+            <!-- blogs -->
 
             <script>
                 // Add event listener for the More button
