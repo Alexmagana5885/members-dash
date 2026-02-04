@@ -151,9 +151,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            box-shadow:
-                0 2px 10px rgba(0, 0, 0, 0.06),
-                0 10px 30px rgba(30, 91, 198, 0.15);
+box-shadow:
+  0 4px 15px rgba(0, 0, 0, 0.2),       /* subtle black base for depth */
+  0 6px 25px rgba(30, 91, 198, 0.6);    /* bold dark blue shadow */
+
 
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
             gap: 20px;
