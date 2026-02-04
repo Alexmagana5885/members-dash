@@ -1982,7 +1982,7 @@ LIMIT 1";
             </style>
 
             <h4 id="blogPoint" style="padding: 20px;">Blogs</h4>
-            <div class="blogPoint">
+            <div style="background-color: red;" class="blogPoint">
                 <?php
                 // Query to get blog posts
                 $sql = "SELECT * FROM blog_posts";
