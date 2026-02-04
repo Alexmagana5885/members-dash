@@ -121,9 +121,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <!-- <div class="Aligner"></div> -->
 
     <style>
-        body {
+        /* body {
             padding-top: var(--header-height);
-        }
+        } */
 
         :root {
             --header-height: 83px;
@@ -156,7 +156,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
                 0 4px 0 rgba(30, 91, 198, 0.6);
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
             gap: 20px;
-            position: fixed;
+            /* position: fixed; */
+              position: sticky;
             top: 0;
             left: 0;
             width: 100%;
