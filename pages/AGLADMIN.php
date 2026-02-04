@@ -152,12 +152,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             align-items: center;
             justify-content: space-between;
             box-shadow:
-                0 2px 15px rgba(0, 0, 0, 0.08),
-                0 4px 0 rgba(30, 91, 198, 0.6);
+                0 2px 10px rgba(0, 0, 0, 0.06),
+                0 10px 30px rgba(30, 91, 198, 0.15);
+
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
             gap: 20px;
             /* position: fixed; */
-              position: sticky;
+            position: sticky;
             top: 0;
             left: 0;
             width: 100%;
