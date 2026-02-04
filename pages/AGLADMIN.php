@@ -118,7 +118,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     </header>
 
-    <div class="Aligner"></div>
+    <!-- <div class="Aligner"></div> -->
 
     <style>
         body {
