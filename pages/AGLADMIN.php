@@ -3020,33 +3020,11 @@ LIMIT 1";
             // Close the database connection
             // $conn->close();
             ?>
+
+            <!-- past Events -->
+
             <h4 style="margin: 20px;">past Events</h4>
 
-            <style>
-                .PastEventsmoreButton {
-                    display: block;
-                    width: 100%;
-                    text-align: center;
-                    padding: 10px;
-                    background-color: #007bff;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 5px;
-                    box-sizing: border-box;
-                    margin-top: 10px;
-                }
-
-                .PastEventsmoreButton:hover {
-                    background-color: #0056b3;
-                }
-
-                .past-eventDiv-img {
-                    width: 100%;
-                    height: 250px;
-                    margin-bottom: 5px;
-                    object-fit: cover;
-                }
-            </style>
             <?php
             // Step 2: Fetch Data from the Database
             $sql = "SELECT * FROM pastevents";
@@ -3090,6 +3068,137 @@ LIMIT 1";
             $conn->close();
             ?>
 
+            <style>
+                #PastEvents {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                    gap: 24px;
+                    padding: 10px 20px 30px;
+                    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+                }
+
+                /* Section Heading */
+                h4 {
+                    font-size: 22px;
+                    font-weight: 700;
+                    color: #1E5BC6;
+                    margin: 20px;
+                    position: relative;
+                }
+
+                h4::after {
+                    content: '';
+                    display: block;
+                    width: 45px;
+                    height: 4px;
+                    background: #1E5BC6;
+                    border-radius: 2px;
+                    margin-top: 8px;
+                }
+
+                /* Past Event Card */
+                #PastEvents .eventDiv {
+                    background: #FFFFFF;
+                    border-radius: 16px;
+                    overflow: hidden;
+                    box-shadow: 0 8px 22px rgba(30, 91, 198, 0.08);
+                    transition: all 0.3s ease;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                #PastEvents .eventDiv:hover {
+                    transform: translateY(-6px);
+                    box-shadow: 0 16px 34px rgba(30, 91, 198, 0.16);
+                }
+
+                /* Date & Location Row */
+                #PastEvents .eventDivindiv {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 14px 16px;
+                    background: #F0F7FF;
+                    border-bottom: 1px solid #E3EFFF;
+                }
+
+                #PastEvents .eventDivindiv h3 {
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: #1E5BC6;
+                    margin: 0;
+                }
+
+                /* Event Image */
+                .past-eventDiv-img {
+                    width: 100%;
+                    height: 170px;
+                    object-fit: cover;
+                    background: #f0f4ff;
+                }
+
+                /* Event Name */
+                #PastEvents .eventDiv p {
+                    padding: 14px 16px 0;
+                    font-size: 15px;
+                    font-weight: 600;
+                    color: #2C3E50;
+                    margin: 0;
+                }
+
+                /* More Button */
+                .PastEventsmoreButton {
+                    margin: 16px;
+                    align-self: flex-start;
+                    padding: 8px 18px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: #1E5BC6;
+                    background: #F0F7FF;
+                    border: 1px solid #D1E3FF;
+                    border-radius: 6px;
+                    text-decoration: none;
+                    transition: all 0.25s ease;
+                }
+
+                .PastEventsmoreButton:hover {
+                    background: #1E5BC6;
+                    color: #FFFFFF;
+                    border-color: #1E5BC6;
+                    box-shadow: 0 6px 14px rgba(30, 91, 198, 0.25);
+                }
+
+                /* ===========================
+   RESPONSIVE
+=========================== */
+
+                @media (max-width: 768px) {
+                    #PastEvents {
+                        gap: 18px;
+                        padding: 10px 15px 25px;
+                    }
+
+                    .past-eventDiv-img {
+                        height: 150px;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    h4 {
+                        font-size: 20px;
+                    }
+
+                    #PastEvents .eventDivindiv h3 {
+                        font-size: 12px;
+                    }
+
+                    .PastEventsmoreButton {
+                        width: 100%;
+                        text-align: center;
+                    }
+                }
+            </style>
+
+            <!-- past Events -->
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     // Attach click event listeners to all buttons with class 'PastEventsmoreButton'
