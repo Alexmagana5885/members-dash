@@ -143,7 +143,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 
         /* Header Container */
-        /* header {
+        header {
             background-color: #FFFFFF;
             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
             padding: 15px 30px;
@@ -151,7 +151,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 3px solid #1E5BC6;
+            box-shadow:
+                0 2px 15px rgba(0, 0, 0, 0.08),
+                0 4px 0 rgba(30, 91, 198, 0.6);
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
             gap: 20px;
             position: fixed;
@@ -159,35 +161,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             left: 0;
             width: 100%;
             z-index: 1100;
+            box-sizing: border-box;
 
-        } */
+        }
 
-
-            .header {
-    background-color: #FFFFFF;
-    padding: 15px 30px;
-
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-
-    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1100;
-
-    box-sizing: border-box;
-
-    /* Soft elevation + dark blue bottom shadow */
-    box-shadow:
-        0 2px 15px rgba(0, 0, 0, 0.08),
-        0 4px 0 rgba(30, 91, 198, 0.6);
-}
 
 
         /* Header top row - logo and menu button */
