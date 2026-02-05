@@ -59,7 +59,7 @@
 
 /* Dashboard Container */
 .dashboard {
-  width: 100%;
+  width: 73%;
   padding: 20px;
   margin-left: 20px;
   transition: margin-left 0.3s ease;
@@ -1302,7 +1302,7 @@ header {
 /* Sidebar Container */
 .sidebar {
   background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
-  width: 240px;
+  width: 25%;
   height: auto;
   /* height: calc(100vh - 83px); */
   position: fixed;
