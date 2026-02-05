@@ -31,7 +31,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 </head>
 
 
-<body>
+<body style="background-color: red;" >
 
     <!-- header -->
     <header style="background-color: #a2daf4;">
@@ -257,14 +257,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             });
         </script>
 
-        <style>
-            .dashboard {
-                margin-left: 20%;
-                width: 80%;
-                padding: 20px;
-                transition: margin-left 0.3s ease;
-            }
-        </style>
 
         <section class="dashboard">
             <div class="cards">
