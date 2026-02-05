@@ -259,9 +259,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
         <style>
             .dashboard {
-                width: 73%;
+                margin-left: 20%;
+                width: 80%;
                 padding: 20px;
-                margin-left: 20px;
                 transition: margin-left 0.3s ease;
             }
         </style>
