@@ -1,42 +1,12 @@
-# Dashboard Redesign TODO
+# TODO: Implement Responsive Dashboard Layout
 
-1. Update color scheme in assets/CSS/Dashboard.css:
-   - Page background: very light blue/grey
-   - Cards: white
-   - Sidebar: slightly darker blue
-   - Accents: pastel tones (teal, purple, pink)
-
-2. Enhance cards:
-   - Rounded corners
-   - Very subtle shadow
-   - Generous padding
-   - Clear title at the top
-
-3. Create visual hierarchy with spacing:
-   - Use white space instead of borders
-   - Group related information
-   - Separate sections with margins
-
-4. Improve typography:
-   - Use one clean sans-serif font
-   - Hierarchy: Large bold for names/titles, Medium for section headers, Regular for labels/values
-
-5. Make sidebar stable and calm:
-   - Fixed on left
-   - Clear icons + labels
-   - Highlight active item
-   - Consistent spacing
-
-6. Use grids for content alignment:
-   - Main area with grid layout
-   - Profile card wider, smaller cards beside it
-   - Lists stacked vertically
-
-7. Ensure touch-friendly design:
-   - Rounded buttons
-   - Clickable rows with padding
-   - No cramped elements
-
-8. Minor HTML adjustments in pages/DashBoard.php for better structure if needed.
-
-9. Test and verify changes.
+## Tasks
+- [x] Update desktop styles: Sidebar always visible at 20% width, main content 80%, push both down by header height (64-72px)
+- [x] For tablets (769px-1024px): Hide sidebar by default, overlay on toggle with fixed position, top: 56px, height: calc(100vh - 56px), width: 45vw
+- [x] For mobile (≤768px): Sidebar overlay with width: 60vw, main content 100%, backdrop and scroll lock
+- [x] Add semi-transparent backdrop for sidebar overlay, lock body scroll when open
+- [x] Menu button in header to toggle sidebar
+- [x] Ensure top bar has highest z-index, sidebar higher than main content
+- [x] Add JS to pages/AGLADMIN.php for toggle, backdrop, and scroll lock
+- [x] Test layout on different screen sizes
+- [x] Verify no overlap and smooth transitions

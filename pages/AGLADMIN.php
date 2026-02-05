@@ -19,8 +19,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <!-- <link rel="stylesheet" href="../assets/CSS/Dashboard.css">
-    <link rel="stylesheet" href="../assets/CSS/popups.css"> -->
     <link href="../assets/img/favicon.png" rel="icon">
     <link href="../assets/img/favicon.png" rel="favicon.png">
     <link rel="stylesheet" href="../assets/CSS/Dash_Board.css">
@@ -53,6 +51,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     <!-- header -->
 
+    <!-- Sidebar Backdrop -->
+    <div class="sidebar-backdrop"></div>
 
     <!-- for the invoice dropdown -->
     <?php
