@@ -195,9 +195,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         </nav>
 
 
-        <!-- navigation sidebar -->
-
-        <!-- show payment Invoice dropdown -->
 
         <?php
 
@@ -605,7 +602,6 @@ LIMIT 1";
  
 
             </div>
-
 
 
             <!-- error response-popups-->
