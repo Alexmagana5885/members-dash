@@ -37,37 +37,55 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         box-sizing: border-box;
     }
 
-    body {
+    /* body {
         font-family: Arial, sans-serif;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
         background-color: #f5f5f5;
     }
+
+    .main-content {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .sidebar {
+        width: 27%;
+        height: calc(100vh - 83px);
+    }
+
+    .mainContent {
+        width: 73%;
+    } */
+</style>
+
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+}
+
 .main-content {
     display: flex;
     flex-direction: row;
     width: 100%;
-    min-height: calc(100vh - 83px); /* Adjust based on header/footer height */
-    overflow: hidden; /* Prevent content overflow */
+    flex: 1; /* fills remaining height */
 }
 
 .sidebar {
     width: 27%;
     height: calc(100vh - 83px);
-    overflow-y: auto; /* Add scrolling if content is too long */
-    background-color: #fff; /* Add background to distinguish from content */
-    position: relative;
-    z-index: 10;
 }
 
 .mainContent {
     width: 73%;
-    flex-grow: 1;
-    overflow-y: auto; /* Add scrolling for main content */
-    padding: 20px; /* Add some padding */
-    background-color: #f5f5f5;
 }
+
 </style>
 
 
