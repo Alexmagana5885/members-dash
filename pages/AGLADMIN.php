@@ -257,7 +257,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             });
         </script>
 
-        <section class="dashboard">
+        <section style="background-color: red;" class="dashboard">
             <div class="cards">
 
                 <?php
