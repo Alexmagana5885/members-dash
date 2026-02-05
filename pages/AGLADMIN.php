@@ -153,7 +153,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         margin-left: 0;
         padding: 20px;
         overflow-y: auto;
-        height: calc(100vh - 83px);
+        height: calc(100vh - 166px);
     }
 
     /* For mobile responsiveness */
