@@ -30,38 +30,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 </head>
 
+
 <!-- <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background-color: #f5f5f5;
-    }
-
-    .main-content {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-    }
-
-    .sidebar {
-        width: 27%;
-        height: calc(100vh - 83px);
-    }
-
-    .mainContent {
-        width: 73%;
-    }
-</style> -->
-
-<style>
     * {
         margin: 0;
         padding: 0;
@@ -139,8 +109,99 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             overflow:auto;
         }
     }
-</style>
+</style> -->
 
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: #f5f5f5;
+        overflow-x: hidden;
+        /* Prevent horizontal scrolling */
+    }
+
+    .main-content {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        flex: 1;
+        /* Take up available space */
+    }
+
+    .sidebar {
+        width: 27%;
+        min-width: 250px;
+        /* Add minimum width */
+        max-width: 300px;
+        /* Add maximum width */
+        background-color: #fff;
+        /* Add background to see clearly */
+        height: calc(100vh - 83px);
+        position: sticky;
+        /* Make it stick */
+        top: 0;
+        overflow-y: auto;
+        /* Allow scrolling if content overflows */
+        z-index: 10;
+        /* Ensure it's above content */
+    }
+
+    .mainContent {
+        width: 73%;
+        flex: 1;
+        /* Take remaining space */
+        background-color: #fff;
+        /* Add background to see clearly */
+        margin-left: 0;
+        /* Reset margin */
+        padding: 20px;
+        overflow-y: auto;
+        /* Allow scrolling */
+        height: calc(100vh - 83px);
+    }
+
+    /* For mobile responsiveness */
+    @media (max-width: 768px) {
+        .main-content {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+            min-width: unset;
+            max-width: unset;
+            display: none;
+            /* Hidden by default on mobile */
+        }
+
+        .dashboard {
+            width: 100%;
+            margin-left: 0;
+            overflow: auto;
+        }
+
+        /* When sidebar is toggled to show on mobile */
+        .sidebar.show-mobile {
+            display: block;
+        }
+
+        /* Adjust mainContent when sidebar is shown */
+        .sidebar.show-mobile+.mainContent {
+            margin-top: 0;
+            /* Adjust if needed */
+        }
+    }
+</style>
 
 
 <body>
