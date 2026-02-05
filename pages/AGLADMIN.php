@@ -125,7 +125,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         flex-direction: column;
         background-color: #f5f5f5;
         overflow-x: hidden;
-        /* Prevent horizontal scrolling */
     }
 
     .main-content {
@@ -133,38 +132,27 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         flex-direction: row;
         width: 100%;
         flex: 1;
-        /* Take up available space */
     }
 
     .sidebar {
         width: 27%;
         min-width: 250px;
-        /* Add minimum width */
         max-width: 300px;
-        /* Add maximum width */
         background-color: #fff;
-        /* Add background to see clearly */
         height: calc(100vh - 83px);
         position: sticky;
-        /* Make it stick */
         top: 0;
         overflow-y: auto;
-        /* Allow scrolling if content overflows */
         z-index: 10;
-        /* Ensure it's above content */
     }
 
     .mainContent {
         width: 73%;
         flex: 1;
-        /* Take remaining space */
         background-color: #fff;
-        /* Add background to see clearly */
         margin-left: 0;
-        /* Reset margin */
         padding: 20px;
         overflow-y: auto;
-        /* Allow scrolling */
         height: calc(100vh - 83px);
     }
 
@@ -181,7 +169,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             min-width: unset;
             max-width: unset;
             display: none;
-            /* Hidden by default on mobile */
         }
 
         .dashboard {
@@ -190,7 +177,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             overflow: auto;
         }
 
-        /* When sidebar is toggled to show on mobile */
         .sidebar.show-mobile {
             display: block;
         }
@@ -198,7 +184,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         /* Adjust mainContent when sidebar is shown */
         .sidebar.show-mobile+.mainContent {
             margin-top: 0;
-            /* Adjust if needed */
         }
     }
 </style>
@@ -850,6 +835,65 @@ LIMIT 1";
                             popup.classList.remove('show');
                         }, 10000); // 30000ms = 30 seconds
                     }
+                });
+            </script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const toggleButton = document.getElementById('toggleMenu');
+                    const sidebar = document.getElementById('sidebar');
+                    const dashboard = document.querySelector('.dashboard');
+
+                    toggleButton.addEventListener('click', function() {
+                        if (window.innerWidth <= 768) {
+                            // MOBILE: Toggle the sidebar
+                            sidebar.classList.toggle('show-mobile');
+
+                            // Update button appearance
+                            if (sidebar.classList.contains('show-mobile')) {
+                                toggleButton.innerHTML = 'X';
+                                toggleButton.style.fontWeight = 'bold';
+                                toggleButton.style.color = 'black';
+                            } else {
+                                toggleButton.innerHTML = '☰';
+                                toggleButton.style.fontWeight = 'normal';
+                                toggleButton.style.color = '#1E5BC6';
+                            }
+                        } else {
+                            // DESKTOP: Toggle with margin adjustment
+                            if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+                                sidebar.style.display = 'block';
+                                if (dashboard) dashboard.style.marginLeft = '260px';
+                                toggleButton.innerHTML = 'X';
+                                toggleButton.style.fontWeight = 'bold';
+                                toggleButton.style.color = 'black';
+                            } else {
+                                sidebar.style.display = 'none';
+                                if (dashboard) dashboard.style.marginLeft = '0';
+                                toggleButton.innerHTML = '☰';
+                                toggleButton.style.fontWeight = 'normal';
+                                toggleButton.style.color = '#1E5BC6';
+                            }
+                        }
+                    });
+
+                    // Handle window resize
+                    window.addEventListener('resize', function() {
+                        if (window.innerWidth > 768) {
+                            // On desktop, ensure sidebar is visible
+                            sidebar.style.display = 'block';
+                            sidebar.classList.remove('show-mobile');
+                            if (dashboard) dashboard.style.marginLeft = '260px';
+                        } else {
+                            // On mobile, ensure sidebar is hidden by default
+                            sidebar.style.display = ''; // Reset inline display
+                            sidebar.classList.remove('show-mobile');
+                            if (dashboard) dashboard.style.marginLeft = '0';
+                            toggleButton.innerHTML = '☰';
+                            toggleButton.style.fontWeight = 'normal';
+                            toggleButton.style.color = '#1E5BC6';
+                        }
+                    });
                 });
             </script>
 
