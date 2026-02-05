@@ -65,8 +65,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 <body>
 
-
-
     <!-- header -->
     <header style="background-color: #a2daf4;">
         <div class="header-top">
@@ -86,7 +84,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     </header>
 
     <!-- header -->
-    >
     <?php
     require_once('../forms/DBconnection.php');
 
