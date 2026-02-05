@@ -153,7 +153,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         margin-left: 0;
         padding: 20px;
         overflow-y: auto;
-        height: calc(100vh - 166px);
+        height: calc(100vh - 83px);
     }
 
     /* For mobile responsiveness */
@@ -1603,51 +1603,7 @@ LIMIT 1";
             reserved.</p>
     </footer>
 
-    <!-- side bar script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleButton = document.getElementById('toggleMenu');
-            const sidebar = document.getElementById('sidebar');
-            const dashboard = document.querySelector('.dashboard');
 
-            toggleButton.addEventListener('click', function() {
-                if (window.innerWidth <= 468) {
-                    // Mobile: toggle display as overlay
-                    if (sidebar.style.display === 'block') {
-                        sidebar.style.display = 'none';
-                        toggleButton.innerHTML = '☰';
-                        toggleButton.style.fontWeight = 'normal';
-                        toggleButton.style.color = '#1E5BC6';
-                    } else {
-                        sidebar.style.display = 'block';
-                        toggleButton.innerHTML = 'X';
-                        toggleButton.style.fontWeight = 'bold';
-                        toggleButton.style.color = 'black';
-                    }
-                } else {
-                    // Desktop: toggle display and adjust margin
-                    if (sidebar.style.display === 'block') {
-                        sidebar.style.display = 'none';
-                        dashboard.style.marginLeft = '0';
-                        toggleButton.innerHTML = '☰';
-                        toggleButton.style.fontWeight = 'normal';
-                        toggleButton.style.color = '#1E5BC6';
-                    } else {
-                        sidebar.style.display = 'block';
-                        dashboard.style.marginLeft = '260px';
-                        toggleButton.innerHTML = 'X';
-                        toggleButton.style.fontWeight = 'bold';
-                        toggleButton.style.color = 'black';
-                    }
-                }
-            });
-        });
-
-        function toggleDropdown(element) {
-            const content = element.nextElementSibling;
-            content.classList.toggle('show');
-        }
-    </script>
 
 
 
