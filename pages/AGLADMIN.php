@@ -50,6 +50,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         flex-direction:row;
     }
 
+    .mainContent {
+        width: 73%;
+        /* flex: 1;
+        padding: 20px; */
+    }
+
 </style>
 
 
