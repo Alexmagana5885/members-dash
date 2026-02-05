@@ -84,6 +84,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 .mainContent {
     width: 73%;
+    background-color: red;
 }
 
 </style>
