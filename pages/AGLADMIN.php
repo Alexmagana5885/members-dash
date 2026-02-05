@@ -257,7 +257,16 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             });
         </script>
 
-        <section style="background-color: red;" class="dashboard">
+        <style>
+            .dashboard {
+                width: 73%;
+                padding: 20px;
+                margin-left: 20px;
+                transition: margin-left 0.3s ease;
+            }
+        </style>
+
+        <section class="dashboard">
             <div class="cards">
 
                 <?php
@@ -599,7 +608,7 @@ LIMIT 1";
                 </div>
 
                 <!-- styling for 1st 4 cards -->
- 
+
 
             </div>
 
