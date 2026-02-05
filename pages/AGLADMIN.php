@@ -45,17 +45,21 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         background-color: #f5f5f5;
     }
 
-    main-content {
+    .main-content {
         display: flex;
-        flex-direction:row;
+        flex-direction: row;
+        /* default, but good to be explicit */
+        width: 100%;
+    }
+
+    .sidebar {
+        width: 27%;
+        height: calc(100vh - 83px);
     }
 
     .mainContent {
         width: 73%;
-        /* flex: 1;
-        padding: 20px; */
     }
-
 </style>
 
 
