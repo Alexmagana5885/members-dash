@@ -60,6 +60,7 @@
 /* Dashboard Container */
 .dashboard {
   width: 73%;
+  background-color: red;
   padding: 20px;
   margin-left: 20px;
   transition: margin-left 0.3s ease;
