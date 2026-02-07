@@ -272,6 +272,18 @@ function hideMessagePopup() {
   document.getElementById("messagePopupsend").style.display = "none";
 }
 
+// Close sidebar when clicking outside on mobile
+document.addEventListener("click", function (event) {
+  const sidebar = document.getElementById("sidebar");
+  const toggleButton = document.getElementById("toggleMenu");
+
+  if (window.innerWidth <= 768) {
+    if (!sidebar.contains(event.target) && event.target !== toggleButton) {
+      sidebar.classList.remove("show-mobile");
+    }
+  }
+});
+
 document
   .getElementById("openMessagePopupSend")
   .addEventListener("click", function (event) {
