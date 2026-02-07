@@ -31,87 +31,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 </head>
 
 
-<!-- <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background-color: #f5f5f5;
-        overflow-x: hidden;
-    }
-
-    .main-content {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        flex: 1;
-    }
-
-    .sidebar {
-        width: 27%;
-        min-width: 250px;
-        max-width: 300px;
-        background-color: #fff;
-        height: calc(100vh - 83px);
-        position: sticky;
-        top: 0;
-        overflow-y: auto;
-        z-index: 10;
-    }
-
-    .mainContent {
-        width: 73%;
-        flex: 1;
-        background-color: #fff;
-        margin-left: 0;
-        padding: 20px;
-        overflow-y: auto;
-        height: calc(100vh - 83px);
-    }
-
-    /* For mobile responsiveness */
-    @media (max-width: 768px) {
-        .main-content {
-            flex-direction: column;
-        }
-
-        .sidebar {
-            width: 100%;
-            height: auto;
-            position: relative;
-            min-width: unset;
-            max-width: unset;
-            display: none;
-        }
-
-        .dashboard {
-            width: 100%;
-            margin-left: 0;
-            overflow: auto;
-        }
-
-        .sidebar.show-mobile {
-            display: block;
-        }
-
-        /* Adjust mainContent when sidebar is shown */
-        .sidebar.show-mobile+.mainContent {
-            margin-top: 0;
-        }
-    }
-</style> -->
-
 <style>
-    /* ============================
-   MOBILE FIRST APPROACH
-============================ */
+
 
     /* Base mobile styles */
     * {
@@ -214,9 +135,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         padding: 10px 15px 20px;
     }
 
-    /* ============================
-   TABLET (600px - 768px)
-============================ */
     @media (min-width: 600px) {
         body {
             font-size: 15px;
@@ -256,9 +174,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   SMALL DESKTOP (769px - 1024px)
-============================ */
     @media (min-width: 769px) {
         body {
             font-size: 16px;
@@ -314,9 +229,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     }
 
-    /* ============================
-   LARGE DESKTOP (1025px and up)
-============================ */
     @media (min-width: 1025px) {
         .sidebar {
             width: 300px;
@@ -345,9 +257,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   EXTRA LARGE SCREENS (1440px+)
-============================ */
     @media (min-width: 1440px) {
         .sidebar {
             width: 320px;
@@ -367,9 +276,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   RESPONSIVE TYPOGRAPHY
-============================ */
     h1,
     h2,
     h3,
@@ -405,10 +311,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             font-size: 12px;
         }
     }
-
-    /* ============================
-   RESPONSIVE FORMS & POPUPS
-============================ */
     @media (max-width: 768px) {
 
         .modal-content,
@@ -452,9 +354,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   RESPONSIVE TABLE
-============================ */
     @media (max-width: 768px) {
         .table-container {
             overflow-x: auto;
@@ -466,9 +365,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   TOUCH-FRIENDLY INTERACTIONS
-============================ */
     @media (hover: none) and (pointer: coarse) {
 
         /* Disable hover effects on touch devices */
@@ -487,9 +383,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   ORIENTATION SPECIFIC
-============================ */
     @media (max-width: 768px) and (orientation: landscape) {
         .sidebar.show-mobile {
             height: calc(100vh - var(--header-height-mobile, 50px));
@@ -505,12 +398,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   DARK MODE SUPPORT (Optional)
-============================ */
     @media (prefers-color-scheme: dark) {
         body {
-            background-color: #121212;
+           
             color: #ffffff;
         }
 
@@ -522,9 +412,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   PRINT STYLES
-============================ */
     @media print {
 
         .sidebar,
@@ -547,9 +434,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   PERFORMANCE OPTIMIZATIONS
-============================ */
     @media (prefers-reduced-motion: reduce) {
 
         *,
@@ -562,9 +446,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   VARIABLES FOR CONSISTENCY
-============================ */
     :root {
         /* Header heights */
         --header-height-mobile: 60px;
@@ -591,20 +472,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     }
 
     /* Apply variables */
-    /* header {
-        height: var(--header-height-mobile);
-    } */
+
 
     @media (min-width: 600px) {
-        /* header {
-            height: var(--header-height-tablet);
-        } */
+
     }
 
     @media (min-width: 769px) {
-        /* header {
-            height: var(--header-height-desktop);
-        } */
+
 
         .sidebar {
             top: var(--header-height-desktop);
@@ -612,9 +487,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 
-    /* ============================
-   UTILITY CLASSES
-============================ */
+
     .hide-on-mobile {
         display: none !important;
     }
