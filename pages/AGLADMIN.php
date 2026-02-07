@@ -522,7 +522,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             <div class="logo">
                 <img src="../assets/img/logo.png" alt="AGL">
             </div>
-            <div id="toggleMenu" class="menu-button" onclick="toggleMenu()">☰</div>
+            <div id="toggleMenu" class="menu-button">☰</div>
         </div>
 
         <div class="innerlinksNav">
