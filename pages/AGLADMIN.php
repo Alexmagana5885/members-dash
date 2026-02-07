@@ -46,7 +46,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        background-color: #f5f5f5;
+        background-color: #9dc2ee;
         overflow-x: hidden;
         font-size: 14px;
         /* Base font size for mobile */
