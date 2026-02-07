@@ -347,7 +347,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         /* Make buttons more tappable on mobile */
         button,
         .btn,
-        a.btn {
+        a.btn,
+        .menu-button {
             min-height: 44px;
             min-width: 44px;
             padding: 12px 16px;
@@ -522,7 +523,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             <div class="logo">
                 <img src="../assets/img/logo.png" alt="AGL">
             </div>
-            <div id="toggleMenu" class="menu-button">☰</div>
+            <button id="toggleMenu" class="menu-button" type="button">☰</button>
         </div>
 
         <div class="innerlinksNav">

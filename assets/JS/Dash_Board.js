@@ -73,7 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const sidebar = document.getElementById("sidebar");
   const dashboard = document.querySelector(".dashboard");
 
-  toggleButton.addEventListener("click", function () {
+  function handleToggle(event) {
+    event.preventDefault(); // Prevent default touch behavior
     if (window.innerWidth <= 768) {
       // MOBILE: Toggle the sidebar
       sidebar.classList.toggle("show-mobile");
@@ -104,7 +105,10 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleButton.style.color = "#1E5BC6";
       }
     }
-  });
+  }
+
+  toggleButton.addEventListener("click", handleToggle);
+  toggleButton.addEventListener("touchstart", handleToggle);
 
   // Handle window resize
   window.addEventListener("resize", function () {
