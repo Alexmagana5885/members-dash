@@ -54,12 +54,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 
 
-    /* Header */
-    header {
-        height: var(--header-height-mobile);
-        overflow: hidden;
-    }
-
     /* Main content area - mobile first */
     .main-content {
         display: flex;
@@ -450,8 +444,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     :root {
         /* Header heights */
-        --header-height-mobile: 120px;
-        --header-height-tablet: 120px;
+        --header-height-mobile: 75px;
+        --header-height-tablet: 75px;
         --header-height-desktop: 83px;
 
         /* Sidebar widths */
