@@ -131,21 +131,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         /* Base font size for mobile */
     }
 
-    /* Header responsive fixes */
-    /* header {
-        padding: 10px 15px;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
 
-    .header-top {
-        width: 100%;
-    }
-
-    .logo img {
-        height: 35px;
-        max-width: 120px;
-    } */
 
     /* Main content area - mobile first */
     .main-content {
@@ -235,15 +221,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         body {
             font-size: 15px;
         }
-/* 
-        header {
-            padding: 12px 20px;
-        }
 
-        .logo img {
-            height: 40px;
-            max-width: 150px;
-        } */
 
         .cards {
             grid-template-columns: repeat(2, 1fr);
@@ -333,15 +311,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         .menu-button {
             display: none !important;
         }
-/* 
-        header {
-            padding: 15px 30px;
-        }
 
-        .logo img {
-            height: 45px;
-            max-width: 180px;
-        } */
     }
 
     /* ============================
@@ -621,9 +591,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     }
 
     /* Apply variables */
-    header {
+    /* header {
         height: var(--header-height-mobile);
-    }
+    } */
 
     @media (min-width: 600px) {
         header {
