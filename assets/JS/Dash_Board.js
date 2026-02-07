@@ -72,9 +72,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleButton = document.getElementById("toggleMenu");
   const sidebar = document.getElementById("sidebar");
   const dashboard = document.querySelector(".dashboard");
+  let sidebarScrollTop = 0; // Variable to store sidebar scroll position
 
   function handleToggle(event) {
     event.preventDefault(); // Prevent default touch behavior
+
+    // Save current scroll position before toggling
+    sidebarScrollTop = sidebar.scrollTop;
+
     if (window.innerWidth <= 768) {
       // MOBILE: Toggle the sidebar
       sidebar.classList.toggle("show-mobile");
@@ -105,6 +110,11 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleButton.style.color = "#1E5BC6";
       }
     }
+
+    // Restore scroll position after toggling
+    setTimeout(() => {
+      sidebar.scrollTop = sidebarScrollTop;
+    }, 10); // Small delay to ensure the DOM update
   }
 
   toggleButton.addEventListener("click", handleToggle);
