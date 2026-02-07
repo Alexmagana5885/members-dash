@@ -74,7 +74,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         left: -280px;
         z-index: 1000;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        margin-top: 40px;
+        margin-top: 55px;
+        margin-bottom: 20px;
     }
 
     .sidebar.show-mobile {
