@@ -31,7 +31,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 </head>
 
 
-<style>
+<!-- <style>
     * {
         margin: 0;
         padding: 0;
@@ -106,7 +106,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
             margin-top: 0;
         }
     }
-</style>
+</style> -->
 
 <style>
     /* ============================
