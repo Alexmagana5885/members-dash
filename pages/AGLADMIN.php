@@ -66,7 +66,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     .sidebar {
         width: 280px;
         height: calc(100vh - var(--header-height-mobile, 75px));
-        overflow-y: auto;
+        overflow: auto;
         background-color: #fff;
         transition: transform 0.3s ease;
         position: fixed;
@@ -74,7 +74,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         left: -280px;
         z-index: 1000;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        margin-top: 30px;
+        margin-top: 40px;
     }
 
     .sidebar.show-mobile {
