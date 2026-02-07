@@ -108,6 +108,569 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     }
 </style>
 
+<style>
+    /* ============================
+   MOBILE FIRST APPROACH
+============================ */
+
+    /* Base mobile styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: #f5f5f5;
+        overflow-x: hidden;
+        font-size: 14px;
+        /* Base font size for mobile */
+    }
+
+    /* Header responsive fixes */
+    header {
+        padding: 10px 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .header-top {
+        width: 100%;
+    }
+
+    .logo img {
+        height: 35px;
+        /* Smaller on mobile */
+        max-width: 120px;
+    }
+
+    /* Main content area - mobile first */
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        flex: 1;
+    }
+
+    /* Sidebar - hidden by default on mobile */
+    .sidebar {
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+        background-color: #fff;
+        transition: height 0.3s ease;
+        position: fixed;
+        top: var(--header-height-mobile, 60px);
+        left: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar.show-mobile {
+        height: calc(100vh - var(--header-height-mobile, 60px));
+        overflow-y: auto;
+    }
+
+    /* Main content area */
+    .mainContent {
+        width: 100%;
+        padding: 15px;
+        background-color: #fff;
+        min-height: calc(100vh - var(--header-height-mobile, 60px));
+        overflow-y: auto;
+    }
+
+    /* Dashboard container */
+    .dashboard {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* Cards grid - mobile */
+    .cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .cardMemberprofile {
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Blog section */
+    .blogPoint {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px 15px 20px;
+    }
+
+    /* Planned events */
+    .table-card {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px 15px;
+    }
+
+    /* Past events */
+    #PastEvents {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px 15px 20px;
+    }
+
+    /* ============================
+   TABLET (600px - 768px)
+============================ */
+    @media (min-width: 600px) {
+        body {
+            font-size: 15px;
+        }
+
+        header {
+            padding: 12px 20px;
+        }
+
+        .logo img {
+            height: 40px;
+            max-width: 150px;
+        }
+
+        .cards {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .blogPoint {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .table-card {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        #PastEvents {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .mainContent {
+            padding: 20px;
+        }
+
+        .dashboard {
+            padding: 15px;
+        }
+
+        .card {
+            padding: 18px;
+        }
+    }
+
+    /* ============================
+   SMALL DESKTOP (769px - 1024px)
+============================ */
+    @media (min-width: 769px) {
+        body {
+            font-size: 16px;
+        }
+
+        .main-content {
+            flex-direction: row;
+        }
+
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            height: calc(100vh - var(--header-height-desktop, 83px));
+            position: sticky;
+            top: var(--header-height-desktop, 83px);
+            overflow-y: auto;
+            display: block !important;
+            /* Force show on desktop */
+        }
+
+        .mainContent {
+            width: calc(100% - 280px);
+            padding: 25px;
+            margin-left: 0;
+        }
+
+        .cards {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .blogPoint {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 10px 20px 30px;
+        }
+
+        .table-card {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            padding: 10px 20px;
+        }
+
+        #PastEvents {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 10px 20px 30px;
+        }
+
+        .menu-button {
+            display: none !important;
+        }
+
+        header {
+            padding: 15px 30px;
+        }
+
+        .logo img {
+            height: 45px;
+            max-width: 180px;
+        }
+    }
+
+    /* ============================
+   LARGE DESKTOP (1025px and up)
+============================ */
+    @media (min-width: 1025px) {
+        .sidebar {
+            width: 300px;
+            min-width: 300px;
+        }
+
+        .mainContent {
+            width: calc(100% - 300px);
+        }
+
+        .cards {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .blogPoint {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .table-card {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        #PastEvents {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    /* ============================
+   EXTRA LARGE SCREENS (1440px+)
+============================ */
+    @media (min-width: 1440px) {
+        .sidebar {
+            width: 320px;
+        }
+
+        .mainContent {
+            width: calc(100% - 320px);
+            padding: 30px;
+        }
+
+        .cards {
+            gap: 25px;
+        }
+
+        .card {
+            padding: 20px;
+        }
+    }
+
+    /* ============================
+   RESPONSIVE TYPOGRAPHY
+============================ */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 24px;
+        }
+
+        h2 {
+            font-size: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+        }
+
+        h4 {
+            font-size: 16px;
+        }
+
+        h5 {
+            font-size: 14px;
+        }
+
+        h6 {
+            font-size: 12px;
+        }
+    }
+
+    /* ============================
+   RESPONSIVE FORMS & POPUPS
+============================ */
+    @media (max-width: 768px) {
+
+        .modal-content,
+        .popup-content,
+        .form-container {
+            width: 95%;
+            max-width: 95%;
+            padding: 20px;
+            margin: 10px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .popup-container,
+        .modal,
+        .popup-form {
+            padding: 10px;
+        }
+
+        .message-popup {
+            width: 90%;
+            right: 5%;
+            max-width: 90%;
+            max-height: 80vh;
+        }
+
+        input,
+        select,
+        textarea {
+            font-size: 16px !important;
+            /* Prevents iOS zoom */
+        }
+
+        /* Make buttons more tappable on mobile */
+        button,
+        .btn,
+        a.btn {
+            min-height: 44px;
+            min-width: 44px;
+            padding: 12px 16px;
+        }
+    }
+
+    /* ============================
+   RESPONSIVE TABLE
+============================ */
+    @media (max-width: 768px) {
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            min-width: 600px;
+        }
+    }
+
+    /* ============================
+   TOUCH-FRIENDLY INTERACTIONS
+============================ */
+    @media (hover: none) and (pointer: coarse) {
+
+        /* Disable hover effects on touch devices */
+        .card:hover,
+        .sidebar a:hover,
+        button:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Increase touch targets */
+        .sidebar a,
+        .invoice-link,
+        .dropdown a {
+            padding: 16px 20px;
+        }
+    }
+
+    /* ============================
+   ORIENTATION SPECIFIC
+============================ */
+    @media (max-width: 768px) and (orientation: landscape) {
+        .sidebar.show-mobile {
+            height: calc(100vh - var(--header-height-mobile, 50px));
+        }
+
+        .cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .cardMemberprofile {
+            width: 60px;
+            height: 60px;
+        }
+    }
+
+    /* ============================
+   DARK MODE SUPPORT (Optional)
+============================ */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .card,
+        .sidebar,
+        .mainContent {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+    }
+
+    /* ============================
+   PRINT STYLES
+============================ */
+    @media print {
+
+        .sidebar,
+        .menu-button,
+        .popup-container,
+        .modal,
+        footer {
+            display: none !important;
+        }
+
+        .mainContent {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        body {
+            background: white !important;
+            color: black !important;
+        }
+    }
+
+    /* ============================
+   PERFORMANCE OPTIMIZATIONS
+============================ */
+    @media (prefers-reduced-motion: reduce) {
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+
+    /* ============================
+   VARIABLES FOR CONSISTENCY
+============================ */
+    :root {
+        /* Header heights */
+        --header-height-mobile: 60px;
+        --header-height-tablet: 70px;
+        --header-height-desktop: 83px;
+
+        /* Sidebar widths */
+        --sidebar-width-tablet: 280px;
+        --sidebar-width-desktop: 300px;
+        --sidebar-width-large: 320px;
+
+        /* Spacing */
+        --spacing-xs: 5px;
+        --spacing-sm: 10px;
+        --spacing-md: 15px;
+        --spacing-lg: 20px;
+        --spacing-xl: 30px;
+
+        /* Border radius */
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
+    }
+
+    /* Apply variables */
+    header {
+        height: var(--header-height-mobile);
+    }
+
+    @media (min-width: 600px) {
+        header {
+            height: var(--header-height-tablet);
+        }
+    }
+
+    @media (min-width: 769px) {
+        header {
+            height: var(--header-height-desktop);
+        }
+
+        .sidebar {
+            top: var(--header-height-desktop);
+            height: calc(100vh - var(--header-height-desktop));
+        }
+    }
+
+    /* ============================
+   UTILITY CLASSES
+============================ */
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    @media (min-width: 769px) {
+        .hide-on-mobile {
+            display: block !important;
+        }
+
+        .hide-on-desktop {
+            display: none !important;
+        }
+    }
+
+    .show-on-mobile {
+        display: block !important;
+    }
+
+    @media (min-width: 769px) {
+        .show-on-mobile {
+            display: none !important;
+        }
+    }
+</style>
+
 
 <body>
 
@@ -993,7 +1556,7 @@ LIMIT 1";
             <!-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> -->
 
 
- 
+
 
             <!-- Past Events Modal -->
 
@@ -1046,12 +1609,12 @@ LIMIT 1";
             <!-- quill -->
 
             <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    
+
 
 
 
             <!-- Past Events Modal script-->
- 
+
 
 
             <!-- send Message Popup -->
@@ -1202,7 +1765,7 @@ LIMIT 1";
             reserved.</p>
     </footer>
 
-<script src="../assets/JS/Dash_Board.js" ></script>
+    <script src="../assets/JS/Dash_Board.js"></script>
 
 
 
