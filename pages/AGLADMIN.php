@@ -596,15 +596,15 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     } */
 
     @media (min-width: 600px) {
-        header {
+        /* header {
             height: var(--header-height-tablet);
-        }
+        } */
     }
 
     @media (min-width: 769px) {
-        header {
+        /* header {
             height: var(--header-height-desktop);
-        }
+        } */
 
         .sidebar {
             top: var(--header-height-desktop);
