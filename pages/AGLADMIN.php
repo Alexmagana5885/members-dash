@@ -64,21 +64,20 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
     /* Sidebar - hidden by default on mobile */
     .sidebar {
-        width: 100%;
-        height: 0;
-        overflow: hidden;
+        width: 280px;
+        height: calc(100vh - var(--header-height-mobile, 60px));
+        overflow-y: auto;
         background-color: #fff;
-        transition: height 0.3s ease;
+        transition: transform 0.3s ease;
         position: fixed;
         top: var(--header-height-mobile, 60px);
-        left: 0;
+        left: -280px;
         z-index: 1000;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar.show-mobile {
-        height: calc(100vh - var(--header-height-mobile, 60px));
-        overflow-y: auto;
+        transform: translateX(280px);
     }
 
     /* Main content area */
@@ -385,10 +384,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     }
 
     @media (max-width: 768px) and (orientation: landscape) {
-        .sidebar.show-mobile {
-            height: calc(100vh - var(--header-height-mobile, 50px));
-        }
-
         .cards {
             grid-template-columns: repeat(2, 1fr);
         }
