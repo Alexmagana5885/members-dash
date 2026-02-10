@@ -30,7 +30,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
 
 </head>
 
-
 <style>
 
 
@@ -74,7 +73,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         left: -280px;
         z-index: 1000;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        margin-top: 55px;
+       
         margin-bottom: 20px;
     }
 
@@ -234,6 +233,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         .sidebar {
             width: 300px;
             min-width: 300px;
+            margin-top: 55px;
         }
 
         .mainContent {
@@ -261,6 +261,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
     @media (min-width: 1440px) {
         .sidebar {
             width: 320px;
+            margin-top: 55px;
         }
 
         .mainContent {
@@ -510,7 +511,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'member';
         }
     }
 </style>
-
 
 <body>
 
@@ -897,7 +897,7 @@ LIMIT 1";
                         <input type="text" id="phone_number" name="phone_number" class="popup-input" placeholder="Enter your phone number" required>
 
                         <label for="amount" class="popup-label">Amount</label>
-                        <input type="text" id="amount" name="amount" class="popup-input" value="3600" readonly>
+                        <input type="text" id="amount" name="amount" class="popup-input" value="1" readonly>
 
                         <div class="popup-buttons">
                             <button class="popup-btn" type="submit">Make Payment</button>
